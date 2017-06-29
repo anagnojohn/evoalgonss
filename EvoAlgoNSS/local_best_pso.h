@@ -11,7 +11,7 @@ std::vector<T> find_min_local_best(const std::vector<std::vector<T>>& local_best
 	std::vector<T> min_cost(ndv);
 	for (auto j = 0; j < ndv; ++j)
 	{
-		min_cost[j] = inf;
+		min_cost[j] = local_best[0][j];
 	}
 	for (auto k = 0; k < nneigh; ++k)
 	{
@@ -83,7 +83,7 @@ std::vector<T> lbest_pso(std::vector<std::vector<T>> particles, F f, T tol, T op
 	{
 		for (auto j = 0; j < ndv; ++j)
 		{
-			local_best[k].push_back(inf);
+			local_best[k].push_back(particles[0][j]);
 		}
 	}
 	for (auto& p : velocity)

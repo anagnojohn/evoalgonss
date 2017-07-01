@@ -16,10 +16,10 @@ int main()
 	double b4 = 0;
 	double tau1 = 1;
 	double tau2 = 2;
-	size_t npop = 500;
-	size_t ndv = 6;
+	const size_t npop = 500;
+	const size_t ndv = 6;
 	double maturity = 3;
-	double tol = 0.001;
+	const double tol = 0.00001;
 	std::vector<std::vector<double>> decision_variables(npop, std::vector<double>(ndv));
 	for (auto i = 0; i < decision_variables.size(); ++i)
 	{
@@ -30,18 +30,28 @@ int main()
 		decision_variables[i][4] = tau1;
 		decision_variables[i][5] = tau2;
 	}
-	std::vector<double> bond_yields = { 0.004336, 0.005569, 0.004085, 0.002564, 0.005701, 0.003720, 0.004179, 0.004991 };
-	auto f = [&](const std::vector<double>& solution) { return fitness_svensson<double>(solution, bond_yields, svensson<double>, maturity); };
+		
+
+	std::vector<double> bond_yields = { 0.043355724, 0.055688708, 0.040845871 ,0.02564443,
+		0.057006077, 0.037201461 ,0.041785886 ,0.049908247 };
+	std::vector<double> duration = { 2.944988754, 4.966178711, 6.279674883, 9.474865358,
+		8.416273259, 14.93089635, 15.38446779, 12.22184684 };
+	auto f = [&](const std::vector<double>& solution) { return fitness_svensson<double>(solution, bond_yields, svensson<double>, duration); };
+	std::vector<double> stdev(ndv);
+	for (auto j = 0; j < ndv; ++j)
+	{
+		stdev[j] = 0.7;
+	}
 	std::cout << "Genetic Algorithm:" << '\n';
-	//auto b = genetic_algo<double>(decision_variables, f, tol, 0.0, 200);
-	//std::cout << "Optimum" << '\n';
-	//std::cout << b << " " << f(b) << '\n';
+	auto b = genetic_algo<double>(decision_variables, f, tol, 0.0, 200, stdev);
+	std::cout << "Optimum" << '\n';
+	std::cout << b << " " << f(b) << '\n';
 	std::cout << "Particle Swarm:" << '\n';
-	auto c = lbest_pso<double>(decision_variables, f, tol, 0.0, 200);
+	auto c = lbest_pso<double>(decision_variables, f, tol, 0.0, 200, stdev);
 	std::cout << "Optimum" << '\n';
 	std::cout << c << " " << f(c) << '\n';
 	std::cout << "Differential Evolution:" << '\n';
-	auto d = differential_evo<double>(decision_variables, f, tol, 0.0, 200);
+	auto d = differential_evo<double>(decision_variables, f, tol, 0.0, 200, stdev);
 	std::cout << "Optimum" << '\n';
 	std::cout << d << " " << f(d) << '\n';
     return 0;

@@ -26,7 +26,7 @@ std::vector<std::vector<T>> selection(const std::vector<std::vector<T>>& individ
 {
 	auto npop = individuals.size();
 	auto ndv = individuals[0].size();
-	std::default_random_engine generator;
+	std::random_device generator;
 	std::uniform_real_distribution<> distribution(0.0, 1.0);
 	boost::math::beta_distribution<> dist(1, 6);
 	T optimal_cost = f(individuals[0]);
@@ -45,13 +45,14 @@ std::vector<std::vector<T>> selection(const std::vector<std::vector<T>>& individ
 }
 
 template<typename T>
-void mutation(std::vector<std::vector<T>>& individuals, const std::vector<T>& epsilon)
+void mutation(std::vector<std::vector<T>>& individuals, const std::vector<T>& stdev)
 {
-	std::default_random_engine generator;
+	std::random_device generator;
 	std::uniform_real_distribution<> distribution(0.0, 1.0);
 	auto npop = individuals.size();
 	auto ndv = individuals[0].size();
 	T pi = 0.35;
+	T epsilon;
 	for (auto i = 1; i < npop; ++i)
 	{
 		for (auto j = 0; j < ndv; ++j)
@@ -59,7 +60,9 @@ void mutation(std::vector<std::vector<T>>& individuals, const std::vector<T>& ep
 			T r = distribution(generator);
 			if (pi < r)
 			{
-				individuals[i][j] = individuals[i][j] + epsilon[j];
+				std::normal_distribution<> ndistribution(0, stdev[j]);
+				epsilon = ndistribution(generator);
+				individuals[i][j] = individuals[i][j] + epsilon;
 			}
 
 		}
@@ -67,22 +70,17 @@ void mutation(std::vector<std::vector<T>>& individuals, const std::vector<T>& ep
 }
 
 template<typename T, typename F>
-std::vector<T> genetic_algo(std::vector<std::vector<T>> individuals, F f, T tol, T opt, size_t gmax)
+std::vector<T> genetic_algo(std::vector<std::vector<T>> individuals, F f, const T& tol, const T& opt, const size_t& gmax, std::vector<T>& stdev)
 {
 	size_t npop = individuals.size();
-	size_t ndv = individuals[0].size();
+	const size_t& ndv = individuals[0].size();
 	T x_rate = 0.4;
 	size_t nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
 	T best_cost;
-	std::default_random_engine generator;
+	std::random_device generator;
 	std::uniform_real_distribution<> distribution(0.0, 1.0);
 	boost::math::beta_distribution<> dist(1, 6);
-	//auto epsilon = init_epsilon(individuals);
-	std::vector<T> epsilon;
-	for (auto j = 0; j < ndv; ++j)
-	{
-		epsilon.push_back(0.5);
-	}
+	init_epsilon(individuals, stdev);
 	//std::cout << "Individuals:" << '\n';
 	//for (const auto& p : individuals)
 	//{
@@ -92,18 +90,11 @@ std::vector<T> genetic_algo(std::vector<std::vector<T>> individuals, F f, T tol,
 	{
 		return f(l) < f(r);
 	};
-	for (auto i = 0; i < npop; ++i)
-	{
-		for (auto j = 0; j < ndv; ++j)
-		{
-			individuals[i][j] = individuals[i][j] + epsilon[j];
-		}
-	}
+	init_epsilon(individuals, stdev);
 	for (auto g = 0; g < gmax; ++g)
 	{
 		std::sort(individuals.begin(), individuals.end(), comparator);
 		best_cost = f(individuals[0]);
-		std::cout << best_cost << '\n';
 		if (tol > std::abs(f(individuals[0]) - opt))
 		{
 			std::cout << "Found solution at iteration: " << g << "." << '\n';
@@ -121,10 +112,10 @@ std::vector<T> genetic_algo(std::vector<std::vector<T>> individuals, F f, T tol,
 		{
 			individuals.push_back(offspring[i]);
 		}
-		mutation(individuals, epsilon);
+		mutation(individuals, stdev);
 		for (auto j = 0; j < ndv; ++j)
 		{
-			epsilon[j] = epsilon[j] + 0.02 * epsilon[j];
+			stdev[j] = stdev[j] + 0.02 * stdev[j];
 		}
 	}
 	std::sort(individuals.begin(), individuals.end(), comparator);

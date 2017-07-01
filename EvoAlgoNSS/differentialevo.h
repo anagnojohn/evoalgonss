@@ -5,14 +5,14 @@
 template<typename T>
 std::vector<T> construct_donor(const std::vector<std::vector<T>>& individuals)
 {
-	auto npop = individuals.size();
-	auto ndv = individuals[0].size();
+	const auto& npop = individuals.size();
+	const auto& ndv = individuals[0].size();
 	std::vector<T> donor(ndv);
 	std::vector<size_t> r_i;
 	std::vector<size_t> indices;
 	std::random_device random_device;
 	std::mt19937 engine{ random_device() };
-	T F_param = 0.4;
+	const T F_param = 0.4;
 	for (auto i = 0; i < npop; ++i)
 	{
 		indices.push_back(i);
@@ -36,10 +36,10 @@ std::vector<T> construct_donor(const std::vector<std::vector<T>>& individuals)
 template<typename T>
 std::vector<T> construct_trial(const std::vector<T>& target, const std::vector<T>& donor)
 {
-	T Cr = 0.5;
+	const T Cr = 0.5;
 	auto ndv = donor.size();
 	std::vector<T> trial(ndv);
-	std::default_random_engine generator;
+	std::random_device generator;
 	std::uniform_real_distribution<> distribution(0.0, 1.0);
 	std::vector<size_t> indices;
 	std::random_device random_device;
@@ -66,14 +66,14 @@ std::vector<T> construct_trial(const std::vector<T>& target, const std::vector<T
 }
 
 template<typename T, typename F>
-std::vector<T> differential_evo(std::vector<std::vector<T>> individuals, F f, T tol, T opt, size_t gmax)
+std::vector<T> differential_evo(std::vector<std::vector<T>> individuals, F f, const T& tol, const T& opt, const size_t& gmax, const std::vector<T>& stdev)
 {
-	size_t npop = individuals.size();
-	size_t ndv = individuals[0].size();
-	std::default_random_engine generator;
+	const size_t& npop = individuals.size();
+	const size_t& ndv = individuals[0].size();
+	std::random_device generator;
 	std::uniform_real_distribution<> distribution(0.0, 1.0);
 	boost::math::beta_distribution<> dist(1, 6);
-	auto epsilon = init_epsilon(individuals);
+	init_epsilon(individuals, stdev);
 	//std::cout << "Individuals:" << '\n';
 	//for (const auto& p : individuals)
 	//{
@@ -83,15 +83,9 @@ std::vector<T> differential_evo(std::vector<std::vector<T>> individuals, F f, T 
 	{
 		return f(l) < f(r);
 	};
-	for (auto i = 0; i < npop; ++i)
-	{
-		for (auto j = 0; j < ndv; ++j)
-		{
-			individuals[i][j] = individuals[i][j] + epsilon[j];
-		}
-	}
 	for (auto g = 0; g < gmax; ++g)
 	{
+		auto min_cost = f(individuals[0]);
 		if (tol > std::abs(f(individuals[0]) - opt))
 		{
 			std::cout << "Found solution at iteration: " << g << "." << '\n';

@@ -20,7 +20,7 @@ T svensson(const std::vector<T>& solution, T m)
 		else
 		{
 			T result = b0 + (b1 + b2) * (tau1 / m) * (1 - std::exp(-m / tau1))
-				- b2 *std::exp(-m / tau1) + b3 * (tau2 / m) * (1 - std::exp(-m / tau2))
+				- b2 * std::exp(-m / tau1) + b3 * (tau2 / m) * (1 - std::exp(-m / tau2))
 				- b3 * std::exp(-m / tau2);
 			return result;
 		}
@@ -32,12 +32,12 @@ T svensson(const std::vector<T>& solution, T m)
 }
 
 template<typename T, typename F>
-T fitness_svensson(const std::vector<T>& solution, const std::vector<T>& bond_yields, F svensson, const T& maturity)
+T fitness_svensson(const std::vector<T>& solution, const std::vector<T>& bond_yields, F svensson, const std::vector<T>& maturity)
 {
 	T sum_of_squares = 0;
 	for (auto i = 0; i < bond_yields.size(); ++i)
 	{
-		sum_of_squares = sum_of_squares + std::pow(bond_yields[i] - svensson(solution, maturity), 2);
+		sum_of_squares = sum_of_squares + std::pow(bond_yields[i] - svensson(solution, maturity[i]), 2);
 	}
 	return sum_of_squares;
 }

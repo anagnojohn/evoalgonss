@@ -13,16 +13,18 @@
 #include <boost/math/distributions.hpp>
 
 template<typename T>
-std::vector<T> init_epsilon(const std::vector <std::vector<T>>& individuals)
+void init_epsilon(std::vector <std::vector<T>>& individuals, const std::vector<T>& stdev)
 {
-	std::default_random_engine generator;
+	std::random_device generator;
 	auto npop = individuals.size();
 	auto ndv = individuals[0].size();
 	std::vector<T> diff(npop);
-	std::vector<T> sum(ndv);
-	std::vector<T> mean(ndv);
-	std::vector<T> stdev(ndv);
-	std::vector<T> epsilon(ndv);
+	//std::vector<T> sum(ndv);
+	//std::vector<T> mean(ndv);
+	//std::vector<T> stdev(ndv);
+	//std::vector<T> epsilon(ndv);
+	T epsilon;
+	/*
 	for (auto& p : sum)
 	{
 		p = 0.0;
@@ -47,12 +49,16 @@ std::vector<T> init_epsilon(const std::vector <std::vector<T>>& individuals)
 		T sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
 		stdev[j] = std::sqrt(sq_sum / npop);
 	}
-	for (auto j = 0; j < ndv; ++j)
+	*/
+	for (auto i = 0; i < npop; ++i)
 	{
-		std::normal_distribution<> ndistribution(0, stdev[j]);
-		epsilon[j] = ndistribution(generator);
+		for (auto j = 0; j < ndv; ++j)
+		{
+			std::normal_distribution<> ndistribution(0, stdev[j]);
+			epsilon = ndistribution(generator);
+			individuals[i][j] = individuals[i][j] + epsilon;
+		}
 	}
-	return epsilon;
 }
 
 template <typename T>

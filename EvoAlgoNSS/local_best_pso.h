@@ -35,15 +35,15 @@ T euclid_distance (const std::vector<T>& x, const std::vector<T>& y)
 };
 
 template<typename T, typename F>
-std::vector<T> lbest_pso(std::vector<std::vector<T>> particles, F f, T tol, T opt, size_t iter_max)
+std::vector<T> lbest_pso(std::vector<std::vector<T>> particles, F f, const T& tol, const T& opt, const size_t& iter_max, const std::vector<T>& stdev)
 {
-	std::default_random_engine generator;
+	std::random_device generator;
 	std::uniform_real_distribution<T> distribution(0.0, 1.0);
 	T inf = std::numeric_limits<T>::infinity();
-	T c1 = 1;
-	T c2 = 1;
-	size_t npop = particles.size();
-	size_t ndv = particles[0].size();
+	const T c1 = 1;
+	const T c2 = 1;
+	const size_t& npop = particles.size();
+	const size_t& ndv = particles[0].size();
 	T rmax = 0.0;
 	T alpha = 2;
 	T w = 0.9;
@@ -115,6 +115,7 @@ std::vector<T> lbest_pso(std::vector<std::vector<T>> particles, F f, T tol, T op
 	{
 	//	std::cout << p << " " << f(p) << '\n';
 	}
+	init_epsilon(particles, stdev);
 	min_cost = find_min_local_best(local_best, f);
 	for (auto iter = 0; iter < iter_max; ++iter)
 	{	
@@ -184,7 +185,6 @@ std::vector<T> lbest_pso(std::vector<std::vector<T>> particles, F f, T tol, T op
 			}
 		}
 		min_cost = find_min_local_best(local_best, f);
-		std::cout << f(min_cost) << '\n';
 		for (auto& p : vmax)
 		{
 			p = (1 - std::pow(iter / iter_max, alpha)) * p;

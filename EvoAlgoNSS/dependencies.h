@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 #include <vector>
 #include <cmath>
 #include <iterator>
@@ -11,6 +12,8 @@
 #include <random>
 #include <gsl/gsl_sf_bessel.h>
 #include <boost/math/distributions.hpp>
+#include "boost/date_time/gregorian/gregorian.hpp"
+#include "boost/date_time/time.hpp"
 
 template<typename T>
 void init_epsilon(std::vector <std::vector<T>>& individuals, const std::vector<T>& stdev)

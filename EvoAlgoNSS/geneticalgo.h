@@ -2,33 +2,56 @@
 
 #include "dependencies.h"
 
-template<typename T>
-std::vector<T> blend(std::vector<T> r, std::vector<T> s)
+template<typename T, typename F>
+class GeneticAlgo
 {
-	auto ndv = r.size();
-	std::default_random_engine generator;
-	std::uniform_real_distribution<> distribution(0.0, 1.0);
+public:
+	GeneticAlgo(std::vector<std::vector<T>> i_individuals, const T& i_tol, const T& i_opt, const size_t& i_gmax, const T& i_x_rate, const T& i_pi, const std::vector<T>& i_stdev)
+		: individuals(i_individuals), x_rate(i_x_rate), pi(i_pi), tol(i_tol), opt(i_opt), gmax(i_gmax), stdev(i_stdev), npop(individuals.size()), ndv(individuals[0].size())
+	{
+		boost::math::beta_distribution<T> i_dist(1, 6);
+		dist = i_dist;
+		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
+		distribution = i_distribution;
+	}
+	std::vector<T> genetic_algo(F f);
+private:
+	std::vector<std::vector<T>> individuals;
+	const T x_rate;// = 0.4;
+	const T pi;// = 0.35;
+	const T tol;
+	const T opt;
+	std::vector<T> stdev;
+	const size_t gmax;
+	size_t npop;
+	const size_t ndv;
+	std::random_device generator;
+	boost::math::beta_distribution<T> dist;
+	std::uniform_real_distribution<T> distribution;
+	std::vector<T> blend(std::vector<T> r, std::vector<T> s);
+	std::vector<std::vector<T>> selection(F f);
+	void mutation();
+};
+
+template<typename T, typename F>
+std::vector<T> GeneticAlgo<T,F>::blend(std::vector<T> r, std::vector<T> s)
+{
+	std::vector<T> offspring(ndv);
 	std::vector<T> psi(ndv);
 	for (auto i = 0; i < ndv; ++i)
 	{
 		psi[i] = distribution(generator);
 	}
-	std::vector<T> offspring(psi.size());
 	for (auto i = 0; i < ndv; ++i)
 	{
-		offspring[i] = psi[i]*r[i] + (1 - psi[i])*s[i];
+		offspring[i] = psi[i] * r[i] + (1 - psi[i])*s[i];
 	}
 	return offspring;
 }
 
 template<typename T, typename F>
-std::vector<std::vector<T>> selection(const std::vector<std::vector<T>>& individuals, F f)
+std::vector<std::vector<T>> GeneticAlgo<T, F>::selection(F f)
 {
-	auto npop = individuals.size();
-	auto ndv = individuals[0].size();
-	std::random_device generator;
-	std::uniform_real_distribution<> distribution(0.0, 1.0);
-	boost::math::beta_distribution<> dist(1, 6);
 	T optimal_cost = f(individuals[0]);
 	std::vector<std::vector<T>> offspring;
 	for (auto i = 0; i < npop; ++i)
@@ -44,14 +67,9 @@ std::vector<std::vector<T>> selection(const std::vector<std::vector<T>>& individ
 	return offspring;
 }
 
-template<typename T>
-void mutation(std::vector<std::vector<T>>& individuals, const std::vector<T>& stdev)
+template<typename T, typename F>
+void GeneticAlgo<T, F>::mutation()
 {
-	std::random_device generator;
-	std::uniform_real_distribution<> distribution(0.0, 1.0);
-	auto npop = individuals.size();
-	auto ndv = individuals[0].size();
-	T pi = 0.35;
 	T epsilon;
 	for (auto i = 1; i < npop; ++i)
 	{
@@ -70,22 +88,11 @@ void mutation(std::vector<std::vector<T>>& individuals, const std::vector<T>& st
 }
 
 template<typename T, typename F>
-std::vector<T> genetic_algo(std::vector<std::vector<T>> individuals, F f, const T& tol, const T& opt, const size_t& gmax, std::vector<T>& stdev)
+std::vector<T> GeneticAlgo<T, F>::genetic_algo(F f)
 {
-	size_t npop = individuals.size();
-	const size_t& ndv = individuals[0].size();
-	T x_rate = 0.4;
-	size_t nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
 	T best_cost;
-	std::random_device generator;
-	std::uniform_real_distribution<> distribution(0.0, 1.0);
-	boost::math::beta_distribution<> dist(1, 6);
+	size_t nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
 	init_epsilon(individuals, stdev);
-	//std::cout << "Individuals:" << '\n';
-	//for (const auto& p : individuals)
-	//{
-	//	std::cout << p << " " << f(p) << '\n';
-	//}
 	auto comparator = [&](const std::vector<T>& l, const std::vector<T>& r)
 	{
 		return f(l) < f(r);
@@ -104,7 +111,7 @@ std::vector<T> genetic_algo(std::vector<std::vector<T>> individuals, F f, const 
 		{
 			break;
 		}
-		std::vector<std::vector<T>> offspring = selection(individuals, f);
+		std::vector<std::vector<T>> offspring = selection(f);
 		individuals.erase(individuals.begin() + nkeep, individuals.begin() + npop);
 		npop = individuals.size();
 		nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
@@ -112,17 +119,12 @@ std::vector<T> genetic_algo(std::vector<std::vector<T>> individuals, F f, const 
 		{
 			individuals.push_back(offspring[i]);
 		}
-		mutation(individuals, stdev);
+		mutation();
 		for (auto j = 0; j < ndv; ++j)
 		{
 			stdev[j] = stdev[j] + 0.02 * stdev[j];
 		}
 	}
 	std::sort(individuals.begin(), individuals.end(), comparator);
-	//std::cout << "Sorted Costs:" << '\n';
-	for (const auto& p : individuals)
-	{
-		//std::cout << p << " " << f(p) << '\n';
-	}
 	return individuals[0];
 }

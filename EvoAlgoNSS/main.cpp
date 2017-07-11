@@ -6,9 +6,11 @@
 #include "local_best_pso.h"
 #include "differentialevo.h"
 #include "svensson.h"
+#include "datehandler.h"
 
 int main()
 {
+	test();
 	double b0 = 4.336 / 100;
 	double b1 = 4.991 / 100 - b0;
 	double b2 = 0;
@@ -19,7 +21,7 @@ int main()
 	const size_t npop = 500;
 	const size_t ndv = 6;
 	double maturity = 3;
-	const double tol = 0.00001;
+	const double tol = 0.0001;
 	std::vector<std::vector<double>> decision_variables(npop, std::vector<double>(ndv));
 	for (auto i = 0; i < decision_variables.size(); ++i)
 	{
@@ -43,15 +45,18 @@ int main()
 		stdev[j] = 0.7;
 	}
 	std::cout << "Genetic Algorithm:" << '\n';
-	auto b = genetic_algo<double>(decision_variables, f, tol, 0.0, 200, stdev);
+	GeneticAlgo<double, decltype(f)> object1(decision_variables, tol, 0.0, 200, 0.4, 0.35, stdev);
 	std::cout << "Optimum" << '\n';
-	std::cout << b << " " << f(b) << '\n';
+	//auto b = object1.genetic_algo(f);
+	//std::cout << b << " " << f(b) << '\n';
 	std::cout << "Particle Swarm:" << '\n';
-	auto c = lbest_pso<double>(decision_variables, f, tol, 0.0, 200, stdev);
+	LocalBestPSO<double, decltype(f)> object2(decision_variables, tol, 0.0, 200, 1, 1, 2, 0.9, stdev);
+	auto c = object2.lbest_pso(f);
 	std::cout << "Optimum" << '\n';
 	std::cout << c << " " << f(c) << '\n';
 	std::cout << "Differential Evolution:" << '\n';
-	auto d = differential_evo<double>(decision_variables, f, tol, 0.0, 200, stdev);
+	DifferentialEvo<double, decltype(f)> object3(decision_variables, tol, 0.0, 200, 0.5, 0.4, stdev);
+	auto d = object3.differential_evo(f);
 	std::cout << "Optimum" << '\n';
 	std::cout << d << " " << f(d) << '\n';
     return 0;

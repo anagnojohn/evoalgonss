@@ -3,9 +3,37 @@
 #include "dependencies.h"
 
 template<typename T, typename F>
-std::vector<T> find_min_local_best(const std::vector<std::vector<T>>& local_best, F f)
+class LocalBestPSO
 {
-	T inf = std::numeric_limits<T>::infinity();
+public:
+	LocalBestPSO(std::vector<std::vector<T>> i_particles, const T& i_tol, const T& i_opt, const size_t& i_iter_max, const T& i_c1, const T& i_c2, const T& i_alpha, const T& i_w,const std::vector<T>& i_stdev)
+		: particles(i_particles), c1(i_c1), c2(i_c2), alpha(i_alpha), tol(i_tol), opt(i_opt), iter_max(i_iter_max), stdev(i_stdev), npop(particles.size()), ndv(particles[0].size())
+	{
+		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
+		distribution = i_distribution;
+	}
+	std::vector<T> lbest_pso(F f);
+private:
+	const size_t iter_max;
+	const T c1; //1;
+	const T c2; //1;
+	const T alpha; //2;
+	T w; //0.9;
+	std::vector<std::vector<T>> particles;
+	const T tol;
+	const T opt;
+	const std::vector<T> stdev;
+	size_t npop;
+	const size_t ndv;
+	std::random_device generator;
+	std::uniform_real_distribution<T> distribution;
+	std::vector<T> find_min_local_best(const std::vector<std::vector<T>>& local_best, F f);
+	T euclid_distance(const std::vector<T>& x, const std::vector<T>& y);
+};
+
+template<typename T, typename F>
+std::vector<T> LocalBestPSO<T, F>::find_min_local_best(const std::vector<std::vector<T>>& local_best, F f)
+{
 	auto nneigh = local_best.size();
 	auto ndv = local_best[0].size();
 	std::vector<T> min_cost(ndv);
@@ -23,8 +51,8 @@ std::vector<T> find_min_local_best(const std::vector<std::vector<T>>& local_best
 	return min_cost;
 }
 
-template<typename T>
-T euclid_distance (const std::vector<T>& x, const std::vector<T>& y)
+template<typename T, typename F>
+T LocalBestPSO<T, F>::euclid_distance (const std::vector<T>& x, const std::vector<T>& y)
 {
 	T sum = 0;
 	for (auto i = 0; i < x.size(); ++i)
@@ -35,23 +63,14 @@ T euclid_distance (const std::vector<T>& x, const std::vector<T>& y)
 };
 
 template<typename T, typename F>
-std::vector<T> lbest_pso(std::vector<std::vector<T>> particles, F f, const T& tol, const T& opt, const size_t& iter_max, const std::vector<T>& stdev)
+std::vector<T> LocalBestPSO<T, F>::lbest_pso(F f)
 {
-	std::random_device generator;
-	std::uniform_real_distribution<T> distribution(0.0, 1.0);
-	T inf = std::numeric_limits<T>::infinity();
-	const T c1 = 1;
-	const T c2 = 1;
-	const size_t& npop = particles.size();
-	const size_t& ndv = particles[0].size();
-	T rmax = 0.0;
-	T alpha = 2;
-	T w = 0.9;
 	std::vector<T> vmax(ndv);
 	for (auto& p : vmax)
 	{
 		p = 1000;
 	}
+	T rmax;
 	size_t nneigh = static_cast<size_t>(std::ceil(npop / 5));
 	std::vector<T> dist;
 	std::vector<std::vector<T>> personal_best;
@@ -121,7 +140,7 @@ std::vector<T> lbest_pso(std::vector<std::vector<T>> particles, F f, const T& to
 	{	
 		for (auto i = 0; i < npop; ++i)
 		{
-			dist.push_back(euclid_distance<T>(particles[i], min_cost));
+			dist.push_back(euclid_distance(particles[i], min_cost));
 		}
 		rmax = dist[0];
 		for (auto i = 0; i < npop; ++i)

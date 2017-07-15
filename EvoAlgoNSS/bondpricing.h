@@ -3,33 +3,28 @@
 #include "dependencies.h"
 #include "svensson.h"
 #include "irr.h"
+#include "bond.h"
 
 template<typename T>
-T macaulay_duration(T bond_price)
-{
-	return;
-}
-
-template<typename T>
-T estimate_bond_price(const std::vector<T>& solution, const T& coupon_value, const T& nominal_value, size_t num_of_terms, T term, T maturity)
+T estimate_bond_pricing(const std::vector<T>& solution, const T& coupon_value, const T& nominal_value, size_t num_of_terms)
 {
 	T sum = 0;
-	for (auto i = 0; i < terms; ++i)
+	for (auto i = 0; i < num_of_terms; ++i)
 	{
-		sum = sum + coupon_value * *std::exp(-svensson(solution, term) * t);
+		sum = sum + coupon_value * std::exp(-svensson(solution, i + 1) * (i + 1));
 	}
-	return sum + nominal_value * std::exp(-svensson(solution, maturity * m);
+	return sum + nominal_value * std::exp(-svensson(solution, num_of_terms) * num_of_terms);
 }
 
 template<typename T>
-T fitness_bond_price(const std::vector<T>& solution, const std::vector<T>& bond_prices, F svensson, const T& coupon_value, const T& nominal_value, size_t num_of_terms, T term, const std::vector<T>& maturity)
+T fitness_bond_pricing(const std::vector<T>& solution, const std::vector<Bond<T>>& bonds)
 {
 	T sum_of_squares = 0;
-	for (auto i = 0; i < bond_prices.size(); ++i)
+	for (auto i = 0; i < bonds.size(); ++i)
 	{
 		sum_of_squares = sum_of_squares +
-			std::pow(bond_prices[i] - estimate_bond_prices(solution, coupon_value, nominal_value, num_of_terms, term, maturity[i])
-				* 1 / (1 / macaulay_duration(bond_prices[i]))
+			std::pow(bonds[i].price - estimate_bond_pricing(solution, bonds[i].coupon_value, bonds[i].nominal_value, bonds[i].cash_flows.size()), 2)
+			/ bonds[i].duration;
 	}
 	return sum_of_squares;
 }

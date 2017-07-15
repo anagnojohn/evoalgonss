@@ -1,13 +1,23 @@
 #pragma once
 
+#include "dependencies.h"
+
 template<typename T>
-T irr(T r, T future_value, std::vector<T> cash_flows)
+T irr(const T& r, const T& nominal_value, const std::vector<T>& cash_flows, const size_t& frequency)
 {
 	const size_t& num_time_periods = cash_flows.size();
 	T sum = 0.0;
-	for (auto i = 0; i < num_time_periods)
+	for (auto i = 0; i < num_time_periods; ++i)
 	{
-		sum = sum + cash_flows[i];
+		sum = sum + cash_flows[i] / std::pow((1 + r / frequency), i + 1);
 	}
-	return cash_flows / pow((1 + r), num_time_periods) + future_value / pow((1 + r), num_time_periods);
+	return sum + nominal_value / std::pow((1 + r / frequency), num_time_periods);
+}
+
+template<typename T>
+T fitness_irr(const std::vector<T>& r_sol, T price, T nominal_value, std::vector<T> cash_flows, size_t frequency)
+{
+	T sum_of_squares = 0;
+	sum_of_squares = sum_of_squares + std::pow(price - irr(r_sol[0], nominal_value, cash_flows, frequency), 2);
+	return sum_of_squares;
 }

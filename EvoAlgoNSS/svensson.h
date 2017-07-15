@@ -3,7 +3,7 @@
 #include "dependencies.h"
 
 template<typename T>
-T svensson(const std::vector<T>& solution, T m)
+T svensson(const std::vector<T>& solution, size_t m)
 {
 	const T& b0 = solution[0];
 	const T& b1 = solution[1];
@@ -31,8 +31,8 @@ T svensson(const std::vector<T>& solution, T m)
 	}
 }
 
-template<typename T, typename F>
-T fitness_svensson(const std::vector<T>& solution, const std::vector<T>& bond_yields, F svensson, const std::vector<T>& maturity)
+template<typename T>
+T fitness_svensson(const std::vector<T>& solution, const std::vector<T>& bond_yields, const std::vector<T>& maturity)
 {
 	T sum_of_squares = 0;
 	for (auto i = 0; i < bond_yields.size(); ++i)

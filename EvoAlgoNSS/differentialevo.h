@@ -98,10 +98,25 @@ std::vector<T> DifferentialEvo<T, F>::differential_evo(F f)
 	{
 		return f(l) < f(r);
 	};
+	T min_cost = f(individuals[0]);
+	for (const auto& p : individuals)
+	{
+		if (min_cost > f(p))
+		{
+			min_cost = f(p);
+		}
+	}
 	for (auto g = 0; g < gmax; ++g)
 	{
-		auto min_cost = f(individuals[0]);
-		if (tol > std::abs(f(individuals[0]) - opt))
+		for (const auto& p : individuals)
+		{
+			if (min_cost > f(p))
+			{
+				min_cost = f(p);
+			}
+		}
+		//std::cout << min_cost << "\n";
+		if (tol > std::abs(min_cost - opt))
 		{
 			std::cout << "Found solution at iteration: " << g << "." << '\n';
 			break;
@@ -116,8 +131,9 @@ std::vector<T> DifferentialEvo<T, F>::differential_evo(F f)
 			}
 		}
 	}
+	T error = std::abs(min_cost - opt);
 	std::sort(individuals.begin(), individuals.end(), comparator);
-	std::cout << "Sorted Costs:" << '\n';
+	//std::cout << "Sorted Costs:" << '\n';
 	//for (const auto& p : individuals)
 	//{
 	//	std::cout << p << " " << f(p) << '\n';

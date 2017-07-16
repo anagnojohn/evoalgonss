@@ -10,8 +10,6 @@ public:
 	const T price;
 	const T nominal_value;
 	const size_t frequency;
-	boost::gregorian::date settlement_date;
-	boost::gregorian::date maturity_date;
 	Bond(const T& i_coupon_percentage, const T& i_price, const T& i_nominal_value, const size_t& i_frequency, const std::string& i_settlement_date, const std::string& i_maturity_date)
 		: coupon_percentage(i_coupon_percentage), price(i_price), nominal_value(i_nominal_value), frequency(i_frequency),
 		settlement_date(boost::gregorian::from_simple_string(i_settlement_date)),
@@ -32,8 +30,6 @@ public:
 		{
 			p = (coupon_percentage * nominal_value) / frequency;
 		}
-		coupon_value = coupon_percentage * nominal_value;
-		//duration = macaulay_duration();
 	}
 	T yield;
 	T duration;
@@ -41,7 +37,8 @@ public:
 	std::vector<T> cash_flows;
 	T macaulay_duration();
 private:
-	
+	boost::gregorian::date settlement_date;
+	boost::gregorian::date maturity_date;
 };
 
 template<typename T>

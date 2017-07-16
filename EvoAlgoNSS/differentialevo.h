@@ -2,37 +2,36 @@
 
 #include "dependencies.h"
 
-template<typename T, typename F>
+template<typename T>
 class DifferentialEvo
 {
 public:
-	DifferentialEvo(std::vector<std::vector<T>> i_individuals, const T& i_tol, const T& i_opt, const size_t& i_gmax, const T& i_cr, const T& i_f_param, const std::vector<T>& i_stdev)
-		: individuals(i_individuals), cr(i_cr), f_param(i_f_param), tol(i_tol), opt(i_opt), gmax(i_gmax), stdev(i_stdev), npop(individuals.size()), ndv(individuals[0].size())
+	DifferentialEvo(std::vector<std::vector<T>> i_individuals, const T& i_tol, const size_t& i_gmax, const T& i_cr, const T& i_f_param, const std::vector<T>& i_stdev)
+		: individuals(i_individuals), cr(i_cr), f_param(i_f_param), tol(i_tol), gmax(i_gmax), stdev(i_stdev), npop(individuals.size()), ndv(individuals[0].size())
 	{
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
+		init_epsilon(individuals, stdev);
 	}
-	std::vector<T> differential_evo(F f);
-private:
 	std::vector<std::vector<T>> individuals;
+	const T tol;
+	std::vector<T> construct_donor();
+	std::vector<T> construct_trial(const std::vector<T>& target, const std::vector<T>& donor);
+	const size_t gmax;
+private:
 	const T cr; // 0.5;
 	const T f_param; // 0.4;
-	const T tol;
-	const T opt;
 	const std::vector<T> stdev;
-	const size_t gmax;
 	size_t npop;
 	const size_t ndv;
 	std::random_device random_device;
 	std::mt19937 engine{ random_device() };
 	std::random_device generator;
 	std::uniform_real_distribution<T> distribution;
-	std::vector<T> construct_donor();
-	std::vector<T> construct_trial(const std::vector<T>& target, const std::vector<T>& donor);
 };
 
-template<typename T, typename F>
-std::vector<T> DifferentialEvo<T, F>::construct_donor()
+template<typename T>
+std::vector<T> DifferentialEvo<T>::construct_donor()
 {
 	std::vector<T> donor(ndv);
 	std::vector<size_t> r_i;
@@ -57,11 +56,9 @@ std::vector<T> DifferentialEvo<T, F>::construct_donor()
 	return donor;
 }
 
-template<typename T, typename F>
-std::vector<T> DifferentialEvo<T, F>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor)
+template<typename T>
+std::vector<T> DifferentialEvo<T>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor)
 {
-	
-	auto ndv = donor.size();
 	std::vector<T> trial(ndv);
 	std::vector<size_t> indices;
 	for (auto i = 0; i < ndv; ++i)
@@ -86,57 +83,46 @@ std::vector<T> DifferentialEvo<T, F>::construct_trial(const std::vector<T>& targ
 }
 
 template<typename T, typename F>
-std::vector<T> DifferentialEvo<T, F>::differential_evo(F f)
+std::vector<T> solve(F f, const T& opt, DifferentialEvo<T>& de)
 {
-	init_epsilon(individuals, stdev);
-	//std::cout << "Individuals:" << '\n';
-	//for (const auto& p : individuals)
-	//{
-	//	std::cout << p << " " << f(p) << '\n';
-	//}
 	auto comparator = [&](const std::vector<T>& l, const std::vector<T>& r)
 	{
 		return f(l) < f(r);
 	};
-	T min_cost = f(individuals[0]);
-	for (const auto& p : individuals)
+	std::vector<T> min_cost = de.individuals[0];
+	for (const auto& p : de.individuals)
 	{
-		if (min_cost > f(p))
+		if (f(min_cost) > f(p))
 		{
-			min_cost = f(p);
+			min_cost = p;
 		}
 	}
-	for (auto g = 0; g < gmax; ++g)
+	for (auto g = 0; g < de.gmax; ++g)
 	{
-		for (const auto& p : individuals)
-		{
-			if (min_cost > f(p))
-			{
-				min_cost = f(p);
-			}
-		}
-		//std::cout << min_cost << "\n";
-		if (tol > std::abs(min_cost - opt))
+		if (de.tol > std::abs(f(min_cost) - opt))
 		{
 			std::cout << "Found solution at iteration: " << g << "." << '\n';
 			break;
 		}
-		for (auto i = 0; i < npop; ++i)
+		for (auto i = 0; i < de.individuals.size(); ++i)
 		{
-			std::vector<T> donor = construct_donor();
-			std::vector<T> trial = construct_trial(individuals[i], donor);
-			if (f(trial) <= f(individuals[i]))
+			std::vector<T> donor = de.construct_donor();
+			std::vector<T> trial = de.construct_trial(de.individuals[i], donor);
+			if (f(trial) <= f(de.individuals[i]))
 			{
-				individuals[i] = trial;
+				de.individuals[i] = trial;
+			}
+		}
+		for (const auto& p : de.individuals)
+		{
+			if (f(min_cost) > f(p))
+			{
+				min_cost = p;
 			}
 		}
 	}
-	T error = std::abs(min_cost - opt);
-	std::sort(individuals.begin(), individuals.end(), comparator);
-	//std::cout << "Sorted Costs:" << '\n';
-	//for (const auto& p : individuals)
-	//{
-	//	std::cout << p << " " << f(p) << '\n';
-	//}
-	return individuals[0];
+	T error = std::abs(f(min_cost) - opt);
+	return min_cost;
 }
+
+//struct 

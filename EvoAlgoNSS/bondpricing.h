@@ -28,3 +28,10 @@ T fitness_bond_pricing(const std::vector<T>& solution, const std::vector<Bond<T>
 	}
 	return sum_of_squares;
 }
+
+template<typename T, typename S>
+std::vector<T> bond_pricing(std::vector< Bond<T> > bonds, S& solver)
+{
+	auto f = [&](const std::vector<double>& solution) { return fitness_bond_pricing(solution, bonds); };
+	return solve(f, 0.0, solver);
+}

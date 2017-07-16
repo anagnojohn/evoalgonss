@@ -1,10 +1,6 @@
 #pragma once
 
 #include "dependencies.h"
-#include "geneticalgo.h"
-#include "local_best_pso.h"
-#include "differentialevo.h"
-#include "irr.h"
 
 template<typename T>
 class Bond
@@ -25,7 +21,7 @@ public:
 		{
 			std::swap(settlement_date, maturity_date);
 		}
-		int time_periods = maturity_date.year() - settlement_date.year();
+		size_t time_periods = static_cast<size_t>(maturity_date.year() - settlement_date.year());
 		if (maturity_date.month() < settlement_date.month() || (maturity_date.month() == settlement_date.month() && maturity_date.day() < settlement_date.day()))
 		{
 			time_periods -= 1; 
@@ -37,7 +33,7 @@ public:
 			p = (coupon_percentage * nominal_value) / frequency;
 		}
 		coupon_value = coupon_percentage * nominal_value;
-		duration = macaulay_duration();
+		//duration = macaulay_duration();
 	}
 	T yield;
 	T duration;
@@ -51,12 +47,12 @@ private:
 template<typename T>
 T Bond<T>::macaulay_duration()
 {
-	T discount_factor;
+	T discount_factor = 0.0;
 	T pv_cash_flow = 0.0;
 	T current_bond_price = 0.0;
 	for (auto i = 0; i < cash_flows.size(); ++i)
 	{
-		discount_factor = 1 / std::pow(1 + coupon_percentage, i + 1);
+		discount_factor = 1 / std::pow(1 + yield, i + 1);
 		pv_cash_flow = pv_cash_flow + (i + 1) * cash_flows[i] * discount_factor;
 		current_bond_price = current_bond_price + cash_flows[i] * discount_factor;
 	}
@@ -66,9 +62,9 @@ T Bond<T>::macaulay_duration()
 }
 
 template<typename T, typename S>
-T getyield(Bond<T> b, S& solver)
+T setyield(Bond<T> bond, S& solver)
 {
-	auto f = [&](T r) { return irr(r, b.nominal_value, b.cash_flows, b.frequency);};
-	return solve(f, b.price, solver)[0];
+	auto f = [&](const std::vector<double>& solution) { return fitness_irr(solution, bond);};
+	return solve(f, 0.0, solver)[0];
 }
 

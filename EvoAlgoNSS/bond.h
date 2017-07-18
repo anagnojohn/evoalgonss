@@ -61,7 +61,7 @@ T Bond<T>::macaulay_duration()
 template<typename T, typename S>
 T setyield(Bond<T> bond, S& solver)
 {
-	auto f = [&](const std::vector<double>& solution) { return fitness_irr(solution, bond);};
+	auto f = [&](const auto& solution) { return fitness_irr(solution, bond);};
 	return solve(f, 0.0, solver)[0];
 }
 

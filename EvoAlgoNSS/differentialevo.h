@@ -6,11 +6,12 @@ template<typename T>
 class DifferentialEvo
 {
 public:
-	DifferentialEvo(std::vector<std::vector<T>> i_individuals, const T& i_tol, const size_t& i_gmax, const T& i_cr, const T& i_f_param, const std::vector<T>& i_stdev)
-		: individuals(i_individuals), cr(i_cr), f_param(i_f_param), tol(i_tol), gmax(i_gmax), stdev(i_stdev), npop(individuals.size()), ndv(individuals[0].size())
+	DifferentialEvo(const std::vector<T>& i_decision_variables, const size_t& i_npop, const T& i_tol, const size_t& i_gmax, const T& i_cr, const T& i_f_param, const std::vector<T>& i_stdev)
+		: cr(i_cr), f_param(i_f_param), tol(i_tol), gmax(i_gmax), stdev(i_stdev), npop(i_npop), ndv(i_decision_variables.size())
 	{
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
+		individuals = create_individuals(npop, i_decision_variables);
 		init_epsilon(individuals, stdev);
 	}
 	std::vector<std::vector<T>> individuals;
@@ -124,5 +125,3 @@ std::vector<T> solve(F f, const T& opt, DifferentialEvo<T>& de)
 	T error = std::abs(f(min_cost) - opt);
 	return min_cost;
 }
-
-//struct 

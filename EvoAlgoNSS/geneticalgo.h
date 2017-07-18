@@ -6,13 +6,14 @@ template<typename T>
 class GeneticAlgo
 {
 public:
-	GeneticAlgo(std::vector<std::vector<T>> i_individuals, const T& i_tol, const size_t& i_gmax, const T& i_x_rate, const T& i_pi, const std::vector<T>& i_stdev)
-		: individuals(i_individuals), x_rate(i_x_rate), pi(i_pi), tol(i_tol), gmax(i_gmax), stdev(i_stdev), npop(individuals.size()), ndv(individuals[0].size())
+	GeneticAlgo(const std::vector<T>& i_decision_variables, const size_t& i_npop, const T& i_tol, const size_t& i_gmax, const T& i_x_rate, const T& i_pi, const std::vector<T>& i_stdev)
+		: x_rate(i_x_rate), pi(i_pi), tol(i_tol), gmax(i_gmax), stdev(i_stdev), npop(i_npop), ndv(i_decision_variables.size())
 	{
 		boost::math::beta_distribution<T> i_dist(1, 6);
 		dist = i_dist;
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
+		individuals = create_individuals(npop, i_decision_variables);
 		init_epsilon(individuals, stdev);
 		size_t npop;
 	}
@@ -76,7 +77,7 @@ void GeneticAlgo<T>::mutation()
 			T r = distribution(generator);
 			if (pi < r)
 			{
-				std::normal_distribution<> ndistribution(0, stdev[j]);
+				std::normal_distribution<T> ndistribution(0, stdev[j]);
 				epsilon = ndistribution(generator);
 				individuals[i][j] = individuals[i][j] + epsilon;
 			}

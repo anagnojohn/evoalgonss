@@ -64,6 +64,17 @@ void init_epsilon(std::vector <std::vector<T>>& individuals, const std::vector<T
 	}
 }
 
+template<typename T>
+std::vector< std::vector<T>> create_individuals(const size_t& npop, const std::vector<T>& decision_variables)
+{
+	std::vector< std::vector<T> > individuals(npop, std::vector<T>(decision_variables.size()));
+	for (auto i = 0; i < npop; ++i)
+	{
+		individuals[i] = decision_variables;
+	}
+	return individuals;
+}
+
 template <typename T>
 std::ostream& operator<< (std::ostream& out, const std::vector<T>& v) {
 	if (!v.empty()) {

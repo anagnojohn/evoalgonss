@@ -149,7 +149,6 @@
   <ItemGroup>
     <ClInclude Include="bond.h" />
     <ClInclude Include="bondpricing.h" />
-    <ClInclude Include="datehandler.h" />
     <ClInclude Include="dependencies.h" />
     <ClInclude Include="differentialevo.h" />
     <ClInclude Include="geneticalgo.h" />

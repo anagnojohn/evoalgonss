@@ -151,10 +151,12 @@
     <ClInclude Include="bondpricing.h" />
     <ClInclude Include="dependencies.h" />
     <ClInclude Include="differentialevo.h" />
+    <ClInclude Include="ealgorithm_base.h" />
     <ClInclude Include="geneticalgo.h" />
     <ClInclude Include="geneticalgo_old_tuples.h" />
     <ClInclude Include="global_best_pso.h" />
     <ClInclude Include="geneticalgo_old.h" />
+    <ClInclude Include="helper_functions.h" />
     <ClInclude Include="irr.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="local_best_pso.h" />

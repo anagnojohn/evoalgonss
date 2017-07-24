@@ -24,7 +24,7 @@ T fitness_bond_pricing(const std::vector<T>& solution, const std::vector<Bond<T>
 	{
 		sum_of_squares = sum_of_squares +
 			std::pow(bonds[i].price - estimate_bond_pricing(solution, bonds[i].coupon_value, bonds[i].nominal_value, bonds[i].cash_flows.size()), 2)
-			/ bonds[i].duration;
+			/ std::sqrt(bonds[i].duration);
 	}
 	return sum_of_squares;
 }

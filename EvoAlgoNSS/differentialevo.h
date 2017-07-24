@@ -1,36 +1,35 @@
 #pragma once
 
-#include "dependencies.h"
+#include "ealgorithm_base.h"
 
+//Differential Evolution Class
 template<typename T>
-class DifferentialEvo
+class DifferentialEvo : public EA_base<T>
 {
 public:
-	DifferentialEvo(const std::vector<T>& i_decision_variables, const size_t& i_npop, const T& i_tol, const size_t& i_gmax, const T& i_cr, const T& i_f_param, const std::vector<T>& i_stdev)
-		: cr(i_cr), f_param(i_f_param), tol(i_tol), gmax(i_gmax), stdev(i_stdev), npop(i_npop), ndv(i_decision_variables.size())
+	// Constructor for the Differential Evolution Class
+	DifferentialEvo(const std::vector<T>& decision_variables, const size_t& npop, const T& tol, const size_t& iter_max, const T& i_cr, const T& i_f_param, const std::vector<T>& stdev)
+		: cr(i_cr), f_param(i_f_param)
 	{
+		set_solver(decision_variables, npop, tol, iter_max);
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
-		individuals = create_individuals(npop, i_decision_variables);
-		init_epsilon(individuals, stdev);
 	}
-	std::vector<std::vector<T>> individuals;
-	const T tol;
 	std::vector<T> construct_donor();
 	std::vector<T> construct_trial(const std::vector<T>& target, const std::vector<T>& donor);
-	const size_t gmax;
 private:
-	const T cr; // 0.5;
-	const T f_param; // 0.4;
-	const std::vector<T> stdev;
-	size_t npop;
-	const size_t ndv;
+	// Crossover Rate
+	const T cr;
+	// Mutation Scale Fuctor
+	const T f_param;
 	std::random_device random_device;
 	std::mt19937 engine{ random_device() };
 	std::random_device generator;
+	// Uniform Real Distribution used for generating the random vectors for mutation and epsilon for crossover 
 	std::uniform_real_distribution<T> distribution;
 };
 
+// Method that constructs the donor vector
 template<typename T>
 std::vector<T> DifferentialEvo<T>::construct_donor()
 {
@@ -57,6 +56,7 @@ std::vector<T> DifferentialEvo<T>::construct_donor()
 	return donor;
 }
 
+// Method that constructs the trial vector
 template<typename T>
 std::vector<T> DifferentialEvo<T>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor)
 {
@@ -83,38 +83,47 @@ std::vector<T> DifferentialEvo<T>::construct_trial(const std::vector<T>& target,
 	return trial;
 }
 
+// Solve function overload for the Differential Evolution class
 template<typename T, typename F>
 std::vector<T> solve(F f, const T& opt, DifferentialEvo<T>& de)
 {
-	auto comparator = [&](const std::vector<T>& l, const std::vector<T>& r)
-	{
-		return f(l) < f(r);
-	};
-	std::vector<T> min_cost = de.individuals[0];
-	for (const auto& p : de.individuals)
+	// Find the minimum cost individual of the fitness function for the population
+	const auto& tol = de.get_tol();
+	const auto& iter_max = de.get_iter_max();
+	const auto& npop = de.get_npop();
+	const auto& ndv = de.get_ndv();
+	const auto& stdev = de.get_stdev();
+	const auto& individuals = de.get_individuals();
+	std::vector<T> min_cost = individuals[0];
+	for (const auto& p : individuals)
 	{
 		if (f(min_cost) > f(p))
 		{
 			min_cost = p;
 		}
 	}
-	for (auto g = 0; g < de.gmax; ++g)
+	// Differential Evolution starts here
+	for (auto g = 0; g < iter_max; ++g)
 	{
-		if (de.tol > std::abs(f(min_cost) - opt))
+		// Stopping Criteria
+		if (tol > std::abs(f(min_cost) - opt))
 		{
 			std::cout << "Found solution at iteration: " << g << "." << '\n';
 			break;
 		}
-		for (auto i = 0; i < de.individuals.size(); ++i)
+		for (auto i = 0; i < individuals.size(); ++i)
 		{
+			// Construct donor and trial vectors
 			std::vector<T> donor = de.construct_donor();
-			std::vector<T> trial = de.construct_trial(de.individuals[i], donor);
-			if (f(trial) <= f(de.individuals[i]))
+			std::vector<T> trial = de.construct_trial(individuals[i], donor);
+			// Replace individual i with trial if trial's cost is lower / Selection step
+			if (f(trial) <= f(individuals[i]))
 			{
-				de.individuals[i] = trial;
+				individuals[i] = trial;
 			}
 		}
-		for (const auto& p : de.individuals)
+		// Recalculate minimum cost individual of the population
+		for (const auto& p : individuals)
 		{
 			if (f(min_cost) > f(p))
 			{
@@ -123,5 +132,6 @@ std::vector<T> solve(F f, const T& opt, DifferentialEvo<T>& de)
 		}
 	}
 	T error = std::abs(f(min_cost) - opt);
+	// Return minimum cost individual
 	return min_cost;
 }

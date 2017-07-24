@@ -6,7 +6,6 @@
 #include "local_best_pso.h"
 #include "differentialevo.h"
 #include "svensson.h"
-#include "datehandler.h"
 #include "bond.h"
 #include "irr.h"
 #include "bondpricing.h"

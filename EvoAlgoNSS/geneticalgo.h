@@ -1,33 +1,27 @@
 #pragma once
 
-#include "dependencies.h"
+#include "ealgorithm_base.h"
 
+// Genetic Algorithms Class
 template<typename T>
-class GeneticAlgo
+class GeneticAlgo : EA_base<T>
 {
 public:
-	GeneticAlgo(const std::vector<T>& i_decision_variables, const size_t& i_npop, const T& i_tol, const size_t& i_gmax, const T& i_x_rate, const T& i_pi, const std::vector<T>& i_stdev)
-		: x_rate(i_x_rate), pi(i_pi), tol(i_tol), gmax(i_gmax), stdev(i_stdev), npop(i_npop), ndv(i_decision_variables.size())
+	GeneticAlgo(const std::vector<T>& decision_variables, const size_t& npop, const T& tol, const size_t& iter_max, const T& i_x_rate, const T& i_pi, const std::vector<T>& stdev)
+		: x_rate(i_x_rate), pi(i_pi)
 	{
+		set_solver(decision_variables, npop, tol, iter_max);
 		boost::math::beta_distribution<T> i_dist(1, 6);
 		dist = i_dist;
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
-		individuals = create_individuals(npop, i_decision_variables);
-		init_epsilon(individuals, stdev);
-		size_t npop;
 	}
-	const size_t gmax;
-	std::vector<T> stdev;
-	const size_t ndv;
 	std::vector<T> blend(std::vector<T> r, std::vector<T> s);
 	std::vector<std::vector<T>> selection();
 	void mutation();
 private:
-	std::vector<std::vector<T>> individuals;
 	const T x_rate;// = 0.4;
 	const T pi;// = 0.35;
-	const T tol;
 	std::random_device generator;
 	boost::math::beta_distribution<T> dist;
 	std::uniform_real_distribution<T> distribution;
@@ -91,11 +85,7 @@ std::vector<T> solve(F f, const T& opt, GeneticAlgo<T>& ga)
 {
 	T best_cost;
 	size_t nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
-	auto comparator = [&](const std::vector<T>& l, const std::vector<T>& r)
-	{
-		return f(l) < f(r);
-	};
-	for (auto g = 0; g < ga.gmax; ++g)
+	for (auto g = 0; g < ga.iter_max; ++g)
 	{
 		std::sort(ga.individuals.begin(), ga.individuals.end(), comparator);
 		best_cost = f(ga.individuals[0]);

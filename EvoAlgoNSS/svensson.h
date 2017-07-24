@@ -39,7 +39,7 @@ T fitness_svensson(const std::vector<T>& solution, const std::vector<Bond<T>>& b
 	T sum_of_squares = 0;
 	for (auto i = 0; i < bonds.size(); ++i)
 	{
-		sum_of_squares = sum_of_squares + std::pow(bonds[i].yield - svensson(solution, bonds[i].cash_flows.size()), 2);
+		sum_of_squares = sum_of_squares + std::pow(bonds[i].yield - svensson(solution, bonds[i].duration), 2) / std::sqrt(bonds[i].duration);
 	}
 	return sum_of_squares;
 }

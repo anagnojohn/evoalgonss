@@ -19,6 +19,7 @@ public:
 		{
 			std::swap(settlement_date, maturity_date);
 		}
+		size_t number_of_days_coupon = 360 / frequency;
 		size_t time_periods = static_cast<size_t>(maturity_date.year() - settlement_date.year());
 		if (maturity_date.month() < settlement_date.month() || (maturity_date.month() == settlement_date.month() && maturity_date.day() < settlement_date.day()))
 		{

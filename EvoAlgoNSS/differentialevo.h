@@ -1,22 +1,27 @@
 #pragma once
 
+#include <random>
+#include <vector>
 #include "ealgorithm_base.h"
 
 //Differential Evolution Class
 template<typename T>
-class DifferentialEvo : public EA_base<T>
+class DifferentialEvo
 {
 public:
 	// Constructor for the Differential Evolution Class
-	DifferentialEvo(const std::vector<T>& decision_variables, const size_t& npop, const T& tol, const size_t& iter_max, const T& i_cr, const T& i_f_param, const std::vector<T>& stdev)
+	DifferentialEvo(const T& i_cr, const T& i_f_param)
 		: cr(i_cr), f_param(i_f_param)
 	{
-		set_solver(decision_variables, npop, tol, iter_max);
+		assert((cr > 0 && cr <= 1) && (f_param > 0 && f_param <= 1));
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
 	}
-	std::vector<T> construct_donor();
+	std::vector<T> construct_donor(const std::vector< std::vector<T> >& individuals);
 	std::vector<T> construct_trial(const std::vector<T>& target, const std::vector<T>& donor);
+	// Setters
+	void set_cr(const T& cr) { assert(cr > 0 && cr <= 1); this->cr = cr; };
+	void set_f_param(const T& f_param) { assert(f_param > 0 && f_param <= 1); this->f_param = f_param; };
 private:
 	// Crossover Rate
 	const T cr;
@@ -31,8 +36,10 @@ private:
 
 // Method that constructs the donor vector
 template<typename T>
-std::vector<T> DifferentialEvo<T>::construct_donor()
+std::vector<T> DifferentialEvo<T>::construct_donor(const std::vector< std::vector<T> >& individuals)
 {
+	const auto& ndv = individuals[0].size();
+	const auto& npop = individuals.size();
 	std::vector<T> donor(ndv);
 	std::vector<size_t> r_i;
 	std::vector<size_t> indices;
@@ -60,6 +67,7 @@ std::vector<T> DifferentialEvo<T>::construct_donor()
 template<typename T>
 std::vector<T> DifferentialEvo<T>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor)
 {
+	auto ndv = target.size();
 	std::vector<T> trial(ndv);
 	std::vector<size_t> indices;
 	for (auto i = 0; i < ndv; ++i)
@@ -85,15 +93,15 @@ std::vector<T> DifferentialEvo<T>::construct_trial(const std::vector<T>& target,
 
 // Solve function overload for the Differential Evolution class
 template<typename T, typename F>
-std::vector<T> solve(F f, const T& opt, DifferentialEvo<T>& de)
+std::vector<T> solve(F f, const T& opt, DifferentialEvo<T>& de, const EAparams<T>& ea)
 {
 	// Find the minimum cost individual of the fitness function for the population
-	const auto& tol = de.get_tol();
-	const auto& iter_max = de.get_iter_max();
-	const auto& npop = de.get_npop();
-	const auto& ndv = de.get_ndv();
-	const auto& stdev = de.get_stdev();
-	const auto& individuals = de.get_individuals();
+	const auto& tol = ea.get_tol();
+	const auto& iter_max = ea.get_iter_max();
+	const auto& npop = ea.get_npop();
+	const auto& ndv = ea.get_ndv();
+	const auto& stdev = ea.get_stdev();
+	auto individuals = ea.get_individuals();
 	std::vector<T> min_cost = individuals[0];
 	for (const auto& p : individuals)
 	{
@@ -111,10 +119,10 @@ std::vector<T> solve(F f, const T& opt, DifferentialEvo<T>& de)
 			std::cout << "Found solution at iteration: " << g << "." << '\n';
 			break;
 		}
-		for (auto i = 0; i < individuals.size(); ++i)
+		for (auto i = 0; i < npop; ++i)
 		{
 			// Construct donor and trial vectors
-			std::vector<T> donor = de.construct_donor();
+			std::vector<T> donor = de.construct_donor(individuals);
 			std::vector<T> trial = de.construct_trial(individuals[i], donor);
 			// Replace individual i with trial if trial's cost is lower / Selection step
 			if (f(trial) <= f(individuals[i]))

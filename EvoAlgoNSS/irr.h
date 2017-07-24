@@ -23,3 +23,10 @@ T fitness_irr(const std::vector<T>& solution, const Bond<T>& bond)
 	sum_of_squares = sum_of_squares + std::pow(bond.price - irr(solution[0], bond.nominal_value, bond.cash_flows, bond.frequency), 2);
 	return sum_of_squares;
 }
+
+template<typename T, typename S>
+T setyield(Bond<T> bond, S& solver, EAparams<T>& ea)
+{
+	auto f = [&](const auto& solution) { return fitness_irr(solution, bond);};
+	return solve(f, 0.0, solver, ea)[0];
+}

@@ -1,37 +1,63 @@
 #pragma once
 
+#include <random>
+#include <vector>
 #include "ealgorithm_base.h"
 
 template<typename T>
-class LocalBestPSO : EA_base<T>
+class LocalBestPSO
 {
 public:
-	LocalBestPSO(const std::vector<T>& decision_variables, const size_t& npop, const T& tol,const size_t& iter_max,
-		const T& i_c1, const T& i_c2, const T& i_alpha, const T& i_w, const std::vector<T>& i_vmax,
-		const bool& i_vmax_flag, const bool& i_inertia_flag, const std::vector<T>& stdev)
-		: c1(i_c1), c2(i_c2), alpha(i_alpha), w(i_w), vmax(i_vmax), vmax_flag(i_vmax_flag), 
-		inertia_flag(i_inertia_flag)
+	LocalBestPSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh)
+		: c1(i_c1), c2(i_c2), sneigh(i_sneigh)
 	{
-		set_solver(decision_variables, npop, tol, iter_max);
+		assert(c1 > 0 && c2 > 0 && sneigh > 0);
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
-		if (vmax_flag && inertia_flag)
-		{
-			vmax_flag = false;
-		}
+		vmax_flag = false;
+		intertia_flag = false;
 	}
-	void init_pso();
-	T euclid_distance(const std::vector<T>& x, const std::vector<T>& y);
-	std::vector<std::vector<T>> generate_r();
-	void velocity_update(std::vector < std::vector<T> >& r, size_t iter);
-	void create_neighbourhoods();
-	// Number of neighbourhoods
-	size_t nneigh;
-	// Neighbourhoods
-	std::vector<std::vector<size_t>> neighbourhoods;
-	std::vector<std::vector<T>> velocity;
-	std::vector<std::vector<T>> personal_best;
-	std::vector<std::vector<T>> local_best;
+	LocalBestPSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w)
+		: c1(i_c1), c2(i_c2), sneigh(i_sneigh), w(i_w)
+	{
+		assert(c1 > 0 && c2 > 0 && sneigh > 0 && w > 0);
+		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
+		distribution = i_distribution;
+		vmax_flag = false;
+		inertia_flag = true;
+	}
+	LocalBestPSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const std::vector<T>& i_vmax, const T& i_alpha)
+		: c1(i_c1), c2(i_c2), sneigh(i_sneigh), alpha(i_alpha), vmax(i_vmax)
+	{
+		assert(c1 > 0 && c2 > 0 && sneigh > 0 && alpha > 0);
+		for (const auto& p : vmax) { assert(p > 0); };
+		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
+		distribution = i_distribution;
+		vmax_flag = true;
+		inertia_flag = false;
+	}
+	void init_pso(const std::vector<std::vector<T>>& individuals, std::vector<std::vector<T>>& personal_best,
+		std::vector<std::vector<T>>& local_best, std::vector<std::vector<T>>& velocity, std::vector<std::vector<size_t>>& neighbourhoods);
+	void velocity_update(std::vector< std::vector<T> >& individuals, std::vector<std::vector<T>>& personal_best,
+		std::vector<std::vector<T>>& local_best, std::vector< std::vector<T> >& velocity, const size_t& iter, const size_t& iter_max, const std::vector<std::vector<size_t>>& neighbourhoods);
+	// Getters
+	size_t get_neighbourhood_size() const { return sneigh; };
+	// Setters
+	void set_c1(const T& c1) { assert(c1 > 0); this->c1 = c1; };
+	void set_c2(const T& c2) { assert(c2 > 0); this->c2 = c2; };
+	void set_alpha(const T& alpha) { assert(alpha > 0); this->alpha = alpha; };
+	void set_vmax(const std::vector<T>& vmax)
+	{
+		for (const auto& p : vmax)
+		{ 
+			assert(p > 0);
+		}
+		vmax_flag = true;
+		inertia_flag = false;
+		this->vmax = vmax;
+	};
+	void set_w(const T& w) { assert(w > 0); vmax_flag = false; inertia_flag = true; this->w = w; };
+	void set_sneigh(const size_t& sneigh) { assert(sneigh > 0); this->sneigh = sneigh; };
 private:
 	const T c1;
 	const T c2;
@@ -42,14 +68,17 @@ private:
 	std::vector<T> vmax;
 	bool vmax_flag;
 	bool inertia_flag;
+	void set_neighbourhoods(std::vector<std::vector<size_t>>& neighbourhoods, std::vector<size_t>& indices);
+	// Neighbourhood size
+	const size_t sneigh;
+	std::vector<std::vector<T>> generate_r(const size_t& ndv);
 };
 
 template<typename T>
-void LocalBestPSO<T>::init_pso()
+void LocalBestPSO<T>::init_pso(const std::vector<std::vector<T>>& individuals, std::vector<std::vector<T>>& personal_best,
+std::vector<std::vector<T>>& local_best, std::vector<std::vector<T>>& velocity, std::vector<std::vector<size_t>>& neighbourhoods)
 {
-	nneigh = static_cast<size_t>(std::ceil(npop / 5));
-	neighbourhoods.resize(nneigh);
-	velocity.resize(npop, std::vector<T>(ndv));
+	const auto& ndv = individuals[0].size();
 	for (auto& p : velocity)
 	{
 		for (auto& n : p)
@@ -57,7 +86,7 @@ void LocalBestPSO<T>::init_pso()
 			n = 0.0;
 		}
 	}
-	for (auto k = 0; k < nneigh; ++k)
+	for (auto k = 0; k < neighbourhoods.size(); ++k)
 	{
 		for (auto j = 0; j < ndv; ++j)
 		{
@@ -68,10 +97,33 @@ void LocalBestPSO<T>::init_pso()
 	{
 		personal_best.push_back(p);
 	}
+	std::vector<size_t> indices;
+	for (auto i = 0; i < individuals.size(); ++i)
+	{
+		indices.push_back(i);
+	}
+	set_neighbourhoods(neighbourhoods, indices);
 }
 
 template<typename T>
-std::vector<std::vector<T>>LocalBestPSO<T>::generate_r()
+void LocalBestPSO<T>::set_neighbourhoods(std::vector<std::vector<size_t>>& neighbourhoods, std::vector<size_t>& indices)
+{
+	const auto& nneigh = neighbourhoods.size();
+	size_t counter = 0;
+	for (auto k = 0; k < nneigh; ++k)
+	{
+		while (counter < sneigh)
+		{
+			neighbourhoods[k].push_back(indices[k * sneigh + counter]);
+			counter = counter + 1;
+		}
+	}
+}
+
+
+
+template<typename T>
+std::vector<std::vector<T>>LocalBestPSO<T>::generate_r(const size_t& ndv)
 {
 	std::vector<std::vector<T>> r(2, std::vector<T>(ndv));
 	for (auto i = 0; i < 2; ++i)
@@ -85,39 +137,13 @@ std::vector<std::vector<T>>LocalBestPSO<T>::generate_r()
 }
 
 template<typename T>
-T LocalBestPSO<T>::euclid_distance(const std::vector<T>& x, const std::vector<T>& y)
+void LocalBestPSO<T>::velocity_update(std::vector< std::vector<T> >& individuals, std::vector<std::vector<T>>& personal_best,
+	std::vector<std::vector<T>>& local_best, std::vector< std::vector<T> >& velocity, const size_t& iter, const size_t& iter_max, const std::vector<std::vector<size_t>>& neighbourhoods)
 {
-	T sum = 0;
-	for (auto i = 0; i < x.size(); ++i)
-	{
-		sum = sum + std::pow(x[i] - y[i], 2);
-	}
-	return std::sqrt(sum);
-}
-
-template<typename T>
-void LocalBestPSO<T>::create_neighbourhoods()
-{
-	std::vector<size_t> indices;
-	for (auto i = 0; i < npop; ++i)
-	{
-		indices.push_back(i);
-	}
-	size_t counter = 0;
-	for (auto k = 0; k < nneigh; ++k)
-	{
-		while (counter < 5)
-		{
-			neighbourhoods[k].push_back(indices[k * 5 + counter]);
-			counter = counter + 1;
-		}
-	}
-}
-
-template<typename T>
-void LocalBestPSO<T>::velocity_update(std::vector < std::vector<T> >& r, size_t iter)
-{
-	if (!inertia_flag && !vmax_flag)
+	const auto& nneigh = neighbourhoods.size();
+	const auto& ndv = individuals[0].size();
+	const auto& r = generate_r(ndv);
+	if (inertia_flag == false && vmax_flag == false)
 	{
 		for (auto k = 0; k < nneigh; ++k)
 		{
@@ -129,6 +155,7 @@ void LocalBestPSO<T>::velocity_update(std::vector < std::vector<T> >& r, size_t 
 					{
 						velocity[i][j] = velocity[i][j] + c1 * r[0][j] * (personal_best[i][j]
 							- individuals[i][j]) + c2 * r[1][j] * (local_best[k][j] - individuals[i][j]);
+						individuals[i][j] = individuals[i][j] + velocity[i][j];
 					}
 				}
 			}
@@ -136,6 +163,7 @@ void LocalBestPSO<T>::velocity_update(std::vector < std::vector<T> >& r, size_t 
 	}
 	if (vmax_flag)
 	{
+		assert(vmax.size() == ndv);
 		for (auto k = 0; k < nneigh; ++k)
 		{
 			for (auto l = 0; l < neighbourhoods[k].size(); ++l)
@@ -172,6 +200,7 @@ void LocalBestPSO<T>::velocity_update(std::vector < std::vector<T> >& r, size_t 
 					{
 						velocity[i][j] = w * velocity[i][j] + c1 * r[0][j] * (personal_best[i][j]
 							- individuals[i][j]) + c2 * r[1][j] * (local_best[k][j] - individuals[i][j]);
+						individuals[i][j] = individuals[i][j] + velocity[i][j];
 					}
 				}
 			}
@@ -180,11 +209,43 @@ void LocalBestPSO<T>::velocity_update(std::vector < std::vector<T> >& r, size_t 
 	}
 }
 
+template<typename T>
+T euclid_distance(const std::vector<T>& x, const std::vector<T>& y)
+{
+	T sum = 0;
+	for (auto i = 0; i < x.size(); ++i)
+	{
+		sum = sum + std::pow(x[i] - y[i], 2);
+	}
+	return std::sqrt(sum);
+}
+
+template<typename T, typename F>
+void set_local_best(F f, std::vector<std::vector<T>>& local_best, const std::vector<std::vector<size_t>>& neighbourhoods, const std::vector<std::vector<T>>& personal_best)
+{
+	const auto& nneigh = neighbourhoods.size();
+	const auto& ndv = personal_best[0].size();
+	for (auto k = 0; k < nneigh; ++k)
+	{
+		for (auto l = 0; l < neighbourhoods[k].size(); ++l)
+		{
+			auto i = neighbourhoods[k][l];
+			if (f(personal_best[i]) < f(local_best[k]))
+			{
+				for (auto j = 0; j < ndv; j++)
+				{
+					local_best[k][j] = personal_best[i][j];
+				}
+			}
+		}
+	}
+}
+
 template<typename T, typename F>
 std::vector<T> find_min_local_best(const std::vector<std::vector<T>>& local_best, F f)
 {
-	auto nneigh = local_best.size();
-	auto ndv = local_best[0].size();
+	const auto& nneigh = local_best.size();
+	const auto& ndv = local_best[0].size();
 	std::vector<T> min_cost(ndv);
 	for (auto j = 0; j < ndv; ++j)
 	{
@@ -201,73 +262,69 @@ std::vector<T> find_min_local_best(const std::vector<std::vector<T>>& local_best
 }
 
 template<typename T, typename F>
-std::vector<T> solve(F f, const T& opt, LocalBestPSO<T>& pso)
+std::vector<T> solve(F f, const T& opt, LocalBestPSO<T>& pso, const EAparams<T>& ea)
 {
+	const auto& tol = ea.get_tol();
+	const auto& iter_max = ea.get_iter_max();
+	const auto& npop = ea.get_npop();
+	const auto& ndv = ea.get_ndv();
+	const auto& stdev = ea.get_stdev();
+	auto individuals = ea.get_individuals();
+	// Size of each neighbourhood
+	const auto& sneigh = pso.get_neighbourhood_size();
+	assert(sneigh <= individuals.size());
+	// Number of neighbourhoods
+	size_t nneigh = static_cast<size_t>(std::ceil(npop / sneigh));
+	// Neighbourhoods
+	std::vector<std::vector<size_t>> neighbourhoods(nneigh);
+	std::vector<std::vector<T>> velocity(npop, std::vector<T>(ndv));
+	std::vector<std::vector<T>> personal_best;
+	std::vector<std::vector<T>> local_best(nneigh);
+	pso.init_pso(individuals, personal_best, local_best, velocity, neighbourhoods);
 	T rmax;
-	std::vector<T> distance;
-	std::vector<T> min_cost(pso.ndv);
-	pso.create_neighbourhoods();
-	for (auto k = 0; k < pso.nneigh; ++k)
-	{
-		for (auto l = 0; l < pso.neighbourhoods[k].size(); ++l)
-		{
-			auto i = pso.neighbourhoods[k][l];
-			if (f(pso.personal_best[i]) < f(pso.local_best[k]))
-			{
-				for (auto j = 0; j < pso.ndv; j++)
-				{
-					pso.local_best[k][j] = pso.personal_best[i][j];
-				}
-			}
-		}
-	}
-	min_cost = find_min_local_best(pso.local_best, f);
-	for (auto iter = 0; iter < pso.iter_max; ++iter)
+	std::vector<T> distance(npop);
+	std::vector<T> min_cost(ndv);
+	
+	min_cost = find_min_local_best(local_best, f);
+	for (auto iter = 0; iter < iter_max; ++iter)
 	{	
-		for (auto i = 0; i < pso.npop; ++i)
+		for (auto i = 0; i < npop; ++i)
 		{
-			distance.push_back(pso.euclid_distance(pso.individuals[i], min_cost));
+			distance[i] = euclid_distance(individuals[i], min_cost);
 		}
 		rmax = distance[0];
-		for (auto i = 0; i < pso.npop; ++i)
+		for (auto i = 0; i < npop; ++i)
 		{
 			if (rmax < distance[i])
 			{
 				rmax = distance[i];
 			}
 		}
-		if (pso.tol > std::abs(f(min_cost) - opt) || rmax < pso.tol)
+		if (tol > std::abs(f(min_cost) - opt) || rmax < tol)
 		{
 			std::cout << "Found solution at iteration: " << iter << "." << '\n';
 			break;
 		}
-		auto r = pso.generate_r();
-		pso.velocity_update(r, iter);
-		for (auto i = 0; i < pso.npop; ++i)
+		pso.velocity_update(individuals, personal_best, local_best, velocity, iter, iter_max, neighbourhoods);
+		for (auto i = 0; i < npop; ++i)
 		{
-			if (f(pso.individuals[i]) < f(pso.personal_best[i]))
+			if (f(individuals[i]) < f(personal_best[i]))
 			{
-				for (auto j = 0; j < pso.ndv; j++)
+				personal_best[i] = individuals[i];
+			}
+		}
+		for (auto k = 0; k < neighbourhoods.size(); ++k)
+		{
+			for (auto l = 0; l < neighbourhoods[k].size(); ++l)
+			{
+				auto i = neighbourhoods[k][l];
+				if (f(personal_best[i]) < f(local_best[k]))
 				{
-					pso.personal_best[i][j] = pso.individuals[i][j];
+						local_best[k] = personal_best[i];
 				}
 			}
 		}
-		for (auto k = 0; k < pso.nneigh; ++k)
-		{
-			for (auto l = 0; l < pso.neighbourhoods[k].size(); ++l)
-			{
-				auto i = pso.neighbourhoods[k][l];
-				if (f(pso.personal_best[i]) < f(pso.local_best[k]))
-				{
-					for (auto j = 0; j < pso.ndv; j++)
-					{
-						pso.local_best[k][j] = pso.personal_best[i][j];
-					}
-				}
-			}
-		}
-		min_cost = find_min_local_best(pso.local_best, f);
+		min_cost = find_min_local_best(local_best, f);
 	}
 	return min_cost;
 }

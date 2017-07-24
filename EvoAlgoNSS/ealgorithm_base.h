@@ -1,22 +1,41 @@
 #pragma once
 
-#include "dependencies.h"
+#include <vector>
 
 template<typename T>
-class EA_base
+class EAparams
 {
 public:
-	void init_epsilon();
-	void create_individuals(const std::vector<T>& decision_variables);
-	void set_solver(const std::vector<T>& decision_variables, const size_t& npop, const T& tol, const size_t& iter_max);
-	T get_tol() const { return tol };
+	EAparams(const std::vector<T>& decision_variables, const size_t& npop, const T& tol, const size_t& iter_max, const std::vector<T>& stdev)
+	{
+		set_params(decision_variables, npop, tol, iter_max, stdev);
+	}
+	// Getters for parameters
+	T get_tol() const { return tol; };
 	size_t get_iter_max() const { return iter_max; };
-	size_t get_npop() const { return npop; };
+	size_t get_npop() const { return npop; ; };
 	size_t get_ndv() const { return ndv; };
 	std::vector<T> get_stdev() const { return stdev; };
 	std::vector<std::vector<T>> get_individuals() const { return individuals; };
-	//void set_standard_deviation(std::vector<T> stdev) { this.stdev = stdev; };
-	//void set_population_size(std::vector<T> npop) { this.npop = npop; };
+	// Setters for parameters
+	void set_tol(const T& tol) { assert(tol > 0); this->tol = tol; };
+	void set_npop(const size_t& npop) { assert(npop > 0); this->npop = npop; create_individuals(); };
+	void set_iter_max(const size_t& iter_max) { assert(iter_max > 0); this->iter_max = iter_max; };
+	void set_stdev(const std::vector<T>& stdev)
+	{
+		assert(decision_variables.size() == stdev.size());
+		for (const auto& p : stdev)
+		{
+			assert(p > 0);
+		}
+		this->stdev = stdev;
+		create_individuals;
+		init_epsilon();
+	};
+	void set_decision_variables(const std::vector<T>& decision_variables)
+	{
+		this->decision_variables = decision_variables; ndv = decision_variables.size(); create_individuals();
+	};
 private:
 	// Tolerance
 	T tol;
@@ -26,15 +45,30 @@ private:
 	std::vector<T> stdev;
 	// Size of the population
 	size_t npop;
+	// Decision Variables
+	std::vector<T> decision_variables;
 	// Number of decision variables
 	size_t ndv;
 	// Population
 	std::vector<std::vector<T>> individuals;
+	void init_epsilon();
+	void create_individuals();
+	void set_params(const std::vector<T>& decision_variables, const size_t& npop, const T& tol, const size_t& iter_max, const std::vector<T>& stdev);
 };
 
 template<typename T>
-void EA_base<T>::set_solver(const std::vector<T>& decision_variables, const size_t& npop, const T& tol, const size_t& iter_max)
+void EAparams<T>::set_params(const std::vector<T>& decision_variables, const size_t& npop, const T& tol, const size_t& iter_max, const std::vector<T>& stdev)
 {
+	assert(decision_variables.size() > 0);
+	assert(decision_variables.size() == stdev.size());
+	assert(tol > 0);
+	assert(iter_max > 0);
+	assert(npop > 0);
+	for (const auto& p : stdev)
+	{
+		assert(p > 0);
+	}
+	this->decision_variables = decision_variables;
 	this->tol = tol;
 	this->iter_max = iter_max;
 	this->npop = npop;
@@ -44,46 +78,16 @@ void EA_base<T>::set_solver(const std::vector<T>& decision_variables, const size
 	{
 		individuals.erase(individuals.begin(), individuals.end());
 	}
-	create_individuals(decision_variables);
+	create_individuals();
 	init_epsilon();
 }
 
 template<typename T>
-void EA_base<T>::init_epsilon()
+void EAparams<T>::init_epsilon()
 {
 	std::random_device generator;
-	std::vector<T> diff(npop);
-	//std::vector<T> sum(ndv);
-	//std::vector<T> mean(ndv);
-	//std::vector<T> stdev(ndv);
-	//std::vector<T> epsilon(ndv);
 	T epsilon;
-	/*
-	for (auto& p : sum)
-	{
-	p = 0.0;
-	}
-	for (auto& p : individuals)
-	{
-	for (auto j = 0; j < ndv; ++j)
-	{
-	sum[j] = sum[j] + p[j];
-	}
-	}
-	for (auto j = 0; j < ndv; ++j)
-	{
-	mean[j] = sum[j] / (npop);
-	}
-	for (auto j = 0; j < ndv; ++j)
-	{
-	for (auto i = 0; i < npop; ++i)
-	{
-	diff[i] = individuals[i][j] - mean[j];
-	}
-	T sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
-	stdev[j] = std::sqrt(sq_sum / npop);
-	}
-	*/
+	
 	for (auto i = 0; i < npop; ++i)
 	{
 		for (auto j = 0; j < ndv; ++j)
@@ -96,7 +100,7 @@ void EA_base<T>::init_epsilon()
 }
 
 template<typename T>
-void EA_base<T>::create_individuals(const std::vector<T>& decision_variables)
+void EAparams<T>::create_individuals()
 {
 	individuals.resize(npop, std::vector<T>(ndv));
 	for (auto i = 0; i < npop; ++i)

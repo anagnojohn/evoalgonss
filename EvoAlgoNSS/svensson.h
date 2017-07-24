@@ -45,8 +45,8 @@ T fitness_svensson(const std::vector<T>& solution, const std::vector<Bond<T>>& b
 }
 
 template<typename T, typename S>
-std::vector<T> yield_curve_fitting(std::vector< Bond<T> > bonds, S& solver)
+std::vector<T> yield_curve_fitting(std::vector< Bond<T> > bonds, S& solver, EAparams<T>& ea)
 {
 	auto f = [&](const auto& solution) { return fitness_svensson(solution, bonds); };
-	return solve(f, 0.0, solver);
+	return solve(f, 0.0, solver, ea);
 }

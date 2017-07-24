@@ -1,6 +1,9 @@
 #pragma once
 
+#include <vector>
 #include "dependencies.h"
+#include "boost/date_time/gregorian/gregorian.hpp"
+#include "boost/date_time/time.hpp"
 
 template<typename T>
 class Bond
@@ -57,12 +60,5 @@ T Bond<T>::macaulay_duration()
 	pv_cash_flow = pv_cash_flow + cash_flows.size() * nominal_value * discount_factor;
 	current_bond_price = current_bond_price + nominal_value * discount_factor;
 	return pv_cash_flow / current_bond_price;
-}
-
-template<typename T, typename S>
-T setyield(Bond<T> bond, S& solver)
-{
-	auto f = [&](const auto& solution) { return fitness_irr(solution, bond);};
-	return solve(f, 0.0, solver)[0];
 }
 

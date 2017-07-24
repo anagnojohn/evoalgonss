@@ -1,24 +1,34 @@
 #pragma once
 
+#include <vector>
+#include <random>
+#include <boost/math/distributions.hpp>
 #include "ealgorithm_base.h"
 
 // Genetic Algorithms Class
 template<typename T>
-class GeneticAlgo : EA_base<T>
+class GeneticAlgo
 {
 public:
-	GeneticAlgo(const std::vector<T>& decision_variables, const size_t& npop, const T& tol, const size_t& iter_max, const T& i_x_rate, const T& i_pi, const std::vector<T>& stdev)
+	GeneticAlgo(const T& i_x_rate, const T& i_pi)
 		: x_rate(i_x_rate), pi(i_pi)
 	{
-		set_solver(decision_variables, npop, tol, iter_max);
+		assert((x_rate > 0 && x_rate <= 1) && (pi > 0 && pi <= 1));
 		boost::math::beta_distribution<T> i_dist(1, 6);
 		dist = i_dist;
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
 	}
+	// Crossover method
 	std::vector<T> blend(std::vector<T> r, std::vector<T> s);
-	std::vector<std::vector<T>> selection();
-	void mutation();
+	// Selection method
+	std::vector<std::vector<T>> selection(const std::vector<std::vector<T>>& individuals);
+	void mutation(std::vector<std::vector<T>>& individuals, const std::vector<T>& stdev);
+	// Getters
+	T get_x_rate() const { return x_rate; }
+	// Setters
+	void set_x_rate(const T& x_rate) { assert(x_rate > 0 && x_rate <= 1); this->x_rate = x_rate; };
+	void set_pi(const T& pi) { assert(pi > 0 && pi <= 1); this->pi = pi; };
 private:
 	const T x_rate;// = 0.4;
 	const T pi;// = 0.35;
@@ -30,6 +40,7 @@ private:
 template<typename T>
 std::vector<T> GeneticAlgo<T>::blend(std::vector<T> r, std::vector<T> s)
 {
+	const auto& ndv = r.size();
 	std::vector<T> offspring(ndv);
 	std::vector<T> psi(ndv);
 	for (auto i = 0; i < ndv; ++i)
@@ -44,8 +55,9 @@ std::vector<T> GeneticAlgo<T>::blend(std::vector<T> r, std::vector<T> s)
 }
 
 template<typename T>
-std::vector<std::vector<T>> GeneticAlgo<T>::selection()
+std::vector<std::vector<T>> GeneticAlgo<T>::selection(const std::vector<std::vector<T>>& individuals)
 {
+	const auto& npop = individuals.size();
 	std::vector<std::vector<T>> offspring;
 	for (auto i = 0; i < npop; ++i)
 	{
@@ -61,8 +73,10 @@ std::vector<std::vector<T>> GeneticAlgo<T>::selection()
 }
 
 template<typename T>
-void GeneticAlgo<T>::mutation()
+void GeneticAlgo<T>::mutation(std::vector<std::vector<T>>& individuals, const std::vector<T>& stdev)
 {
+	const auto& npop = individuals.size();
+	const auto& ndv = individuals[0].size();
 	T epsilon;
 	for (auto i = 1; i < npop; ++i)
 	{
@@ -81,15 +95,26 @@ void GeneticAlgo<T>::mutation()
 }
 
 template<typename T, typename F>
-std::vector<T> solve(F f, const T& opt, GeneticAlgo<T>& ga)
+std::vector<T> solve(F f, const T& opt, GeneticAlgo<T>& ga, const EAparams<T>& ea)
 {
-	T best_cost;
+	// Find the minimum cost individual of the fitness function for the population
+	const auto& tol = ea.get_tol();
+	const auto& iter_max = ea.get_iter_max();
+	auto npop = ea.get_npop();
+	const auto& ndv = ea.get_ndv();
+	auto stdev = ea.get_stdev();
+	auto individuals = ea.get_individuals();
+	std::vector<T> min_cost = individuals[0];
+	const auto& x_rate = ga.get_x_rate();
 	size_t nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
-	for (auto g = 0; g < ga.iter_max; ++g)
+	auto comparator = [&](const std::vector<T>& l, const std::vector<T>& r)
 	{
-		std::sort(ga.individuals.begin(), ga.individuals.end(), comparator);
-		best_cost = f(ga.individuals[0]);
-		if (tol > std::abs(f(ga.individuals[0]) - opt))
+		return f(l) < f(r);
+	};
+	for (auto g = 0; g < iter_max; ++g)
+	{
+		std::sort(individuals.begin(), individuals.end(), comparator);
+		if (tol > std::abs(f(individuals[0]) - opt))
 		{
 			std::cout << "Found solution at iteration: " << g << "." << '\n';
 			break;
@@ -98,20 +123,20 @@ std::vector<T> solve(F f, const T& opt, GeneticAlgo<T>& ga)
 		{
 			break;
 		}
-		std::vector<std::vector<T>> offspring = ga.selection(f);
-		ga.individuals.erase(ga.individuals.begin() + nkeep, ga.individuals.begin() + ga.npop);
-		npop = ga.individuals.size();
-		nkeep = static_cast<size_t>(std::ceil(ga.npop * ga.x_rate));
+		std::vector<std::vector<T>> offspring = ga.selection(individuals);
+		individuals.erase(individuals.begin() + nkeep, individuals.begin() + npop);
+		npop = individuals.size();
+		nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
 		for (auto i = 0; i < offspring.size(); ++i)
 		{
-			ga.individuals.push_back(offspring[i]);
+			individuals.push_back(offspring[i]);
 		}
-		ga.mutation();
-		for (auto j = 0; j < ga.ndv; ++j)
+		ga.mutation(individuals, stdev);
+		for (auto j = 0; j < ndv; ++j)
 		{
-			ga.stdev[j] = ga.stdev[j] + 0.02 * ga.stdev[j];
+			stdev[j] = stdev[j] + 0.02 * stdev[j];
 		}
 	}
-	std::sort(ga.individuals.begin(), ga.individuals.end(), comparator);
-	return ga.individuals[0];
+	std::sort(individuals.begin(), individuals.end(), comparator);
+	return individuals[0];
 }

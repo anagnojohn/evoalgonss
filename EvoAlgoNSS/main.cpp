@@ -9,6 +9,7 @@
 #include "bond.h"
 #include "irr.h"
 #include "bondpricing.h"
+#include "dependencies.h"
 
 int main()
 {
@@ -25,18 +26,6 @@ int main()
 	const double tol = 0.0001;
 	std::vector<double> decision_variables = { b0, b1, b2, b3, tau1, tau2 };
 	const size_t ndv = decision_variables.size();
-	/*
-	std::cout << "Genetic Algorithm:" << '\n';
-	GeneticAlgo<double, decltype(f)> object1(decision_variables, tol, 200, 0.4, 0.35, stdev);
-	std::cout << "Optimum" << '\n';
-	auto b = object1.solve(f, 0.0);
-	std::cout << b << " " << f(b) << '\n';
-	std::cout << "Particle Swarm:" << '\n';
-	LocalBestPSO<double, decltype(f)> object2(decision_variables, tol, 200, 1, 1, 2, 0.9, stdev);
-	auto c = object2.solve(f, 0.0);
-	std::cout << "Optimum" << '\n';
-	std::cout << c << " " << f(c) << '\n';
-	*/
 	size_t npop_irr = 100;
 	std::vector<double> init_rate = { 0.2 };
 	std::vector<Bond<double>> bonds;
@@ -67,10 +56,11 @@ int main()
 	{
 		stdev_irr[j] = 0.7;
 	}
-	DifferentialEvo<double> irr_de(init_rate, npop_irr, 0.000000001, 200, 0.5, 0.9, stdev_irr);
+	EAparams<double> irr_params(init_rate, npop_irr, 0.000000001, 200, stdev_irr);
+	DifferentialEvo<double> irr_de(0.5, 0.9);
 	for (auto i = 0; i < bonds.size(); ++i)
 	{
-		bonds[i].yield = setyield<double, DifferentialEvo<double>>(bonds[i], irr_de);
+		bonds[i].yield = setyield<double, DifferentialEvo<double>>(bonds[i], irr_de, irr_params);
 		bonds[i].duration = bonds[i].macaulay_duration();
 		std::cout << "Number of payements of bond " << i + 1 << " : " << bonds[i].cash_flows.size() << "\n";
 		std::cout << "YTM of bond " << i + 1 << " : " << bonds[i].yield << "\n";
@@ -78,18 +68,24 @@ int main()
 		std::cout << "Maculay Duration of bond " << i + 1 << " : " << bonds[i].duration << "\n";
 	}
 	std::cout << "Differential Evolution:" << '\n';
-	DifferentialEvo<double> object_pricing(decision_variables, npop, tol, 500, 0.5, 0.4, stdev);
-	auto d = bond_pricing<double, DifferentialEvo<double>>(bonds, object_pricing);
+	EAparams<double> pricing_params(decision_variables, npop, tol, 500, stdev);
+	//DifferentialEvo<double> de_pricing(0.5, 0.4);
+	//auto d = bond_pricing<double, DifferentialEvo<double>>(bonds, de_pricing, pricing_params);
+	//std::cout << "Optimum" << '\n';
+	//std::cout << d << " " << fitness_bond_pricing(d, bonds) << '\n';
+	std::cout << "Genetic Algorithm:" << '\n';
+	GeneticAlgo<double> object1(0.4, 0.35);
+	auto b = bond_pricing<double, GeneticAlgo<double>>(bonds, object1, pricing_params);
 	std::cout << "Optimum" << '\n';
-	std::cout << d << " " << fitness_bond_pricing(d, bonds) << '\n';
+	std::cout << b << " " << fitness_bond_pricing(b, bonds) << '\n';
 	std::cout << "Particle Swarm:" << '\n';
 	std::vector<double> vmax(ndv);
 	for (auto& p : vmax)
 	{
 		p = 1000;
 	}
-	LocalBestPSO<double> object2(decision_variables, npop, tol, 200, 1, 1, 2, 0.9, vmax, true, false, stdev);
-	auto c = bond_pricing<double, LocalBestPSO<double>>(bonds, object2);
+	LocalBestPSO<double> object2(1, 1, 5, vmax, 2);
+	auto c = bond_pricing<double, LocalBestPSO<double>>(bonds, object2, pricing_params);
 	std::cout << "Optimum" << '\n';
 	std::cout << c << " " << fitness_bond_pricing(c, bonds) << '\n';
     return 0;

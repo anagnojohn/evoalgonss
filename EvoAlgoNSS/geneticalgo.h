@@ -3,17 +3,23 @@
 #include <vector>
 #include <random>
 #include <boost/math/distributions.hpp>
+#include <tuple>
+#include <chrono>
+#include <ctime>
 #include "ealgorithm_base.h"
 
 // Genetic Algorithms Class
 template<typename T>
-class GeneticAlgo
+class GeneticAlgo : public EA_base<T>
 {
 public:
-	GeneticAlgo(const T& i_x_rate, const T& i_pi)
-		: x_rate(i_x_rate), pi(i_pi)
+	GeneticAlgo(const T& i_x_rate, const T& i_pi, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
+		: x_rate{ i_x_rate }, pi{ i_pi }, EA_base{ i_npop, i_tol, i_iter_max }
 	{
-		assert((x_rate > 0 && x_rate <= 1) && (pi > 0 && pi <= 1));
+		assert(x_rate > 0 && x_rate <= 1);
+		assert(pi > 0 && pi <= 1);
+		assert(tol > 0);
+		assert(iter_max > 0);
 		boost::math::beta_distribution<T> i_dist(1, 6);
 		dist = i_dist;
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
@@ -95,11 +101,12 @@ void GeneticAlgo<T>::mutation(std::vector<std::vector<T>>& individuals, const st
 }
 
 template<typename T, typename F>
-std::vector<T> solve(F f, const T& opt, GeneticAlgo<T>& ga, const EAparams<T>& ea)
+std::tuple<std::vector<T>, T, size_t, double> solve(F f, const T& opt, const GeneticAlgo<T>& ga, const EAparams<T>& ea)
 {
+	std::cout << "Genetic Algorithm used as solver" << "\n";
 	// Find the minimum cost individual of the fitness function for the population
-	const auto& tol = ea.get_tol();
-	const auto& iter_max = ea.get_iter_max();
+	const auto& tol = ga.get_tol();
+	const auto& iter_max = ga.get_iter_max();
 	auto npop = ea.get_npop();
 	const auto& ndv = ea.get_ndv();
 	auto stdev = ea.get_stdev();
@@ -107,20 +114,25 @@ std::vector<T> solve(F f, const T& opt, GeneticAlgo<T>& ga, const EAparams<T>& e
 	std::vector<T> min_cost = individuals[0];
 	const auto& x_rate = ga.get_x_rate();
 	size_t nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
+	T fitness_cost = f(individuals[0]);
 	auto comparator = [&](const std::vector<T>& l, const std::vector<T>& r)
 	{
 		return f(l) < f(r);
 	};
-	for (auto g = 0; g < iter_max; ++g)
+	size_t last_iter = 0;
+	//  Time the computation
+	std::chrono::time_point<std::chrono::system_clock> start, end;
+	start = std::chrono::system_clock::now();
+	std::sort(individuals.begin(), individuals.end(), comparator);
+	for (auto iter = 0; iter < iter_max; ++iter)
 	{
-		std::sort(individuals.begin(), individuals.end(), comparator);
-		if (tol > std::abs(f(individuals[0]) - opt))
+		if (tol > std::abs(fitness_cost - opt))
 		{
-			std::cout << "Found solution at iteration: " << g << "." << '\n';
 			break;
 		}
 		if (individuals.size() < 3)
 		{
+			last_iter = iter;
 			break;
 		}
 		std::vector<std::vector<T>> offspring = ga.selection(individuals);
@@ -136,7 +148,13 @@ std::vector<T> solve(F f, const T& opt, GeneticAlgo<T>& ga, const EAparams<T>& e
 		{
 			stdev[j] = stdev[j] + 0.02 * stdev[j];
 		}
+		std::sort(individuals.begin(), individuals.end(), comparator);
+		fitness_cost = f(individuals[0]);
+		last_iter = iter;
 	}
-	std::sort(individuals.begin(), individuals.end(), comparator);
-	return individuals[0];
+	end = std::chrono::system_clock::now();
+	std::chrono::duration<double> elapsed_seconds = end - start;
+	std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+	T timer = elapsed_seconds.count();
+	return { individuals[0], fitness_cost, last_iter, timer };
 }

@@ -11,9 +11,9 @@ T irr(const T& r, const T& nominal_value, const std::vector<T>& cash_flows, cons
 	T sum = 0.0;
 	for (auto i = 0; i < num_time_periods; ++i)
 	{
-		sum = sum + cash_flows[i] / std::pow((1 + r / frequency), i + 1);
+		sum = sum + cash_flows[i] / std::pow((1 + r / frequency), static_cast<T>(i + 1));
 	}
-	return sum + nominal_value / std::pow((1 + r / frequency), num_time_periods);
+	return sum + nominal_value / std::pow((1 + r / frequency), static_cast<T>(num_time_periods));
 }
 
 template<typename T>
@@ -25,8 +25,9 @@ T fitness_irr(const std::vector<T>& solution, const Bond<T>& bond)
 }
 
 template<typename T, typename S>
-T setyield(Bond<T> bond, S& solver, EAparams<T>& ea)
+std::tuple<std::vector<T>, T, size_t, double> find_yield(const Bond<T> bond, S& solver, const EAparams<T>& ea)
 {
+	assert(ea.get_ndv() == 1);
 	auto f = [&](const auto& solution) { return fitness_irr(solution, bond);};
-	return solve(f, 0.0, solver, ea)[0];
+	return solve(f, 0.0, solver, ea);
 }

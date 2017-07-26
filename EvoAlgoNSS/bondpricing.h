@@ -11,9 +11,9 @@ T estimate_bond_pricing(const std::vector<T>& solution, const T& coupon_value, c
 	T sum = 0;
 	for (auto i = 0; i < num_of_terms; ++i)
 	{
-		sum = sum + coupon_value * std::exp(-svensson(solution, i + 1) * (i + 1));
+		sum = sum + coupon_value * std::exp(-svensson(solution, static_cast<T>(i + 1)) * static_cast<T>(i + 1));
 	}
-	return sum + nominal_value * std::exp(-svensson(solution, num_of_terms) * num_of_terms);
+	return sum + nominal_value * std::exp(-svensson(solution, static_cast<T>(num_of_terms)) * static_cast<T>(num_of_terms));
 }
 
 template<typename T>
@@ -30,8 +30,30 @@ T fitness_bond_pricing(const std::vector<T>& solution, const std::vector<Bond<T>
 }
 
 template<typename T, typename S>
-std::vector<T> bond_pricing(std::vector< Bond<T> > bonds, S& solver, EAparams<T>& ea)
+std::tuple<std::vector<T>, T, size_t, double> bond_pricing(const std::vector< Bond<T> >& bonds, S& solver, const EAparams<T>& ea)
 {
+	assert(ea.get_ndv() == 6);
+	for (const auto& p : bonds)
+	{
+		assert(p.yield > 0 && p.yield < 1);
+		assert(p.duration > 0);
+	}
 	auto f = [&](const auto& solution) { return fitness_bond_pricing(solution, bonds); };
 	return solve(f, 0.0, solver, ea);
 }
+
+/*
+template<typename T>
+std::tuple<std::vector<T>, T, size_t, double> bond_pricing(std::vector< Bond<T> > bonds)
+{
+	for (const auto& p : bonds)
+	{
+		assert(p.yield > 0 && p.yield < 1);
+		assert(p.duration > 0);
+	}
+	auto f = [&](const auto& solution) { return fitness_bond_pricing(solution, bonds); };
+	S solver{ ...,f };
+	solver.solve();
+	return solve(f, 0.0, solver, ea);
+}
+*/

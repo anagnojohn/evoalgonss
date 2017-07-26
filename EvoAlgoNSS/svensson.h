@@ -4,9 +4,8 @@
 #include "bond.h"
 
 template<typename T>
-T svensson(const std::vector<T>& solution, const size_t& int_m)
+T svensson(const std::vector<T>& solution, const T& m)
 {
-	T m = static_cast<T>(int_m);
 	const T& b0 = solution[0];
 	const T& b1 = solution[1];
 	const T& b2 = solution[2];
@@ -29,7 +28,7 @@ T svensson(const std::vector<T>& solution, const size_t& int_m)
 	}
 	else
 	{
-		return 1000;
+		return 100;
 	}
 }
 
@@ -45,8 +44,14 @@ T fitness_svensson(const std::vector<T>& solution, const std::vector<Bond<T>>& b
 }
 
 template<typename T, typename S>
-std::vector<T> yield_curve_fitting(std::vector< Bond<T> > bonds, S& solver, EAparams<T>& ea)
+std::tuple<std::vector<T>, T, size_t, double> yield_curve_fitting(const std::vector< Bond<T> >& bonds, S& solver, const EAparams<T>& ea)
 {
+	assert(ea.get_ndv() == 6);
+	for (const auto& p : bonds)
+	{
+		assert(p.yield > 0 && p.yield < 1);
+		assert(p.duration > 0);
+	}
 	auto f = [&](const auto& solution) { return fitness_svensson(solution, bonds); };
 	return solve(f, 0.0, solver, ea);
 }

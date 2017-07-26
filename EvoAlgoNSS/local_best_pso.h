@@ -2,34 +2,46 @@
 
 #include <random>
 #include <vector>
+#include <tuple>
+#include <chrono>
+#include <ctime>
 #include "ealgorithm_base.h"
 
 template<typename T>
-class LocalBestPSO
+class LocalBestPSO : public EA_base<T>
 {
 public:
-	LocalBestPSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh)
-		: c1(i_c1), c2(i_c2), sneigh(i_sneigh)
+	LocalBestPSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
+		: c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, EA_base{ i_npop, i_tol, i_iter_max }
+		
 	{
-		assert(c1 > 0 && c2 > 0 && sneigh > 0);
+		assert(c1 > 0);
+		assert(c2 > 0);
+		assert(sneigh > 0);
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
 		vmax_flag = false;
 		intertia_flag = false;
 	}
-	LocalBestPSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w)
-		: c1(i_c1), c2(i_c2), sneigh(i_sneigh), w(i_w)
+	LocalBestPSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
+		: c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, w{ i_w }, EA_base{ i_npop, i_tol, i_iter_max }
 	{
-		assert(c1 > 0 && c2 > 0 && sneigh > 0 && w > 0);
+		assert(c1 > 0);
+		assert(c2 > 0);
+		assert(sneigh > 0);
+		assert(w > 0);
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
 		vmax_flag = false;
 		inertia_flag = true;
 	}
-	LocalBestPSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const std::vector<T>& i_vmax, const T& i_alpha)
-		: c1(i_c1), c2(i_c2), sneigh(i_sneigh), alpha(i_alpha), vmax(i_vmax)
+	LocalBestPSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const std::vector<T>& i_vmax, const T& i_alpha, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
+		: c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, alpha{ i_alpha }, vmax{ i_vmax }, EA_base{ i_npop, i_tol, i_iter_max }
 	{
-		assert(c1 > 0 && c2 > 0 && sneigh > 0 && alpha > 0);
+		assert(c1 > 0);
+		assert(c2 > 0);
+		assert(sneigh > 0);
+		assert(alpha > 0);
 		for (const auto& p : vmax) { assert(p > 0); };
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
@@ -39,7 +51,7 @@ public:
 	void init_pso(const std::vector<std::vector<T>>& individuals, std::vector<std::vector<T>>& personal_best,
 		std::vector<std::vector<T>>& local_best, std::vector<std::vector<T>>& velocity, std::vector<std::vector<size_t>>& neighbourhoods);
 	void velocity_update(std::vector< std::vector<T> >& individuals, std::vector<std::vector<T>>& personal_best,
-		std::vector<std::vector<T>>& local_best, std::vector< std::vector<T> >& velocity, const size_t& iter, const size_t& iter_max, const std::vector<std::vector<size_t>>& neighbourhoods);
+		std::vector<std::vector<T>>& local_best, std::vector< std::vector<T> >& velocity, const size_t& iter, const std::vector<std::vector<size_t>>& neighbourhoods);
 	// Getters
 	size_t get_neighbourhood_size() const { return sneigh; };
 	// Setters
@@ -138,7 +150,7 @@ std::vector<std::vector<T>>LocalBestPSO<T>::generate_r(const size_t& ndv)
 
 template<typename T>
 void LocalBestPSO<T>::velocity_update(std::vector< std::vector<T> >& individuals, std::vector<std::vector<T>>& personal_best,
-	std::vector<std::vector<T>>& local_best, std::vector< std::vector<T> >& velocity, const size_t& iter, const size_t& iter_max, const std::vector<std::vector<size_t>>& neighbourhoods)
+	std::vector<std::vector<T>>& local_best, std::vector< std::vector<T> >& velocity, const size_t& iter, const std::vector<std::vector<size_t>>& neighbourhoods)
 {
 	const auto& nneigh = neighbourhoods.size();
 	const auto& ndv = individuals[0].size();
@@ -262,10 +274,11 @@ std::vector<T> find_min_local_best(const std::vector<std::vector<T>>& local_best
 }
 
 template<typename T, typename F>
-std::vector<T> solve(F f, const T& opt, LocalBestPSO<T>& pso, const EAparams<T>& ea)
+std::tuple<std::vector<T>, T, size_t, double> solve(F f, const T& opt, const LocalBestPSO<T>& pso, const EAparams<T>& ea)
 {
-	const auto& tol = ea.get_tol();
-	const auto& iter_max = ea.get_iter_max();
+	std::cout << "Local Best Particle Swarm used as solver" << "\n";
+	const auto& tol = pso.get_tol();
+	const auto& iter_max = pso.get_iter_max();
 	const auto& npop = ea.get_npop();
 	const auto& ndv = ea.get_ndv();
 	const auto& stdev = ea.get_stdev();
@@ -284,8 +297,13 @@ std::vector<T> solve(F f, const T& opt, LocalBestPSO<T>& pso, const EAparams<T>&
 	T rmax;
 	std::vector<T> distance(npop);
 	std::vector<T> min_cost(ndv);
-	
 	min_cost = find_min_local_best(local_best, f);
+	T fitness_cost = f(min_cost);
+	size_t last_iter = 0;
+	// Time the computation
+	std::chrono::time_point<std::chrono::system_clock> start, end;
+	start = std::chrono::system_clock::now();
+	// Local Best Particle Swarm starts here
 	for (auto iter = 0; iter < iter_max; ++iter)
 	{	
 		for (auto i = 0; i < npop; ++i)
@@ -300,12 +318,12 @@ std::vector<T> solve(F f, const T& opt, LocalBestPSO<T>& pso, const EAparams<T>&
 				rmax = distance[i];
 			}
 		}
-		if (tol > std::abs(f(min_cost) - opt) || rmax < tol)
+		if (tol > std::abs(fitness_cost - opt) || rmax < tol)
 		{
-			std::cout << "Found solution at iteration: " << iter << "." << '\n';
+			last_iter = iter;
 			break;
 		}
-		pso.velocity_update(individuals, personal_best, local_best, velocity, iter, iter_max, neighbourhoods);
+		pso.velocity_update(individuals, personal_best, local_best, velocity, iter, neighbourhoods);
 		for (auto i = 0; i < npop; ++i)
 		{
 			if (f(individuals[i]) < f(personal_best[i]))
@@ -325,6 +343,13 @@ std::vector<T> solve(F f, const T& opt, LocalBestPSO<T>& pso, const EAparams<T>&
 			}
 		}
 		min_cost = find_min_local_best(local_best, f);
+		fitness_cost = = f(min_cost);
+		last_iter = iter;
 	}
-	return min_cost;
+	end = std::chrono::system_clock::now();
+	std::chrono::duration<double> elapsed_seconds = end - start;
+	std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+	T timer = elapsed_seconds.count();
+	// Return minimum cost individual
+	return { min_cost, fitness_cost, last_iter, timer };
 }

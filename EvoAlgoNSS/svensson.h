@@ -42,16 +42,3 @@ T fitness_svensson(const std::vector<T>& solution, const std::vector<Bond<T>>& b
 	}
 	return sum_of_squares;
 }
-
-template<typename T, typename S>
-std::tuple<std::vector<T>, T, size_t, double> yield_curve_fitting(const std::vector< Bond<T> >& bonds, S& solver, const EAparams<T>& ea)
-{
-	assert(ea.get_ndv() == 6);
-	for (const auto& p : bonds)
-	{
-		assert(p.yield > 0 && p.yield < 1);
-		assert(p.duration > 0);
-	}
-	auto f = [&](const auto& solution) { return fitness_svensson(solution, bonds); };
-	return solve(f, 0.0, solver, ea);
-}

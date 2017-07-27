@@ -23,11 +23,3 @@ T fitness_irr(const std::vector<T>& solution, const Bond<T>& bond)
 	sum_of_squares = sum_of_squares + std::pow(bond.price - irr(solution[0], bond.nominal_value, bond.cash_flows, bond.frequency), 2);
 	return sum_of_squares;
 }
-
-template<typename T, typename S>
-std::tuple<std::vector<T>, T, size_t, double> find_yield(const Bond<T> bond, S& solver, const EAparams<T>& ea)
-{
-	assert(ea.get_ndv() == 1);
-	auto f = [&](const auto& solution) { return fitness_irr(solution, bond);};
-	return solve(f, 0.0, solver, ea);
-}

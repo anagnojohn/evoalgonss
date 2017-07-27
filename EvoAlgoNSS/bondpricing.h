@@ -29,19 +29,6 @@ T fitness_bond_pricing(const std::vector<T>& solution, const std::vector<Bond<T>
 	return sum_of_squares;
 }
 
-template<typename T, typename S>
-std::tuple<std::vector<T>, T, size_t, double> bond_pricing(const std::vector< Bond<T> >& bonds, S& solver, const EAparams<T>& ea)
-{
-	assert(ea.get_ndv() == 6);
-	for (const auto& p : bonds)
-	{
-		assert(p.yield > 0 && p.yield < 1);
-		assert(p.duration > 0);
-	}
-	auto f = [&](const auto& solution) { return fitness_bond_pricing(solution, bonds); };
-	return solve(f, 0.0, solver, ea);
-}
-
 /*
 template<typename T>
 std::tuple<std::vector<T>, T, size_t, double> bond_pricing(std::vector< Bond<T> > bonds)

@@ -7,43 +7,81 @@
 #include <ctime>
 #include "ealgorithm_base.h"
 
-//Differential Evolution Class
-template<typename T, typename F>
-class DifferentialEvo : public EA_base<T>
+template<typename T>
+struct DEstruct : EA_base<T>
 {
 public:
-	// Constructor for the Differential Evolution Class
-	DifferentialEvo(const T& i_cr, const T& i_f_param, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
+	DEstruct(const T& i_cr, const T& i_f_param, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
 		: cr{ i_cr }, f_param{ i_f_param }, EA_base{ i_npop, i_tol, i_iter_max }
 	{
 		assert(cr > 0 && cr <= 1);
 		assert(f_param > 0 && f_param <= 1);
+	}
+	// Crossover Rate
+	T cr;
+	// Mutation Scale Fuctor
+	T f_param;
+};
+
+//Differential Evolution Algorithm Class
+template<typename T, typename F>
+class Solver<T, F, DEstruct<T>>
+{
+public:
+	// Constructor for the Differential Evolution Class
+	Solver(const DEstruct<T>& de, const Population<T>& popul)
+	{
+		cr = de.cr;
+		f_param = de.f_param;
+		npop = popul.npop;
+		individuals = popul.individuals;
+		ndv = popul.ndv;
+		tol = de.tol;
+		iter_max = de.iter_max;
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
+		for (auto i = 0; i < npop; ++i)
+		{
+			indices.push_back(i);
+		}
+		std::uniform_int_distribution<size_t> i_ind_distribution(0, indices.size() - 1);
+		ind_distribution = i_ind_distribution;
 	}
-	void construct_donor(const std::vector< std::vector<T> >& individuals, const std::vector<size_t>& indices, const std::uniform_int_distribution<size_t>& ind_distribution, std::vector<T>& donor);
-	void construct_trial(const std::vector<T>& target, const std::vector<T>& donor, const std::vector<size_t>& indices, const std::uniform_int_distribution<size_t>& ind_distribution, std::vector<T>& trial);
-	// Setters
-	void set_cr(const T& cr) { assert(cr > 0 && cr <= 1); this->cr = cr; };
-	void set_f_param(const T& f_param) { assert(f_param > 0 && f_param <= 1); this->f_param = f_param; };
+	std::tuple<std::vector<T>, T, size_t, double> solve(F f, const T& opt);
 private:
+	std::vector<size_t> indices;
+	// Decision Variables
+	std::vector<T> decision_variables;
+	// Standard deviation of the decision variables
+	std::vector<T> stdev;
+	// Size of the population
+	size_t npop;
+	// Tolerance
+	T tol;
+	// Number of maximum iterations
+	size_t iter_max;
+	// Population
+	std::vector<std::vector<T>> individuals;
+	// Number of decision variables
+	size_t ndv;
 	// Crossover Rate
-	const T cr;
+	T cr;
 	// Mutation Scale Fuctor
-	const T f_param;
+	T f_param;
 	std::random_device random_device;
 	std::mt19937 engine{ random_device() };
 	std::random_device generator;
 	// Uniform Real Distribution used for generating the random vectors for mutation and epsilon for crossover 
 	std::uniform_real_distribution<T> distribution;
+	std::uniform_int_distribution<size_t> ind_distribution;
+	void construct_donor(std::vector<T>& donor);
+	void construct_trial(const std::vector<T>& target, const std::vector<T>& donor, std::vector<T>& trial);
 };
 
 // Method that constructs the donor vector
 template<typename T, typename F>
-void DifferentialEvo<T, F>::construct_donor(const std::vector< std::vector<T> >& individuals, const std::vector<size_t>& indices, const std::uniform_int_distribution<size_t>& ind_distribution, std::vector<T>& donor)
+void Solver<T, F, DEstruct<T>>::construct_donor(std::vector<T>& donor)
 {
-	const auto& ndv = individuals[0].size();
-	const auto& npop = individuals.size();
 	std::vector<size_t> r_i;
 	while (r_i.size() < 3)
 	{
@@ -61,9 +99,8 @@ void DifferentialEvo<T, F>::construct_donor(const std::vector< std::vector<T> >&
 
 // Method that constructs the trial vector
 template<typename T, typename F>
-void DifferentialEvo<T, F>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor, const std::vector<size_t>& indices, const std::uniform_int_distribution<size_t>& ind_distribution, std::vector<T>& trial)
+void Solver<T, F, DEstruct<T>>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor, std::vector<T>& trial)
 {
-	const auto ndv = target.size();
 	for (auto j = 0; j < ndv; ++j)
 	{
 		T epsilon = distribution(generator);
@@ -81,26 +118,13 @@ void DifferentialEvo<T, F>::construct_trial(const std::vector<T>& target, const 
 
 // Solve function overload for the Differential Evolution class
 template<typename T, typename F>
-std::tuple<std::vector<T>, T, size_t, double> solve(F f, const T& opt, DifferentialEvo<T>& de, const EAparams<T>& ea)
+std::tuple<std::vector<T>, T, size_t, double> Solver<T,F, DEstruct<T>>::solve(F f, const T& opt)
 {
 	std::cout << "Differential Evolution used as solver" << "\n";
 	// Find the minimum cost individual of the fitness function for the population
-	const auto& tol = de.get_tol();
-	const auto& iter_max = de.get_iter_max();
-	const auto& npop = de.get_npop();
-	const auto& ndv = ea.get_ndv();
-	const auto& stdev = ea.get_stdev();
-	const auto& decision_variables = ea.get_decision_variables();
-	auto individuals = de.init_individuals(decision_variables, stdev);
 	std::vector<T> min_cost = individuals[0];
 	std::vector<T> donor = min_cost;
 	std::vector<T> trial = donor;
-	std::vector<size_t> indices;
-	for (auto i = 0; i < npop; ++i)
-	{
-		indices.push_back(i);
-	}
-	std::uniform_int_distribution<size_t> ind_distribution(0, indices.size() - 1);
 	for (const auto& p : individuals)
 	{
 		if (f(min_cost) > f(p))
@@ -125,8 +149,8 @@ std::tuple<std::vector<T>, T, size_t, double> solve(F f, const T& opt, Different
 		for (auto i = 0; i < npop; ++i)
 		{
 			// Construct donor and trial vectors
-			de.construct_donor(individuals, indices, ind_distribution, donor);
-			de.construct_trial(individuals[i], donor, indices, ind_distribution, trial);
+			construct_donor(donor);
+			construct_trial(individuals[i], donor, trial);
 			// Replace individual i with trial if trial's cost is lower / Selection step
 			if (f(trial) <= f(individuals[i]))
 			{

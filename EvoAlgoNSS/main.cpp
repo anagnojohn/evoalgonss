@@ -11,7 +11,6 @@
 #include "bondpricing.h"
 #include "dependencies.h"
 #include "benchmarks.h"
-#include "main.h"
 #include <array>
 
 int main()
@@ -25,13 +24,10 @@ int main()
 	Bond<double> bond7 { 0.06, 132.88, 100, 2, "2016-03-30", "2043-03-15" };
 	Bond<double> bond8 {0.11, 150.33, 100, 2, "2016-03-30", "2048-07-28" };
 	std::vector<Bond<double>> bonds { bond1, bond2, bond3, bond4, bond5, bond6, bond7, bond8};
-	EAparams<double> irr_params({ 0.2 }, { 0.7 });
-	DifferentialEvo<double> irr_de { 0.6, 1, 100, 0.000000001, 200 };
-	DifferentialEvo<double> de_pricing { 0.6, 1, 200, 0.001, 200};
 	//GeneticAlgo<double> object1 { 0.4, 0.35, 200, 0.001, 200 };
 	//LocalBestPSO<double> object2 { 1, 1, 5, { 1000, 1000, 1000, 1000 }, 2, 200, 0.001, 200 };
-	benchmarkcurvefitting(bonds, irr_de, de_pricing, irr_params);
-	std::array<int, 3> nums;
-	nums = { 1,2,3 };
+	DEstruct<double> de_pricing { 0.6, 1, 200, 0.0001, 200 };
+	DEstruct<double> irr_de { 0.6, 1, 200, 0.0000001, 200 };
+	benchmarkcurvefitting(bonds, irr_de, de_pricing);
     return 0;
 }

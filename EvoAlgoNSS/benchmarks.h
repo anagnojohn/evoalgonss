@@ -4,7 +4,7 @@
 #include <tuple>
 #include "bond.h"
 #include "geneticalgo.h"
-#include "local_best_pso.h"
+#include "local_best_pso_variants.h"
 #include "differentialevo.h"
 
 template<typename T, typename S>

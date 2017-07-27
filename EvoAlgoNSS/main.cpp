@@ -22,11 +22,16 @@ int main()
 	Bond<double> bond8 {0.11, 150.33, 100, 2, "2016-03-30", "2048-07-28" };
 	std::vector<Bond<double>> bonds { bond1, bond2, bond3, bond4, bond5, bond6, bond7, bond8};
 	GAstruct<double> ga_irr { 0.4, 0.35, 200, 0.0001, 200 };
-	GAstruct<double> ga_pricing{ 0.4, 0.35, 200, 0.0000001, 200 };
-	//PSOstruct<double> pso_pricing { 1, 1, 5, { 1000, 1000, 1000, 1000 }, 2, 200, 0.001, 200 };
+	GAstruct<double> ga_pricing { 0.4, 0.35, 200, 0.0000001, 200 };
+	PSOstruct_clamping<double> pso_clamping_irr{ 1.0, 1.0, 5, 2.0,{ 1000 }, 200, 0.0000001, 200 };
+	PSOstruct_clamping<double> pso_clamping_pricing { 1.0, 1.0, 5, 2.0, { 1000, 1000, 1000, 1000 }, 200, 0.001, 200 };
+	PSOstruct_inertia<double> pso_inertia_irr{ 1.0, 1.0, 5, 0.9, 200, 0.0000001, 200 };
+	PSOstruct_inertia<double> pso_inertia_pricing{ 1.0, 1.0, 5, 0.9, 200, 0.001, 200 };
+	DEstruct<double> de_irr{ 0.6, 1, 200, 0.0000001, 200 };
 	DEstruct<double> de_pricing { 0.6, 1, 200, 0.0001, 200 };
-	DEstruct<double> de_irr { 0.6, 1, 200, 0.0000001, 200 };
-	benchmarkcurvefitting(bonds, de_irr, de_pricing);
+	//benchmarkcurvefitting(bonds, de_irr, de_pricing);
 	//benchmarkcurvefitting(bonds, ga_irr, ga_pricing);
+	//benchmarkcurvefitting(bonds, pso_clamping_irr, pso_clamping_pricing);
+	benchmarkcurvefitting(bonds, pso_inertia_irr, pso_inertia_pricing);
     return 0;
 }

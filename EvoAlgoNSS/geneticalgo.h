@@ -9,36 +9,28 @@
 #include "ealgorithm_base.h"
 
 template<typename T>
-struct GAstruct : EA_base<T>
+struct GAstruct : EAstruct<T>
 {
 public:
 	GAstruct(const T& i_x_rate, const T& i_pi, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-		: x_rate{ i_x_rate }, pi{ i_pi }, EA_base{ i_npop, i_tol, i_iter_max }
+		: x_rate{ i_x_rate }, pi{ i_pi }, EAstruct{ i_npop, i_tol, i_iter_max }
 	{
 		assert(x_rate > 0 && x_rate <= 1);
 		assert(pi > 0 && pi <= 1);
 	}
 	// Natural Selection rate
-	T x_rate;
+	const T x_rate;
 	// Probability of mutating
-	T pi;
+	const T pi;
 };
 
 // Genetic Algorithms Class
 template<typename T, typename F>
-class Solver<T, F, GAstruct<T>>
+class Solver<T, F, GAstruct<T>> : public Solver<T, F, EAstruct<T>>
 {
 public:
-	Solver(const GAstruct<T>& ga, const Population<T>& popul)
+	Solver(const GAstruct<T>& ga, const Population<T>& popul) : Solver < T, F, EAstruct<T>>{ { ga.npop, ga.tol, ga.iter_max }, popul }, x_rate{ ga.x_rate }, pi{ ga.pi }, stdev{ popul.stdev }
 	{
-		x_rate = ga.x_rate;
-		pi = ga.pi;
-		npop = popul.npop;
-		individuals = popul.individuals;
-		stdev = popul.stdev;
-		ndv = popul.ndv;
-		tol = ga.tol;
-		iter_max = ga.iter_max;
 		boost::math::beta_distribution<T> i_dist(1, 6);
 		dist = i_dist;
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
@@ -46,21 +38,9 @@ public:
 	}
 	std::tuple<std::vector<T>, T, size_t, double> solve(F f, const T& opt);
 private:
-	std::vector<size_t> indices;
-	// Decision Variables
-	std::vector<T> decision_variables;
-	// Standard deviation of the decision variables
+	// The standard deviation of variables is not constant in GA
 	std::vector<T> stdev;
-	// Size of the population
-	size_t npop;
-	// Tolerance
-	T tol;
-	// Number of maximum iterations
-	size_t iter_max;
-	// Population
-	std::vector<std::vector<T>> individuals;
-	// Number of decision variables
-	size_t ndv;
+	std::vector<size_t> indices;
 	// Natural Selection rate
 	T x_rate;
 	// Probability of mutating

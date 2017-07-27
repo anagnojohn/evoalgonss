@@ -17,7 +17,6 @@ std::tuple<std::vector<T>, T, size_t, double> yield_curve_fitting(const std::vec
 		assert(p.duration > 0);
 	}
 	auto f = [&](const auto& solution) { return fitness_svensson(solution, bonds); };
-	//auto solver = create_solver<T, decltype(f), S>(curve_solver, curve_pop);
 	Solver<T, decltype(f), S> solver(curve_solver, curve_pop);
 	return solver.solve(f, 0.0);
 }

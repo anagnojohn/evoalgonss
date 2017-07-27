@@ -8,7 +8,8 @@ struct Population
 {
 public:
 	Population(const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev, const size_t& i_npop)
-		: decision_variables{ i_decision_variables }, stdev{ i_stdev }, npop{ i_npop }
+		: decision_variables{ i_decision_variables }, stdev{ i_stdev }, npop{ i_npop }, ndv{ i_decision_variables.size() }, 
+		individuals { init_individuals(i_decision_variables, i_npop, i_stdev) }
 	{
 		assert(decision_variables.size() > 0);
 		assert(decision_variables.size() == stdev.size());
@@ -17,37 +18,35 @@ public:
 			assert(p > 0);
 		}
 		assert(npop > 0);
-		ndv = decision_variables.size();
-		individuals = init_individuals(decision_variables, npop, stdev);
 	}
 	// Decision Variables
-	std::vector<T> decision_variables;
+	const std::vector<T> decision_variables;
 	// Standard deviation of the decision variables
-	std::vector<T> stdev;
+	const std::vector<T> stdev;
 	// Size of the population
-	size_t npop;
+	const size_t npop;
 	// Population
-	std::vector<std::vector<T>> individuals;
+	const std::vector<std::vector<T>> individuals;
 	// Number of decision variables
-	size_t ndv;
+	const size_t ndv;
 };
 
 template<typename T>
-struct EA_base
+struct EAstruct
 {
 public:
-	EA_base(const size_t& i_npop, const T& i_tol, const size_t& i_iter_max) : npop{ i_npop }, tol{ i_tol }, iter_max{ i_iter_max }
+	EAstruct(const size_t& i_npop, const T& i_tol, const size_t& i_iter_max) : npop{ i_npop }, tol{ i_tol }, iter_max{ i_iter_max }
 	{
 		assert(npop > 0);
 		assert(tol > 0);
 		assert(iter_max > 0);
 	}
 	// Size of the population
-	size_t npop;
+	const size_t npop;
 	// Tolerance
-	T tol;
+	const T tol;
 	// Number of maximum iterations
-	size_t iter_max;
+	const size_t iter_max;
 };
 
 template<typename T>
@@ -74,13 +73,41 @@ std::vector<std::vector<T>> init_individuals(const std::vector<T>& decision_vari
 	return individuals;
 }
 
+// Template Class for Solvers
 template<typename T, typename F, typename S>
 class Solver
 {
+public:
 	Solver(const S& solver_struct, const Population<T>& popul)
 	{
 
 	}
+};
+
+// Base Class for Evolutionary Algorithms
+template<typename T, typename F>
+class Solver<T,F, EAstruct<T>>
+{
+public:
+	Solver(const EAstruct<T>& solver_struct, const Population<T>& popul)
+	{
+		npop = popul.npop;
+		individuals = popul.individuals;
+		ndv = popul.ndv;
+		tol = solver_struct.tol;
+		iter_max = solver_struct.iter_max;
+	}
+protected:
+	// Size of the population
+	size_t npop;
+	// Tolerance
+	T tol;
+	// Number of maximum iterations
+	size_t iter_max;
+	// Population
+	std::vector<std::vector<T>> individuals;
+	// Number of decision variables
+	size_t ndv;
 };
 
 template<typename T, typename F, typename S>

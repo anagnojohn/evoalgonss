@@ -19,38 +19,30 @@ T euclid_distance(const std::vector<T>& x, const std::vector<T>& y)
 }
 
 template<typename T>
-struct PSOstruct : EA_base<T>
+struct PSOstruct : EAstruct<T>
 {
 public:
 	PSOstruct(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-		: c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, EA_base{ i_npop, i_tol, i_iter_max }
+		: c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, EAstruct{ i_npop, i_tol, i_iter_max }
 	{
 		assert(c1 > 0);
 		assert(c2 > 0);
 		assert(sneigh > 0);
 		assert(sneigh < npop);
 	}
-	T c1;
-	T c2;
+	const T c1;
+	const T c2;
 	// Size of each neighbourhood
-	size_t sneigh;
+	const size_t sneigh;
 };
 
 // Local Best Particle Swarm Optimisation Class
 template<typename T, typename F>
-class Solver<T, F, PSOstruct<T>>
+class Solver<T, F, PSOstruct<T>> : public Solver<T,F, EAstruct<T>>
 {
 public:
-	Solver(const PSOstruct<T>& pso, const Population<T>& popul)
+	Solver(const PSOstruct<T>& pso, const Population<T>& popul) : Solver < T, F, EAstruct<T>>{ { pso.npop, pso.tol, pso.iter_max }, popul }, c1{ pso.c1 }, c2{ pso.c2 }, sneigh{ pso.sneigh }
 	{
-		c1 = pso.c1;
-		c2 = pso.c2;
-		sneigh = pso.sneigh;
-		npop = popul.npop;
-		individuals = popul.individuals;
-		ndv = popul.ndv;
-		tol = pso.tol;
-		iter_max = pso.iter_max;
 		init_pso();
 	}
 	std::tuple<std::vector<T>, T, size_t, double> solve(F f, const T& opt);
@@ -59,14 +51,6 @@ protected:
 	T c2;
 	// Neighbourhood size
 	size_t sneigh;
-	// Size of the population
-	size_t npop;
-	// Tolerance
-	T tol;
-	// Number of maximum iterations
-	size_t iter_max;
-	// Population
-	std::vector<std::vector<T>> individuals;
 	std::vector<std::vector<T>> personal_best;
 	std::vector<std::vector<T>> local_best;
 	std::vector<std::vector<T>> velocity;
@@ -76,8 +60,6 @@ protected:
 	std::vector<std::vector<size_t>> neighbourhoods;
 	// Indices of the population
 	std::vector<size_t> indices;
-	// Number of decision variables
-	size_t ndv;
 	std::random_device generator;
 	std::uniform_real_distribution<T> distribution;
 	void init_pso();

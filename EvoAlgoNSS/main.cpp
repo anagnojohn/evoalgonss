@@ -29,9 +29,9 @@ int main()
 	PSOstruct_inertia<double> pso_inertia_pricing{ 1.0, 1.0, 5, 0.9, 200, 0.001, 200 };
 	DEstruct<double> de_irr{ 0.6, 1, 200, 0.0000001, 200 };
 	DEstruct<double> de_pricing { 0.6, 1, 200, 0.0001, 200 };
-	//benchmarkcurvefitting(bonds, de_irr, de_pricing);
-	//benchmarkcurvefitting(bonds, ga_irr, ga_pricing);
-	//benchmarkcurvefitting(bonds, pso_clamping_irr, pso_clamping_pricing);
+	benchmarkcurvefitting(bonds, de_irr, de_pricing);
+	benchmarkcurvefitting(bonds, ga_irr, ga_pricing);
+	benchmarkcurvefitting(bonds, pso_clamping_irr, pso_clamping_pricing);
 	benchmarkcurvefitting(bonds, pso_inertia_irr, pso_inertia_pricing);
     return 0;
 }

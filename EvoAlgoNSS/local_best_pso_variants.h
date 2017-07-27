@@ -3,18 +3,18 @@
 #include "local_best_pso.h"
 
 template<typename T>
-struct PSOstruct_inertia : PSOstruct<T>
+struct PSOstruct_inertia final : PSOstruct<T>
 {
 	PSOstruct_inertia(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
 		: PSOstruct{ i_c1 , i_c2 , i_sneigh, i_npop, i_tol, i_iter_max }, w{ i_w }
 	{
 		assert(w > 0);
 	}
-	T w;
+	const T w;
 };
 
 template<typename T>
-struct PSOstruct_clamping : PSOstruct<T>
+struct PSOstruct_clamping final : PSOstruct<T>
 {
 	PSOstruct_clamping(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_alpha, const std::vector<T>& i_vmax, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
 		: PSOstruct{ i_c1 , i_c2 , i_sneigh, i_npop, i_tol, i_iter_max }, alpha{ i_alpha }, vmax{ i_vmax }
@@ -22,8 +22,8 @@ struct PSOstruct_clamping : PSOstruct<T>
 		assert(alpha > 0);
 		for (const auto& p : vmax) { assert(p > 0); };
 	}
-	T alpha;
-	std::vector<T> vmax;
+	const T alpha;
+	const std::vector<T> vmax;
 };
 
 template<typename T, typename F>

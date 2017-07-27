@@ -8,36 +8,29 @@
 #include "ealgorithm_base.h"
 
 template<typename T>
-struct DEstruct : EA_base<T>
+struct DEstruct : EAstruct<T>
 {
 public:
 	DEstruct(const T& i_cr, const T& i_f_param, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-		: cr{ i_cr }, f_param{ i_f_param }, EA_base{ i_npop, i_tol, i_iter_max }
+		: cr{ i_cr }, f_param{ i_f_param }, EAstruct{ i_npop, i_tol, i_iter_max }
 	{
 		assert(cr > 0 && cr <= 1);
 		assert(f_param > 0 && f_param <= 1);
 	}
 	// Crossover Rate
-	T cr;
+	const T cr;
 	// Mutation Scale Fuctor
-	T f_param;
+	const T f_param;
 };
 
 //Differential Evolution Algorithm Class
 template<typename T, typename F>
-class Solver<T, F, DEstruct<T>>
+class Solver<T, F, DEstruct<T>> : public Solver<T, F, EAstruct<T>>
 {
 public:
 	// Constructor for the Differential Evolution Class
-	Solver(const DEstruct<T>& de, const Population<T>& popul)
+	Solver(const DEstruct<T>& de, const Population<T>& popul) : Solver < T, F, EAstruct<T>>{ { de.npop, de.tol, de.iter_max }, popul }, cr{ de.cr }, f_param{ de.f_param }
 	{
-		cr = de.cr;
-		f_param = de.f_param;
-		npop = popul.npop;
-		individuals = popul.individuals;
-		ndv = popul.ndv;
-		tol = de.tol;
-		iter_max = de.iter_max;
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
 		for (auto i = 0; i < npop; ++i)
@@ -53,16 +46,6 @@ private:
 	T cr;
 	// Mutation Scale Fuctor
 	T f_param;
-	// Size of the population
-	size_t npop;
-	// Tolerance
-	T tol;
-	// Number of maximum iterations
-	size_t iter_max;
-	// Population
-	std::vector<std::vector<T>> individuals;
-	// Number of decision variables
-	size_t ndv;
 	// Indices of population
 	std::vector<size_t> indices;
 	std::random_device random_device;

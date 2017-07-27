@@ -2,9 +2,6 @@
 //
 
 #include "stdafx.h"
-//#include "geneticalgo.h"
-//#include "local_best_pso.h"
-#include "differentialevo.h"
 #include "svensson.h"
 #include "bond.h"
 #include "irr.h"
@@ -24,10 +21,12 @@ int main()
 	Bond<double> bond7 { 0.06, 132.88, 100, 2, "2016-03-30", "2043-03-15" };
 	Bond<double> bond8 {0.11, 150.33, 100, 2, "2016-03-30", "2048-07-28" };
 	std::vector<Bond<double>> bonds { bond1, bond2, bond3, bond4, bond5, bond6, bond7, bond8};
-	//GeneticAlgo<double> object1 { 0.4, 0.35, 200, 0.001, 200 };
-	//LocalBestPSO<double> object2 { 1, 1, 5, { 1000, 1000, 1000, 1000 }, 2, 200, 0.001, 200 };
+	GAstruct<double> ga_irr { 0.4, 0.35, 200, 0.0001, 200 };
+	GAstruct<double> ga_pricing{ 0.4, 0.35, 200, 0.0000001, 200 };
+	//PSOstruct<double> pso_pricing { 1, 1, 5, { 1000, 1000, 1000, 1000 }, 2, 200, 0.001, 200 };
 	DEstruct<double> de_pricing { 0.6, 1, 200, 0.0001, 200 };
-	DEstruct<double> irr_de { 0.6, 1, 200, 0.0000001, 200 };
-	benchmarkcurvefitting(bonds, irr_de, de_pricing);
+	DEstruct<double> de_irr { 0.6, 1, 200, 0.0000001, 200 };
+	benchmarkcurvefitting(bonds, de_irr, de_pricing);
+	//benchmarkcurvefitting(bonds, ga_irr, ga_pricing);
     return 0;
 }

@@ -8,82 +8,128 @@
 #include "ealgorithm_base.h"
 
 template<typename T>
-class LocalBestPSO : public EA_base<T>
+struct PSOstruct : EA_base<T>
 {
 public:
-	LocalBestPSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
+	PSOstruct(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
 		: c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, EA_base{ i_npop, i_tol, i_iter_max }
-		
 	{
 		assert(c1 > 0);
 		assert(c2 > 0);
 		assert(sneigh > 0);
+	}
+	T c1;
+	T c2;
+	size_t sneigh;
+};
+
+template<typename T>
+struct PSOstruct_inertia : PSOstruct<T>
+{
+	PSOstruct(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
+		: PSOstruct{ i_c1 , i_c2 , i_sneigh }, w{ i_w }, EA_base{ i_npop, i_tol, i_iter_max }
+	{
+		assert(w > 0);
+	}
+	T w;
+};
+
+template<typename T>
+struct PSOstruct_clamping : PSOstruct<T>
+{
+	PSOstruct_clamping(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_alpha, const std::vector<T>& i_vmax, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
+		: PSOstruct{ i_c1 , i_c2 , i_sneigh }, alpha{ i_alpha }, vmax{i_vmax}, EA_base { i_npop, i_tol, i_iter_max }
+	{
+		assert(alpha > 0);
+		for (const auto& p : vmax) { assert(p > 0); };
+	}
+	T alpha;
+	std::vector<T> vmax;
+};
+
+// Local Best Particle Swarm Optimisation Class
+template<typename T, typename F>
+class Solver<T, F, PSOstruct<T>>
+public:
+	Solver(const PSOstruct<T>& pso, const Population<T>& popul)
+	{
+		c1 = pso.c1;
+		c2 = pso.c2;
+		sneigh = pso.sneigh;
+		npop = popul.npop;
+		individuals = popul.individuals;
+		ndv = popul.ndv;
+		tol = pso.tol;
+		iter_max = pso.iter_max;
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
 		vmax_flag = false;
 		intertia_flag = false;
 	}
-	LocalBestPSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-		: c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, w{ i_w }, EA_base{ i_npop, i_tol, i_iter_max }
+	Solver(const PSOstruct_inertia<T>& pso, const Population<T>& popul)
 	{
-		assert(c1 > 0);
-		assert(c2 > 0);
-		assert(sneigh > 0);
-		assert(w > 0);
+		c1 = pso.c1;
+		c2 = pso.c2;
+		sneigh = pso.sneigh;
+		w = pso.w;
+		npop = popul.npop;
+		individuals = popul.individuals;
+		ndv = popul.ndv;
+		tol = pso.tol;
+		iter_max = pso.iter_max;
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
 		vmax_flag = false;
 		inertia_flag = true;
 	}
-	LocalBestPSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const std::vector<T>& i_vmax, const T& i_alpha, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-		: c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, alpha{ i_alpha }, vmax{ i_vmax }, EA_base{ i_npop, i_tol, i_iter_max }
+	Solver(const PSOstruct_clamping<T>& pso, const Population<T>& popul)
 	{
-		assert(c1 > 0);
-		assert(c2 > 0);
-		assert(sneigh > 0);
-		assert(alpha > 0);
-		for (const auto& p : vmax) { assert(p > 0); };
+		c1 = pso.c1;
+		c2 = pso.c2;
+		sneigh = pso.sneigh;
+		alpha = pso.alpha;
+		vmax = pso.vmax;
+		npop = popul.npop;
+		individuals = popul.individuals;
+		ndv = popul.ndv;
+		tol = pso.tol;
+		iter_max = pso.iter_max;
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
 		vmax_flag = true;
 		inertia_flag = false;
 	}
-	void init_pso(const std::vector<std::vector<T>>& individuals, std::vector<std::vector<T>>& personal_best,
-		std::vector<std::vector<T>>& local_best, std::vector<std::vector<T>>& velocity, std::vector<std::vector<size_t>>& neighbourhoods);
+	void init_pso(const std::vector<std::vector<T>>& individuals, );
 	void velocity_update(std::vector< std::vector<T> >& individuals, std::vector<std::vector<T>>& personal_best,
 		std::vector<std::vector<T>>& local_best, std::vector< std::vector<T> >& velocity, const size_t& iter, const std::vector<std::vector<size_t>>& neighbourhoods);
-	// Getters
-	size_t get_neighbourhood_size() const { return sneigh; };
-	// Setters
-	void set_c1(const T& c1) { assert(c1 > 0); this->c1 = c1; };
-	void set_c2(const T& c2) { assert(c2 > 0); this->c2 = c2; };
-	void set_alpha(const T& alpha) { assert(alpha > 0); this->alpha = alpha; };
-	void set_vmax(const std::vector<T>& vmax)
-	{
-		for (const auto& p : vmax)
-		{ 
-			assert(p > 0);
-		}
-		vmax_flag = true;
-		inertia_flag = false;
-		this->vmax = vmax;
-	};
-	void set_w(const T& w) { assert(w > 0); vmax_flag = false; inertia_flag = true; this->w = w; };
-	void set_sneigh(const size_t& sneigh) { assert(sneigh > 0); this->sneigh = sneigh; };
 private:
-	const T c1;
-	const T c2;
-	const T alpha;
+	T c1;
+	T c2;
+	// Neighbourhood size
+	size_t sneigh;
+	T w;
+	T alpha;
+	std::vector<T> vmax;
+	// Size of the population
+	size_t npop;
+	// Tolerance
+	T tol;
+	// Number of maximum iterations
+	size_t iter_max;
+	// Population
+	std::vector<std::vector<T>> individuals;
+	std::vector<std::vector<T>> personal_best;
+	std::vector<std::vector<T>> local_best;
+	std::vector<std::vector<T>> velocity;
+	std::vector<std::vector<size_t>> neighbourhoods;
+	// Number of decision variables
+	size_t ndv;
 	std::random_device generator;
 	std::uniform_real_distribution<T> distribution;
-	T w;
-	std::vector<T> vmax;
 	bool vmax_flag;
 	bool inertia_flag;
-	void set_neighbourhoods(std::vector<std::vector<size_t>>& neighbourhoods, std::vector<size_t>& indices);
-	// Neighbourhood size
-	const size_t sneigh;
-	std::vector<std::vector<T>> generate_r(const size_t& ndv);
+	void set_neighbourhoods();
+	std::vector<std::vector<T>> generate_r();
 };
 
 template<typename T>

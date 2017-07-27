@@ -49,11 +49,10 @@ public:
 	}
 	std::tuple<std::vector<T>, T, size_t, double> solve(F f, const T& opt);
 private:
-	std::vector<size_t> indices;
-	// Decision Variables
-	std::vector<T> decision_variables;
-	// Standard deviation of the decision variables
-	std::vector<T> stdev;
+	// Crossover Rate
+	T cr;
+	// Mutation Scale Fuctor
+	T f_param;
 	// Size of the population
 	size_t npop;
 	// Tolerance
@@ -64,10 +63,8 @@ private:
 	std::vector<std::vector<T>> individuals;
 	// Number of decision variables
 	size_t ndv;
-	// Crossover Rate
-	T cr;
-	// Mutation Scale Fuctor
-	T f_param;
+	// Indices of population
+	std::vector<size_t> indices;
 	std::random_device random_device;
 	std::mt19937 engine{ random_device() };
 	std::random_device generator;

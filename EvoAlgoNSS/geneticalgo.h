@@ -8,45 +8,76 @@
 #include <ctime>
 #include "ealgorithm_base.h"
 
-// Genetic Algorithms Class
 template<typename T>
-class GeneticAlgo : public EA_base<T>
+struct GAstruct : EA_base<T>
 {
 public:
-	GeneticAlgo(const T& i_x_rate, const T& i_pi, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
+	GAstruct(const T& i_x_rate, const T& i_pi, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
 		: x_rate{ i_x_rate }, pi{ i_pi }, EA_base{ i_npop, i_tol, i_iter_max }
 	{
 		assert(x_rate > 0 && x_rate <= 1);
 		assert(pi > 0 && pi <= 1);
-		assert(tol > 0);
-		assert(iter_max > 0);
+	}
+	// Natural Selection rate
+	T x_rate;
+	// Probability of mutating
+	T pi;
+};
+
+// Genetic Algorithms Class
+template<typename T, typename F>
+class Solver<T, F, GAstruct<T>>
+{
+public:
+	Solver(const GAstruct<T>& ga, const Population<T>& popul)
+	{
+		x_rate = ga.x_rate;
+		pi = ga.pi;
+		npop = popul.npop;
+		individuals = popul.individuals;
+		stdev = popul.stdev;
+		ndv = popul.ndv;
+		tol = ga.tol;
+		iter_max = ga.iter_max;
 		boost::math::beta_distribution<T> i_dist(1, 6);
 		dist = i_dist;
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
 	}
-	// Crossover method
-	std::vector<T> blend(std::vector<T> r, std::vector<T> s);
-	// Selection method
-	std::vector<std::vector<T>> selection(const std::vector<std::vector<T>>& individuals);
-	void mutation(std::vector<std::vector<T>>& individuals, const std::vector<T>& stdev);
-	// Getters
-	T get_x_rate() const { return x_rate; }
-	// Setters
-	void set_x_rate(const T& x_rate) { assert(x_rate > 0 && x_rate <= 1); this->x_rate = x_rate; };
-	void set_pi(const T& pi) { assert(pi > 0 && pi <= 1); this->pi = pi; };
+	std::tuple<std::vector<T>, T, size_t, double> solve(F f, const T& opt);
 private:
-	const T x_rate;// = 0.4;
-	const T pi;// = 0.35;
+	std::vector<size_t> indices;
+	// Decision Variables
+	std::vector<T> decision_variables;
+	// Standard deviation of the decision variables
+	std::vector<T> stdev;
+	// Size of the population
+	size_t npop;
+	// Tolerance
+	T tol;
+	// Number of maximum iterations
+	size_t iter_max;
+	// Population
+	std::vector<std::vector<T>> individuals;
+	// Number of decision variables
+	size_t ndv;
+	// Natural Selection rate
+	T x_rate;
+	// Probability of mutating
+	T pi;
 	std::random_device generator;
 	boost::math::beta_distribution<T> dist;
 	std::uniform_real_distribution<T> distribution;
+	// Crossover method
+	std::vector<T> blend(std::vector<T> r, std::vector<T> s);
+	// Selection method
+	std::vector<std::vector<T>> selection();
+	void mutation();
 };
 
-template<typename T>
-std::vector<T> GeneticAlgo<T>::blend(std::vector<T> r, std::vector<T> s)
+template<typename T, typename F>
+std::vector<T> Solver<T, F, GAstruct<T>>::blend(std::vector<T> r, std::vector<T> s)
 {
-	const auto& ndv = r.size();
 	std::vector<T> offspring(ndv);
 	std::vector<T> psi(ndv);
 	for (auto i = 0; i < ndv; ++i)
@@ -60,10 +91,9 @@ std::vector<T> GeneticAlgo<T>::blend(std::vector<T> r, std::vector<T> s)
 	return offspring;
 }
 
-template<typename T>
-std::vector<std::vector<T>> GeneticAlgo<T>::selection(const std::vector<std::vector<T>>& individuals)
+template<typename T, typename F>
+std::vector<std::vector<T>> Solver<T, F, GAstruct<T>>::selection()
 {
-	const auto& npop = individuals.size();
 	std::vector<std::vector<T>> offspring;
 	for (auto i = 0; i < npop; ++i)
 	{
@@ -78,11 +108,9 @@ std::vector<std::vector<T>> GeneticAlgo<T>::selection(const std::vector<std::vec
 	return offspring;
 }
 
-template<typename T>
-void GeneticAlgo<T>::mutation(std::vector<std::vector<T>>& individuals, const std::vector<T>& stdev)
+template<typename T, typename F>
+void Solver<T, F, GAstruct<T>>::mutation()
 {
-	const auto& npop = individuals.size();
-	const auto& ndv = individuals[0].size();
 	T epsilon;
 	for (auto i = 1; i < npop; ++i)
 	{
@@ -101,18 +129,11 @@ void GeneticAlgo<T>::mutation(std::vector<std::vector<T>>& individuals, const st
 }
 
 template<typename T, typename F>
-std::tuple<std::vector<T>, T, size_t, double> solve(F f, const T& opt, const GeneticAlgo<T>& ga, const EAparams<T>& ea)
+std::tuple<std::vector<T>, T, size_t, double> Solver<T, F, GAstruct<T>>::solve(F f, const T& opt)
 {
 	std::cout << "Genetic Algorithm used as solver" << "\n";
 	// Find the minimum cost individual of the fitness function for the population
-	const auto& tol = ga.get_tol();
-	const auto& iter_max = ga.get_iter_max();
-	auto npop = ea.get_npop();
-	const auto& ndv = ea.get_ndv();
-	auto stdev = ea.get_stdev();
-	auto individuals = ea.get_individuals();
 	std::vector<T> min_cost = individuals[0];
-	const auto& x_rate = ga.get_x_rate();
 	size_t nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
 	T fitness_cost = f(individuals[0]);
 	auto comparator = [&](const std::vector<T>& l, const std::vector<T>& r)
@@ -128,6 +149,7 @@ std::tuple<std::vector<T>, T, size_t, double> solve(F f, const T& opt, const Gen
 	{
 		if (tol > std::abs(fitness_cost - opt))
 		{
+			last_iter = iter;
 			break;
 		}
 		if (individuals.size() < 3)
@@ -135,7 +157,7 @@ std::tuple<std::vector<T>, T, size_t, double> solve(F f, const T& opt, const Gen
 			last_iter = iter;
 			break;
 		}
-		std::vector<std::vector<T>> offspring = ga.selection(individuals);
+		std::vector<std::vector<T>> offspring = selection();
 		individuals.erase(individuals.begin() + nkeep, individuals.begin() + npop);
 		npop = individuals.size();
 		nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
@@ -143,7 +165,7 @@ std::tuple<std::vector<T>, T, size_t, double> solve(F f, const T& opt, const Gen
 		{
 			individuals.push_back(offspring[i]);
 		}
-		ga.mutation(individuals, stdev);
+		mutation();
 		for (auto j = 0; j < ndv; ++j)
 		{
 			stdev[j] = stdev[j] + 0.02 * stdev[j];

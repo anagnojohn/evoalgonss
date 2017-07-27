@@ -3,6 +3,8 @@
 #include <vector>
 #include <tuple>
 #include "bond.h"
+#include "geneticalgo.h"
+#include "local_best_pso.h"
 #include "differentialevo.h"
 
 template<typename T, typename S>

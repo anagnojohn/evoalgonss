@@ -42,7 +42,7 @@ private:
 template<typename T, typename F>
 void Solver<T, F, PSOstruct_inertia<T>>::velocity_update(const size_t& iter)
 {
-	const auto& r = generate_r(ndv);
+	const auto& r = generate_r();
 	for (auto k = 0; k < nneigh; ++k)
 	{
 		for (auto l = 0; l < neighbourhoods[k].size(); ++l)
@@ -53,7 +53,6 @@ void Solver<T, F, PSOstruct_inertia<T>>::velocity_update(const size_t& iter)
 				{
 					velocity[i][j] = w * velocity[i][j] + c1 * r[0][j] * (personal_best[i][j]
 						- individuals[i][j]) + c2 * r[1][j] * (local_best[k][j] - individuals[i][j]);
-					individuals[i][j] = individuals[i][j] + velocity[i][j];
 				}
 			}
 		}
@@ -80,7 +79,7 @@ private:
 template<typename T, typename F>
 void Solver<T, F, PSOstruct_clamping<T>>::velocity_update(const size_t& iter)
 {
-	const auto& r = generate_r(ndv);
+	const auto& r = generate_r();
 	for (auto k = 0; k < nneigh; ++k)
 	{
 		for (auto l = 0; l < neighbourhoods[k].size(); ++l)
@@ -95,7 +94,6 @@ void Solver<T, F, PSOstruct_clamping<T>>::velocity_update(const size_t& iter)
 					{
 						velocity[i][j] = vmax[j];
 					}
-					individuals[i][j] = individuals[i][j] + velocity[i][j];
 				}
 			}
 		}

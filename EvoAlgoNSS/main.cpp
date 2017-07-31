@@ -8,7 +8,14 @@
 #include "bondpricing.h"
 #include "dependencies.h"
 #include "benchmarks.h"
-#include <array>
+
+struct absValue
+{
+	double operator()(double f) {
+		return f > 0 ? f : -f;
+	}
+};
+
 
 int main()
 {
@@ -21,10 +28,10 @@ int main()
 	Bond<double> bond7 { 0.06, 132.88, 100, 2, "2016-03-30", "2043-03-15" };
 	Bond<double> bond8 {0.11, 150.33, 100, 2, "2016-03-30", "2048-07-28" };
 	std::vector<Bond<double>> bonds { bond1, bond2, bond3, bond4, bond5, bond6, bond7, bond8};
-	GAstruct<double> ga_irr { 0.4, 0.35, 200, 0.0001, 200 };
-	GAstruct<double> ga_pricing { 0.4, 0.35, 200, 0.0000001, 200 };
+	GAstruct<double> ga_irr { 0.4, 0.35, 200, 0.0000001, 200 };
+	GAstruct<double> ga_pricing { 0.4, 0.35, 200, 0.0001, 200 };
 	PSOstruct_clamping<double> pso_clamping_irr{ 1.0, 1.0, 5, 2.0,{ 1000 }, 200, 0.0000001, 200 };
-	PSOstruct_clamping<double> pso_clamping_pricing { 1.0, 1.0, 5, 2.0, { 1000, 1000, 1000, 1000 }, 200, 0.001, 200 };
+	PSOstruct_clamping<double> pso_clamping_pricing { 1.0, 1.0, 5, 2.0, { 1000, 1000, 1000, 1000, 1000, 1000}, 200, 0.001, 200 };
 	PSOstruct_inertia<double> pso_inertia_irr{ 1.0, 1.0, 5, 0.9, 200, 0.0000001, 200 };
 	PSOstruct_inertia<double> pso_inertia_pricing{ 1.0, 1.0, 5, 0.9, 200, 0.001, 200 };
 	DEstruct<double> de_irr{ 0.6, 1, 200, 0.0000001, 200 };

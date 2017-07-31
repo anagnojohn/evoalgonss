@@ -4,6 +4,21 @@
 #include "bond.h"
 
 template<typename T>
+bool constraints_irr(const std::vector<T>& solution)
+{
+	const T& r = solution[0];
+	if (r > 0 && r < 1)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
+template<typename T>
 T irr(const T& r, const T& nominal_value, const std::vector<T>& cash_flows, const size_t& int_frequency)
 {
 	T frequency = static_cast<T>(int_frequency);

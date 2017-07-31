@@ -1,11 +1,6 @@
 #pragma once
 
-#include <vector>
-#include <random>
 #include <boost/math/distributions.hpp>
-#include <tuple>
-#include <chrono>
-#include <ctime>
 #include "ealgorithm_base.h"
 
 template<typename T>
@@ -29,14 +24,14 @@ template<typename T, typename F>
 class Solver<T, F, GAstruct<T>> : public Solver<T, F, EAstruct<T>>
 {
 public:
-	Solver(const GAstruct<T>& ga, const Population<T>& popul) : Solver < T, F, EAstruct<T>>{ { ga.npop, ga.tol, ga.iter_max }, popul }, x_rate{ ga.x_rate }, pi{ ga.pi }, stdev{ popul.stdev }
+	Solver(const GAstruct<T>& ga, const Population<T>& popul) : Solver < T, F, EAstruct<T>> { { ga.npop, ga.tol, ga.iter_max }, popul}, x_rate{ ga.x_rate }, pi{ ga.pi }, stdev{ popul.stdev }
 	{
 		boost::math::beta_distribution<T> i_dist(1, 6);
 		dist = i_dist;
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
+		nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
 	}
-	std::tuple<std::vector<T>, T, size_t, double> solve(F f, const T& opt);
 private:
 	// The standard deviation of variables is not constant in GA
 	std::vector<T> stdev;
@@ -45,14 +40,18 @@ private:
 	T x_rate;
 	// Probability of mutating
 	T pi;
+	// Number of individuals to be kept
+	size_t nkeep;
 	std::random_device generator;
 	boost::math::beta_distribution<T> dist;
 	std::uniform_real_distribution<T> distribution;
+	std::string get_type_of_solver() { return "Genetic Algorithms"; };
 	// Crossover method
 	std::vector<T> blend(std::vector<T> r, std::vector<T> s);
 	// Selection method
 	std::vector<std::vector<T>> selection();
 	void mutation();
+	void run_algo(F f, const T& opt);
 };
 
 template<typename T, typename F>
@@ -109,21 +108,12 @@ void Solver<T, F, GAstruct<T>>::mutation()
 }
 
 template<typename T, typename F>
-std::tuple<std::vector<T>, T, size_t, double> Solver<T, F, GAstruct<T>>::solve(F f, const T& opt)
+void Solver<T, F, GAstruct<T>>::run_algo(F f, const T& opt)
 {
-	std::cout << "Genetic Algorithm used as solver" << "\n";
-	// Find the minimum cost individual of the fitness function for the population
-	std::vector<T> min_cost = individuals[0];
-	size_t nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
-	T fitness_cost = f(individuals[0]);
 	auto comparator = [&](const std::vector<T>& l, const std::vector<T>& r)
 	{
 		return f(l) < f(r);
 	};
-	size_t last_iter = 0;
-	//  Time the computation
-	std::chrono::time_point<std::chrono::system_clock> start, end;
-	start = std::chrono::system_clock::now();
 	std::sort(individuals.begin(), individuals.end(), comparator);
 	for (auto iter = 0; iter < iter_max; ++iter)
 	{
@@ -154,9 +144,4 @@ std::tuple<std::vector<T>, T, size_t, double> Solver<T, F, GAstruct<T>>::solve(F
 		fitness_cost = f(individuals[0]);
 		last_iter = iter;
 	}
-	end = std::chrono::system_clock::now();
-	std::chrono::duration<double> elapsed_seconds = end - start;
-	std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-	T timer = elapsed_seconds.count();
-	return { individuals[0], fitness_cost, last_iter, timer };
 }

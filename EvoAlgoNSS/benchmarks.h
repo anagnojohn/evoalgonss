@@ -17,7 +17,7 @@ std::tuple<std::vector<T>, T, size_t, double> yield_curve_fitting(const std::vec
 		assert(p.duration > 0);
 	}
 	auto f = [&](const auto& solution) { return fitness_svensson(solution, bonds); };
-	Solver<T, decltype(f), S> solver(curve_solver, curve_pop);
+	Solver<T, decltype(f), S> solver{ curve_solver, curve_pop };
 	return solver.solve(f, 0.0);
 }
 
@@ -40,7 +40,7 @@ std::tuple<std::vector<T>, T, size_t, double> find_yield(const Bond<T> bond, con
 {
 	assert(irr_pop.ndv == 1);
 	auto f = [&](const auto& solution) { return fitness_irr(solution, bond);};
-	Solver<T, decltype(f), S> solver(irr_solver, irr_pop);
+	Solver<T, decltype(f), S> solver { irr_solver, irr_pop };
 	return solver.solve(f, 0.0);
 }
 

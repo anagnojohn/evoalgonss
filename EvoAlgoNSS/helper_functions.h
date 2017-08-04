@@ -10,7 +10,6 @@ std::ostream& operator<< (std::ostream& out, const std::vector<T>& v) {
 	return out;
 }
 
-
 //std::vector<T> diff(npop);
 //std::vector<T> sum(ndv);
 //std::vector<T> mean(ndv);

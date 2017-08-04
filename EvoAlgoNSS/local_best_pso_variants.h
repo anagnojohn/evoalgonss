@@ -5,8 +5,9 @@
 template<typename T>
 struct PSOstruct_inertia final : PSOstruct<T>
 {
-	PSOstruct_inertia(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-		: PSOstruct{ i_c1 , i_c2 , i_sneigh, i_npop, i_tol, i_iter_max }, w{ i_w }
+	PSOstruct_inertia(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
+		const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
+		: PSOstruct{ i_c1 , i_c2 , i_sneigh, i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }, w{ i_w }
 	{
 		assert(w > 0);
 	}
@@ -16,8 +17,9 @@ struct PSOstruct_inertia final : PSOstruct<T>
 template<typename T>
 struct PSOstruct_clamping final : PSOstruct<T>
 {
-	PSOstruct_clamping(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_alpha, const std::vector<T>& i_vmax, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-		: PSOstruct{ i_c1 , i_c2 , i_sneigh, i_npop, i_tol, i_iter_max }, alpha{ i_alpha }, vmax{ i_vmax }
+	PSOstruct_clamping(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_alpha, const std::vector<T>& i_vmax, 
+		const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
+		: PSOstruct{ i_c1 , i_c2 , i_sneigh, i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }, alpha{ i_alpha }, vmax{ i_vmax }
 	{
 		assert(alpha > 0);
 		for (const auto& p : vmax) { assert(p > 0); };
@@ -30,7 +32,7 @@ template<typename T, typename F>
 class Solver<T, F, PSOstruct_inertia<T>> final : public Solver<T, F, PSOstruct<T>>
 {
 public:
-	Solver(const PSOstruct_inertia<T>& pso, const Population<T>& popul) : Solver < T, F, PSOstruct<T>>{ { pso.c1, pso.c2, pso.sneigh, pso.npop, pso.tol, pso.iter_max}, popul }
+	Solver(const PSOstruct_inertia<T>& pso) : Solver < T, F, PSOstruct<T>>{ { pso.c1, pso.c2, pso.sneigh, pso.decision_variables, pso.stdev, pso.npop, pso.tol, pso.iter_max} }
 	{
 		w = pso.w;
 	}
@@ -64,7 +66,7 @@ template<typename T, typename F>
 class Solver<T, F, PSOstruct_clamping<T>> final : public Solver<T, F, PSOstruct<T>>
 {
 public:
-	Solver(const PSOstruct_clamping<T>& pso, const Population<T>& popul) : Solver < T, F, PSOstruct<T>>{ { pso.c1, pso.c2, pso.sneigh, pso.npop, pso.tol, pso.iter_max}, popul }
+	Solver(const PSOstruct_clamping<T>& pso) : Solver < T, F, PSOstruct<T>>{ { pso.c1, pso.c2, pso.sneigh, pso.decision_variables, pso.stdev, pso.npop, pso.tol, pso.iter_max} }
 	{
 		alpha = pso.alpha;
 		vmax = pso.vmax;

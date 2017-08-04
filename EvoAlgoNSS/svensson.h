@@ -21,7 +21,7 @@ bool constraints_svensson(const std::vector<T>& solution)
 		return false;
 	}
 }
-
+// Spot interest rate at term m
 template<typename T>
 T svensson(const std::vector<T>& solution, const T& m)
 {
@@ -31,10 +31,6 @@ T svensson(const std::vector<T>& solution, const T& m)
 	const T& b3 = solution[3];
 	const T& tau1 = solution[4];
 	const T& tau2 = solution[5];
-	assert(b0 > 0);
-	assert(b0 + b1 > 0);
-	assert(tau1 > 0);
-	assert(tau2 > 0);
 	if (m == 0)
 	{
 		return b0 + b1;
@@ -46,15 +42,4 @@ T svensson(const std::vector<T>& solution, const T& m)
 			- b3 * std::exp(-m / tau2);
 		return result;
 	}
-}
-
-template<typename T>
-T fitness_svensson(const std::vector<T>& solution, const std::vector<Bond<T>>& bonds)
-{
-	T sum_of_squares = 0;
-	for (auto i = 0; i < bonds.size(); ++i)
-	{
-		sum_of_squares = sum_of_squares + std::pow(bonds[i].yield - svensson(solution, bonds[i].duration), 2) / std::sqrt(bonds[i].duration);
-	}
-	return sum_of_squares;
 }

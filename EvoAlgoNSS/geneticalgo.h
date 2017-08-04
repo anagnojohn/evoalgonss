@@ -7,8 +7,9 @@ template<typename T>
 struct GAstruct : EAstruct<T>
 {
 public:
-	GAstruct(const T& i_x_rate, const T& i_pi, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-		: x_rate{ i_x_rate }, pi{ i_pi }, EAstruct{ i_npop, i_tol, i_iter_max }
+	GAstruct(const T& i_x_rate, const T& i_pi, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev, 
+		const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
+		: x_rate{ i_x_rate }, pi{ i_pi }, EAstruct{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }
 	{
 		assert(x_rate > 0 && x_rate <= 1);
 		assert(pi > 0 && pi <= 1);
@@ -24,7 +25,7 @@ template<typename T, typename F>
 class Solver<T, F, GAstruct<T>> : public Solver<T, F, EAstruct<T>>
 {
 public:
-	Solver(const GAstruct<T>& ga, const Population<T>& popul) : Solver < T, F, EAstruct<T>> { { ga.npop, ga.tol, ga.iter_max }, popul}, x_rate{ ga.x_rate }, pi{ ga.pi }, stdev{ popul.stdev }
+	Solver(const GAstruct<T>& ga) : Solver < T, F, EAstruct<T>> { { ga.decision_variables, ga.stdev, ga.npop, ga.tol, ga.iter_max } }, x_rate{ ga.x_rate }, pi{ ga.pi }, stdev{ ga.stdev }
 	{
 		boost::math::beta_distribution<T> i_dist(1, 6);
 		dist = i_dist;
@@ -47,7 +48,7 @@ private:
 	std::uniform_real_distribution<T> distribution;
 	std::string get_type_of_solver() { return "Genetic Algorithms"; };
 	// Crossover method
-	std::vector<T> blend(std::vector<T> r, std::vector<T> s);
+	std::vector<T> crossover(std::vector<T> r, std::vector<T> s);
 	// Selection method
 	std::vector<std::vector<T>> selection();
 	void mutation();
@@ -55,17 +56,17 @@ private:
 };
 
 template<typename T, typename F>
-std::vector<T> Solver<T, F, GAstruct<T>>::blend(std::vector<T> r, std::vector<T> s)
+std::vector<T> Solver<T, F, GAstruct<T>>::crossover(std::vector<T> r, std::vector<T> s)
 {
 	std::vector<T> offspring(ndv);
 	std::vector<T> psi(ndv);
-	for (auto i = 0; i < ndv; ++i)
+	for (auto j = 0; j < ndv; ++j)
 	{
-		psi[i] = distribution(generator);
+		psi[j] = distribution(generator);
 	}
-	for (auto i = 0; i < ndv; ++i)
+	for (auto j = 0; j < ndv; ++j)
 	{
-		offspring[i] = psi[i] * r[i] + (1 - psi[i])*s[i];
+		offspring[j] = psi[j] * r[j] + (1 - psi[j])*s[j];
 	}
 	return offspring;
 }
@@ -80,9 +81,7 @@ std::vector<std::vector<T>> Solver<T, F, GAstruct<T>>::selection()
 		size_t r = static_cast<size_t>(std::round(npop * xi));
 		xi = quantile(dist, distribution(generator));
 		size_t s = static_cast<size_t>(std::round(npop * xi));
-		{
-			offspring.push_back(blend(individuals[r], individuals[s]));
-		}
+		offspring.push_back(crossover(individuals[r], individuals[s]));
 	}
 	return offspring;
 }
@@ -127,14 +126,15 @@ void Solver<T, F, GAstruct<T>>::run_algo(F f, const T& opt)
 			last_iter = iter;
 			break;
 		}
-		std::vector<std::vector<T>> offspring = selection();
 		individuals.erase(individuals.begin() + nkeep, individuals.begin() + npop);
 		npop = individuals.size();
-		nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
+		std::vector<std::vector<T>> offspring = selection();
 		for (auto i = 0; i < offspring.size(); ++i)
 		{
 			individuals.push_back(offspring[i]);
 		}
+		npop = individuals.size();
+		nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
 		mutation();
 		for (auto j = 0; j < ndv; ++j)
 		{

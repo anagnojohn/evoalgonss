@@ -6,8 +6,9 @@ template<typename T>
 struct DEstruct : EAstruct<T>
 {
 public:
-	DEstruct(const T& i_cr, const T& i_f_param, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-		: cr{ i_cr }, f_param{ i_f_param }, EAstruct{ i_npop, i_tol, i_iter_max }
+	DEstruct(const T& i_cr, const T& i_f_param, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev, 
+		const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
+		: cr{ i_cr }, f_param{ i_f_param }, EAstruct{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }
 	{
 		assert(cr > 0 && cr <= 1);
 		assert(f_param > 0 && f_param <= 1);
@@ -24,7 +25,7 @@ class Solver<T, F, DEstruct<T>> : public Solver<T, F, EAstruct<T>>
 {
 public:
 	// Constructor for the Differential Evolution Class
-	Solver(const DEstruct<T>& de, const Population<T>& popul) : Solver < T, F, EAstruct<T>>{ { de.npop, de.tol, de.iter_max }, popul }, cr{ de.cr }, f_param{ de.f_param }
+	Solver(const DEstruct<T>& de) : Solver < T, F, EAstruct<T>>{ { de.decision_variables, de.stdev, de.npop, de.tol, de.iter_max } }, cr{ de.cr }, f_param{ de.f_param }
 	{
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
@@ -78,10 +79,16 @@ void Solver<T, F, DEstruct<T>>::construct_donor(std::vector<T>& donor)
 template<typename T, typename F>
 void Solver<T, F, DEstruct<T>>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor, std::vector<T>& trial)
 {
+	std::vector<size_t> j_indices;
+	for (auto j = 0; j < ndv; ++j)
+	{
+		j_indices.push_back(j);
+	}
+	std::uniform_int_distribution<size_t> j_ind_distribution(0, ndv - 1);
 	for (auto j = 0; j < ndv; ++j)
 	{
 		T epsilon = distribution(generator);
-		size_t jrand = indices[ind_distribution(engine)];
+		size_t jrand = j_indices[j_ind_distribution(engine)];
 		if (epsilon <= cr || j == jrand)
 		{
 			trial[j] = donor[j];

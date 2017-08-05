@@ -122,6 +122,7 @@ void Solver<T, F, DEstruct<T>>::modify_individuals(F f)
 template<typename T, typename F>
 void Solver<T,F, DEstruct<T>>::run_algo(F f, const T& opt)
 {
+	find_min_cost(f);
 	// Differential Evolution starts here
 	for (auto iter = 0; iter < iter_max; ++iter)
 	{

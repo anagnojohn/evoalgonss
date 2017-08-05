@@ -58,8 +58,7 @@ std::vector<T> set_init_nelson_param(std::vector<Bond<T>> & bonds, const S& irr_
 		auto f = [&](const auto& solution) { return fitness_irr(solution, bonds[i]);};
 		Solver<T, decltype(f), S> solver{ irr_solver };
 		auto res = solver.solve(f, 0.0);
-		print_results(res);
-		bonds[i].yield = std::get<0>(res)[0];
+		bonds[i].yield = res[0];
 		bonds[i].duration = macaulay_duration(bonds[i].yield, bonds[i].cash_flows, bonds[i].nominal_value, bonds[i].frequency);
 		std::cout << "Macaulay Duration: " << bonds[i].duration << "\n";
 	}
@@ -86,14 +85,13 @@ void benchmarkbondpricing(std::vector<Bond<T>>& bonds,  const S& pricing_solver)
 	Solver<T, decltype(f), S> solver{ pricing_solver };
 	std::cout << "Solving bond pricing using bond prices..." << "\n";
 	auto res = solver.solve(f, 0.0);
-	print_results(res);
 	for (const auto& p : bonds)
 	{
-		std::cout << "Estimated yield: " << svensson(std::get<0>(res), p.duration) << " Actual Yield: " << p.yield << "\n";
+		std::cout << "Estimated yield: " << svensson(res, p.duration) << " Actual Yield: " << p.yield << "\n";
 	}
 	for (const auto& p : bonds)
 	{
-		std::cout << "Estimated price: " << estimate_bond_pricing(std::get<0>(res), p.coupon_value, p.nominal_value, p.time_periods) << " Actual Price: " << p.price << "\n";
+		std::cout << "Estimated price: " << estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods) << " Actual Price: " << p.price << "\n";
 	};
 }
 
@@ -110,14 +108,13 @@ void benchmarkbondpricing_yields(std::vector<Bond<T>>& bonds, const S& pricing_s
 	Solver<T, decltype(f), S> solver{ pricing_solver };
 	std::cout << "Solving bond pricing using bond yields..." << "\n";
 	auto res = solver.solve(f, 0.0);
-	print_results(res);
 	for (const auto& p : bonds)
 	{
-		std::cout << "Estimated yield: " << svensson(std::get<0>(res), p.duration) << " Actual Yield: " << p.yield << "\n";
+		std::cout << "Estimated yield: " << svensson(res, p.duration) << " Actual Yield: " << p.yield << "\n";
 	}
 	for (const auto& p : bonds)
 	{
-		std::cout << "Estimated price: " << estimate_bond_pricing(std::get<0>(res), p.coupon_value, p.nominal_value, p.time_periods) << " Actual Price: " << p.price << "\n";
+		std::cout << "Estimated price: " << estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods) << " Actual Price: " << p.price << "\n";
 	}
 }
 
@@ -129,9 +126,8 @@ void benchmarkyieldcurvefitting(const std::vector<Interest_Rate<T>>& ir_vec, con
 	Solver<T, decltype(f), S> solver{ curve_solver };
 	std::cout << "Yield Curve fitting." << "\n";
 	auto res = solver.solve(f, 0.0);
-	print_results(res);
 	for (const auto& p : ir_vec)
 	{
-		std::cout << "Estimated interest rates: " << svensson(std::get<0>(res), p.period) << " Actual interest rates: " << p.rate << "\n";
+		std::cout << "Estimated interest rates: " << svensson(res, p.period) << " Actual interest rates: " << p.rate << "\n";
 	}
 }

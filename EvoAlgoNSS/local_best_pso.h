@@ -223,6 +223,7 @@ std::vector<T> Solver<T, F, PSOstruct<T>>::find_min_local_best(F f)
 template<typename T, typename F>
 void Solver<T, F, PSOstruct<T>>::run_algo(F f, const T& opt)
 {
+	find_min_cost(f);
 	// Local Best Particle Swarm starts here
 	for (auto iter = 0; iter < iter_max; ++iter)
 	{	

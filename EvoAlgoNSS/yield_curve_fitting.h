@@ -54,10 +54,6 @@ T fitness_yield_curve_fitting(const std::vector<T>& solution, const std::vector<
 	{
 		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0 + b1), 2);
 	}
-	if (b0 + b1 < 0)
-	{
-		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0 + b1), 2);
-	}
 	if (tau1 < 0)
 	{
 		sum_of_squares = sum_of_squares + C * std::pow(std::abs(tau2), 2);

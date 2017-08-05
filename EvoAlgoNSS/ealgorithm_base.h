@@ -114,7 +114,9 @@ public:
 	{
 		min_cost = individuals[0];
 	}
-	std::tuple<std::vector<T>, T, size_t, double> solve(F f, const T& opt);
+	std::vector<T>solve(F f, const T& opt);
+	std::vector<T> ret_min_cost() { return min_cost; };
+	T ret_fitness_cost() { return fitness_cost; };
 protected:
 	// Size of the population
 	size_t npop;
@@ -140,6 +142,7 @@ protected:
 	virtual void run_algo(F f, const T& opt) {};
 };
 
+// Find the minimum cost individual of the fitness function for the population
 template<typename T, typename F>
 void Solver<T, F, EAstruct<T>>::find_min_cost(F f)
 {
@@ -154,11 +157,9 @@ void Solver<T, F, EAstruct<T>>::find_min_cost(F f)
 }
 
 template<typename T, typename F>
-std::tuple<std::vector<T>, T, size_t, double> Solver<T, F, EAstruct<T>>::solve(F f, const T& opt)
+std::vector<T> Solver<T, F, EAstruct<T>>::solve(F f, const T& opt)
 {
 	std::cout << get_type_of_solver() << " used as solver" << "\n";
-	// Find the minimum cost individual of the fitness function for the population
-	find_min_cost(f);
 	// Time the computation
 	std::chrono::time_point<std::chrono::system_clock> start, end;
 	start = std::chrono::system_clock::now();
@@ -167,8 +168,11 @@ std::tuple<std::vector<T>, T, size_t, double> Solver<T, F, EAstruct<T>>::solve(F
 	std::chrono::duration<double> elapsed_seconds = end - start;
 	std::time_t end_time = std::chrono::system_clock::to_time_t(end);
 	T timer = elapsed_seconds.count();
+	std::cout << "Optimum solution: " << min_cost << " Fitness Value: " << fitness_cost << "\n";
+	std::cout << "Number of invididuals: " << npop << " Solved at iteration: " << last_iter << "\n";
+	std::cout << "Elapsed time in seconds: " << timer << "\n";
 	// Return minimum cost individual
-	return { min_cost, fitness_cost, last_iter, timer };
+	return min_cost;
 }
 
 template<typename T, typename F, typename S>

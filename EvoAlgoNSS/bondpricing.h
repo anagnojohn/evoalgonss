@@ -32,7 +32,7 @@ T fitness_bond_pricing_yields(const std::vector<T>& solution, const std::vector<
 	for (auto i = 0; i < bonds.size(); ++i)
 	{
 		T estimate = svensson(solution, bonds[i].duration);
-		sum_of_squares = sum_of_squares + std::pow((bonds[i].yield - estimate), 2) / std::sqrt(bonds[i].duration);
+		sum_of_squares = sum_of_squares + std::pow((bonds[i].yield - estimate), 2);
 	}
 	const T& b0 = solution[0];
 	const T& b1 = solution[1];
@@ -41,23 +41,31 @@ T fitness_bond_pricing_yields(const std::vector<T>& solution, const std::vector<
 	const T& tau1 = solution[4];
 	const T& tau2 = solution[5];
 	const T C = 1000;
-	if (b0 < 0)
+	if (b0 < 0 || b0 > 15)
 	{
 		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0), 2);
 	}
-	if (b0 + b1 < 0)
+	//if (b0 + b1 < 0)
+	//{
+	//	sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0 + b1), 2);
+	//}
+	if (b1 < -15 || b1 > 30)
 	{
-		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0 + b1), 2);
+		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b1), 2);
 	}
-	if (b0 + b1 < 0)
+	if (b2 < -30 || b2 > 30)
 	{
-		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0 + b1), 2);
+		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b1), 2);
 	}
-	if (tau1 < 0)
+	if (b3 < -30 || b3 > 30)
+	{
+		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b1), 2);
+	}
+	if (tau1 < 0 || tau1 > 2.5)
 	{
 		sum_of_squares = sum_of_squares + C * std::pow(std::abs(tau2), 2);
 	}
-	if (tau2 < 0)
+	if (tau2 < 2.5 || tau2 > 5.5)
 	{
 		sum_of_squares = sum_of_squares + C * std::pow(std::abs(tau2), 2);
 	}
@@ -80,23 +88,31 @@ T fitness_bond_pricing(const std::vector<T>& solution, const std::vector<Bond<T>
 	const T& tau1 = solution[4];
 	const T& tau2 = solution[5];
 	const T C = 500;
-	if (b0 < 0)
+	if (b0 < 0 || b0 > 15)
 	{
 		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0), 2);
 	}
-	if (b0 + b1 < 0)
+	//if (b0 + b1 < 0)
+	//{
+	//	sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0 + b1), 2);
+	//}
+	if (b1 < -15 || b1 > 30)
 	{
-		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0 + b1), 2);
+		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b1), 2);
 	}
-	if (b0 + b1 < 0)
+	if (b2 < -30 || b2 > 30)
 	{
-		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0 + b1), 2);
+		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b1), 2);
 	}
-	if (tau1 < 0)
+	if (b3 < -30 || b3 > 30)
+	{
+		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b1), 2);
+	}
+	if (tau1 < 0 || tau1 > 2.5)
 	{
 		sum_of_squares = sum_of_squares + C * std::pow(std::abs(tau2), 2);
 	}
-	if (tau2 < 0)
+	if (tau2 < 2.5 || tau2 > 5.5)
 	{
 		sum_of_squares = sum_of_squares + C * std::pow(std::abs(tau2), 2);
 	}

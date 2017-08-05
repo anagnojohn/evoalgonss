@@ -43,3 +43,32 @@ T svensson(const std::vector<T>& solution, const T& m)
 		return result;
 	}
 }
+
+template<typename T>
+void penalty_svensson(const std::vector<T>& solution, T& sum_of_squares)
+{
+	const T& b0 = solution[0];
+	const T& b1 = solution[1];
+	const T& b2 = solution[2];
+	const T& b3 = solution[3];
+	const T& tau1 = solution[4];
+	const T& tau2 = solution[5];
+	const T C = 1000;
+	if (b0 < 0)
+	{
+		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0), 2);
+	}
+	if (b0 + b1 < 0)
+	{
+		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0 + b1), 2);
+	}
+	if (tau1 < 0)
+	{
+		sum_of_squares = sum_of_squares + C * std::pow(std::abs(tau2), 2);
+	}
+	if (tau2 < 0)
+	{
+		sum_of_squares = sum_of_squares + C * std::pow(std::abs(tau2), 2);
+	}
+	return sum_of_squares;
+}

@@ -21,7 +21,7 @@ bool constraints_svensson(const std::vector<T>& solution)
 		return false;
 	}
 }
-// Spot interest rate at term m
+// Spot interest rate at term m using the Nelson-Siegel-Svensson model
 template<typename T>
 T svensson(const std::vector<T>& solution, const T& m)
 {
@@ -45,7 +45,7 @@ T svensson(const std::vector<T>& solution, const T& m)
 }
 
 template<typename T>
-void penalty_svensson(const std::vector<T>& solution, T& sum_of_squares)
+T penalty_svensson(const std::vector<T>& solution)
 {
 	const T& b0 = solution[0];
 	const T& b1 = solution[1];
@@ -54,21 +54,34 @@ void penalty_svensson(const std::vector<T>& solution, T& sum_of_squares)
 	const T& tau1 = solution[4];
 	const T& tau2 = solution[5];
 	const T C = 1000;
-	if (b0 < 0)
+	T sum = 0;
+	if (b0 < 0 || b0 > 15)
 	{
-		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0), 2);
+		sum = sum + C * std::pow(std::abs(b0), 2);
 	}
-	if (b0 + b1 < 0)
+	//if (b0 + b1 < 0)
+	//{
+	//	sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0 + b1), 2);
+	//}
+	if (b1 < -15 || b1 > 30)
 	{
-		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0 + b1), 2);
+		sum = sum + C * std::pow(std::abs(b1), 2);
 	}
-	if (tau1 < 0)
+	if (b2 < -30 || b2 > 30)
 	{
-		sum_of_squares = sum_of_squares + C * std::pow(std::abs(tau2), 2);
+		sum = sum + C * std::pow(std::abs(b1), 2);
 	}
-	if (tau2 < 0)
+	if (b3 < -30 || b3 > 30)
 	{
-		sum_of_squares = sum_of_squares + C * std::pow(std::abs(tau2), 2);
+		sum = sum + C * std::pow(std::abs(b1), 2);
 	}
-	return sum_of_squares;
+	if (tau1 < 0 || tau1 > 2.5)
+	{
+		sum = sum + C * std::pow(std::abs(tau2), 2);
+	}
+	if (tau2 < 2.5 || tau2 > 5.5)
+	{
+		sum = sum + C * std::pow(std::abs(tau2), 2);
+	}
+	return sum;
 }

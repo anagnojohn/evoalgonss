@@ -1,7 +1,6 @@
 #pragma once
 
 #include "dependencies.h"
-#include "bond.h"
 
 template<typename T>
 bool constraints_irr(const std::vector<T>& solution)
@@ -17,7 +16,7 @@ bool constraints_irr(const std::vector<T>& solution)
 	}
 }
 
-
+// Returns the present value of an investment
 template<typename T>
 T irr(const T& r, const T& nominal_value, const std::vector<T>& cash_flows, const T& frequency)
 {
@@ -31,25 +30,24 @@ T irr(const T& r, const T& nominal_value, const std::vector<T>& cash_flows, cons
 }
 
 template<typename T>
-T find_bond_price(const T& ytm, const T& coupon_value, const T& nominal_value, const std::vector<T>& time_periods)
+T penalty_irr(const std::vector<T>& solution)
 {
-	const size_t& num_time_periods = time_periods.size();
-	T sum = 0.0;
-	T pv_cash_flow = 0.0;
-	T discount_factor = 0.0;
-	for (auto i = 0; i < num_time_periods; ++i)
+	const T& r = solution[0];
+	const T C = 1000;
+	T sum = 0;
+	if (r < 0 || r > 1)
 	{
-		discount_factor = std::exp(-ytm * time_periods[i]);
-		pv_cash_flow = pv_cash_flow + coupon_value * discount_factor;
+		sum = sum + C * std::pow(std::abs(r), 2);
 	}
-	pv_cash_flow = pv_cash_flow + nominal_value * discount_factor;
-	return pv_cash_flow;
+	return sum;
 }
 
+// This is the fitness function for finding the internal rate of return of a bond, in this case it is equal to its yield to maturity
 template<typename T>
-T fitness_irr(const std::vector<T>& solution, const Bond<T>& bond)
+T fitness_irr(const std::vector<T>& solution, const T& price, const T& nominal_value, const std::vector<T>& cash_flows, const T& frequency)
 {
 	T sum_of_squares = 0;
-	sum_of_squares = sum_of_squares + std::pow(bond.price - irr(solution[0], bond.nominal_value, bond.cash_flows, bond.frequency), 2);
+	sum_of_squares = sum_of_squares + std::pow(price - irr(solution[0], nominal_value, cash_flows, frequency), 2);
+	sum_of_squares = sum_of_squares + penalty_irr(solution);
 	return sum_of_squares;
 }

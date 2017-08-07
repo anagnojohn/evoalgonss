@@ -156,7 +156,6 @@
   <ItemGroup>
     <ClInclude Include="benchmarks.h" />
     <ClInclude Include="bond.h" />
-    <ClInclude Include="bondpricing.h" />
     <ClInclude Include="dependencies.h" />
     <ClInclude Include="differentialevo.h" />
     <ClInclude Include="ealgorithm_base.h" />

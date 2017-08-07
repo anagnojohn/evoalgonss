@@ -69,55 +69,79 @@ public:
 };
 
 template<typename T>
-std::vector<std::vector<T>> init_individuals(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev)
+std::vector<T> randomise_individual(const std::vector<T>& decision_variables, const std::vector<T>& stdev)
 {
 	std::random_device generator;
-	T epsilon;
+	std::vector<T> individual = decision_variables;
 	const auto& ndv = decision_variables.size();
-	std::vector<std::vector<T>> individuals;
-	individuals.resize(npop, std::vector<T>(ndv));
+	T epsilon;
+	for (auto j = 0; j < ndv; ++j)
+	{
+		std::normal_distribution<T> ndistribution(0, stdev[j]);
+		epsilon = std::abs(ndistribution(generator));
+		individual[j] = individual[j] + epsilon;
+	}
+	return individual;
+}
+
+template<typename T>
+std::vector<std::vector<T>> init_individuals(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev)
+{
+	const auto& ndv = decision_variables.size();
+	std::vector<std::vector<T>> individuals(npop, std::vector<T>(ndv));
 	for (auto& p : individuals)
 	{
-		p = decision_variables;
-	}
-	for (auto i = 0; i < npop; ++i)
-	{
-		for (auto j = 0; j < ndv; ++j)
-		{
-			std::normal_distribution<T> ndistribution(0, stdev[j]);
-			epsilon = std::abs(ndistribution(generator));
-			individuals[i][j] = individuals[i][j] + epsilon;
-		}
+		p = randomise_individual(decision_variables, stdev);
 	}
 	return individuals;
 }
 
 // Template Class for Solvers
-template<typename T, typename F, typename S>
+template<typename T, typename S>
 class Solver
 {
 public:
-	Solver(const S& solver_struct, F f)
+	Solver(const S& solver_struct)
 	{
 
 	}
 };
 
 // Base Class for Evolutionary Algorithms
-template<typename T, typename F>
-class Solver<T, F, EAstruct<T>>
+template<typename T>
+class Solver<T, EAstruct<T>>
 {
 public:
 	Solver(const EAstruct<T>& solver_struct)
 		: npop{ solver_struct.npop }, ndv{ solver_struct.ndv }, tol{ solver_struct.tol }, iter_max{ solver_struct.iter_max },
-		individuals { init_individuals(solver_struct.decision_variables, solver_struct.npop, solver_struct.stdev) }
+		individuals{ init_individuals(solver_struct.decision_variables, solver_struct.npop, solver_struct.stdev) }, iter{ 0 }
 	{
 		min_cost = individuals[0];
+		decision_variables = solver_struct.decision_variables;
+		stdev = solver_struct.stdev;
 	}
-	std::vector<T>solve(F f, const T& opt);
 	std::vector<T> ret_min_cost() { return min_cost; };
-	T ret_fitness_cost() { return fitness_cost; };
+	T ret_min_cost() const { return min_cost; };
+	size_t ret_npop() const { return npop; };
+	T ret_fitness_cost() const { return fitness_cost; };
+	size_t ret_iter() const { return iter; };
+	template<typename F, typename C> void run_algo(F f, const T& opt, C c) {};
+	const std::string type = "";
+	template<typename C> void population_constraints_checker(C c)
+	{
+		for (auto& p : individuals)
+		{
+			while (!c(p))
+			{
+				p = randomise_individual(decision_variables, stdev);
+			}
+		}
+	};
 protected:
+	// The decision variables
+	std::vector<T> decision_variables;
+	// The standard deviation of decision variables
+	std::vector<T> stdev;
 	// Size of the population
 	size_t npop;
 	// Tolerance
@@ -131,20 +155,20 @@ protected:
 	// Best fitness
 	T fitness_cost;
 	// Last iteration to solution
-	size_t last_iter;
+	size_t iter;
 	// Best solution
 	std::vector<T> min_cost;
 	// Find best solution
-	void find_min_cost(F f);
-	// Get the type of solver
-	virtual std::string get_type_of_solver() { return ""; };
-	// Run a solver
-	virtual void run_algo(F f, const T& opt) {};
+	template<typename F> void find_min_cost(F f);
+	template<typename C> bool candidate_constraints_checker(C c, std::vector<T> individual)
+	{
+	};
 };
 
 // Find the minimum cost individual of the fitness function for the population
-template<typename T, typename F>
-void Solver<T, F, EAstruct<T>>::find_min_cost(F f)
+template<typename T>
+template<typename F>
+void Solver<T, EAstruct<T>>::find_min_cost(F f)
 {
 	for (const auto& p : individuals)
 	{
@@ -156,28 +180,23 @@ void Solver<T, F, EAstruct<T>>::find_min_cost(F f)
 	fitness_cost = f(min_cost);
 }
 
-template<typename T, typename F>
-std::vector<T> Solver<T, F, EAstruct<T>>::solve(F f, const T& opt)
+template<typename T, typename F, typename C, typename S>
+std::vector<T> solve(F f, const T& opt, C c, const S& solver_struct)
 {
-	std::cout << get_type_of_solver() << " used as solver" << "\n";
+	Solver<T, S> solver(solver_struct);
+	solver.population_constraints_checker(c);
+	std::cout << solver.type << " used as solver" << "\n";
 	// Time the computation
 	std::chrono::time_point<std::chrono::system_clock> start, end;
 	start = std::chrono::system_clock::now();
-	run_algo(f, opt);
+	solver.run_algo(f, opt, c);
 	end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed_seconds = end - start;
 	std::time_t end_time = std::chrono::system_clock::to_time_t(end);
 	T timer = elapsed_seconds.count();
-	std::cout << "Optimum solution: " << min_cost << " Fitness Value: " << fitness_cost << "\n";
-	std::cout << "Number of invididuals: " << npop << " Solved at iteration: " << last_iter << "\n";
+	std::cout << "Optimum solution: " << solver.ret_min_cost() << " Fitness Value: " << solver.ret_fitness_cost() << "\n";
+	std::cout << "Population: " << solver.ret_npop() << " Solved at iteration: " << solver.ret_iter() << "\n";
 	std::cout << "Elapsed time in seconds: " << timer << "\n";
 	// Return minimum cost individual
-	return min_cost;
-}
-
-template<typename T, typename F, typename S>
-Solver<T, F, S> create_solver(const S& solver_struct)
-{
-	Solver<T, F, S> solver(solver_struct);
-	return solver;
+	return solver.ret_min_cost();
 }

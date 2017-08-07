@@ -20,12 +20,12 @@ public:
 };
 
 //Differential Evolution Algorithm Class
-template<typename T, typename F>
-class Solver<T, F, DEstruct<T>> : public Solver<T, F, EAstruct<T>>
+template<typename T>
+class Solver<T, DEstruct<T>> : public Solver<T, EAstruct<T>>
 {
 public:
 	// Constructor for the Differential Evolution Class
-	Solver(const DEstruct<T>& de) : Solver < T, F, EAstruct<T>>{ { de.decision_variables, de.stdev, de.npop, de.tol, de.iter_max } }, cr{ de.cr }, f_param{ de.f_param }
+	Solver(const DEstruct<T>& de) : Solver < T, EAstruct<T>>{ { de.decision_variables, de.stdev, de.npop, de.tol, de.iter_max } }, cr{ de.cr }, f_param{ de.f_param }
 	{
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
@@ -36,6 +36,8 @@ public:
 		std::uniform_int_distribution<size_t> i_ind_distribution(0, indices.size() - 1);
 		ind_distribution = i_ind_distribution;
 	}
+	const std::string type = "Differential Evolution";
+	template<typename F, typename C> void run_algo(F f, const T& opt, C c);
 private:
 	// Crossover Rate
 	T cr;
@@ -49,17 +51,15 @@ private:
 	// Uniform Real Distribution used for generating the random vectors for mutation and epsilon for crossover 
 	std::uniform_real_distribution<T> distribution;
 	std::uniform_int_distribution<size_t> ind_distribution;
-	std::string get_type_of_solver() { return "Differential Evolution"; };
-	void construct_donor(std::vector<T>& donor);
-	void construct_trial(const std::vector<T>& target, const std::vector<T>& donor, std::vector<T>& trial);
-	void modify_individuals(F f);
-	void run_algo(F f, const T& opt);
+	std::vector<T> construct_donor();
+	std::vector<T> construct_trial(const std::vector<T>& target, const std::vector<T>& donor);
 };
 
 // Method that constructs the donor vector
-template<typename T, typename F>
-void Solver<T, F, DEstruct<T>>::construct_donor(std::vector<T>& donor)
+template<typename T>
+std::vector<T> Solver<T, DEstruct<T>>::construct_donor()
 {
+	std::vector<T> donor(ndv);
 	std::vector<size_t> r_i;
 	while (r_i.size() < 3)
 	{
@@ -73,12 +73,14 @@ void Solver<T, F, DEstruct<T>>::construct_donor(std::vector<T>& donor)
 	{
 		donor[j] = individuals[r_i[0]][j] + f_param * (individuals[r_i[1]][j] - individuals[r_i[2]][j]);
 	}
+	return donor;
 }
 
 // Method that constructs the trial vector
-template<typename T, typename F>
-void Solver<T, F, DEstruct<T>>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor, std::vector<T>& trial)
+template<typename T>
+std::vector<T> Solver<T, DEstruct<T>>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor)
 {
+	std::vector<T> trial(ndv);
 	std::vector<size_t> j_indices;
 	for (auto j = 0; j < ndv; ++j)
 	{
@@ -98,43 +100,38 @@ void Solver<T, F, DEstruct<T>>::construct_trial(const std::vector<T>& target, co
 			trial[j] = target[j];
 		}
 	}
+	return trial;
 }
 
-template<typename T, typename F>
-void Solver<T, F, DEstruct<T>>::modify_individuals(F f)
-{
-	for (auto i = 0; i < npop; ++i)
-	{
-		std::vector<T> donor(ndv);
-		std::vector<T> trial(ndv);
-		// Construct donor and trial vectors
-		construct_donor(donor);
-		construct_trial(individuals[i], donor, trial);
-		// Replace individual i with trial if trial's cost is lower / Selection step
-		if (f(trial) <= f(individuals[i]))
-		{
-			individuals[i] = trial;
-		}
-	}
-}
-
-// Solve function overload for the Differential Evolution class
-template<typename T, typename F>
-void Solver<T,F, DEstruct<T>>::run_algo(F f, const T& opt)
+// Run the algorithm until the stopping criteria
+template<typename T>
+template<typename F, typename C>
+void Solver<T, DEstruct<T>>::run_algo(F f, const T& opt, C c)
 {
 	find_min_cost(f);
 	// Differential Evolution starts here
-	for (auto iter = 0; iter < iter_max; ++iter)
+	for (iter = 0; iter < iter_max; ++iter)
 	{
 		// Stopping Criteria
 		if (tol > std::abs(fitness_cost - opt))
 		{
-			last_iter = iter;
 			break;
 		}
-		modify_individuals(f);
+		for (auto& p : individuals)
+		{
+			// Construct donor and trial vectors
+			std::vector<T> donor = construct_donor();
+			while (!c(donor))
+			{
+				donor = construct_donor();
+			}
+			std::vector<T> trial = construct_trial(p, donor);
+			if (f(trial) <= f(p))
+			{
+				p = trial;
+			}
+		}
 		// Recalculate minimum cost individual of the population
 		find_min_cost(f);
-		last_iter = iter;
 	}
 }

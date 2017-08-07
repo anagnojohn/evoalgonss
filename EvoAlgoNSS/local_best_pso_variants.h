@@ -28,80 +28,108 @@ struct PSOstruct_clamping final : PSOstruct<T>
 	const std::vector<T> vmax;
 };
 
-template<typename T, typename F>
-class Solver<T, F, PSOstruct_inertia<T>> final : public Solver<T, F, PSOstruct<T>>
+// Inertia Variant of PSO
+template<typename T>
+class Solver<T, PSOstruct_inertia<T>> final : public Solver<T, PSOstruct<T>>
 {
 public:
-	Solver(const PSOstruct_inertia<T>& pso) : Solver < T, F, PSOstruct<T>>{ { pso.c1, pso.c2, pso.sneigh, pso.decision_variables, pso.stdev, pso.npop, pso.tol, pso.iter_max} }
+	Solver(const PSOstruct_inertia<T>& pso) : Solver < T, PSOstruct<T>>{ { pso.c1, pso.c2, pso.sneigh, pso.decision_variables, pso.stdev, pso.npop, pso.tol, pso.iter_max} }, w{ pso.w }
 	{
-		w = pso.w;
 	}
+	const std::string type = "Local Best Particle Swarm Optimisation with Inertia";
+	template<typename F, typename C> void run_algo(F f, const T& opt, C c);
 private:
 	T w;
-	void velocity_update(const size_t& iter);
 };
 
-template<typename T, typename F>
-void Solver<T, F, PSOstruct_inertia<T>>::velocity_update(const size_t& iter)
+// Runs the algorithm until the stopping criteria
+template<typename T>
+template<typename F, typename C>
+void Solver<T, PSOstruct_inertia<T>>::run_algo(F f, const T& opt, C c)
 {
-	const auto& r = generate_r();
-	for (auto k = 0; k < nneigh; ++k)
+	find_min_cost(f);
+	// Local Best Particle Swarm starts here
+	for (iter = 0; iter < iter_max; ++iter)
 	{
-		for (auto l = 0; l < neighbourhoods[k].size(); ++l)
+		check_pso_criteria();
+		if (tol > std::abs(fitness_cost - opt) || rmax < tol)
 		{
-			auto i = neighbourhoods[k][l];
+			break;
+		}
+		// Velocities of the particles is updated using inertia as well
+		const auto& r = generate_r();
+		for (auto i = 0; i < npop; ++i)
+		{
 			for (auto j = 0; j < ndv; ++j)
 			{
-				{
-					velocity[i][j] = w * velocity[i][j] + c1 * r[0][j] * (personal_best[i][j]
-						- individuals[i][j]) + c2 * r[1][j] * (local_best[k][j] - individuals[i][j]);
-				}
+				velocity[i][j] = w * velocity[i][j] + c1 * r[0][j] * (personal_best[i][j] - individuals[i][j])
+					+ c2 * r[1][j] * (local_best[neighbourhoods[i]][j] - individuals[i][j]);
 			}
 		}
+		position_update();
+		check_particle_constraints(c);
+		set_best(f);
+		min_cost = find_min_local_best(f);
+		w = ((w - 0.4) * (iter_max - iter)) / (iter_max + 0.4);
 	}
-	w = ((w - 0.4) * (iter_max - iter)) / (iter_max + 0.4);
 }
 
-template<typename T, typename F>
-class Solver<T, F, PSOstruct_clamping<T>> final : public Solver<T, F, PSOstruct<T>>
+// Velocity Clamping Variant of 
+template<typename T>
+class Solver<T, PSOstruct_clamping<T>> final : public Solver<T, PSOstruct<T>>
 {
 public:
-	Solver(const PSOstruct_clamping<T>& pso) : Solver < T, F, PSOstruct<T>>{ { pso.c1, pso.c2, pso.sneigh, pso.decision_variables, pso.stdev, pso.npop, pso.tol, pso.iter_max} }
+	Solver(const PSOstruct_clamping<T>& pso) : Solver < T, PSOstruct<T>>{ { pso.c1, pso.c2, pso.sneigh, pso.decision_variables, pso.stdev, pso.npop, pso.tol, pso.iter_max} }
+		, alpha{pso.alpha}, vmax{pso.vmax}
 	{
-		alpha = pso.alpha;
-		vmax = pso.vmax;
 		assert(vmax.size() == ndv);
 	}
+	const std::string type = "Local Best Particle Swarm Optimisation with Velocity Clamping";
+	template<typename F, typename C> void run_algo(F f, const T& opt, C c);
 private:
 	T alpha;
+	// Maximum Velocity
 	std::vector<T> vmax;
-	void velocity_update(const size_t& iter);
 };
 
-template<typename T, typename F>
-void Solver<T, F, PSOstruct_clamping<T>>::velocity_update(const size_t& iter)
+
+// Runs the algorithm until the stopping criteria
+template<typename T>
+template<typename F, typename C>
+void Solver<T, PSOstruct_clamping<T>>::run_algo(F f, const T& opt, C c)
 {
-	const auto& r = generate_r();
-	for (auto k = 0; k < nneigh; ++k)
+	find_min_cost(f);
+	// Local Best Particle Swarm starts here
+	for (iter = 0; iter < iter_max; ++iter)
 	{
-		for (auto l = 0; l < neighbourhoods[k].size(); ++l)
+		check_pso_criteria();
+		if (tol > std::abs(fitness_cost - opt) || rmax < tol)
 		{
-			auto i = neighbourhoods[k][l];
+			break;
+		}
+		velocity_update();
+		// Velocities of the particles is updated using velocity clapming as well
+		const auto& r = generate_r();
+		for (auto i = 0; i < npop; ++i)
+		{
 			for (auto j = 0; j < ndv; ++j)
 			{
+				velocity[i][j] = velocity[i][j] + c1 * r[0][j] * (personal_best[i][j] - individuals[i][j])
+					+ c2 * r[1][j] * (local_best[neighbourhoods[i]][j] - individuals[i][j]);
+				if (velocity[i][j] > vmax[j])
 				{
-					velocity[i][j] = velocity[i][j] + c1 * r[0][j] * (personal_best[i][j]
-						- individuals[i][j]) + c2 * r[1][j] * (local_best[k][j] - individuals[i][j]);
-					if (velocity[i][j] > vmax[j])
-					{
-						velocity[i][j] = vmax[j];
-					}
+					velocity[i][j] = vmax[j];
 				}
 			}
 		}
-	}
-	for (auto& p : vmax)
-	{
-		p = (1 - std::pow(iter / iter_max, alpha)) * p;
+		position_update();
+		check_particle_constraints(c);
+		set_best(f);
+		min_cost = find_min_local_best(f);
+		// Maximum velocity is reduced using the current iteration and 
+		for (auto& p : vmax)
+		{
+			p = (1 - std::pow(iter / iter_max, alpha)) * p;
+		}
 	}
 }

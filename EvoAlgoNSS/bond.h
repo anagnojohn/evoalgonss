@@ -1,10 +1,15 @@
 #pragma once
 
 #include <vector>
+#include "irr.h"
 #include "dependencies.h"
 #include "boost/date_time/gregorian/gregorian.hpp"
 #include "boost/date_time/time.hpp"
 
+template<typename T>
+class BondHelper;
+
+// Calculate the cash flows of the bond
 template<typename T>
 std::vector<T> compute_cash_flows(const T& coupon_value, const T& frequency, boost::gregorian::date settlement_date, boost::gregorian::date maturity_date)
 {
@@ -21,9 +26,11 @@ std::vector<T> compute_cash_flows(const T& coupon_value, const T& frequency, boo
 	return cash_flows;
 }
 
+// Bond Class
 template<typename T>
 class Bond
 {
+	friend class BondHelper<T>;
 public:
 
 	// In the case price is given but the yield and the macaulay duration are not given
@@ -76,17 +83,37 @@ public:
 	const T frequency;
 	const T coupon_value;
 	std::vector<T> time_periods;
-	T yield;
-	T duration;
 	std::vector<T> cash_flows;
-	T get_duration() const { return duration; };
+	// Getters
+	T ret_duration() const { return duration; };
+	T ret_yield() const { return yield; };
+	// Setters
+	void set_yield(const T& yield, const T& duration) { yield->this.yield; duration->this.duration; };
+	template<typename S> void compute_yield(const S& solver);
 private:
 	const boost::gregorian::date settlement_date;
 	const boost::gregorian::date maturity_date;
+	T compute_macaulay_duration();
+	T yield;
+	T duration;
 };
 
 template<typename T>
-T macaulay_duration(const T& yield, const std::vector<T>& cash_flows, const T& nominal_value, const T& frequency)
+template<typename S>
+void Bond<T>::compute_yield(const S& solver)
+{
+	assert(solver.ndv == 1);
+	auto f = [&](const auto& solution) { return fitness_irr(solution, price, nominal_value, cash_flows, frequency); };
+	auto c = [&](const auto& solution) { return constraints_irr(solution); };
+	auto res = solve(f, 0.0, c, solver);
+	yield = res[0];
+	duration = compute_macaulay_duration();
+	std::cout << "Macaulay Duration: " << duration << "\n";
+}
+
+// Calculate the macaulay_duration of a bond
+template<typename T>
+T Bond<T>::compute_macaulay_duration()
 {
 	assert(yield > 0 && yield < 1);
 	assert(cash_flows.size() > 0);
@@ -94,10 +121,9 @@ T macaulay_duration(const T& yield, const std::vector<T>& cash_flows, const T& n
 	assert(frequency > 0);
 	T discount_factor = 0.0;
 	T pv_cash_flow = 0.0;
-	//T current_bond_price = 0.0;
-	T duration = 0.0;
 	T coupon_value = cash_flows[0];
 	T pv = 0.0;
+	T duration = 0.0;
 	for (auto i = 0; i < cash_flows.size(); ++i)
 	{
 		discount_factor = 1 / std::pow(1 + (yield / frequency), static_cast<T>(i + 1));
@@ -116,31 +142,39 @@ T macaulay_duration(const T& yield, const std::vector<T>& cash_flows, const T& n
 }
 
 template<typename T>
-T macaulay_duration2(const T& yield, const std::vector<T>& cash_flows, const T& nominal_value, const T& frequency)
+std::vector<Bond<T>> read_bonds_from_file(const std::string & filename)
 {
-	assert(yield > 0 && yield < 1);
-	assert(cash_flows.size() > 0);
-	assert(nominal_value > 0);
-	assert(frequency > 0);
-	T discount_factor = 0.0;
-	T pv_cash_flow = 0.0;
-	T duration = 0.0;
-	T coupon_value = cash_flows[0];
-	T pv = 0.0;
-	for (auto i = 0; i < cash_flows.size(); ++i)
+	std::vector<Bond<T>> bonds;
+	std::ifstream input(filename);
+	for (std::string line; getline(input, line); )
 	{
-		discount_factor = std::exp(-yield * (static_cast<T>(i + 1) / frequency));
+		T coupon_percentage;
+		T price;
+		T nominal_value;
+		T frequency;
+		std::string settlement_date;
+		std::string maturity_date;
+		std::istringstream stream(line);
+		stream >> coupon_percentage >> price >> nominal_value >> frequency >> settlement_date
+			>> maturity_date;
+		const Bond<T> bond{ coupon_percentage, price, nominal_value, frequency, settlement_date, maturity_date };
+		bonds.push_back(bond);
+	}
+	return bonds;
+}
+
+template<typename T>
+T find_bond_price(const T& ytm, const T& coupon_value, const T& nominal_value, const std::vector<T>& time_periods)
+{
+	const size_t& num_time_periods = time_periods.size();
+	T sum = 0.0;
+	T pv_cash_flow = 0.0;
+	T discount_factor = 0.0;
+	for (auto i = 0; i < num_time_periods; ++i)
+	{
+		discount_factor = std::exp(-ytm * time_periods[i]);
 		pv_cash_flow = pv_cash_flow + coupon_value * discount_factor;
 	}
 	pv_cash_flow = pv_cash_flow + nominal_value * discount_factor;
-	for (auto i = 0; i < cash_flows.size(); ++i)
-	{
-		discount_factor = std::exp(-yield * (static_cast<T>(i + 1) / frequency));
-		pv = coupon_value * discount_factor;
-		duration = duration + (static_cast<T>(i + 1) / frequency) * pv / pv_cash_flow;
-	}
-	pv = nominal_value * discount_factor;
-	duration = duration + (static_cast<T>(cash_flows.size()) / frequency) * pv / pv_cash_flow;
-	return duration;
+	return pv_cash_flow;
 }
-

@@ -36,7 +36,7 @@ public:
 		nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
 	}
 	const std::string type = "Genetic Algorithms";
-	template<typename F, typename C> void run_algo(F f, const T& opt, C c);
+	template<typename F, typename C> void run_algo(F f, C c);
 private:
 	// Natural Selection rate
 	T x_rate;
@@ -106,7 +106,7 @@ std::vector<T> Solver<T, GAstruct<T>>::mutation(const std::vector<T>& individual
 
 template<typename T>
 template<typename F, typename C>
-void Solver<T, GAstruct<T>>::run_algo(F f, const T& opt, C c)
+void Solver<T, GAstruct<T>>::run_algo(F f, C c)
 {
 	auto comparator = [&](const std::vector<T>& l, const std::vector<T>& r)
 	{

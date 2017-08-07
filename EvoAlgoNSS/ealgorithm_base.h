@@ -125,7 +125,7 @@ public:
 	size_t ret_npop() const { return npop; };
 	T ret_fitness_cost() const { return fitness_cost; };
 	size_t ret_iter() const { return iter; };
-	template<typename F, typename C> void run_algo(F f, const T& opt, C c) {};
+	template<typename F, typename C> void run_algo(F f, C c) {};
 	const std::string type = "";
 	template<typename C> void population_constraints_checker(C c)
 	{
@@ -181,7 +181,7 @@ void Solver<T, EAstruct<T>>::find_min_cost(F f)
 }
 
 template<typename T, typename F, typename C, typename S>
-std::vector<T> solve(F f, const T& opt, C c, const S& solver_struct)
+std::vector<T> solve(F f, C c, const S& solver_struct)
 {
 	Solver<T, S> solver(solver_struct);
 	solver.population_constraints_checker(c);
@@ -189,7 +189,7 @@ std::vector<T> solve(F f, const T& opt, C c, const S& solver_struct)
 	// Time the computation
 	std::chrono::time_point<std::chrono::system_clock> start, end;
 	start = std::chrono::system_clock::now();
-	solver.run_algo(f, opt, c);
+	solver.run_algo(f, c);
 	end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed_seconds = end - start;
 	std::time_t end_time = std::chrono::system_clock::to_time_t(end);

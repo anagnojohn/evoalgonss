@@ -37,7 +37,7 @@ public:
 	{
 	}
 	const std::string type = "Local Best Particle Swarm Optimisation with Inertia";
-	template<typename F, typename C> void run_algo(F f, const T& opt, C c);
+	template<typename F, typename C> void run_algo(F f, C c);
 private:
 	T w;
 };
@@ -45,7 +45,7 @@ private:
 // Runs the algorithm until the stopping criteria
 template<typename T>
 template<typename F, typename C>
-void Solver<T, PSOstruct_inertia<T>>::run_algo(F f, const T& opt, C c)
+void Solver<T, PSOstruct_inertia<T>>::run_algo(F f, C c)
 {
 	find_min_cost(f);
 	// Local Best Particle Swarm starts here
@@ -85,7 +85,7 @@ public:
 		assert(vmax.size() == ndv);
 	}
 	const std::string type = "Local Best Particle Swarm Optimisation with Velocity Clamping";
-	template<typename F, typename C> void run_algo(F f, const T& opt, C c);
+	template<typename F, typename C> void run_algo(F f, C c);
 private:
 	T alpha;
 	// Maximum Velocity
@@ -96,7 +96,7 @@ private:
 // Runs the algorithm until the stopping criteria
 template<typename T>
 template<typename F, typename C>
-void Solver<T, PSOstruct_clamping<T>>::run_algo(F f, const T& opt, C c)
+void Solver<T, PSOstruct_clamping<T>>::run_algo(F f, C c)
 {
 	find_min_cost(f);
 	// Local Best Particle Swarm starts here

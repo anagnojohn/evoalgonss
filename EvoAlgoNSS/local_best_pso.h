@@ -44,7 +44,7 @@ public:
 		init_pso();
 	}
 	const std::string type = "Local Best Particle Swarm Optimisation";
-	template<typename F, typename C> void run_algo(F f, const T& opt, C c);
+	template<typename F, typename C> void run_algo(F f, C c);
 protected:
 	T c1;
 	T c2;
@@ -243,7 +243,7 @@ void Solver<T, PSOstruct<T>>::check_particle_constraints(C c)
 // Runs the algorithm until the stopping criteria
 template<typename T>
 template<typename F, typename C>
-void Solver<T, PSOstruct<T>>::run_algo(F f, const T& opt, C c)
+void Solver<T, PSOstruct<T>>::run_algo(F f, C c)
 {
 	for (auto i = 0; i < npop; ++i)
 	{

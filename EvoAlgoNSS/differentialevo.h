@@ -37,7 +37,7 @@ public:
 		ind_distribution = i_ind_distribution;
 	}
 	const std::string type = "Differential Evolution";
-	template<typename F, typename C> void run_algo(F f, const T& opt, C c);
+	template<typename F, typename C> void run_algo(F f, C c);
 private:
 	// Crossover Rate
 	T cr;
@@ -106,7 +106,7 @@ std::vector<T> Solver<T, DEstruct<T>>::construct_trial(const std::vector<T>& tar
 // Run the algorithm until the stopping criteria
 template<typename T>
 template<typename F, typename C>
-void Solver<T, DEstruct<T>>::run_algo(F f, const T& opt, C c)
+void Solver<T, DEstruct<T>>::run_algo(F f, C c)
 {
 	find_min_cost(f);
 	// Differential Evolution starts here

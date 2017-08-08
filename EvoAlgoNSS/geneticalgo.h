@@ -83,6 +83,7 @@ std::vector<T> Solver<T, GA<T>>::selection()
 	size_t r = static_cast<size_t>(std::round(npop * xi));
 	xi = quantile(dist, distribution(generator));
 	size_t s = static_cast<size_t>(std::round(npop * xi));
+	//! Produce offsrping using r and s indices by crossover
 	std::vector<T> offspring = crossover(individuals[r], individuals[s]);
 	return offspring;
 }

@@ -7,7 +7,7 @@
 #include "irr.h"
 #include "yield_curve_fitting.h"
 #include "geneticalgo.h"
-#include "local_best_pso_variants.h"
+#include "local_best_pso.h"
 #include "differentialevo.h"
 #include "dependencies.h"
 

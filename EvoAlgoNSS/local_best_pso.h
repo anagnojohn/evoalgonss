@@ -19,19 +19,26 @@ template<typename T>
 struct PSOstruct : EAstruct<T>
 {
 public:
-	PSOstruct(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev, 
+	PSOstruct(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const T& i_alpha, const std::vector<T>& i_vmax, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
 		const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-		: c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, EAstruct{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }
+		: c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, EAstruct{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }, w{ i_w }, alpha{ i_alpha }, vmax{ i_vmax }
 	{
 		assert(c1 > 0);
 		assert(c2 > 0);
 		assert(sneigh > 0);
 		assert(sneigh < npop);
+		assert(w > 0);
+		assert(alpha > 0);
+		for (const auto& p : vmax) { assert(p > 0); };
+		assert(vmax.size() == ndv);
 	}
 	const T c1;
 	const T c2;
 	// Size of each neighbourhood
 	const size_t sneigh;
+	const T w;
+	const T alpha;
+	const std::vector<T> vmax;
 };
 
 // Local Best Particle Swarm Optimisation Class
@@ -39,7 +46,8 @@ template<typename T>
 class Solver<T, PSOstruct<T>> : public Solver_base<T>
 {
 public:
-	Solver(const PSOstruct<T>& pso) : Solver_base<T>{ { pso.decision_variables, pso.stdev, pso.npop, pso.tol, pso.iter_max } }, c1{ pso.c1 }, c2{ pso.c2 }, sneigh{ pso.sneigh }
+	Solver(const PSOstruct<T>& pso) : Solver_base<T>{ { pso.decision_variables, pso.stdev, pso.npop, pso.tol, pso.iter_max } }, c1{ pso.c1 }, c2{ pso.c2 }, sneigh{ pso.sneigh },
+		w{ pso.w }, alpha{ pso.alpha }, vmax{ pso.vmax }
 	{
 		init_pso();
 	}
@@ -50,6 +58,13 @@ protected:
 	T c2;
 	// Neighbourhood size
 	size_t sneigh;
+	// Inertia Variant of PSO
+	T w;
+	// Alpha Parameter for maximum velocity
+	T alpha;
+	// Velocity Clamping Variant of PSO
+	// Maximum Velocity
+	std::vector<T> vmax;
 	std::vector<std::vector<T>> personal_best;
 	std::vector<std::vector<T>> local_best;
 	std::vector<std::vector<T>> velocity;
@@ -149,8 +164,12 @@ void Solver<T, PSOstruct<T>>::velocity_update()
 	{
 		for (auto j = 0; j < ndv; ++j)
 		{
-			velocity[i][j] = velocity[i][j] + c1 * r[0][j] * (personal_best[i][j] - individuals[i][j])
+			velocity[i][j] = w * velocity[i][j] + c1 * r[0][j] * (personal_best[i][j] - individuals[i][j])
 				+ c2 * r[1][j] * (local_best[neighbourhoods[i]][j] - individuals[i][j]);
+			if (velocity[i][j] > vmax[j])
+			{
+				velocity[i][j] = vmax[j];
+			}
 		}
 	}
 }
@@ -252,7 +271,7 @@ void Solver<T, PSOstruct<T>>::run_algo(F f, C c)
 			local_best[neighbourhoods[i]] = personal_best[i];
 		}
 	}
-	find_min_local_best(F f);
+	find_min_local_best(f);
 	// Local Best Particle Swarm starts here
 	for (iter = 0; iter < iter_max; ++iter)
 	{	
@@ -266,5 +285,12 @@ void Solver<T, PSOstruct<T>>::run_algo(F f, C c)
 		check_particle_constraints(c);
 		set_best(f);
 		min_cost = find_min_local_best(f);
+		// Velocities of the particles is updated using inertia as well
+		w = ((w - 0.4) * (iter_max - iter)) / (iter_max + 0.4);
+		// Maximum velocity is reduced using the current iteration and 
+		for (auto& p : vmax)
+		{
+			p = (1 - std::pow(iter / iter_max, alpha)) * p;
+		}
 	}
 }

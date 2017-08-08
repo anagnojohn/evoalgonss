@@ -163,7 +163,6 @@
     <ClInclude Include="helper_functions.h" />
     <ClInclude Include="irr.h" />
     <ClInclude Include="local_best_pso.h" />
-    <ClInclude Include="local_best_pso_variants.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="svensson.h" />
     <ClInclude Include="targetver.h" />

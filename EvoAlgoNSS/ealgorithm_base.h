@@ -10,34 +10,6 @@
 #include <tuple>
 
 template<typename T>
-struct Population
-{
-public:
-	Population(const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev, const size_t& i_npop)
-		: decision_variables{ i_decision_variables }, stdev{ i_stdev }, npop{ i_npop }, ndv{ i_decision_variables.size() }, 
-		individuals { init_individuals(i_decision_variables, i_npop, i_stdev) }
-	{
-		assert(decision_variables.size() > 0);
-		assert(decision_variables.size() == stdev.size());
-		for (const auto& p : stdev)
-		{
-			assert(p > 0);
-		}
-		assert(npop > 0);
-	}
-	// Decision Variables
-	const std::vector<T> decision_variables;
-	// Standard deviation of the decision variables
-	const std::vector<T> stdev;
-	// Size of the population
-	const size_t npop;
-	// Population
-	const std::vector<std::vector<T>> individuals;
-	// Number of decision variables
-	const size_t ndv;
-};
-
-template<typename T>
 struct EAstruct
 {
 public:
@@ -101,7 +73,7 @@ template<typename T, typename S>
 class Solver
 {
 public:
-	Solver(const S& solver_struct)
+	template<typename F, typename C> Solver(const S& solver_struct, F f, C c)
 	{
 
 	}
@@ -112,31 +84,24 @@ template<typename T>
 class Solver_base
 {
 public:
-	Solver_base(const EAstruct<T>& solver_struct)
+	template<typename F, typename C> Solver_base(const EAstruct<T>& solver_struct, F f, C c)
 		: npop{ solver_struct.npop }, ndv{ solver_struct.ndv }, tol{ solver_struct.tol }, iter_max{ solver_struct.iter_max },
 		individuals{ init_individuals(solver_struct.decision_variables, solver_struct.npop, solver_struct.stdev) }, iter{ 0 }
 	{
 		min_cost = individuals[0];
 		decision_variables = solver_struct.decision_variables;
 		stdev = solver_struct.stdev;
+		population_constraints_checker(c);
+		find_min_cost(f);
 	}
 	std::vector<T> ret_min_cost() { return min_cost; };
 	T ret_min_cost() const { return min_cost; };
 	size_t ret_npop() const { return npop; };
 	T ret_fitness_cost() const { return fitness_cost; };
 	size_t ret_iter() const { return iter; };
+	T ret_tol() const { return tol; };
 	template<typename F, typename C> void run_algo(F f, C c) {};
 	const std::string type = "";
-	template<typename C> void population_constraints_checker(C c)
-	{
-		for (auto& p : individuals)
-		{
-			while (!c(p))
-			{
-				p = randomise_individual(decision_variables, stdev);
-			}
-		}
-	};
 protected:
 	// The decision variables
 	std::vector<T> decision_variables;
@@ -148,10 +113,10 @@ protected:
 	T tol;
 	// Number of maximum iterations
 	size_t iter_max;
-	// Population
-	std::vector<std::vector<T>> individuals;
 	// Number of decision variables
 	size_t ndv;
+	// Population
+	std::vector<std::vector<T>> individuals;
 	// Best fitness
 	T fitness_cost;
 	// Last iteration to solution
@@ -160,8 +125,16 @@ protected:
 	std::vector<T> min_cost;
 	// Find best solution
 	template<typename F> void find_min_cost(F f);
-	template<typename C> bool candidate_constraints_checker(C c, std::vector<T> individual)
+	// Check population constraints
+	template<typename C> void population_constraints_checker(C c)
 	{
+		for (auto& p : individuals)
+		{
+			while (!c(p))
+			{
+				p = randomise_individual(decision_variables, stdev);
+			}
+		}
 	};
 };
 
@@ -183,9 +156,15 @@ void Solver_base<T>::find_min_cost(F f)
 template<typename T, typename F, typename C, typename S>
 std::vector<T> solve(F f, C c, const S& solver_struct)
 {
-	Solver<T, S> solver(solver_struct);
-	solver.population_constraints_checker(c);
+	Solver<T, S> solver(solver_struct, f, c);
 	std::cout << solver.type << " used as solver" << "\n";
+	if (solver.ret_tol() > std::abs(solver.ret_fitness_cost()))
+	{
+		T timer = 0;
+		std::cout << "Optimum solution: " << solver.ret_min_cost() << " Fitness Value: " << solver.ret_fitness_cost() << "\n";
+		std::cout << "Population: " << solver.ret_npop() << " Solved at iteration: " << solver.ret_iter() << "\n";
+		std::cout << "Elapsed time in seconds: " << timer << "\n";
+	}
 	// Time the computation
 	std::chrono::time_point<std::chrono::system_clock> start, end;
 	start = std::chrono::system_clock::now();

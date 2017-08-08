@@ -16,10 +16,10 @@ T euclid_distance(const std::vector<T>& x, const std::vector<T>& y)
 }
 
 template<typename T>
-struct PSOstruct : EAstruct<T>
+struct PSO : EAstruct<T>
 {
 public:
-	PSOstruct(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const T& i_alpha, const std::vector<T>& i_vmax, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
+	PSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const T& i_alpha, const std::vector<T>& i_vmax, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
 		const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
 		: c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, EAstruct{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }, w{ i_w }, alpha{ i_alpha }, vmax{ i_vmax }
 	{
@@ -34,7 +34,6 @@ public:
 	}
 	const T c1;
 	const T c2;
-	// Size of each neighbourhood
 	const size_t sneigh;
 	const T w;
 	const T alpha;
@@ -43,18 +42,49 @@ public:
 
 // Local Best Particle Swarm Optimisation Class
 template<typename T>
-class Solver<T, PSOstruct<T>> : public Solver_base<T>
+class Solver<T, PSO<T>> : public Solver_base<T>
 {
 public:
-	Solver(const PSOstruct<T>& pso) : Solver_base<T>{ { pso.decision_variables, pso.stdev, pso.npop, pso.tol, pso.iter_max } }, c1{ pso.c1 }, c2{ pso.c2 }, sneigh{ pso.sneigh },
+	template<typename F, typename C> Solver(const PSO<T>& pso, F f, C c) : Solver_base<T>{ { pso.decision_variables, pso.stdev, pso.npop, pso.tol, pso.iter_max }, f, c}, c1{ pso.c1 }, c2{ pso.c2 }, sneigh{ pso.sneigh },
 		w{ pso.w }, alpha{ pso.alpha }, vmax{ pso.vmax }
 	{
-		init_pso();
+		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
+		distribution = i_distribution;
+		nneigh = static_cast<size_t>(std::ceil(npop / sneigh));
+		velocity.resize(npop, std::vector<T>(ndv));
+		for (auto& p : velocity)
+		{
+			for (auto& n : p)
+			{
+				n = 0.0;
+			}
+		}
+		for (const auto& p : individuals)
+		{
+			personal_best.push_back(p);
+		}
+		for (auto k = 0; k < nneigh; ++k)
+		{
+			local_best.push_back(individuals[0]);
+			local_best[k] = personal_best[0];
+		}
+		set_neighbourhoods();
+		distance.resize(npop);
+		for (auto i = 0; i < npop; ++i)
+		{
+			if (f(personal_best[i]) < f(local_best[neighbourhoods[i]]))
+			{
+				local_best[neighbourhoods[i]] = personal_best[i];
+			}
+		}
+		find_min_local_best(f);
 	}
 	const std::string type = "Local Best Particle Swarm Optimisation";
 	template<typename F, typename C> void run_algo(F f, C c);
 protected:
+	// Parameter c1 for velocity update
 	T c1;
+	// Parameter c2 for velocity update
 	T c2;
 	// Neighbourhood size
 	size_t sneigh;
@@ -79,7 +109,6 @@ protected:
 	T rmax;
 	// Distance betwwen individuals
 	std::vector<T> distance;
-	void init_pso();
 	void velocity_update();
 	void set_neighbourhoods();
 	template<typename F> void set_best(F f);
@@ -90,37 +119,9 @@ protected:
 	template<typename C> void check_particle_constraints(C c);
 };
 
-// Initialisation of the algorithm
-template<typename T>
-void Solver<T, PSOstruct<T>>::init_pso()
-{
-	std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
-	distribution = i_distribution;
-	nneigh = static_cast<size_t>(std::ceil(npop / sneigh));
-	velocity.resize(npop, std::vector<T>(ndv));
-	for (auto& p : velocity)
-	{
-		for (auto& n : p)
-		{
-			n = 0.0;
-		}
-	}
-	for (const auto& p : individuals)
-	{
-		personal_best.push_back(p);
-	}
-	for (auto k = 0; k < nneigh; ++k)
-	{
-		local_best.push_back(individuals[0]);
-		local_best[k] = personal_best[0];
-	}
-	set_neighbourhoods();
-	distance.resize(npop);
-}
-
 // Set the neighbourhoods of the algorithm
 template<typename T>
-void Solver<T, PSOstruct<T>>::set_neighbourhoods()
+void Solver<T, PSO<T>>::set_neighbourhoods()
 {
 	size_t neigh_index = 0;
 	size_t counter = 0;
@@ -142,7 +143,7 @@ void Solver<T, PSOstruct<T>>::set_neighbourhoods()
 
 // This method generates r1 and r2 for the velocity update rule
 template<typename T>
-std::vector<std::vector<T>> Solver<T, PSOstruct<T>>::generate_r()
+std::vector<std::vector<T>> Solver<T, PSO<T>>::generate_r()
 {
 	std::vector<std::vector<T>> r(2, std::vector<T>(ndv));
 	for (auto i = 0; i < 2; ++i)
@@ -157,7 +158,7 @@ std::vector<std::vector<T>> Solver<T, PSOstruct<T>>::generate_r()
 
 // Velocity update of the particles
 template<typename T>
-void Solver<T, PSOstruct<T>>::velocity_update()
+void Solver<T, PSO<T>>::velocity_update()
 {
 	const auto& r = generate_r();
 	for (auto i = 0; i < npop; ++i)
@@ -176,7 +177,7 @@ void Solver<T, PSOstruct<T>>::velocity_update()
 
 // Position update of the particles
 template<typename T>
-void Solver<T, PSOstruct<T>>::position_update()
+void Solver<T, PSO<T>>::position_update()
 {
 	for (auto i = 0; i < npop; ++i)
 	{
@@ -192,7 +193,7 @@ void Solver<T, PSOstruct<T>>::position_update()
 // This method sets the personal and local best solutions
 template<typename T>
 template<typename F>
-void Solver<T, PSOstruct<T>>::set_best(F f)
+void Solver<T, PSO<T>>::set_best(F f)
 {
 	for (auto i = 0; i < npop; ++i)
 	{
@@ -213,7 +214,7 @@ void Solver<T, PSOstruct<T>>::set_best(F f)
 // This is a faster way to calculate the minimum cost unless there is only one neighbourhood, in which case it is the same as find_min_cost(F f)
 template<typename T>
 template<typename F>
-std::vector<T> Solver<T, PSOstruct<T>>::find_min_local_best(F f)
+std::vector<T> Solver<T, PSO<T>>::find_min_local_best(F f)
 {
 	std::vector<T> min_cost(ndv);
 	min_cost = local_best[0];
@@ -230,7 +231,7 @@ std::vector<T> Solver<T, PSOstruct<T>>::find_min_local_best(F f)
 
 // Define the maximum radius stopping criterion
 template<typename T>
-void Solver<T, PSOstruct<T>>::check_pso_criteria()
+void Solver<T, PSO<T>>::check_pso_criteria()
 {
 	for (auto i = 0; i < npop; ++i)
 	{
@@ -248,7 +249,7 @@ void Solver<T, PSOstruct<T>>::check_pso_criteria()
 
 template<typename T>
 template<typename C>
-void Solver<T, PSOstruct<T>>::check_particle_constraints(C c)
+void Solver<T, PSO<T>>::check_particle_constraints(C c)
 {
 	for (auto i = 0; i < npop; ++i)
 	{
@@ -262,16 +263,8 @@ void Solver<T, PSOstruct<T>>::check_particle_constraints(C c)
 // Runs the algorithm until the stopping criteria
 template<typename T>
 template<typename F, typename C>
-void Solver<T, PSOstruct<T>>::run_algo(F f, C c)
+void Solver<T, PSO<T>>::run_algo(F f, C c)
 {
-	for (auto i = 0; i < npop; ++i)
-	{
-		if (f(personal_best[i]) < f(local_best[neighbourhoods[i]]))
-		{
-			local_best[neighbourhoods[i]] = personal_best[i];
-		}
-	}
-	find_min_local_best(f);
 	// Local Best Particle Swarm starts here
 	for (iter = 0; iter < iter_max; ++iter)
 	{	

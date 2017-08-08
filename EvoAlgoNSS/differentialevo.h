@@ -3,10 +3,10 @@
 #include "ealgorithm_base.h"
 
 template<typename T>
-struct DEstruct : EAstruct<T>
+struct DE : EAstruct<T>
 {
 public:
-	DEstruct(const T& i_cr, const T& i_f_param, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev, 
+	DE(const T& i_cr, const T& i_f_param, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev, 
 		const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
 		: cr{ i_cr }, f_param{ i_f_param }, EAstruct{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }
 	{
@@ -21,11 +21,11 @@ public:
 
 //Differential Evolution Algorithm Class
 template<typename T>
-class Solver<T, DEstruct<T>> : public Solver_base<T>
+class Solver<T, DE<T>> : public Solver_base<T>
 {
 public:
 	// Constructor for the Differential Evolution Class
-	Solver(const DEstruct<T>& de) : Solver_base<T>{ { de.decision_variables, de.stdev, de.npop, de.tol, de.iter_max } }, cr{ de.cr }, f_param{ de.f_param }
+	template<typename F, typename C> Solver(const DE<T>& de, F f, C c) : Solver_base<T>{ { de.decision_variables, de.stdev, de.npop, de.tol, de.iter_max }, f, c }, cr{ de.cr }, f_param{ de.f_param }
 	{
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
@@ -57,7 +57,7 @@ private:
 
 // Method that constructs the donor vector
 template<typename T>
-std::vector<T> Solver<T, DEstruct<T>>::construct_donor()
+std::vector<T> Solver<T, DE<T>>::construct_donor()
 {
 	std::vector<T> donor(ndv);
 	std::vector<size_t> r_i;
@@ -78,7 +78,7 @@ std::vector<T> Solver<T, DEstruct<T>>::construct_donor()
 
 // Method that constructs the trial vector
 template<typename T>
-std::vector<T> Solver<T, DEstruct<T>>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor)
+std::vector<T> Solver<T, DE<T>>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor)
 {
 	std::vector<T> trial(ndv);
 	std::vector<size_t> j_indices;
@@ -106,9 +106,8 @@ std::vector<T> Solver<T, DEstruct<T>>::construct_trial(const std::vector<T>& tar
 // Run the algorithm until the stopping criteria
 template<typename T>
 template<typename F, typename C>
-void Solver<T, DEstruct<T>>::run_algo(F f, C c)
+void Solver<T, DE<T>>::run_algo(F f, C c)
 {
-	find_min_cost(f);
 	// Differential Evolution starts here
 	for (iter = 0; iter < iter_max; ++iter)
 	{

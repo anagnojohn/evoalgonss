@@ -4,10 +4,10 @@
 #include "ealgorithm_base.h"
 
 template<typename T>
-struct GAstruct : EAstruct<T>
+struct GA : EAstruct<T>
 {
 public:
-	GAstruct(const T& i_x_rate, const T& i_pi, const T& i_alpha, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
+	GA(const T& i_x_rate, const T& i_pi, const T& i_alpha, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
 		const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
 		: x_rate{ i_x_rate }, pi{ i_pi }, alpha{ i_alpha }, EAstruct{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }
 	{
@@ -24,10 +24,10 @@ public:
 
 // Genetic Algorithms (GA) Class
 template<typename T>
-class Solver<T, GAstruct<T>> : public Solver_base<T>
+class Solver<T, GA<T>> : public Solver_base<T>
 {
 public:
-	Solver(const GAstruct<T>& ga) : Solver_base<T> { { ga.decision_variables, ga.stdev, ga.npop, ga.tol, ga.iter_max } }, x_rate{ ga.x_rate }, pi{ ga.pi }, alpha{ ga.alpha }
+	template<typename F, typename C> Solver(const GA<T>& ga, F f, C c) : Solver_base<T> { { ga.decision_variables, ga.stdev, ga.npop, ga.tol, ga.iter_max}, f, c }, x_rate{ ga.x_rate }, pi{ ga.pi }, alpha{ ga.alpha }
 	{
 		boost::math::beta_distribution<T> i_dist(1, alpha);
 		dist = i_dist;
@@ -58,7 +58,7 @@ private:
 
 // Crossover step of GA
 template<typename T>
-std::vector<T> Solver<T, GAstruct<T>>::crossover(std::vector<T> r, std::vector<T> s)
+std::vector<T> Solver<T, GA<T>>::crossover(std::vector<T> r, std::vector<T> s)
 {
 	std::vector<T> offspring(ndv);
 	std::vector<T> psi(ndv);
@@ -75,7 +75,7 @@ std::vector<T> Solver<T, GAstruct<T>>::crossover(std::vector<T> r, std::vector<T
 
 //	Selection step of GA
 template<typename T>
-std::vector<T> Solver<T, GAstruct<T>>::selection()
+std::vector<T> Solver<T, GA<T>>::selection()
 {
 	// Generate r and s indices
 	T xi = quantile(dist, distribution(generator));
@@ -88,7 +88,7 @@ std::vector<T> Solver<T, GAstruct<T>>::selection()
 
 // Mutation step of GA
 template<typename T>
-std::vector<T> Solver<T, GAstruct<T>>::mutation(const std::vector<T>& individual)
+std::vector<T> Solver<T, GA<T>>::mutation(const std::vector<T>& individual)
 {
 	std::vector<T> mutated = individual;
 	for (auto j = 0; j < ndv; ++j)
@@ -106,13 +106,12 @@ std::vector<T> Solver<T, GAstruct<T>>::mutation(const std::vector<T>& individual
 
 template<typename T>
 template<typename F, typename C>
-void Solver<T, GAstruct<T>>::run_algo(F f, C c)
+void Solver<T, GA<T>>::run_algo(F f, C c)
 {
 	auto comparator = [&](const std::vector<T>& l, const std::vector<T>& r)
 	{
 		return f(l) < f(r);
 	};
-	find_min_cost(f);
 	for (iter = 0; iter < iter_max; ++iter)
 	{
 		if (tol > std::abs(fitness_cost))

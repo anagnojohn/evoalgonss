@@ -11,31 +11,40 @@
 #include "differentialevo.h"
 #include "dependencies.h"
 
+//! A class for the bond pricing problem
 template<typename T>
 class BondHelper
 {
 public:
+	//! Constructor
 	BondHelper(const std::vector<Bond<T>>& i_bonds) : bonds{ i_bonds } {};
+	//! This method sets the nss initial svensson parameters using test data
 	std::vector<T> set_init_nss_params();
+	//! This method sets the nss initial svensson parameters by computing the bond yields-to-maturity and Macaulay durations
 	template<typename S> std::vector<T> set_init_nss_params(const S& solver);
+	//! This methods solves the bond pricing problem using prices and the supplied solver
 	template<typename S> void bondpricing_prices(const S& solver);
+	//! This methods solves the bond pricing problem using yield-to-maturities and the supplied solver
 	template<typename S> void bondpricing_yields(const S& solver);
 private:
+	//! Calculates the discount factors
 	T discount_factor(T yield, T period);
+	//! Returns the bond prices using the estimated spot interest rates computed with svensson
 	T estimate_bond_pricing(const std::vector<T>& solution, const T& coupon_value, const T& nominal_value, const std::vector<T>& time_periods);
+	//! This is the fitness function for bond pricing using the bonds' yields-to-maturity
 	T fitness_bond_pricing_yields(const std::vector<T>& solution);
+	//! This is the fitness function for bond pricing using the bonds' prices
 	T fitness_bond_pricing(const std::vector<T>& solution);
+	//! Vector of bonds
 	std::vector<Bond<T>> bonds;
 };
 
-// Computes the discount factors
 template<typename T>
 T BondHelper<T>::discount_factor(T yield, T period)
 {
 	return std::exp(-yield * period);
 }
 
-// Returns the bond prices using the estimated spot interest rates computed with svensson
 template<typename T>
 T BondHelper<T>::estimate_bond_pricing(const std::vector<T>& solution, const T& coupon_value, const T& nominal_value, const std::vector<T>& time_periods)
 {
@@ -50,11 +59,10 @@ T BondHelper<T>::estimate_bond_pricing(const std::vector<T>& solution, const T& 
 	return sum;
 }
 
-// This is the fitness function for bond pricing using the bonds' yields to maturity
-// The sum of squares of errors between the actual bond yield to maturity and the estimated yield to maturity by svensson is used
 template<typename T>
 T BondHelper<T>::fitness_bond_pricing_yields(const std::vector<T>& solution)
 {
+	//! The sum of squares of errors between the actual bond yield to maturity and the estimated yield to maturity by svensson is used
 	T sum_of_squares = 0;
 	for (auto i = 0; i < bonds.size(); ++i)
 	{
@@ -65,11 +73,10 @@ T BondHelper<T>::fitness_bond_pricing_yields(const std::vector<T>& solution)
 	return sum_of_squares;
 }
 
-// This is the fitness function for bond pricing using the bonds' prices
-// The sum of squares of errors between the actual bond price and the estimated price from estimate_bond_pricing
 template<typename T>
 T BondHelper<T>::fitness_bond_pricing(const std::vector<T>& solution)
 {
+	//! The sum of squares of errors between the actual bond price and the estimated price from estimate_bond_pricing
 	T sum_of_squares = 0.0;
 	for (auto i = 0; i < bonds.size(); ++i)
 	{

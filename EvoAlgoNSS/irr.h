@@ -16,7 +16,7 @@ bool constraints_irr(const std::vector<T>& solution)
 	}
 }
 
-// Returns the present value of an investment
+//!Returns the present value of an investment
 template<typename T>
 T irr(const T& r, const T& nominal_value, const std::vector<T>& cash_flows, const T& frequency)
 {
@@ -42,7 +42,7 @@ T penalty_irr(const std::vector<T>& solution)
 	return sum;
 }
 
-// This is the fitness function for finding the internal rate of return of a bond, in this case it is equal to its yield to maturity
+//! This is the fitness function for finding the internal rate of return of a bond, in this case it is equal to its yield to maturity
 template<typename T>
 T fitness_irr(const std::vector<T>& solution, const T& price, const T& nominal_value, const std::vector<T>& cash_flows, const T& frequency)
 {

@@ -5,18 +5,19 @@
 #include <sstream>
 #include <vector>
 
-// Struct for interest rates
+//! Struct for interest rates
 template<typename T>
 struct Interest_Rate
 {
+	//! Constructor
 	Interest_Rate(const T& i_period, const T& i_rate) : period{ i_period }, rate{ i_rate } {};
-	// Period is the time that matches the rate
+	//! Period is the time that matches the rate
 	const T period;
-	// Interest rate
+	//! Interest rate
 	const T rate;
 };
 
-// Reads the interest rates and periods from file and constructs a vector of interest rate structs
+//! Reads the interest rates and periods from file and constructs a vector of interest rate structs
 template<typename T>
 std::vector<Interest_Rate<T>> read_ir_from_file(const std::string & filename)
 {
@@ -34,11 +35,11 @@ std::vector<Interest_Rate<T>> read_ir_from_file(const std::string & filename)
 	return ir_vec;
 }
 
-// This is the fitness function for yield-curve fitting using Interest Rates
-// The sum of squares of errors betwwen the actual rates and the rates computed by svensson are used
+//! This is the fitness function for yield-curve fitting using Interest Rates
 template<typename T>
 T fitness_yield_curve_fitting(const std::vector<T>& solution, const std::vector<Interest_Rate<T>>& ir_vec)
 {
+	//! The sum of squares of errors betwwen the actual rates and the rates computed by svensson are used
 	T sum_of_squares = 0;
 	for (auto i = 0; i < ir_vec.size(); ++i)
 	{
@@ -49,7 +50,7 @@ T fitness_yield_curve_fitting(const std::vector<T>& solution, const std::vector<
 	return sum_of_squares;
 }
 
-// Yield Curve Fitting using interest rates and recorded periods
+//! Yield Curve Fitting using interest rates and recorded periods
 template<typename T, typename S>
 void yieldcurve_fitting(const std::vector<Interest_Rate<T>>& ir_vec, const S& solver)
 {

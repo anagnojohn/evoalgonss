@@ -3,60 +3,62 @@
 #include <boost/math/distributions.hpp>
 #include "ealgorithm_base.h"
 
+//! Genetic Algorithms Structure, used in the actual algorithm and for type deduction
 template<typename T>
-struct GA : EAstruct<T>
+struct GA : EA_base<T>
 {
 public:
+	//! Constructor
 	GA(const T& i_x_rate, const T& i_pi, const T& i_alpha, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
 		const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-		: x_rate{ i_x_rate }, pi{ i_pi }, alpha{ i_alpha }, EAstruct{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }
+		: x_rate{ i_x_rate }, pi{ i_pi }, alpha{ i_alpha }, EA_base{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }
 	{
 		assert(x_rate > 0 && x_rate <= 1);
 		assert(pi > 0 && pi <= 1);
 	}
-	// Natural Selection rate
+	//!Natural Selection rate
 	const T x_rate;
-	// Probability of mutating
+	//! Probability of mutating
 	const T pi;
-	// Parameter alpha for Beta distribution
+	//! Parameter alpha for Beta distribution
 	const T alpha;
 };
 
-// Genetic Algorithms (GA) Class
+//! Genetic Algorithms (GA) Class
 template<typename T>
 class Solver<T, GA<T>> : public Solver_base<T>
 {
 public:
+	//! Constructor
 	template<typename F, typename C> Solver(const GA<T>& ga, F f, C c) : Solver_base<T> { { ga.decision_variables, ga.stdev, ga.npop, ga.tol, ga.iter_max}, f, c }, x_rate{ ga.x_rate }, pi{ ga.pi }, alpha{ ga.alpha }
 	{
 		boost::math::beta_distribution<T> i_dist(1, alpha);
 		dist = i_dist;
-		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
-		distribution = i_distribution;
 		nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
 	}
+	//! Type of the algorithm
 	const std::string type = "Genetic Algorithms";
+	//! Runs the algorithm until stopping criteria
 	template<typename F, typename C> void run_algo(F f, C c);
 private:
-	// Natural Selection rate
+	//! Natural Selection rate
 	T x_rate;
-	// Probability of mutating
+	//! Probability of mutating
 	T pi;
-	// Parameter alpha for Beta distribution
+	//! Parameter alpha for Beta distribution
 	T alpha;
-	// Number of individuals to be kept
+	//! Number of individuals to be kept
 	size_t nkeep;
-	std::random_device generator;
+	//! Beta distribution
 	boost::math::beta_distribution<T> dist;
-	std::uniform_real_distribution<T> distribution;
-	// Crossover method
+	//! Crossover step of GA
 	std::vector<T> crossover(std::vector<T> r, std::vector<T> s);
-	// Selection method
+	//!	Selection step of GA
 	std::vector<T> selection();
+	//! Mutation step of GA
 	std::vector<T> mutation(const std::vector<T>& individual);
 };
 
-// Crossover step of GA
 template<typename T>
 std::vector<T> Solver<T, GA<T>>::crossover(std::vector<T> r, std::vector<T> s)
 {
@@ -73,11 +75,10 @@ std::vector<T> Solver<T, GA<T>>::crossover(std::vector<T> r, std::vector<T> s)
 	return offspring;
 }
 
-//	Selection step of GA
 template<typename T>
 std::vector<T> Solver<T, GA<T>>::selection()
 {
-	// Generate r and s indices
+	//! Generate r and s indices
 	T xi = quantile(dist, distribution(generator));
 	size_t r = static_cast<size_t>(std::round(npop * xi));
 	xi = quantile(dist, distribution(generator));
@@ -86,7 +87,6 @@ std::vector<T> Solver<T, GA<T>>::selection()
 	return offspring;
 }
 
-// Mutation step of GA
 template<typename T>
 std::vector<T> Solver<T, GA<T>>::mutation(const std::vector<T>& individual)
 {
@@ -141,7 +141,7 @@ void Solver<T, GA<T>>::run_algo(F f, C c)
 				p = mutation(p);
 			}
 		}
-		// Standard Deviation is not constant in GA
+		//! Standard Deviation is not constant in GA
 		for (auto j = 0; j < ndv; ++j)
 		{
 			stdev[j] = stdev[j] + 0.02 * stdev[j];

@@ -9,11 +9,13 @@
 #include <vector>
 #include <tuple>
 
+//! Evolutionary algorithm stucture base
 template<typename T>
-struct EAstruct
+struct EA_base
 {
 public:
-	EAstruct(const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
+	//! Constructor
+	EA_base(const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
 		: decision_variables{ i_decision_variables }, stdev{ i_stdev }, npop{ i_npop }, tol{ i_tol }, iter_max{ i_iter_max }, ndv { i_decision_variables.size() }
 	{
 		assert(decision_variables.size() > 0);
@@ -26,17 +28,17 @@ public:
 		assert(tol > 0);
 		assert(iter_max > 0);
 	}
-	// Decision Variables
+	//! Decision Variables
 	const std::vector<T> decision_variables;
-	// Standard deviation of the decision variables
+	//! Standard deviation of the decision variables
 	const std::vector<T> stdev;
-	// Size of the population
+	//! Size of the population
 	const size_t npop;
-	// Tolerance
+	//! Tolerance
 	const T tol;
-	// Number of maximum iterations
+	//! Number of maximum iterations
 	const size_t iter_max;
-	// Number of decision variables
+	//! Number of decision variables
 	const size_t ndv;
 };
 
@@ -68,23 +70,25 @@ std::vector<std::vector<T>> init_individuals(const std::vector<T>& decision_vari
 	return individuals;
 }
 
-// Template Class for Solvers
+//! Template Class for Solvers
 template<typename T, typename S>
 class Solver
 {
 public:
+	//! Constructor
 	template<typename F, typename C> Solver(const S& solver_struct, F f, C c)
 	{
 
 	}
 };
 
-// Base Class for Evolutionary Algorithms
+//! Base Class for Evolutionary Algorithms
 template<typename T>
 class Solver_base
 {
 public:
-	template<typename F, typename C> Solver_base(const EAstruct<T>& solver_struct, F f, C c)
+	//! Constructor
+	template<typename F, typename C> Solver_base(const EA_base<T>& solver_struct, F f, C c)
 		: npop{ solver_struct.npop }, ndv{ solver_struct.ndv }, tol{ solver_struct.tol }, iter_max{ solver_struct.iter_max },
 		individuals{ init_individuals(solver_struct.decision_variables, solver_struct.npop, solver_struct.stdev) }, iter{ 0 }
 	{
@@ -93,39 +97,51 @@ public:
 		stdev = solver_struct.stdev;
 		population_constraints_checker(c);
 		find_min_cost(f);
+		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
+		distribution = i_distribution;
 	}
+	//! Returns the minimum cost solution
 	std::vector<T> ret_min_cost() { return min_cost; };
-	T ret_min_cost() const { return min_cost; };
+	//! Returns the population size
 	size_t ret_npop() const { return npop; };
+	//! Returns the fitness cost of the minimum cost solution
 	T ret_fitness_cost() const { return fitness_cost; };
+	//! Returns the number of iterations that were executed
 	size_t ret_iter() const { return iter; };
+	//! Returns the tolerance that was used in the stopping criteria
 	T ret_tol() const { return tol; };
+	//! run_algo is the function that is run by each of the algorithms (overloaded in the algorithm classes)
 	template<typename F, typename C> void run_algo(F f, C c) {};
+	//! name of the algorithm
 	const std::string type = "";
 protected:
-	// The decision variables
+	//! The decision variables
 	std::vector<T> decision_variables;
-	// The standard deviation of decision variables
+	//! The standard deviation of decision variables
 	std::vector<T> stdev;
-	// Size of the population
+	//! Size of the population
 	size_t npop;
-	// Tolerance
+	//! Tolerance
 	T tol;
-	// Number of maximum iterations
+	//! Number of maximum iterations
 	size_t iter_max;
-	// Number of decision variables
+	//! Number of decision variables
 	size_t ndv;
-	// Population
+	//! Population
 	std::vector<std::vector<T>> individuals;
-	// Best fitness
+	//! Best fitness
 	T fitness_cost;
-	// Last iteration to solution
+	//! Last iteration to solution
 	size_t iter;
-	// Best solution
+	//! Best solution
 	std::vector<T> min_cost;
-	// Find best solution
+	//! Random number generator
+	std::random_device generator;
+	//! Uniform real distribution
+	std::uniform_real_distribution<T> distribution;
+	//! Find best solution
 	template<typename F> void find_min_cost(F f);
-	// Check population constraints
+	//! Check population constraints
 	template<typename C> void population_constraints_checker(C c)
 	{
 		for (auto& p : individuals)
@@ -138,7 +154,7 @@ protected:
 	};
 };
 
-// Find the minimum cost individual of the fitness function for the population
+//! Find the minimum cost individual of the fitness function for the population
 template<typename T>
 template<typename F>
 void Solver_base<T>::find_min_cost(F f)
@@ -153,6 +169,7 @@ void Solver_base<T>::find_min_cost(F f)
 	fitness_cost = f(min_cost);
 }
 
+//! solve wrapper function for Solvers, used for benchmarks
 template<typename T, typename F, typename C, typename S>
 std::vector<T> solve(F f, C c, const S& solver_struct)
 {
@@ -165,7 +182,7 @@ std::vector<T> solve(F f, C c, const S& solver_struct)
 		std::cout << "Population: " << solver.ret_npop() << " Solved at iteration: " << solver.ret_iter() << "\n";
 		std::cout << "Elapsed time in seconds: " << timer << "\n";
 	}
-	// Time the computation
+	//! Time the computation
 	std::chrono::time_point<std::chrono::system_clock> start, end;
 	start = std::chrono::system_clock::now();
 	solver.run_algo(f, c);
@@ -176,6 +193,6 @@ std::vector<T> solve(F f, C c, const S& solver_struct)
 	std::cout << "Optimum solution: " << solver.ret_min_cost() << " Fitness Value: " << solver.ret_fitness_cost() << "\n";
 	std::cout << "Population: " << solver.ret_npop() << " Solved at iteration: " << solver.ret_iter() << "\n";
 	std::cout << "Elapsed time in seconds: " << timer << "\n";
-	// Return minimum cost individual
+	//! Return minimum cost individual
 	return solver.ret_min_cost();
 }

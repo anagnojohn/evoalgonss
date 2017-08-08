@@ -57,7 +57,7 @@ void yieldcurve_fitting(const std::vector<Interest_Rate<T>>& ir_vec, const S& so
 	auto f = [&](const auto& solution) { return fitness_yield_curve_fitting(solution, ir_vec); };
 	auto c = [&](const auto& solution) { return constraints_svensson(solution); };
 	std::cout << "Yield Curve fitting." << "\n";
-	auto res = solve(f, c, solver);
+	auto res = solve<T, decltype(f), decltype(c), S>(f, c, solver);
 	for (const auto& p : ir_vec)
 	{
 		std::cout << "Estimated interest rates: " << svensson(res, p.period) << " Actual interest rates: " << p.rate << "\n";

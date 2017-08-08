@@ -24,10 +24,10 @@ public:
 
 // Genetic Algorithms (GA) Class
 template<typename T>
-class Solver<T, GAstruct<T>> : public Solver<T, EAstruct<T>>
+class Solver<T, GAstruct<T>> : public Solver_base<T>
 {
 public:
-	Solver(const GAstruct<T>& ga) : Solver < T, EAstruct<T>> { { ga.decision_variables, ga.stdev, ga.npop, ga.tol, ga.iter_max } }, x_rate{ ga.x_rate }, pi{ ga.pi }, alpha{ ga.alpha }
+	Solver(const GAstruct<T>& ga) : Solver_base<T> { { ga.decision_variables, ga.stdev, ga.npop, ga.tol, ga.iter_max } }, x_rate{ ga.x_rate }, pi{ ga.pi }, alpha{ ga.alpha }
 	{
 		boost::math::beta_distribution<T> i_dist(1, alpha);
 		dist = i_dist;
@@ -115,7 +115,7 @@ void Solver<T, GAstruct<T>>::run_algo(F f, C c)
 	find_min_cost(f);
 	for (iter = 0; iter < iter_max; ++iter)
 	{
-		if (tol > std::abs(fitness_cost - opt))
+		if (tol > std::abs(fitness_cost))
 		{
 			break;
 		}

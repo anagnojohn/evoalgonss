@@ -36,10 +36,10 @@ public:
 
 // Local Best Particle Swarm Optimisation Class
 template<typename T>
-class Solver<T, PSOstruct<T>> : public Solver<T, EAstruct<T>>
+class Solver<T, PSOstruct<T>> : public Solver_base<T>
 {
 public:
-	Solver(const PSOstruct<T>& pso) : Solver <T, EAstruct<T>>{ { pso.decision_variables, pso.stdev, pso.npop, pso.tol, pso.iter_max } }, c1{ pso.c1 }, c2{ pso.c2 }, sneigh{ pso.sneigh }
+	Solver(const PSOstruct<T>& pso) : Solver_base<T>{ { pso.decision_variables, pso.stdev, pso.npop, pso.tol, pso.iter_max } }, c1{ pso.c1 }, c2{ pso.c2 }, sneigh{ pso.sneigh }
 	{
 		init_pso();
 	}
@@ -257,7 +257,7 @@ void Solver<T, PSOstruct<T>>::run_algo(F f, C c)
 	for (iter = 0; iter < iter_max; ++iter)
 	{	
 		check_pso_criteria();
-		if (tol > std::abs(fitness_cost - opt) || rmax < tol)
+		if (tol > std::abs(fitness_cost) || rmax < tol)
 		{
 			break;
 		}

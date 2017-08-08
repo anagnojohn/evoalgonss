@@ -109,10 +109,10 @@ public:
 
 // Base Class for Evolutionary Algorithms
 template<typename T>
-class Solver<T, EAstruct<T>>
+class Solver_base
 {
 public:
-	Solver(const EAstruct<T>& solver_struct)
+	Solver_base(const EAstruct<T>& solver_struct)
 		: npop{ solver_struct.npop }, ndv{ solver_struct.ndv }, tol{ solver_struct.tol }, iter_max{ solver_struct.iter_max },
 		individuals{ init_individuals(solver_struct.decision_variables, solver_struct.npop, solver_struct.stdev) }, iter{ 0 }
 	{
@@ -168,7 +168,7 @@ protected:
 // Find the minimum cost individual of the fitness function for the population
 template<typename T>
 template<typename F>
-void Solver<T, EAstruct<T>>::find_min_cost(F f)
+void Solver_base<T>::find_min_cost(F f)
 {
 	for (const auto& p : individuals)
 	{

@@ -21,11 +21,11 @@ public:
 
 //Differential Evolution Algorithm Class
 template<typename T>
-class Solver<T, DEstruct<T>> : public Solver<T, EAstruct<T>>
+class Solver<T, DEstruct<T>> : public Solver_base<T>
 {
 public:
 	// Constructor for the Differential Evolution Class
-	Solver(const DEstruct<T>& de) : Solver < T, EAstruct<T>>{ { de.decision_variables, de.stdev, de.npop, de.tol, de.iter_max } }, cr{ de.cr }, f_param{ de.f_param }
+	Solver(const DEstruct<T>& de) : Solver_base<T>{ { de.decision_variables, de.stdev, de.npop, de.tol, de.iter_max } }, cr{ de.cr }, f_param{ de.f_param }
 	{
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
@@ -113,7 +113,7 @@ void Solver<T, DEstruct<T>>::run_algo(F f, C c)
 	for (iter = 0; iter < iter_max; ++iter)
 	{
 		// Stopping Criteria
-		if (tol > std::abs(fitness_cost - opt))
+		if (tol > std::abs(fitness_cost))
 		{
 			break;
 		}

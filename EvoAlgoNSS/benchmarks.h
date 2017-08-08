@@ -6,8 +6,8 @@
 #include "svensson.h"
 #include "irr.h"
 #include "yield_curve_fitting.h"
-//#include "geneticalgo.h"
-//#include "local_best_pso_variants.h"
+#include "geneticalgo.h"
+#include "local_best_pso_variants.h"
 #include "differentialevo.h"
 #include "dependencies.h"
 
@@ -141,7 +141,7 @@ void BondHelper<T>::bondpricing_prices(const S& solver)
 	auto f = [&](const auto& solution) { return fitness_bond_pricing(solution); };
 	auto c = [&](const auto& solution) { return constraints_svensson(solution); };
 	std::cout << "Solving bond pricing using bond prices..." << "\n";
-	auto res = solve(f, c, solver);
+	auto res = solve<T, decltype(f), decltype(c), S>(f, c, solver);
 	for (const auto& p : bonds)
 	{
 		std::cout << "Estimated yield: " << svensson(res, p.duration) << " Actual Yield: " << p.yield << "\n";
@@ -165,7 +165,7 @@ void BondHelper<T>::bondpricing_yields(const S& solver)
 	auto f = [&](const auto& solution) { return fitness_bond_pricing_yields(solution); };
 	auto c = [&](const auto& solution) { return constraints_svensson(solution); };
 	std::cout << "Solving bond pricing using bond yields..." << "\n";
-	auto res = solve(f, c, solver);
+	auto res = solve<T, decltype(f), decltype(c), S>(f, c, solver);
 	for (const auto& p : bonds)
 	{
 		std::cout << "Estimated yield: " << svensson(res, p.duration) << " Actual Yield: " << p.yield << "\n";

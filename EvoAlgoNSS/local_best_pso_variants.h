@@ -52,7 +52,7 @@ void Solver<T, PSOstruct_inertia<T>>::run_algo(F f, C c)
 	for (iter = 0; iter < iter_max; ++iter)
 	{
 		check_pso_criteria();
-		if (tol > std::abs(fitness_cost - opt) || rmax < tol)
+		if (tol > std::abs(fitness_cost) || rmax < tol)
 		{
 			break;
 		}
@@ -103,7 +103,7 @@ void Solver<T, PSOstruct_clamping<T>>::run_algo(F f, C c)
 	for (iter = 0; iter < iter_max; ++iter)
 	{
 		check_pso_criteria();
-		if (tol > std::abs(fitness_cost - opt) || rmax < tol)
+		if (tol > std::abs(fitness_cost) || rmax < tol)
 		{
 			break;
 		}

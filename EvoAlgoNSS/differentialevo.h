@@ -23,28 +23,26 @@ public:
 
 //! Differential Evolution Algorithm Class
 template<typename T>
-class Solver<T, DE<T>> : public Solver_base<T>
+class Solver<T, DE<T>> : public Solver_base<T, Solver<T, DE<T>>>
 {
 public:
 	//! Constructor
-	template<typename F, typename C> Solver(const DE<T>& de, F f, C c) : Solver_base<T>{ { de.decision_variables, de.stdev, de.npop, de.tol, de.iter_max }, f, c }, cr{ de.cr }, f_param{ de.f_param }
+	template<typename F, typename C> Solver(const DE<T>& i_de, F f, C c) : Solver_base<T, Solver<T, DE<T>>>{ i_de.decision_variables, i_de.npop, i_de.stdev, f, c }, de{ i_de }
 	{
-		for (auto i = 0; i < npop; ++i)
+		for (auto i = 0; i < de.npop; ++i)
 		{
 			indices.push_back(i);
 		}
 		std::uniform_int_distribution<size_t> i_ind_distribution(0, indices.size() - 1);
 		ind_distribution = i_ind_distribution;
 	}
-	//! Type of the algorithm
+	//! Type of the algorithm :: string
 	const std::string type = "Differential Evolution";
+	typedef DE<T> value_type;
 	//! Runs the algorithm until stopping criteria
 	template<typename F, typename C> void run_algo(F f, C c);
 private:
-	//! Crossover Rate
-	T cr;
-	//! Mutation Scale Fuctor
-	T f_param;
+	const DE<T>& de;
 	//! Indices of population
 	std::vector<size_t> indices;
 	//! Random number engine for the indices
@@ -60,7 +58,7 @@ private:
 template<typename T>
 std::vector<T> Solver<T, DE<T>>::construct_donor()
 {
-	std::vector<T> donor(ndv);
+	std::vector<T> donor(de.ndv);
 	std::vector<size_t> r_i;
 	while (r_i.size() < 3)
 	{
@@ -70,9 +68,9 @@ std::vector<T> Solver<T, DE<T>>::construct_donor()
 			r_i.pop_back();
 		}
 	}
-	for (auto j = 0; j < ndv; ++j)
+	for (auto j = 0; j < de.ndv; ++j)
 	{
-		donor[j] = individuals[r_i[0]][j] + f_param * (individuals[r_i[1]][j] - individuals[r_i[2]][j]);
+		donor[j] = individuals[r_i[0]][j] + de.f_param * (individuals[r_i[1]][j] - individuals[r_i[2]][j]);
 	}
 	return donor;
 }
@@ -80,18 +78,18 @@ std::vector<T> Solver<T, DE<T>>::construct_donor()
 template<typename T>
 std::vector<T> Solver<T, DE<T>>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor)
 {
-	std::vector<T> trial(ndv);
+	std::vector<T> trial(de.ndv);
 	std::vector<size_t> j_indices;
-	for (auto j = 0; j < ndv; ++j)
+	for (auto j = 0; j < de.ndv; ++j)
 	{
 		j_indices.push_back(j);
 	}
-	std::uniform_int_distribution<size_t> j_ind_distribution(0, ndv - 1);
-	for (auto j = 0; j < ndv; ++j)
+	std::uniform_int_distribution<size_t> j_ind_distribution(0, de.ndv - 1);
+	for (auto j = 0; j < de.ndv; ++j)
 	{
 		T epsilon = distribution(generator);
 		size_t jrand = j_indices[j_ind_distribution(engine)];
-		if (epsilon <= cr || j == jrand)
+		if (epsilon <= de.cr || j == jrand)
 		{
 			trial[j] = donor[j];
 		}
@@ -108,10 +106,10 @@ template<typename F, typename C>
 void Solver<T, DE<T>>::run_algo(F f, C c)
 {
 	//! Differential Evolution starts here
-	for (iter = 0; iter < iter_max; ++iter)
+	for (iter = 0; iter < de.iter_max; ++iter)
 	{
 		//! Stopping Criteria
-		if (tol > std::abs(fitness_cost))
+		if (de.tol > std::abs(fitness_cost))
 		{
 			break;
 		}

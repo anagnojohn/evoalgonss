@@ -118,7 +118,7 @@ void Bond<T>::compute_yield(const S& solver)
 	assert(solver.ndv == 1);
 	auto f = [&](const auto& solution) { return fitness_irr(solution, price, nominal_value, cash_flows, frequency); };
 	auto c = [&](const auto& solution) { return constraints_irr(solution); };
-	auto res = solve<T, decltype(f), decltype(c), S>(f, c, solver);
+	auto res = solve(f, c, solver);
 	yield = res[0];
 	duration = compute_macaulay_duration();
 	std::cout << "Macaulay Duration: " << duration << "\n";

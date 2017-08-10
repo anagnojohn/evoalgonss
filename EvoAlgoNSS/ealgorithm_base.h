@@ -42,34 +42,6 @@ public:
 	const size_t ndv;
 };
 
-template<typename T>
-std::vector<T> randomise_individual(const std::vector<T>& decision_variables, const std::vector<T>& stdev)
-{
-	std::random_device generator;
-	std::vector<T> individual = decision_variables;
-	const auto& ndv = decision_variables.size();
-	T epsilon;
-	for (auto j = 0; j < ndv; ++j)
-	{
-		std::normal_distribution<T> ndistribution(0, stdev[j]);
-		epsilon = std::abs(ndistribution(generator));
-		individual[j] = individual[j] + epsilon;
-	}
-	return individual;
-}
-
-template<typename T>
-std::vector<std::vector<T>> init_individuals(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev)
-{
-	const auto& ndv = decision_variables.size();
-	std::vector<std::vector<T>> individuals(npop, std::vector<T>(ndv));
-	for (auto& p : individuals)
-	{
-		p = randomise_individual(decision_variables, stdev);
-	}
-	return individuals;
-}
-
 //! Template Class for Solvers
 template<typename T, typename S>
 class Solver
@@ -89,12 +61,11 @@ class Solver_base
 public:
 	//! Constructor
 	template<typename F, typename C> Solver_base(const EA_base<T>& solver_struct, F f, C c)
-		: npop{ solver_struct.npop }, ndv{ solver_struct.ndv }, tol{ solver_struct.tol }, iter_max{ solver_struct.iter_max },
-		individuals{ init_individuals(solver_struct.decision_variables, solver_struct.npop, solver_struct.stdev) }, iter{ 0 }
+		: individuals{ init_individuals(solver_struct.decision_variables, solver_struct.npop, solver_struct.stdev) }, iter{ 0 }
 	{
+		npop = solver_struct.npop;
+		tol = solver_struct.tol;
 		min_cost = individuals[0];
-		decision_variables = solver_struct.decision_variables;
-		stdev = solver_struct.stdev;
 		population_constraints_checker(c);
 		find_min_cost(f);
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
@@ -115,18 +86,12 @@ public:
 	//! name of the algorithm
 	const std::string type = "";
 protected:
-	//! The decision variables
-	std::vector<T> decision_variables;
-	//! The standard deviation of decision variables
-	std::vector<T> stdev;
-	//! Size of the population
 	size_t npop;
-	//! Tolerance
 	T tol;
 	//! Number of maximum iterations
-	size_t iter_max;
+	const size_t iter_max;
 	//! Number of decision variables
-	size_t ndv;
+	const size_t ndv;
 	//! Population
 	std::vector<std::vector<T>> individuals;
 	//! Best fitness
@@ -139,19 +104,55 @@ protected:
 	std::random_device generator;
 	//! Uniform real distribution
 	std::uniform_real_distribution<T> distribution;
+	//! Returns a randomised individual using the initial decision variables and standard deviation
+	std::vector<T> randomise_individual(const std::vector<T>& decision_variables, const std::vector<T>& stdev);
+	//! Initialises the population by randomising aroung the decision variables using the given standard deviation
+	std::vector<std::vector<T>> init_individuals(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev);
 	//! Find best solution
 	template<typename F> void find_min_cost(F f);
 	//! Check population constraints
-	template<typename C> void population_constraints_checker(C c)
+	template<typename C> void population_constraints_checker(C c);
+};
+
+template<typename T>
+std::vector<T> Solver_base<T>::randomise_individual(const std::vector<T>& decision_variables, const std::vector<T>& stdev)
+{
+	std::random_device generator;
+	std::vector<T> individual = decision_variables;
+	const auto& ndv = decision_variables.size();
+	T epsilon;
+	for (auto j = 0; j < ndv; ++j)
 	{
-		for (auto& p : individuals)
+		std::normal_distribution<T> ndistribution(0, stdev[j]);
+		epsilon = std::abs(ndistribution(generator));
+		individual[j] = individual[j] + epsilon;
+	}
+	return individual;
+}
+
+template<typename T>
+std::vector<std::vector<T>> Solver_base<T>::init_individuals(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev)
+{
+	const auto& ndv = decision_variables.size();
+	std::vector<std::vector<T>> individuals(npop, std::vector<T>(ndv));
+	for (auto& p : individuals)
+	{
+		p = randomise_individual(decision_variables, stdev);
+	}
+	return individuals;
+}
+
+template<typename T>
+template<typename C>
+void Solver_base<T>::population_constraints_checker(C c)
+{
+	for (auto& p : individuals)
+	{
+		while (!c(p))
 		{
-			while (!c(p))
-			{
-				p = randomise_individual(decision_variables, stdev);
-			}
+			p = randomise_individual(decision_variables, stdev);
 		}
-	};
+	}
 };
 
 //! Find the minimum cost individual of the fitness function for the population

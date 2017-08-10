@@ -29,8 +29,6 @@ public:
 	//! Constructor
 	template<typename F, typename C> Solver(const DE<T>& de, F f, C c) : Solver_base<T>{ { de.decision_variables, de.stdev, de.npop, de.tol, de.iter_max }, f, c }, cr{ de.cr }, f_param{ de.f_param }
 	{
-		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
-		distribution = i_distribution;
 		for (auto i = 0; i < npop; ++i)
 		{
 			indices.push_back(i);

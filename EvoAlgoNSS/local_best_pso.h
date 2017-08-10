@@ -42,6 +42,7 @@ public:
 	{
 		nneigh = static_cast<size_t>(std::ceil(npop / sneigh));
 		velocity.resize(npop, std::vector<T>(ndv));
+		local_best.resize(nneigh);
 		for (auto& p : velocity)
 		{
 			for (auto& n : p)
@@ -53,10 +54,9 @@ public:
 		{
 			personal_best.push_back(p);
 		}
-		for (auto k = 0; k < nneigh; ++k)
+		for (auto& p : local_best)
 		{
-			local_best.push_back(individuals[0]);
-			local_best[k] = personal_best[0];
+			p = personal_best[0];
 		}
 		set_neighbourhoods();
 		distance.resize(npop);

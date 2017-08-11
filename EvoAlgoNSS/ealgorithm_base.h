@@ -7,7 +7,7 @@
 #include <ctime>
 #include <random>
 #include <vector>
-#include <tuple>
+#include "helper_functions.h"
 
 //! Evolutionary algorithm stucture base
 template<typename T>
@@ -56,16 +56,15 @@ public:
 };
 
 //! Base Class for Evolutionary Algorithms
-template<typename T, typename S>
+template<typename T>
 class Solver_base
 {
 public:
 	//! Constructor
 	template<typename F, typename C> Solver_base(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev, F f, C c)
-		: individuals{ init_individuals(solver_struct.decision_variables, solver_struct.npop, solver_struct.stdev) }, iter{ 0 }
+		: individuals{ init_individuals(decision_variables, npop, stdev) }, min_cost{ individuals[0] }, iter{ 0 }
 	{
-		min_cost = individuals[0];
-		population_constraints_checker(solver_struct.decision_variables, solver_struct.stdev, c);
+		population_constraints_checker(decision_variables, stdev, c);
 		find_min_cost(f);
 		std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 		distribution = i_distribution;
@@ -78,10 +77,6 @@ public:
 	T ret_fitness_cost() const { return fitness_cost; };
 	//! Returns the number of iterations that were executed
 	size_t ret_iter() const { return iter; };
-	//! run_algo is the function that is run by each of the algorithms (overloaded in the algorithm classes)
-	template<typename F, typename C> void run_algo(F f, C c) {};
-	//! name of the algorithm
-	const std::string type = "";
 	void display_results();
 protected:
 	//! Population
@@ -104,11 +99,10 @@ protected:
 	template<typename C> void population_constraints_checker(const std::vector<T>& decision_variables, const std::vector<T>& stdev, C c);
 	//! Find best solution
 	template<typename F> void find_min_cost(F f);
-	template<typename F, typename C> std::vector<T> solve(F f, C c);
 };
 
-template<typename T, typename S>
-std::vector<T> Solver_base<T, S>::randomise_individual(const std::vector<T>& decision_variables, const std::vector<T>& stdev)
+template<typename T>
+std::vector<T> Solver_base<T>::randomise_individual(const std::vector<T>& decision_variables, const std::vector<T>& stdev)
 {
 	std::random_device generator;
 	std::vector<T> individual = decision_variables;
@@ -123,8 +117,8 @@ std::vector<T> Solver_base<T, S>::randomise_individual(const std::vector<T>& dec
 	return individual;
 }
 
-template<typename T, typename S>
-std::vector<std::vector<T>> Solver_base<T, S>::init_individuals(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev)
+template<typename T>
+std::vector<std::vector<T>> Solver_base<T>::init_individuals(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev)
 {
 	const auto& ndv = decision_variables.size();
 	std::vector<std::vector<T>> individuals(npop, std::vector<T>(ndv));
@@ -135,9 +129,9 @@ std::vector<std::vector<T>> Solver_base<T, S>::init_individuals(const std::vecto
 	return individuals;
 }
 
-template<typename T, typename S>
+template<typename T>
 template<typename C>
-void Solver_base<T, S>::population_constraints_checker(const std::vector<T>& decision_variables, const std::vector<T>& stdev, C c)
+void Solver_base<T>::population_constraints_checker(const std::vector<T>& decision_variables, const std::vector<T>& stdev, C c)
 {
 	for (auto& p : individuals)
 	{
@@ -149,9 +143,9 @@ void Solver_base<T, S>::population_constraints_checker(const std::vector<T>& dec
 };
 
 //! Find the minimum cost individual of the fitness function for the population
-template<typename T, typename S>
+template<typename T>
 template<typename F>
-void Solver_base<T, S>::find_min_cost(F f)
+void Solver_base<T>::find_min_cost(F f)
 {
 	for (const auto& p : individuals)
 	{
@@ -163,38 +157,12 @@ void Solver_base<T, S>::find_min_cost(F f)
 	fitness_cost = f(min_cost);
 }
 
-template<typename T, typename S>
-void Solver_base<T, S>::display_results()
+template<typename T>
+void Solver_base<T>::display_results()
 {
 	std::cout << "Optimum solution: " << min_cost << " Fitness Value: " << fitness_cost << "\n";
 	std::cout << "Population: " << individuals.size() << " Solved at iteration: " << iter << "\n";
 
-}
-
-//! solve wrapper function for Solvers, used for benchmarks
-template<typename T, typename S>
-template<typename F, typename C>
-std::vector<T> Solver_base<T, S>::solve(F f, C c)
-{
-	std::cout << S::type << " used as solver" << "\n";
-	if (solver_struct.tol > std::abs(solver.ret_fitness_cost()))
-	{
-		T timer = 0;
-		solver.display_results();
-		std::cout << "Elapsed time in seconds: " << timer << "\n";
-	}
-	//! Time the computation
-	std::chrono::time_point<std::chrono::system_clock> start, end;
-	start = std::chrono::system_clock::now();
-	S::run_algo(f, c);
-	end = std::chrono::system_clock::now();
-	std::chrono::duration<double> elapsed_seconds = end - start;
-	std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-	T timer = elapsed_seconds.count();
-	solver.display_results();
-	std::cout << "Elapsed time in seconds: " << timer << "\n";
-	//! Return minimum cost individual
-	return min_cost;
 }
 
 //! solve wrapper function for Solvers, used for benchmarks

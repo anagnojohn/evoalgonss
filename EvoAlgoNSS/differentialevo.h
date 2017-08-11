@@ -23,11 +23,11 @@ public:
 
 //! Differential Evolution Algorithm Class
 template<typename T>
-class Solver<T, DE<T>> : public Solver_base<T, Solver<T, DE<T>>>
+class Solver<T, DE<T>> : public Solver_base<T>
 {
 public:
 	//! Constructor
-	template<typename F, typename C> Solver(const DE<T>& i_de, F f, C c) : Solver_base<T, Solver<T, DE<T>>>{ i_de.decision_variables, i_de.npop, i_de.stdev, f, c }, de{ i_de }
+	template<typename F, typename C> Solver(const DE<T>& i_de, F f, C c) : Solver_base<T>{ i_de.decision_variables, i_de.npop, i_de.stdev, f, c }, de{ i_de }
 	{
 		for (auto i = 0; i < de.npop; ++i)
 		{
@@ -38,10 +38,10 @@ public:
 	}
 	//! Type of the algorithm :: string
 	const std::string type = "Differential Evolution";
-	typedef DE<T> value_type;
 	//! Runs the algorithm until stopping criteria
 	template<typename F, typename C> void run_algo(F f, C c);
 private:
+	//! Differential Evolution structure used internally
 	const DE<T>& de;
 	//! Indices of population
 	std::vector<size_t> indices;

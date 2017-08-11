@@ -25,13 +25,13 @@ int main()
 	DE<double> de_pricing{ 0.6, 1, decision_variables, stdev, 60, 0.01, 400 };
 	DE<double> de_fitting{ 0.6, 1, decision_variables, stdev, 60, 0.0001, 400 };
 	GA<double> ga_pricing{ 0.4, 0.35, 6.0, decision_variables, stdev_ga, 800, 0.00001, 400 };
-	//Local_Best_PSO<double> pso_pricing{ 2.05, 2.05, 6, 0.729, 1.0, { 1000000, 1000000, 1000000, 1000000, 1000000, 1000000 }, decision_variables, stdev, 24, 0.001, 2000};
-	//de.bondpricing_prices(de_pricing);
-	//de.bondpricing_yields(de_pricing);
-	//yieldcurve_fitting(ir_vec, de_fitting);
-	//de.bondpricing_yields(ga_pricing);
-	//!yieldcurve_fitting(ir_vec, ga_pricing);
-	//!de.bondpricing_prices(pso_pricing);
-	//!de.bondpricing_yields(pso_pricing);
+	PSO<double> pso_pricing{ 2.05, 2.05, 6, 0.729, 1.0, { 1000000, 1000000, 1000000, 1000000, 1000000, 1000000 }, decision_variables, stdev, 24, 0.001, 2000};
+	de.bondpricing_prices(de_pricing);
+	de.bondpricing_yields(de_pricing);
+	ir.yieldcurve_fitting(de_fitting);
+	de.bondpricing_yields(ga_pricing);
+	ir.yieldcurve_fitting(ga_pricing);
+	de.bondpricing_prices(pso_pricing);
+	de.bondpricing_yields(pso_pricing);
     return 0;
 }

@@ -45,9 +45,9 @@ public:
 	//! This method sets the nss initial svensson parameters by computing the bond yields-to-maturity and Macaulay durations
 	template<typename S> std::vector<T> set_init_nss_params(S& solver);
 	//! This methods solves the bond pricing problem using prices and the supplied solver
-	template<typename S> void bondpricing_prices(S& solver);
+	template<typename S> void bondpricing_prices(const S& solver);
 	//! This methods solves the bond pricing problem using yield-to-maturities and the supplied solver
-	template<typename S> void bondpricing_yields(S& solver);
+	template<typename S> void bondpricing_yields(const S& solver);
 private:
 	//! Vector of bonds
 	std::vector<Bond<T>> bonds;
@@ -159,7 +159,7 @@ std::vector<T> BondHelper<T>::set_init_nss_params(S& solver)
 
 template<typename T>
 template<typename S>
-void BondHelper<T>::bondpricing_prices(S& solver)
+void BondHelper<T>::bondpricing_prices(const S& solver)
 {
 	assert(solver.ndv == 6);
 	for (const auto& p : bonds)
@@ -183,7 +183,7 @@ void BondHelper<T>::bondpricing_prices(S& solver)
 
 template<typename T>
 template<typename S>
-void BondHelper<T>::bondpricing_yields(S& solver)
+void BondHelper<T>::bondpricing_yields(const S& solver)
 {
 	assert(solver.ndv == 6);
 	for (const auto& p : bonds)

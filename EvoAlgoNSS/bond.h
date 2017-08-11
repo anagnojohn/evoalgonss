@@ -97,7 +97,7 @@ public:
 	//! Sets the yield and duration if needed
 	void set_yield(const T& yield, const T& duration) { yield->this.yield; duration->this.duration; };
 	//! Calculates the yield-to-maturity and Macaulay duration using the supplied solver
-	template<typename S> void compute_yield(S& solver);
+	template<typename S> void compute_yield(const S& solver);
 private:
 	//! Settlement date of the bond
 	const boost::gregorian::date settlement_date;
@@ -113,9 +113,9 @@ private:
 
 template<typename T>
 template<typename S>
-void Bond<T>::compute_yield(S& solver)
+void Bond<T>::compute_yield(const S& solver)
 {
-	assert(solver.ret_ndv() == 1);
+	assert(solver.ndv == 1);
 	auto f = [&](const auto& solution) { return fitness_irr(solution, price, nominal_value, cash_flows, frequency); };
 	auto c = [&](const auto& solution) { return constraints_irr(solution); };
 	auto res = solve(f, c, solver);

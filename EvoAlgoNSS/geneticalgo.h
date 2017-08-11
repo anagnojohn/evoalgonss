@@ -30,23 +30,22 @@ class Solver<T, GA<T>> : public Solver_base<T>
 {
 public:
 	//! Constructor
-	template<typename F, typename C> Solver(const GA<T>& ga, F f, C c) : Solver_base<T>{ { ga.decision_variables, ga.stdev, ga.npop, ga.tol, ga.iter_max }, f, c }, x_rate{ ga.x_rate }, pi{ ga.pi }, alpha{ ga.alpha }
+	template<typename F, typename C> Solver(const GA<T>& i_ga, F f, C c) : Solver_base<T>{ i_ga.decision_variables, i_ga.npop, i_ga.stdev, f, c }, ga{ i_ga }, npop { i_ga.npop }, stdev { i_ga.stdev }
 	{
-		boost::math::beta_distribution<T> i_dist(1, alpha);
+		boost::math::beta_distribution<T> i_dist(1, ga.alpha);
 		dist = i_dist;
-		nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
+		nkeep = static_cast<size_t>(std::ceil(npop * ga.x_rate));
 	}
 	//! Type of the algorithm
 	const std::string type = "Genetic Algorithms";
 	//! Runs the algorithm until stopping criteria
 	template<typename F, typename C> void run_algo(F f, C c);
 private:
-	//! Natural Selection rate
-	T x_rate;
-	//! Probability of mutating
-	T pi;
-	//! Parameter alpha for Beta distribution
-	T alpha;
+	const GA<T>& ga;
+	//! Size of the population is mutable, so a copy is created
+	size_t npop;
+	//! Standard deviation is mutable, so a copy is created
+	std::vector<T> stdev;
 	//! Number of individuals to be kept
 	size_t nkeep;
 	//! Beta distribution
@@ -62,13 +61,13 @@ private:
 template<typename T>
 std::vector<T> Solver<T, GA<T>>::crossover(std::vector<T> r, std::vector<T> s)
 {
-	std::vector<T> offspring(ndv);
-	std::vector<T> psi(ndv);
-	for (auto j = 0; j < ndv; ++j)
+	std::vector<T> offspring(ga.ndv);
+	std::vector<T> psi(ga.ndv);
+	for (auto j = 0; j < ga.ndv; ++j)
 	{
 		psi[j] = distribution(generator);
 	}
-	for (auto j = 0; j < ndv; ++j)
+	for (auto j = 0; j < ga.ndv; ++j)
 	{
 		offspring[j] = psi[j] * r[j] + (1 - psi[j])*s[j];
 	}
@@ -92,10 +91,10 @@ template<typename T>
 std::vector<T> Solver<T, GA<T>>::mutation(const std::vector<T>& individual)
 {
 	std::vector<T> mutated = individual;
-	for (auto j = 0; j < ndv; ++j)
+	for (auto j = 0; j < ga.ndv; ++j)
 	{
 		T r = distribution(generator);
-		if (pi < r)
+		if (ga.pi < r)
 		{
 			std::normal_distribution<T> ndistribution(0, stdev[j]);
 			T epsilon = ndistribution(generator);
@@ -113,9 +112,9 @@ void Solver<T, GA<T>>::run_algo(F f, C c)
 	{
 		return f(l) < f(r);
 	};
-	for (iter = 0; iter < iter_max; ++iter)
+	for (iter = 0; iter < ga.iter_max; ++iter)
 	{
-		if (tol > std::abs(fitness_cost))
+		if (ga.tol > std::abs(fitness_cost))
 		{
 			break;
 		}
@@ -133,7 +132,7 @@ void Solver<T, GA<T>>::run_algo(F f, C c)
 		npop = individuals.size();
 		individuals.erase(individuals.begin() + nkeep, individuals.begin() + npop);
 		npop = individuals.size();
-		nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
+		nkeep = static_cast<size_t>(std::ceil(npop * ga.x_rate));
 		for (auto& p : individuals)
 		{
 			p = mutation(p);
@@ -143,9 +142,9 @@ void Solver<T, GA<T>>::run_algo(F f, C c)
 			}
 		}
 		//! Standard Deviation is not constant in GA
-		for (auto j = 0; j < ndv; ++j)
+		for (auto& p : stdev)
 		{
-			stdev[j] = stdev[j] + 0.02 * stdev[j];
+			p = p + 0.02 * p;
 		}
 		fitness_cost = f(individuals[0]);
 	}

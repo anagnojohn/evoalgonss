@@ -10,10 +10,10 @@ std::ostream& operator<< (std::ostream& stream, const std::vector<T>& vector) {
 	}
 	return stream;
 }
-
-template<typename T, typename S>
+/*
+template<typename T>
 template<typename F, typename C>
-bool Solver_base<T, S>::initial_solution_checker(F f, C c)
+bool initial_solution_checker(F f, C c)
 {
 	std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
 	distribution = i_distribution;
@@ -42,6 +42,7 @@ void Solver_base<T, S>::display_results()
 	std::cout << "Population: " << individuals.size() << " Solved at iteration: " << iter << "\n";
 
 }
+*/
 
 //! Another version of Macaulay Duration
 template<typename T>

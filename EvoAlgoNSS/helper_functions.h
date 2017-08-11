@@ -2,14 +2,34 @@
 
 //! Overload the operator << for printing vectors
 template <typename T>
-std::ostream& operator<< (std::ostream& stream, const std::vector<T>& vector) {
-	if (!vector.empty()) {
+std::ostream& operator<<(std::ostream& stream, const std::vector<T>& vector)
+{
+	if (!vector.empty())
+	{
 		stream << '[';
 		std::copy(vector.begin(), vector.end(), std::ostream_iterator<T>(stream, ", "));
 		stream << "\b\b]";
 	}
 	return stream;
 }
+
+//! Calculates the bond price
+template<typename T>
+T find_bond_price(const T& ytm, const T& coupon_value, const T& nominal_value, const std::vector<T>& time_periods)
+{
+	const size_t& num_time_periods = time_periods.size();
+	T sum = 0.0;
+	T pv_cash_flow = 0.0;
+	T discount_factor = 0.0;
+	for (auto i = 0; i < num_time_periods; ++i)
+	{
+		discount_factor = std::exp(-ytm * time_periods[i]);
+		pv_cash_flow = pv_cash_flow + coupon_value * discount_factor;
+	}
+	pv_cash_flow = pv_cash_flow + nominal_value * discount_factor;
+	return pv_cash_flow;
+}
+
 /*
 template<typename T>
 template<typename F, typename C>

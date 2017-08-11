@@ -60,6 +60,7 @@ std::vector<T> Solver<T, DE<T>>::construct_donor()
 {
 	std::vector<T> donor(de.ndv);
 	std::vector<size_t> r_i;
+	//! Check that the indices are not the same
 	while (r_i.size() < 3)
 	{
 		r_i.push_back(indices[ind_distribution(engine)]);
@@ -108,11 +109,6 @@ void Solver<T, DE<T>>::run_algo(F f, C c)
 	//! Differential Evolution starts here
 	for (iter = 0; iter < de.iter_max; ++iter)
 	{
-		//! Stopping Criteria
-		if (de.tol > std::abs(fitness_cost))
-		{
-			break;
-		}
 		for (auto& p : individuals)
 		{
 			//! Construct donor and trial vectors
@@ -126,6 +122,11 @@ void Solver<T, DE<T>>::run_algo(F f, C c)
 			{
 				p = trial;
 			}
+		}
+		//! Stopping Criteria
+		if (de.tol > std::abs(fitness_cost))
+		{
+			break;
 		}
 		//! Recalculate minimum cost individual of the population
 		find_min_cost(f);

@@ -2,6 +2,13 @@
 
 //! Internal Rate of Return or IRR
 
+//! Calculates discount factors
+template<typename T>
+T compute_discount_factor(const T& r, const T& frequency, const T& period)
+{
+	return 1 / std::pow((1 + r / frequency), period);
+}
+
 //! Constraints function for IRR
 template<typename T>
 bool constraints_irr(const std::vector<T>& solution)
@@ -25,9 +32,9 @@ T irr(const T& r, const T& nominal_value, const std::vector<T>& cash_flows, cons
 	T sum = 0.0;
 	for (auto i = 0; i < num_time_periods; ++i)
 	{
-		sum = sum + cash_flows[i] / std::pow((1 + r / frequency), static_cast<T>(i + 1));
+		sum = sum + cash_flows[i] * compute_discount_factor(r, frequency, static_cast<T>(i + 1));
 	}
-	return sum + nominal_value / std::pow((1 + r / frequency), static_cast<T>(num_time_periods));
+	return sum + nominal_value * compute_discount_factor(r, frequency, static_cast<T>(num_time_periods));
 }
 
 //! Penalty function for IRR

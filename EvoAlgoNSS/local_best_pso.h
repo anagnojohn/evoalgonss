@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ealgorithm_base.h"
-#include <type_traits>
 #include <unordered_map>
 
 //! Particle Swarm Optimisation Structure, used in the actual algorithm and for type deduction
@@ -99,7 +98,7 @@ protected:
 	T rmax;
 	//! Distance betwwen individuals
 	std::vector<T> distance;
-	//! Set the neighbourhoods of the algorithm
+	//! Set the neighbourhoods of the algorithm using particle indices
 	void set_neighbourhoods();
 	//! This method generates r1 and r2 for the velocity update rule
 	std::vector<std::vector<T>> generate_r();
@@ -135,7 +134,6 @@ void Solver<T, PSO<T>>::set_neighbourhoods()
 	size_t counter = 0;
 	for (auto i = 0; i < pso.npop; ++i)
 	{
-
 		if (counter < pso.sneigh)
 		{
 			neighbourhoods[i] = neigh_index;
@@ -188,9 +186,7 @@ void Solver<T, PSO<T>>::position_update()
 	{
 		for (auto j = 0; j < pso.ndv; ++j)
 		{
-			{
-				individuals[i][j] = individuals[i][j] + velocity[i][j];
-			}
+			individuals[i][j] = individuals[i][j] + velocity[i][j];
 		}
 	}
 }
@@ -246,6 +242,10 @@ void Solver<T, PSO<T>>::check_pso_criteria()
 		{
 			rmax = distance[i];
 		}
+		else
+		{
+
+		}
 	}
 }
 
@@ -260,6 +260,10 @@ void Solver<T, PSO<T>>::check_particle_constraints(C c)
 		{
 			individuals[i] = personal_best[i];
 		}
+		else
+		{
+
+		}
 	}
 }
 
@@ -270,11 +274,6 @@ void Solver<T, PSO<T>>::run_algo(F f, C c)
 	//! Local Best Particle Swarm starts here
 	for (iter = 0; iter < pso.iter_max; ++iter)
 	{
-		check_pso_criteria();
-		if (pso.tol > std::abs(fitness_cost) || rmax < pso.tol)
-		{
-			break;
-		}
 		velocity_update();
 		position_update();
 		check_particle_constraints(c);
@@ -286,6 +285,11 @@ void Solver<T, PSO<T>>::run_algo(F f, C c)
 		for (auto& p : vmax)
 		{
 			p = (1 - std::pow(iter / pso.iter_max, pso.alpha)) * p;
+		}
+		check_pso_criteria();
+		if (pso.tol > std::abs(fitness_cost) || rmax < pso.tol)
+		{
+			break;
 		}
 	}
 }

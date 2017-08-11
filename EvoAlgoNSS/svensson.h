@@ -64,7 +64,7 @@ T penalty_svensson(const std::vector<T>& solution)
 	}
 	if (b0 + b1 < 0)
 	{
-		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0 + b1), 2);
+		sum = sum + C * std::pow(std::abs(b0 + b1), 2);
 	}
 	if (b1 < -15 || b1 > 30)
 	{

@@ -115,14 +115,6 @@ void Solver<T, GA<T>>::run_algo(F f, C c)
 	};
 	for (iter = 0; iter < ga.iter_max; ++iter)
 	{
-		if (ga.tol > std::abs(fitness_cost))
-		{
-			break;
-		}
-		if (individuals.size() < 3)
-		{
-			break;
-		}
 		std::sort(individuals.begin(), individuals.end(), comparator);
 		std::vector<std::vector<T>> offsprings;
 		for (auto i = 0; i < npop; ++i)
@@ -148,5 +140,13 @@ void Solver<T, GA<T>>::run_algo(F f, C c)
 			p = p + 0.02 * p;
 		}
 		fitness_cost = f(individuals[0]);
+		if (ga.tol > std::abs(fitness_cost))
+		{
+			break;
+		}
+		if (individuals.size() < 3)
+		{
+			break;
+		}
 	}
 }

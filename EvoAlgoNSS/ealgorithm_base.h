@@ -29,7 +29,7 @@ public:
 		assert(iter_max > 0);
 	}
 	//! The floating point number type used for type deduction
-	typedef T value_type;
+	typedef T fp_type;
 	//! Decision Variables
 	const std::vector<T> decision_variables;
 	//! Standard deviation of the decision variables
@@ -54,7 +54,7 @@ class Solver_base
 public:
 	//! Constructor
 	template<typename F, typename C> Solver_base(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev, F f, C c)
-		: individuals{ init_individuals(decision_variables, npop, stdev) }, min_cost{ individuals[0] }, iter{ 0 }
+		: individuals{ init_individuals(decision_variables, npop, stdev) }, min_cost{ individuals[0] }, iter{ 0 }, solved_flag { false }
 	{
 		population_constraints_checker(decision_variables, stdev, c);
 		find_min_cost(f);
@@ -84,6 +84,8 @@ protected:
 	std::random_device generator;
 	//! Uniform real distribution
 	std::uniform_real_distribution<T> distribution;
+	//! A flag which determines if the solver has already solved the problem
+	bool solved_flag;
 	//! Returns a randomised individual using the initial decision variables and standard deviation
 	std::vector<T> randomise_individual(const std::vector<T>& decision_variables, const std::vector<T>& stdev);
 	//! Initialises the population by randomising aroung the decision variables using the given standard deviation
@@ -157,7 +159,7 @@ void Solver_base<T>::display_results()
 }
 
 //! solve wrapper function for Solvers, used for benchmarks
-template<typename F, typename C, typename S, typename T = S::value_type>
+template<typename F, typename C, typename S, typename T = S::fp_type>
 std::vector<T> solve(F f, C c, const S& solver_struct)
 {
 	Solver<T, S> solver(solver_struct, f, c);
@@ -167,17 +169,21 @@ std::vector<T> solve(F f, C c, const S& solver_struct)
 		T timer = 0;
 		solver.display_results();
 		std::cout << "Elapsed time in seconds: " << timer << "\n";
+		return solver.ret_min_cost();
 	}
-	//! Time the computation
-	std::chrono::time_point<std::chrono::system_clock> start, end;
-	start = std::chrono::system_clock::now();
-	solver.run_algo(f, c);
-	end = std::chrono::system_clock::now();
-	std::chrono::duration<double> elapsed_seconds = end - start;
-	std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-	T timer = elapsed_seconds.count();
-	solver.display_results();
-	std::cout << "Elapsed time in seconds: " << timer << "\n";
-	//! Return minimum cost individual
-	return solver.ret_min_cost();
+	else
+	{
+		//! Time the computation
+		std::chrono::time_point<std::chrono::system_clock> start, end;
+		start = std::chrono::system_clock::now();
+		solver.run_algo(f, c);
+		end = std::chrono::system_clock::now();
+		std::chrono::duration<double> elapsed_seconds = end - start;
+		std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+		T timer = elapsed_seconds.count();
+		solver.display_results();
+		std::cout << "Elapsed time in seconds: " << timer << "\n";
+		//! Return minimum cost individual
+		return solver.ret_min_cost();
+	}
 }

@@ -2,6 +2,9 @@
 
 #include "bond.h"
 
+//! Nelson-Siegel-Svensson (NSS) model
+
+//! Constraints function for the NSS model
 template<typename T>
 bool constraints_svensson(const std::vector<T>& solution)
 {
@@ -20,7 +23,7 @@ bool constraints_svensson(const std::vector<T>& solution)
 		return false;
 	}
 }
-// Spot interest rate at term m using the Nelson-Siegel-Svensson model
+// Spot interest rate at term m using the NSS model
 template<typename T>
 T svensson(const std::vector<T>& solution, const T& m)
 {
@@ -43,6 +46,7 @@ T svensson(const std::vector<T>& solution, const T& m)
 	}
 }
 
+//! Penalty function for NSS
 template<typename T>
 T penalty_svensson(const std::vector<T>& solution)
 {
@@ -58,10 +62,10 @@ T penalty_svensson(const std::vector<T>& solution)
 	{
 		sum = sum + C * std::pow(std::abs(b0), 2);
 	}
-	//if (b0 + b1 < 0)
-	//{
-	//	sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0 + b1), 2);
-	//}
+	if (b0 + b1 < 0)
+	{
+		sum_of_squares = sum_of_squares + C * std::pow(std::abs(b0 + b1), 2);
+	}
 	if (b1 < -15 || b1 > 30)
 	{
 		sum = sum + C * std::pow(std::abs(b1), 2);

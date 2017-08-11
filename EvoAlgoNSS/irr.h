@@ -1,7 +1,8 @@
 #pragma once
 
-enum class problems { irr };
+//! Internal Rate of Return or IRR
 
+//! Constraints function for IRR
 template<typename T>
 bool constraints_irr(const std::vector<T>& solution)
 {
@@ -29,6 +30,7 @@ T irr(const T& r, const T& nominal_value, const std::vector<T>& cash_flows, cons
 	return sum + nominal_value / std::pow((1 + r / frequency), static_cast<T>(num_time_periods));
 }
 
+//! Penalty function for IRR
 template<typename T>
 T penalty_irr(const std::vector<T>& solution)
 {

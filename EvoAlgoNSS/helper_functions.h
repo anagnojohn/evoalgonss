@@ -15,13 +15,6 @@ template<typename T>
 template<typename F, typename C>
 bool initial_solution_checker(F f, C c)
 {
-	std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
-	distribution = i_distribution;
-	individuals = init_individuals(decision_variables, npop, stdev);
-	min_cost = decision_variables;
-	iter = 0;
-	population_constraints_checker(decision_variables, stdev, c);
-	find_min_cost(f);
 	if (tol > std::abs(fitness_cost))
 	{
 		T timer = 0;

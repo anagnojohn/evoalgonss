@@ -41,6 +41,7 @@ public:
 	//! Runs the algorithm until stopping criteria
 	template<typename F, typename C> void run_algo(F f, C c);
 private:
+	//! Genetic Algorithms structure used internally
 	const GA<T>& ga;
 	//! Size of the population is mutable, so a copy is created
 	size_t npop;

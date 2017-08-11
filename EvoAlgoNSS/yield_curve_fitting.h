@@ -59,6 +59,7 @@ public:
 		}
 	};
 private:
+	//! Vector of interest rates
 	std::vector<Interest_Rate<T>> ir_vec;
 	//! This is the fitness function for yield-curve fitting using Interest Rates
 	T fitness_yield_curve_fitting(const std::vector<T>& solution)

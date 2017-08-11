@@ -28,6 +28,7 @@ public:
 		assert(tol > 0);
 		assert(iter_max > 0);
 	}
+	//! The floating point number type used for type deduction
 	typedef T value_type;
 	//! Decision Variables
 	const std::vector<T> decision_variables;
@@ -44,16 +45,7 @@ public:
 };
 
 //! Template Class for Solvers
-template<typename T, typename S>
-class Solver
-{
-public:
-	//! Constructor
-	template<typename F, typename C> Solver(const S& solver_struct, F f, C c)
-	{
-
-	}
-};
+template<typename T, typename S> class Solver;
 
 //! Base Class for Evolutionary Algorithms
 template<typename T>
@@ -77,6 +69,7 @@ public:
 	T ret_fitness_cost() const { return fitness_cost; };
 	//! Returns the number of iterations that were executed
 	size_t ret_iter() const { return iter; };
+	//! Displays the results
 	void display_results();
 protected:
 	//! Population
@@ -97,7 +90,7 @@ protected:
 	std::vector<std::vector<T>> init_individuals(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev);
 	//! Check population constraints
 	template<typename C> void population_constraints_checker(const std::vector<T>& decision_variables, const std::vector<T>& stdev, C c);
-	//! Find best solution
+	//! Find the minimum cost individual of the fitness function for the population
 	template<typename F> void find_min_cost(F f);
 };
 
@@ -142,7 +135,6 @@ void Solver_base<T>::population_constraints_checker(const std::vector<T>& decisi
 	}
 };
 
-//! Find the minimum cost individual of the fitness function for the population
 template<typename T>
 template<typename F>
 void Solver_base<T>::find_min_cost(F f)
@@ -162,7 +154,6 @@ void Solver_base<T>::display_results()
 {
 	std::cout << "Optimum solution: " << min_cost << " Fitness Value: " << fitness_cost << "\n";
 	std::cout << "Population: " << individuals.size() << " Solved at iteration: " << iter << "\n";
-
 }
 
 //! solve wrapper function for Solvers, used for benchmarks

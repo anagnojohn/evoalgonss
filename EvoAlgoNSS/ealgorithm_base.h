@@ -29,7 +29,7 @@ public:
 		assert(iter_max > 0);
 	}
 	//! The floating point number type used for type deduction
-	typedef T fp_type;
+	using fp_type = T;
 	//! Decision Variables
 	const std::vector<T> decision_variables;
 	//! Standard deviation of the decision variables
@@ -45,7 +45,7 @@ public:
 };
 
 //! Template Class for Solvers
-template<typename T, typename S> class Solver;
+template<typename S> class Solver;
 
 //! Base Class for Evolutionary Algorithms
 template<typename T>
@@ -162,7 +162,7 @@ void Solver_base<T>::display_results()
 template<typename F, typename C, typename S, typename T = S::fp_type>
 std::vector<T> solve(F f, C c, const S& solver_struct)
 {
-	Solver<T, S> solver(solver_struct, f, c);
+	Solver<S> solver(solver_struct, f, c);
 	std::cout << solver.type << " used as solver" << "\n";
 	if (solver_struct.tol > std::abs(solver.ret_fitness_cost()))
 	{

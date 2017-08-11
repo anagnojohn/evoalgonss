@@ -26,7 +26,7 @@ public:
 
 //! Genetic Algorithms (GA) Class
 template<typename T>
-class Solver<T, GA<T>> : public Solver_base<T>
+class Solver<GA<T>> : public Solver_base<T>
 {
 public:
 	//! Constructor
@@ -60,7 +60,7 @@ private:
 };
 
 template<typename T>
-std::vector<T> Solver<T, GA<T>>::crossover(std::vector<T> r, std::vector<T> s)
+std::vector<T> Solver<GA<T>>::crossover(std::vector<T> r, std::vector<T> s)
 {
 	std::vector<T> offspring(ga.ndv);
 	std::vector<T> psi(ga.ndv);
@@ -76,7 +76,7 @@ std::vector<T> Solver<T, GA<T>>::crossover(std::vector<T> r, std::vector<T> s)
 }
 
 template<typename T>
-std::vector<T> Solver<T, GA<T>>::selection()
+std::vector<T> Solver<GA<T>>::selection()
 {
 	//! Generate r and s indices
 	T xi = quantile(dist, distribution(generator));
@@ -89,7 +89,7 @@ std::vector<T> Solver<T, GA<T>>::selection()
 }
 
 template<typename T>
-std::vector<T> Solver<T, GA<T>>::mutation(const std::vector<T>& individual)
+std::vector<T> Solver<GA<T>>::mutation(const std::vector<T>& individual)
 {
 	std::vector<T> mutated = individual;
 	for (auto j = 0; j < ga.ndv; ++j)
@@ -107,7 +107,7 @@ std::vector<T> Solver<T, GA<T>>::mutation(const std::vector<T>& individual)
 
 template<typename T>
 template<typename F, typename C>
-void Solver<T, GA<T>>::run_algo(F f, C c)
+void Solver<GA<T>>::run_algo(F f, C c)
 {
 	auto comparator = [&](const std::vector<T>& l, const std::vector<T>& r)
 	{

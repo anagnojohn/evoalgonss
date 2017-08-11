@@ -23,7 +23,7 @@ public:
 
 //! Differential Evolution Algorithm Class
 template<typename T>
-class Solver<T, DE<T>> : public Solver_base<T>
+class Solver<DE<T>> : public Solver_base<T>
 {
 public:
 	//! Constructor
@@ -56,7 +56,7 @@ private:
 };
 
 template<typename T>
-std::vector<T> Solver<T, DE<T>>::construct_donor()
+std::vector<T> Solver<DE<T>>::construct_donor()
 {
 	std::vector<T> donor(de.ndv);
 	std::vector<size_t> r_i;
@@ -77,7 +77,7 @@ std::vector<T> Solver<T, DE<T>>::construct_donor()
 }
 
 template<typename T>
-std::vector<T> Solver<T, DE<T>>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor)
+std::vector<T> Solver<DE<T>>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor)
 {
 	std::vector<T> trial(de.ndv);
 	std::vector<size_t> j_indices;
@@ -104,7 +104,7 @@ std::vector<T> Solver<T, DE<T>>::construct_trial(const std::vector<T>& target, c
 
 template<typename T>
 template<typename F, typename C>
-void Solver<T, DE<T>>::run_algo(F f, C c)
+void Solver<DE<T>>::run_algo(F f, C c)
 {
 	//! Differential Evolution starts here
 	for (iter = 0; iter < de.iter_max; ++iter)

@@ -57,7 +57,7 @@ private:
 	//! This is the fitness function for bond pricing using the bonds' yields-to-maturity
 	T fitness_bond_pricing_yields(const std::vector<T>& solution);
 	//! This is the fitness function for bond pricing using the bonds' prices
-	T fitness_bond_pricing(const std::vector<T>& solution);
+	T fitness_bond_pricing_prices(const std::vector<T>& solution);
 };
 
 template<typename T>
@@ -95,7 +95,7 @@ T BondHelper<T>::fitness_bond_pricing_yields(const std::vector<T>& solution)
 }
 
 template<typename T>
-T BondHelper<T>::fitness_bond_pricing(const std::vector<T>& solution)
+T BondHelper<T>::fitness_bond_pricing_prices(const std::vector<T>& solution)
 {
 	//! The sum of squares of errors between the actual bond price and the estimated price from estimate_bond_pricing
 	T sum_of_squares = 0.0;
@@ -165,7 +165,7 @@ void BondHelper<T>::bondpricing_prices(const S& solver)
 		assert(p.yield > 0 && p.yield < 1);
 		assert(p.duration > 0);
 	}
-	auto f = [&](const auto& solution) { return fitness_bond_pricing(solution); };
+	auto f = [&](const auto& solution) { return fitness_bond_pricing_prices(solution); };
 	auto c = [&](const auto& solution) { return constraints_svensson(solution); };
 	std::cout << "Solving bond pricing using bond prices..." << "\n";
 	auto res = solve(f, c, solver);

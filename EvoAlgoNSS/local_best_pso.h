@@ -38,7 +38,7 @@ public:
 
 //! Local Best Particle Swarm Optimisation Class
 template<typename T>
-class Solver<T, PSO<T>> : public Solver_base<T>
+class Solver<PSO<T>> : public Solver_base<T>
 {
 public:
 	//! Constructor
@@ -128,7 +128,7 @@ protected:
 };
 
 template<typename T>
-void Solver<T, PSO<T>>::set_neighbourhoods()
+void Solver<PSO<T>>::set_neighbourhoods()
 {
 	size_t neigh_index = 0;
 	size_t counter = 0;
@@ -148,7 +148,7 @@ void Solver<T, PSO<T>>::set_neighbourhoods()
 }
 
 template<typename T>
-std::vector<std::vector<T>> Solver<T, PSO<T>>::generate_r()
+std::vector<std::vector<T>> Solver<PSO<T>>::generate_r()
 {
 	std::vector<std::vector<T>> r(2, std::vector<T>(pso.ndv));
 	for (auto i = 0; i < 2; ++i)
@@ -162,7 +162,7 @@ std::vector<std::vector<T>> Solver<T, PSO<T>>::generate_r()
 }
 
 template<typename T>
-void Solver<T, PSO<T>>::velocity_update()
+void Solver<PSO<T>>::velocity_update()
 {
 	const auto& r = generate_r();
 	for (auto i = 0; i < pso.npop; ++i)
@@ -180,7 +180,7 @@ void Solver<T, PSO<T>>::velocity_update()
 }
 
 template<typename T>
-void Solver<T, PSO<T>>::position_update()
+void Solver<PSO<T>>::position_update()
 {
 	for (auto i = 0; i < pso.npop; ++i)
 	{
@@ -193,7 +193,7 @@ void Solver<T, PSO<T>>::position_update()
 
 template<typename T>
 template<typename F>
-void Solver<T, PSO<T>>::best_update(F f)
+void Solver<PSO<T>>::best_update(F f)
 {
 	for (auto i = 0; i < pso.npop; ++i)
 	{
@@ -213,7 +213,7 @@ void Solver<T, PSO<T>>::best_update(F f)
 
 template<typename T>
 template<typename F>
-std::vector<T> Solver<T, PSO<T>>::find_min_local_best(F f)
+std::vector<T> Solver<PSO<T>>::find_min_local_best(F f)
 {
 	std::vector<T> min_cost(pso.ndv);
 	min_cost = local_best[0];
@@ -229,7 +229,7 @@ std::vector<T> Solver<T, PSO<T>>::find_min_local_best(F f)
 }
 
 template<typename T>
-void Solver<T, PSO<T>>::check_pso_criteria()
+void Solver<PSO<T>>::check_pso_criteria()
 {
 	for (auto i = 0; i < pso.npop; ++i)
 	{
@@ -252,7 +252,7 @@ void Solver<T, PSO<T>>::check_pso_criteria()
 
 template<typename T>
 template<typename C>
-void Solver<T, PSO<T>>::check_particle_constraints(C c)
+void Solver<PSO<T>>::check_particle_constraints(C c)
 {
 	for (auto i = 0; i < pso.npop; ++i)
 	{
@@ -269,7 +269,7 @@ void Solver<T, PSO<T>>::check_particle_constraints(C c)
 
 template<typename T>
 template<typename F, typename C>
-void Solver<T, PSO<T>>::run_algo(F f, C c)
+void Solver<PSO<T>>::run_algo(F f, C c)
 {
 	//! Local Best Particle Swarm starts here
 	for (iter = 0; iter < pso.iter_max; ++iter)

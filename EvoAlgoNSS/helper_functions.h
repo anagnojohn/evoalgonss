@@ -11,6 +11,38 @@ std::ostream& operator<< (std::ostream& stream, const std::vector<T>& vector) {
 	return stream;
 }
 
+template<typename T, typename S>
+template<typename F, typename C>
+bool Solver_base<T, S>::initial_solution_checker(F f, C c)
+{
+	std::uniform_real_distribution<T> i_distribution(0.0, 1.0);
+	distribution = i_distribution;
+	individuals = init_individuals(decision_variables, npop, stdev);
+	min_cost = decision_variables;
+	iter = 0;
+	population_constraints_checker(decision_variables, stdev, c);
+	find_min_cost(f);
+	if (tol > std::abs(fitness_cost))
+	{
+		T timer = 0;
+		display_results();
+		std::cout << "Elapsed time in seconds: " << timer << "\n";
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+template<typename T, typename S>
+void Solver_base<T, S>::display_results()
+{
+	std::cout << "Optimum solution: " << min_cost << " Fitness Value: " << fitness_cost << "\n";
+	std::cout << "Population: " << individuals.size() << " Solved at iteration: " << iter << "\n";
+
+}
+
 //! Another version of Macaulay Duration
 template<typename T>
 T macaulay_duration2(const T& yield, const std::vector<T>& cash_flows, const T& nominal_value, const T& frequency)

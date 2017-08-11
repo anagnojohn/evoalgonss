@@ -21,26 +21,6 @@ public:
 		assert(alpha > 0);
 		for (const auto& p : vmax) { assert(p > 0); };
 		assert(vmax.size() == ndv);
-		nneigh = static_cast<size_t>(std::ceil(npop / sneigh));
-		velocity.resize(npop, std::vector<T>(ndv));
-		local_best.resize(nneigh);
-		for (auto& p : velocity)
-		{
-			for (auto& n : p)
-			{
-				n = 0.0;
-			}
-		}
-		for (const auto& p : individuals)
-		{
-			personal_best.push_back(p);
-		}
-		for (auto& p : local_best)
-		{
-			p = personal_best[0];
-		}
-		set_neighbourhoods();
-		distance.resize(npop);
 	}
 	//! Type of the algorithm :: string
 	const std::string type = "Local Best Particle Swarm Optimisation";
@@ -240,6 +220,26 @@ template<typename T>
 template<typename F, typename C>
 void Local_Best_PSO<T>::run_algo(F f, C c)
 {
+	nneigh = static_cast<size_t>(std::ceil(npop / sneigh));
+	velocity.resize(npop, std::vector<T>(ndv));
+	local_best.resize(nneigh);
+	for (auto& p : velocity)
+	{
+		for (auto& n : p)
+		{
+			n = 0.0;
+		}
+	}
+	for (const auto& p : individuals)
+	{
+		personal_best.push_back(p);
+	}
+	for (auto& p : local_best)
+	{
+		p = personal_best[0];
+	}
+	set_neighbourhoods();
+	distance.resize(npop);
 	for (auto i = 0; i < npop; ++i)
 	{
 		if (f(personal_best[i]) < f(local_best[neighbourhoods[i]]))

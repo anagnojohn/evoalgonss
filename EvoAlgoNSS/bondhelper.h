@@ -9,7 +9,6 @@
 #include "geneticalgo.h"
 #include "local_best_pso.h"
 #include "differentialevo.h"
-#include "dependencies.h"
 
 //! Reads bonds from file
 template<typename T>

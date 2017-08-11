@@ -14,7 +14,7 @@ int main()
 	//! IRR solvers
 	Differential_Evo<double> de_irr{ 0.6, 1, { 0.05 },{ 0.7 }, 30, irr_tol, 200 };
 	Genetic_Algo<double> ga_irr{ 0.4, 0.35, 6.0, { 0.5 }, { 0.7 }, 200, irr_tol, 200 };
-	Local_Best_PSO<double> pso_irr{ 2.05, 2.05, 2, 0.729, 10.0, { 1000000 }, { 0.05 }, { 0.7 }, 4, irr_tol, 500 };
+	Local_Best_PSO<double> pso_irr{ 2.05, 2.05, 4, 0.729, 1, { 1000000 }, { 0.05 }, { 0.7 }, 16, irr_tol, 500 };
 	//! Call benchmark functions
 	InterestRate_Helper<double> ir{ read_ir_from_file<double>("interest_rate_data_periods.txt") };
 	BondHelper<double> de{ read_bonds_from_file<double>("bond_data.txt") };

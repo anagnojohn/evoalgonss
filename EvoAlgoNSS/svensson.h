@@ -1,6 +1,5 @@
 #pragma once
 
-#include "dependencies.h"
 #include "bond.h"
 
 template<typename T>

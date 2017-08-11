@@ -21,7 +21,6 @@ public:
 		std::uniform_int_distribution<size_t> i_ind_distribution(0, indices.size() - 1);
 		ind_distribution = i_ind_distribution;
 	}
-protected:
 	//! Type of the algorithm :: string
 	const std::string type = "Differential Evolution";
 	//! Runs the algorithm until stopping criteria

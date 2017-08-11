@@ -2,7 +2,6 @@
 
 #include <vector>
 #include "irr.h"
-#include "dependencies.h"
 #include "boost/date_time/gregorian/gregorian.hpp"
 #include "boost/date_time/time.hpp"
 
@@ -116,7 +115,7 @@ template<typename T>
 template<typename S>
 void Bond<T>::compute_yield(S& solver)
 {
-	assert(solver.ndv == 1);
+	assert(solver.ret_ndv() == 1);
 	auto f = [&](const auto& solution) { return fitness_irr(solution, price, nominal_value, cash_flows, frequency); };
 	auto c = [&](const auto& solution) { return constraints_irr(solution); };
 	auto res = solve(f, c, solver);

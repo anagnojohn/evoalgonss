@@ -16,9 +16,6 @@ public:
 		assert(x_rate > 0 && x_rate <= 1);
 		assert(pi > 0 && pi <= 1);
 		assert(alpha > 0);
-		boost::math::beta_distribution<T> i_dist(1, alpha);
-		dist = i_dist;
-		nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
 	}
 	//! Type of the algorithm :: string
 	const std::string type = "Genetic Algorithms";
@@ -96,6 +93,9 @@ template<typename F, typename C>
 void Genetic_Algo<T>
 ::run_algo(F f, C c)
 {
+	boost::math::beta_distribution<T> i_dist(1, alpha);
+	dist = i_dist;
+	nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
 	auto comparator = [&](const std::vector<T>& l, const std::vector<T>& r)
 	{
 		return f(l) < f(r);

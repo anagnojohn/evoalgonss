@@ -3,52 +3,38 @@
 #include <boost/math/distributions.hpp>
 #include "ealgorithm_base.h"
 
-//! Genetic Algorithms Structure, used in the actual algorithm and for type deduction
+//! Genetic Algorithms (GA) Class
 template<typename T>
-struct GA : EA_base<T>
+class Genetic_Algo : public Solver_base<T, Genetic_Algo<T> >
 {
 public:
 	//! Constructor
-	GA(const T& i_x_rate, const T& i_pi, const T& i_alpha, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
-		const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-		: x_rate{ i_x_rate }, pi{ i_pi }, alpha{ i_alpha }, EA_base{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }
+	Genetic_Algo(const T& i_x_rate, const T& i_pi, const T& i_alpha, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
+		const size_t& i_npop, const T& i_tol, const size_t& i_iter_max) : x_rate{ i_x_rate }, pi{ i_pi }, alpha{ i_alpha }, stdev_mut{ i_stdev },
+		Solver_base<T, Genetic_Algo<T> > { i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }
 	{
 		assert(x_rate > 0 && x_rate <= 1);
 		assert(pi > 0 && pi <= 1);
-	}
-	//!Natural Selection rate
-	const T x_rate;
-	//! Probability of mutating
-	const T pi;
-	//! Parameter alpha for Beta distribution
-	const T alpha;
-};
-
-//! Genetic Algorithms (GA) Class
-template<typename T>
-class Solver<T, GA<T>> : public Solver_base<T>
-{
-public:
-	//! Constructor
-	template<typename F, typename C> Solver(const GA<T>& ga, F f, C c) : Solver_base<T> { { ga.decision_variables, ga.stdev, ga.npop, ga.tol, ga.iter_max}, f, c }, x_rate{ ga.x_rate }, pi{ ga.pi }, alpha{ ga.alpha }
-	{
+		assert(alpha > 0);
 		boost::math::beta_distribution<T> i_dist(1, alpha);
 		dist = i_dist;
 		nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
 	}
-	//! Type of the algorithm
+	//! Type of the algorithm :: string
 	const std::string type = "Genetic Algorithms";
 	//! Runs the algorithm until stopping criteria
 	template<typename F, typename C> void run_algo(F f, C c);
 private:
 	//! Natural Selection rate
-	T x_rate;
+	const T x_rate;
 	//! Probability of mutating
-	T pi;
+	const T pi;
 	//! Parameter alpha for Beta distribution
-	T alpha;
+	const T alpha;
 	//! Number of individuals to be kept
 	size_t nkeep;
+	//! Standard Deviation is not constant in GA
+	std::vector<T> stdev_mut;
 	//! Beta distribution
 	boost::math::beta_distribution<T> dist;
 	//! Crossover step of GA
@@ -60,7 +46,7 @@ private:
 };
 
 template<typename T>
-std::vector<T> Solver<T, GA<T>>::crossover(std::vector<T> r, std::vector<T> s)
+std::vector<T> Genetic_Algo<T>::crossover(std::vector<T> r, std::vector<T> s)
 {
 	std::vector<T> offspring(ndv);
 	std::vector<T> psi(ndv);
@@ -76,20 +62,20 @@ std::vector<T> Solver<T, GA<T>>::crossover(std::vector<T> r, std::vector<T> s)
 }
 
 template<typename T>
-std::vector<T> Solver<T, GA<T>>::selection()
+std::vector<T> Genetic_Algo<T>::selection()
 {
 	//! Generate r and s indices
 	T xi = quantile(dist, distribution(generator));
-	size_t r = static_cast<size_t>(std::round(npop * xi));
+	size_t r = static_cast<size_t>(std::round(individuals.size() * xi));
 	xi = quantile(dist, distribution(generator));
-	size_t s = static_cast<size_t>(std::round(npop * xi));
+	size_t s = static_cast<size_t>(std::round(individuals.size() * xi));
 	//! Produce offsrping using r and s indices by crossover
 	std::vector<T> offspring = crossover(individuals[r], individuals[s]);
 	return offspring;
 }
 
 template<typename T>
-std::vector<T> Solver<T, GA<T>>::mutation(const std::vector<T>& individual)
+std::vector<T> Genetic_Algo<T>::mutation(const std::vector<T>& individual)
 {
 	std::vector<T> mutated = individual;
 	for (auto j = 0; j < ndv; ++j)
@@ -97,7 +83,7 @@ std::vector<T> Solver<T, GA<T>>::mutation(const std::vector<T>& individual)
 		T r = distribution(generator);
 		if (pi < r)
 		{
-			std::normal_distribution<T> ndistribution(0, stdev[j]);
+			std::normal_distribution<T> ndistribution(0, stdev_mut[j]);
 			T epsilon = ndistribution(generator);
 			mutated[j] = mutated[j] + epsilon;
 		}
@@ -107,33 +93,26 @@ std::vector<T> Solver<T, GA<T>>::mutation(const std::vector<T>& individual)
 
 template<typename T>
 template<typename F, typename C>
-void Solver<T, GA<T>>::run_algo(F f, C c)
+void Genetic_Algo<T>
+::run_algo(F f, C c)
 {
 	auto comparator = [&](const std::vector<T>& l, const std::vector<T>& r)
 	{
 		return f(l) < f(r);
 	};
+	start = std::chrono::system_clock::now();
 	for (iter = 0; iter < iter_max; ++iter)
 	{
-		if (tol > std::abs(fitness_cost))
-		{
-			break;
-		}
-		if (individuals.size() < 3)
-		{
-			break;
-		}
 		std::sort(individuals.begin(), individuals.end(), comparator);
 		std::vector<std::vector<T>> offsprings;
-		for (auto i = 0; i < npop; ++i)
+		for (auto i = 0; i < individuals.size(); ++i)
 		{
 			std::vector<T> offspring = selection();
 			offsprings.push_back(offspring);
 		}
-		npop = individuals.size();
-		individuals.erase(individuals.begin() + nkeep, individuals.begin() + npop);
-		npop = individuals.size();
-		nkeep = static_cast<size_t>(std::ceil(npop * x_rate));
+		//! Size of the population is mutable
+		individuals.erase(individuals.begin() + nkeep, individuals.begin() + individuals.size());
+		nkeep = static_cast<size_t>(std::ceil(individuals.size() * x_rate));
 		for (auto& p : individuals)
 		{
 			p = mutation(p);
@@ -143,10 +122,19 @@ void Solver<T, GA<T>>::run_algo(F f, C c)
 			}
 		}
 		//! Standard Deviation is not constant in GA
-		for (auto j = 0; j < ndv; ++j)
+		for (auto& p : stdev_mut)
 		{
-			stdev[j] = stdev[j] + 0.02 * stdev[j];
+			p = p + 0.02 * p;
 		}
 		fitness_cost = f(individuals[0]);
+		if (tol > std::abs(fitness_cost))
+		{
+			break;
+		}
+		if (individuals.size() < 3)
+		{
+			break;
+		}
 	}
+	end = std::chrono::system_clock::now();
 }

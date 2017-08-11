@@ -30,6 +30,7 @@ std::vector<T> compute_cash_flows(const T& coupon_value, const T& frequency, boo
 template<typename T>
 class Bond
 {
+	//! Friend class BondHelper
 	friend class BondHelper<T>;
 public:
 	//! Construct in the case price is given but the yield and the macaulay duration are not given
@@ -97,7 +98,7 @@ public:
 	//! Sets the yield and duration if needed
 	void set_yield(const T& yield, const T& duration) { yield->this.yield; duration->this.duration; };
 	//! Calculates the yield-to-maturity and Macaulay duration using the supplied solver
-	template<typename S> void compute_yield(const S& solver);
+	template<typename S> void compute_yield(S& solver);
 private:
 	//! Settlement date of the bond
 	const boost::gregorian::date settlement_date;
@@ -113,7 +114,7 @@ private:
 
 template<typename T>
 template<typename S>
-void Bond<T>::compute_yield(const S& solver)
+void Bond<T>::compute_yield(S& solver)
 {
 	assert(solver.ndv == 1);
 	auto f = [&](const auto& solution) { return fitness_irr(solution, price, nominal_value, cash_flows, frequency); };
@@ -155,29 +156,6 @@ T Bond<T>::compute_macaulay_duration()
 	pv = nominal_value * discount_factor;
 	duration = duration + (static_cast<T>(cash_flows.size()) / frequency) * pv / pv_cash_flow;
 	return duration;
-}
-
-//! Reads bonds from file
-template<typename T>
-std::vector<Bond<T>> read_bonds_from_file(const std::string & filename)
-{
-	std::vector<Bond<T>> bonds;
-	std::ifstream input(filename);
-	for (std::string line; getline(input, line); )
-	{
-		T coupon_percentage;
-		T price;
-		T nominal_value;
-		T frequency;
-		std::string settlement_date;
-		std::string maturity_date;
-		std::istringstream stream(line);
-		stream >> coupon_percentage >> price >> nominal_value >> frequency >> settlement_date
-			>> maturity_date;
-		const Bond<T> bond{ coupon_percentage, price, nominal_value, frequency, settlement_date, maturity_date };
-		bonds.push_back(bond);
-	}
-	return bonds;
 }
 
 //! Calculates the bond price

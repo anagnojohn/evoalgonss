@@ -5,10 +5,13 @@
 #include <sstream>
 #include <vector>
 
+template<typename T> class InterestRate_Helper;
+
 //! Struct for interest rates
 template<typename T>
 struct Interest_Rate
 {
+	friend class InterestRate_Helper<T>;
 	//! Constructor
 	Interest_Rate(const T& i_period, const T& i_rate) : period{ i_period }, rate{ i_rate } {};
 	//! Period is the time that matches the rate
@@ -35,32 +38,41 @@ std::vector<Interest_Rate<T>> read_ir_from_file(const std::string & filename)
 	return ir_vec;
 }
 
-//! This is the fitness function for yield-curve fitting using Interest Rates
+//! A class for the bond pricing problem
 template<typename T>
-T fitness_yield_curve_fitting(const std::vector<T>& solution, const std::vector<Interest_Rate<T>>& ir_vec)
+class InterestRate_Helper
 {
-	//! The sum of squares of errors betwwen the actual rates and the rates computed by svensson are used
-	T sum_of_squares = 0;
-	for (auto i = 0; i < ir_vec.size(); ++i)
+public:
+	//! Constructor
+	InterestRate_Helper(const std::vector<Interest_Rate<T>>& i_ir_vec) : ir_vec{ i_ir_vec } {};
+	//! Yield Curve Fitting using interest rates and recorded periods
+	template<typename T, typename S>
+	void yieldcurve_fitting(S& solver)
 	{
-		T estimate = svensson(solution, ir_vec[i].period);
-		sum_of_squares = sum_of_squares + std::pow(ir_vec[i].rate - estimate, 2);
-	}
-	sum_of_squares = sum_of_squares + penalty_svensson(solution);
-	return sum_of_squares;
-}
-
-//! Yield Curve Fitting using interest rates and recorded periods
-template<typename T, typename S>
-void yieldcurve_fitting(const std::vector<Interest_Rate<T>>& ir_vec, const S& solver)
-{
-	assert(solver.ndv == 6);
-	auto f = [&](const auto& solution) { return fitness_yield_curve_fitting(solution, ir_vec); };
-	auto c = [&](const auto& solution) { return constraints_svensson(solution); };
-	std::cout << "Yield Curve fitting." << "\n";
-	auto res = solve(f, c, solver);
-	for (const auto& p : ir_vec)
+		assert(solver.ndv == 6);
+		auto f = [&](const auto& solution) { return fitness_yield_curve_fitting(solution, ir_vec); };
+		auto c = [&](const auto& solution) { return constraints_svensson(solution); };
+		std::cout << "Yield Curve fitting." << "\n";
+		auto res = solve(f, c, solver);
+		for (const auto& p : ir_vec)
+		{
+			std::cout << "Estimated interest rates: " << svensson(res, p.period) << " Actual interest rates: " << p.rate << "\n";
+		}
+	};
+private:
+	std::vector<Interest_Rate<T>> ir_vec;
+	//! This is the fitness function for yield-curve fitting using Interest Rates
+	template<typename T>
+	T fitness_yield_curve_fitting(const std::vector<T>& solution)
 	{
-		std::cout << "Estimated interest rates: " << svensson(res, p.period) << " Actual interest rates: " << p.rate << "\n";
-	}
-}
+		//! The sum of squares of errors betwwen the actual rates and the rates computed by svensson are used
+		T sum_of_squares = 0;
+		for (auto i = 0; i < ir_vec.size(); ++i)
+		{
+			T estimate = svensson(solution, ir_vec[i].period);
+			sum_of_squares = sum_of_squares + std::pow(ir_vec[i].rate - estimate, 2);
+		}
+		sum_of_squares = sum_of_squares + penalty_svensson(solution);
+		return sum_of_squares;
+	};
+};

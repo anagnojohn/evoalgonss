@@ -6,10 +6,33 @@
 #include "svensson.h"
 #include "irr.h"
 #include "yield_curve_fitting.h"
-//#include "geneticalgo.h"
-//#include "local_best_pso.h"
+#include "geneticalgo.h"
+#include "local_best_pso.h"
 #include "differentialevo.h"
 #include "dependencies.h"
+
+//! Reads bonds from file
+template<typename T>
+std::vector<Bond<T>> read_bonds_from_file (const std::string & filename)
+{
+	std::vector<Bond<T>> bonds;
+	std::ifstream input(filename);
+	for (std::string line; getline(input, line); )
+	{
+		T coupon_percentage;
+		T price;
+		T nominal_value;
+		T frequency;
+		std::string settlement_date;
+		std::string maturity_date;
+		std::istringstream stream(line);
+		stream >> coupon_percentage >> price >> nominal_value >> frequency >> settlement_date
+			>> maturity_date;
+		const Bond<T> bond{ coupon_percentage, price, nominal_value, frequency, settlement_date, maturity_date };
+		bonds.push_back(bond);
+	}
+	return bonds;
+}
 
 //! A class for the bond pricing problem
 template<typename T>
@@ -21,12 +44,14 @@ public:
 	//! This method sets the nss initial svensson parameters using test data
 	std::vector<T> set_init_nss_params();
 	//! This method sets the nss initial svensson parameters by computing the bond yields-to-maturity and Macaulay durations
-	template<typename S> std::vector<T> set_init_nss_params(const S& solver);
+	template<typename S> std::vector<T> set_init_nss_params(S& solver);
 	//! This methods solves the bond pricing problem using prices and the supplied solver
-	template<typename S> void bondpricing_prices(const S& solver);
+	template<typename S> void bondpricing_prices(S& solver);
 	//! This methods solves the bond pricing problem using yield-to-maturities and the supplied solver
-	template<typename S> void bondpricing_yields(const S& solver);
+	template<typename S> void bondpricing_yields(S& solver);
 private:
+	//! Vector of bonds
+	std::vector<Bond<T>> bonds;
 	//! Calculates the discount factors
 	T discount_factor(T yield, T period);
 	//! Returns the bond prices using the estimated spot interest rates computed with svensson
@@ -35,8 +60,6 @@ private:
 	T fitness_bond_pricing_yields(const std::vector<T>& solution);
 	//! This is the fitness function for bond pricing using the bonds' prices
 	T fitness_bond_pricing(const std::vector<T>& solution);
-	//! Vector of bonds
-	std::vector<Bond<T>> bonds;
 };
 
 template<typename T>
@@ -118,7 +141,7 @@ std::vector<T> BondHelper<T>::set_init_nss_params()
 
 template<typename T>
 template<typename S>
-std::vector<T> BondHelper<T>::set_init_nss_params(const S& solver)
+std::vector<T> BondHelper<T>::set_init_nss_params(S& solver)
 {
 	for (auto i = 0; i < bonds.size(); ++i)
 	{
@@ -137,7 +160,7 @@ std::vector<T> BondHelper<T>::set_init_nss_params(const S& solver)
 
 template<typename T>
 template<typename S>
-void BondHelper<T>::bondpricing_prices(const S& solver)
+void BondHelper<T>::bondpricing_prices(S& solver)
 {
 	assert(solver.ndv == 6);
 	for (const auto& p : bonds)
@@ -161,7 +184,7 @@ void BondHelper<T>::bondpricing_prices(const S& solver)
 
 template<typename T>
 template<typename S>
-void BondHelper<T>::bondpricing_yields(const S& solver)
+void BondHelper<T>::bondpricing_yields(S& solver)
 {
 	assert(solver.ndv == 6);
 	for (const auto& p : bonds)

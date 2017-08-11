@@ -2,6 +2,8 @@
 
 #include "dependencies.h"
 
+enum class problems { irr };
+
 template<typename T>
 bool constraints_irr(const std::vector<T>& solution)
 {
@@ -16,7 +18,7 @@ bool constraints_irr(const std::vector<T>& solution)
 	}
 }
 
-//!Returns the present value of an investment
+//! Returns the present value of an investment
 template<typename T>
 T irr(const T& r, const T& nominal_value, const std::vector<T>& cash_flows, const T& frequency)
 {

@@ -21,28 +21,27 @@ public:
 	const T f_param;
 };
 
-//! Differential Evolution Algorithm Class
-template<typename T>
-class Solver<DE<T>> : public Solver_base<T>
+//! Differential Evolution Algorithm (DE) Class
+template<typename T, typename F, typename C>
+class Solver<DE<T>, F, C> : public Solver_base<T, F, C>
 {
 public:
 	//! Constructor
-	template<typename F, typename C> Solver(const DE<T>& i_de, F f, C c) : Solver_base<T>{ i_de.decision_variables, i_de.npop, i_de.stdev, f, c }, de{ i_de }
+	template<typename F, typename C> Solver(const DE<T>& i_de, const F& f, const C& c) : Solver_base<T, F, C>{ i_de.decision_variables, i_de.npop, i_de.stdev, i_de.tol, f, c }, de{ i_de }
 	{
 		for (auto i = 0; i < de.npop; ++i)
 		{
 			indices.push_back(i);
 		}
-		std::uniform_int_distribution<size_t> i_ind_distribution(0, indices.size() - 1);
-		ind_distribution = i_ind_distribution;
+		ind_distribution = std::uniform_int_distribution<size_t>::uniform_int_distribution(0, de.npop - 1);
 	}
 	//! Type of the algorithm :: string
 	const std::string type = "Differential Evolution";
 	//! Runs the algorithm until stopping criteria
-	template<typename F, typename C> void run_algo(F f, C c);
+	void run_algo();
 private:
 	//! Differential Evolution structure used internally
-	const DE<T>& de;
+	const DE<T> de;
 	//! Indices of population
 	std::vector<size_t> indices;
 	//! Random number engine for the indices
@@ -55,8 +54,8 @@ private:
 	std::vector<T> construct_trial(const std::vector<T>& target, const std::vector<T>& donor);
 };
 
-template<typename T>
-std::vector<T> Solver<DE<T>>::construct_donor()
+template<typename T, typename F, typename C>
+std::vector<T> Solver<DE<T>, F, C>::construct_donor()
 {
 	std::vector<T> donor(de.ndv);
 	std::vector<size_t> r_i;
@@ -76,8 +75,8 @@ std::vector<T> Solver<DE<T>>::construct_donor()
 	return donor;
 }
 
-template<typename T>
-std::vector<T> Solver<DE<T>>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor)
+template<typename T, typename F, typename C>
+std::vector<T> Solver<DE<T>, F, C>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor)
 {
 	std::vector<T> trial(de.ndv);
 	std::vector<size_t> j_indices;
@@ -102,9 +101,8 @@ std::vector<T> Solver<DE<T>>::construct_trial(const std::vector<T>& target, cons
 	return trial;
 }
 
-template<typename T>
-template<typename F, typename C>
-void Solver<DE<T>>::run_algo(F f, C c)
+template<typename T, typename F, typename C>
+void Solver<DE<T>, F, C>::run_algo()
 {
 	//! Differential Evolution starts here
 	for (iter = 0; iter < de.iter_max; ++iter)
@@ -123,12 +121,13 @@ void Solver<DE<T>>::run_algo(F f, C c)
 				p = trial;
 			}
 		}
+		//! Recalculate minimum cost individual of the population
+		find_min_cost();
 		//! Stopping Criteria
 		if (de.tol > std::abs(fitness_cost))
 		{
+			solved_flag = true;
 			break;
 		}
-		//! Recalculate minimum cost individual of the population
-		find_min_cost(f);
 	}
 }

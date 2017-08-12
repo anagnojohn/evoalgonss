@@ -25,24 +25,24 @@ public:
 };
 
 //! Genetic Algorithms (GA) Class
-template<typename T>
-class Solver<GA<T>> : public Solver_base<T>
+template<typename T, typename F, typename C>
+class Solver<GA<T>, F, C> : public Solver_base<T, F, C>
 {
 public:
 	//! Constructor
-	template<typename F, typename C> Solver(const GA<T>& i_ga, F f, C c) : Solver_base<T>{ i_ga.decision_variables, i_ga.npop, i_ga.stdev, f, c }, ga{ i_ga }, npop { i_ga.npop }, stdev { i_ga.stdev }
+	Solver(const GA<T>& i_ga, F f, C c) : 
+		Solver_base<T, F, C>{ i_ga.decision_variables, i_ga.npop, i_ga.stdev, i_ga.tol, f, c }, ga{ i_ga }, npop { i_ga.npop }, stdev { i_ga.stdev }
 	{
-		boost::math::beta_distribution<T> i_dist(1, ga.alpha);
-		dist = i_dist;
+		dist = boost::math::beta_distribution<T>::beta_distribution(1, ga.alpha);
 		nkeep = static_cast<size_t>(std::ceil(npop * ga.x_rate));
 	}
 	//! Type of the algorithm
 	const std::string type = "Genetic Algorithms";
 	//! Runs the algorithm until stopping criteria
-	template<typename F, typename C> void run_algo(F f, C c);
+	void run_algo();
 private:
 	//! Genetic Algorithms structure used internally
-	const GA<T>& ga;
+	const GA<T> ga;
 	//! Size of the population is mutable, so a copy is created
 	size_t npop;
 	//! Standard deviation is mutable, so a copy is created
@@ -59,24 +59,21 @@ private:
 	std::vector<T> mutation(const std::vector<T>& individual);
 };
 
-template<typename T>
-std::vector<T> Solver<GA<T>>::crossover(std::vector<T> r, std::vector<T> s)
+template<typename T, typename F, typename C>
+std::vector<T> Solver<GA<T>, F, C>::crossover(std::vector<T> r, std::vector<T> s)
 {
 	std::vector<T> offspring(ga.ndv);
 	std::vector<T> psi(ga.ndv);
 	for (auto j = 0; j < ga.ndv; ++j)
 	{
 		psi[j] = distribution(generator);
-	}
-	for (auto j = 0; j < ga.ndv; ++j)
-	{
-		offspring[j] = psi[j] * r[j] + (1 - psi[j])*s[j];
+		offspring[j] = psi[j] * r[j] + (1 - psi[j]) * s[j];
 	}
 	return offspring;
 }
 
-template<typename T>
-std::vector<T> Solver<GA<T>>::selection()
+template<typename T, typename F, typename C>
+std::vector<T> Solver<GA<T>, F, C>::selection()
 {
 	//! Generate r and s indices
 	T xi = quantile(dist, distribution(generator));
@@ -88,8 +85,8 @@ std::vector<T> Solver<GA<T>>::selection()
 	return offspring;
 }
 
-template<typename T>
-std::vector<T> Solver<GA<T>>::mutation(const std::vector<T>& individual)
+template<typename T, typename F, typename C>
+std::vector<T> Solver<GA<T>, F, C>::mutation(const std::vector<T>& individual)
 {
 	std::vector<T> mutated = individual;
 	for (auto j = 0; j < ga.ndv; ++j)
@@ -105,9 +102,8 @@ std::vector<T> Solver<GA<T>>::mutation(const std::vector<T>& individual)
 	return mutated;
 }
 
-template<typename T>
-template<typename F, typename C>
-void Solver<GA<T>>::run_algo(F f, C c)
+template<typename T, typename F, typename C>
+void Solver<GA<T>, F, C>::run_algo()
 {
 	auto comparator = [&](const std::vector<T>& l, const std::vector<T>& r)
 	{
@@ -142,10 +138,12 @@ void Solver<GA<T>>::run_algo(F f, C c)
 		fitness_cost = f(individuals[0]);
 		if (ga.tol > std::abs(fitness_cost))
 		{
+			solved_flag = true;
 			break;
 		}
 		if (individuals.size() < 3)
 		{
+			solved_flag = false;
 			break;
 		}
 	}

@@ -39,10 +39,6 @@ public:
 	T ret_yield() const { return yield; };
 	//! Calculates the yield-to-maturity and Macaulay duration using the supplied solver
 	template<typename S> void compute_yield(const S& solver);
-	Bond<T>& operator=(const Bond<T> &)
-	{
-		return (*this);
-	}
 private:
 	//! Bond's annual coupon rate
 	const T coupon_percentage;

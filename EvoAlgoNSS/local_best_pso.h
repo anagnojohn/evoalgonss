@@ -36,13 +36,13 @@ public:
 	const std::vector<T> vmax;
 };
 
-//! Local Best Particle Swarm Optimisation Class
-template<typename T>
-class Solver<PSO<T>> : public Solver_base<T>
+//! Local Best Particle Swarm Optimisation (PSO) Class
+template<typename T, typename F, typename C>
+class Solver<PSO<T>, F, C> : public Solver_base<T, F, C>
 {
 public:
 	//! Constructor
-	template<typename F, typename C> Solver(const PSO<T>& i_pso, F f, C c) : Solver_base<T>{ i_pso.decision_variables, i_pso.npop, i_pso.stdev, f, c }, w{ i_pso.w }, vmax{ i_pso.vmax }, pso{ i_pso }
+	Solver(const PSO<T>& i_pso, F f, C c) : Solver_base<T, F, C>{ i_pso.decision_variables, i_pso.npop, i_pso.stdev, i_pso.tol, f, c }, w{ i_pso.w }, vmax{ i_pso.vmax }, pso{ i_pso }
 	{
 		nneigh = static_cast<size_t>(std::ceil(pso.npop / pso.sneigh));
 		velocity.resize(pso.npop, std::vector<T>(pso.ndv));
@@ -71,15 +71,15 @@ public:
 				local_best[neighbourhoods[i]] = personal_best[i];
 			}
 		}
-		find_min_local_best(f);
+		find_min_local_best();
 	}
 	//! Type of the algorithm
 	const std::string type = "Local Best Particle Swarm Optimisation";
 	//! Runs the algorithm until stopping criteria
-	template<typename F, typename C> void run_algo(F f, C c);
+	void run_algo();
 protected:
 	//! Particle Swarm Optimisation structure used internally
-	const PSO<T>& pso;
+	const PSO<T> pso;
 	//! Inertia is mutable, so a copy is created
 	T w;
 	//! Maximum Velocity is mutable, so a copy is created
@@ -102,20 +102,15 @@ protected:
 	void set_neighbourhoods();
 	//! This method generates r1 and r2 for the velocity update rule
 	std::vector<std::vector<T>> generate_r();
-	//! Velocity update of the particles
-	void velocity_update();
 	//! Position update of the particles
 	void position_update();
 	//! This method sets the personal and local best solutions
-	template<typename F> void best_update(F f);
+	void best_update();
 	//! This is a faster way to calculate the minimum cost unless there is only one neighbourhood, in which case it is the same as find_min_cost(F f)
-	template<typename F> std::vector<T> find_min_local_best(F f);
+	void find_min_local_best();
 	//! Define the maximum radius stopping criterion
-	void check_pso_criteria();
-	//! Checks that the candidates are feasible
-	template<typename C> void check_particle_constraints(C c);
+	bool check_pso_criteria();
 	//! Euclidean Distance of two vectors
-	template<typename T>
 	T euclid_distance(const std::vector<T>& x, const std::vector<T>& y)
 	{
 		T sum = 0;
@@ -127,8 +122,8 @@ protected:
 	}
 };
 
-template<typename T>
-void Solver<PSO<T>>::set_neighbourhoods()
+template<typename T, typename F, typename C>
+void Solver<PSO<T>, F, C>::set_neighbourhoods()
 {
 	size_t neigh_index = 0;
 	size_t counter = 0;
@@ -147,8 +142,8 @@ void Solver<PSO<T>>::set_neighbourhoods()
 	}
 }
 
-template<typename T>
-std::vector<std::vector<T>> Solver<PSO<T>>::generate_r()
+template<typename T, typename F, typename C>
+std::vector<std::vector<T>> Solver<PSO<T>, F, C>::generate_r()
 {
 	std::vector<std::vector<T>> r(2, std::vector<T>(pso.ndv));
 	for (auto i = 0; i < 2; ++i)
@@ -161,8 +156,8 @@ std::vector<std::vector<T>> Solver<PSO<T>>::generate_r()
 	return r;
 }
 
-template<typename T>
-void Solver<PSO<T>>::velocity_update()
+template<typename T, typename F, typename C>
+void Solver<PSO<T>, F, C>::position_update()
 {
 	const auto& r = generate_r();
 	for (auto i = 0; i < pso.npop; ++i)
@@ -175,35 +170,25 @@ void Solver<PSO<T>>::velocity_update()
 			{
 				velocity[i][j] = vmax[j];
 			}
-		}
-	}
-}
-
-template<typename T>
-void Solver<PSO<T>>::position_update()
-{
-	for (auto i = 0; i < pso.npop; ++i)
-	{
-		for (auto j = 0; j < pso.ndv; ++j)
-		{
 			individuals[i][j] = individuals[i][j] + velocity[i][j];
 		}
 	}
 }
 
-template<typename T>
-template<typename F>
-void Solver<PSO<T>>::best_update(F f)
+template<typename T, typename F, typename C>
+void Solver<PSO<T>, F, C>::best_update()
 {
 	for (auto i = 0; i < pso.npop; ++i)
 	{
+		//! Checks that the candidate is feasible
+		if (!c(individuals[i]))
+		{
+			individuals[i] = personal_best[i];
+		}
 		if (f(individuals[i]) < f(personal_best[i]))
 		{
 			personal_best[i] = individuals[i];
 		}
-	}
-	for (auto i = 0; i < pso.npop; ++i)
-	{
 		if (f(personal_best[i]) < f(local_best[neighbourhoods[i]]))
 		{
 			local_best[neighbourhoods[i]] = personal_best[i];
@@ -211,12 +196,9 @@ void Solver<PSO<T>>::best_update(F f)
 	}
 }
 
-template<typename T>
-template<typename F>
-std::vector<T> Solver<PSO<T>>::find_min_local_best(F f)
+template<typename T, typename F, typename C>
+void Solver<PSO<T>, F, C>::find_min_local_best()
 {
-	std::vector<T> min_cost(pso.ndv);
-	min_cost = local_best[0];
 	for (auto k = 0; k < nneigh; ++k)
 	{
 		if (f(local_best[k]) < f(min_cost))
@@ -225,11 +207,10 @@ std::vector<T> Solver<PSO<T>>::find_min_local_best(F f)
 		}
 	}
 	fitness_cost = f(min_cost);
-	return min_cost;
 }
 
-template<typename T>
-void Solver<PSO<T>>::check_pso_criteria()
+template<typename T, typename F, typename C>
+bool Solver<PSO<T>, F, C>::check_pso_criteria()
 {
 	for (auto i = 0; i < pso.npop; ++i)
 	{
@@ -244,41 +225,27 @@ void Solver<PSO<T>>::check_pso_criteria()
 		}
 		else
 		{
-
 		}
 	}
-}
-
-
-template<typename T>
-template<typename C>
-void Solver<PSO<T>>::check_particle_constraints(C c)
-{
-	for (auto i = 0; i < pso.npop; ++i)
+	if (pso.tol > std::abs(fitness_cost) || rmax < pso.tol)
 	{
-		if (!c(individuals[i]))
-		{
-			individuals[i] = personal_best[i];
-		}
-		else
-		{
-
-		}
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 
-template<typename T>
-template<typename F, typename C>
-void Solver<PSO<T>>::run_algo(F f, C c)
+template<typename T, typename F, typename C>
+void Solver<PSO<T>, F, C>::run_algo()
 {
 	//! Local Best Particle Swarm starts here
 	for (iter = 0; iter < pso.iter_max; ++iter)
 	{
-		velocity_update();
 		position_update();
-		check_particle_constraints(c);
-		best_update(f);
-		min_cost = find_min_local_best(f);
+		best_update();
+		find_min_local_best();
 		//! Velocities of the particles is updated using inertia as well
 		w = ((w - 0.4) * (pso.iter_max - iter)) / (pso.iter_max + 0.4);
 		//! Maximum velocity is reduced using the current iteration and 
@@ -286,9 +253,9 @@ void Solver<PSO<T>>::run_algo(F f, C c)
 		{
 			p = (1 - std::pow(iter / pso.iter_max, pso.alpha)) * p;
 		}
-		check_pso_criteria();
-		if (pso.tol > std::abs(fitness_cost) || rmax < pso.tol)
+		if (check_pso_criteria())
 		{
+			solved_flag = true;
 			break;
 		}
 	}

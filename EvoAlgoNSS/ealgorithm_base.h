@@ -68,7 +68,7 @@ public:
 	//! solve wrapper function for Solvers, used for benchmarks
 protected:
 	//! Constructor
-	template<typename F, typename C> Solver_base(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev, const T& tol, const F& i_f, const C& i_c)
+	Solver_base(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev, const T& tol, const F& i_f, const C& i_c)
 		: individuals{ init_individuals(decision_variables, npop, stdev) }, min_cost{ individuals[0] }, iter{ 0 }, solved_flag{ false }, f(i_f), c(i_c)
 	{
 		distribution = std::uniform_real_distribution<T>::uniform_real_distribution(0.0, 1.0);

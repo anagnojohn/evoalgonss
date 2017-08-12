@@ -27,7 +27,7 @@ class Solver<DE<T>, F, C> : public Solver_base<T, F, C>
 {
 public:
 	//! Constructor
-	template<typename F, typename C> Solver(const DE<T>& i_de, const F& f, const C& c) : Solver_base<T, F, C>{ i_de.decision_variables, i_de.npop, i_de.stdev, i_de.tol, f, c }, de{ i_de }
+	Solver(const DE<T>& i_de, const F& f, const C& c) : Solver_base<T, F, C>{ i_de.decision_variables, i_de.npop, i_de.stdev, i_de.tol, f, c }, de{ i_de }
 	{
 		for (auto i = 0; i < de.npop; ++i)
 		{

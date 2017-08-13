@@ -46,49 +46,53 @@ protected:
 };
 
 //! Template Class for Solvers
-template<typename S, typename F, typename C> class Solver;
+template<template<typename> class S, typename T, typename F, typename C> class Solver;
 
 //! Base Class for Evolutionary Algorithms
-template<typename T, typename F, typename C>
+template<typename Derived, template<typename> class S, typename T, typename F, typename C>
 class Solver_base
 {
 public:
 	//! Displays the results
 	void display_results();
 	//! solve wrapper function for Solvers, used for benchmarks
-	template<typename S> std::vector<T> solver_bench(Solver<S, F, C>& solver, const S& solver_struct)
+	std::vector<T> solver_bench()
 	{
-		std::cout << solver.type << " used as solver." << "\n";
-		if (solver_struct.tol > std::abs(f(solver.min_cost)))
+		std::cout << static_cast<Derived*>(this)->type << " used as solver." << "\n";
+		if (solver_struct.tol > std::abs(f(min_cost)))
 		{
 			timer = 0;
-			solver.display_results();
-			return solver.min_cost;
+			display_results();
+			return min_cost;
 		}
 		else
 		{
 			//! Time the computation
 			std::chrono::time_point<std::chrono::system_clock> start, end;
 			start = std::chrono::system_clock::now();
-			solver.run_algo();
+			static_cast<Derived*>(this)->run_algo();
 			end = std::chrono::system_clock::now();
 			std::chrono::duration<double> elapsed_seconds = end - start;
 			std::time_t end_time = std::chrono::system_clock::to_time_t(end);
 			timer = elapsed_seconds.count();
-			solver.display_results();
+			display_results();
 			//! Return minimum cost individual
-			return solver.min_cost;
+			return min_cost;
 		}
 	}
 protected:
 	//! Constructor
-	Solver_base(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev, const T& tol, const F& i_f, const C& i_c)
-		: individuals{ init_individuals(decision_variables, npop, stdev) }, min_cost{ individuals[0] }, iter{ 0 }, f{ i_f }, c{ i_c }, solved_flag{ false }, timer{ 0 }
+	Solver_base(const S<T>& i_solver_struct, const F& i_f, const C& i_c)
+		: solver_struct{ i_solver_struct },
+		individuals{ init_individuals(i_solver_struct.decision_variables, i_solver_struct.npop, i_solver_struct.stdev) },
+		min_cost{ individuals[0] }, iter{ 0 }, f{ i_f }, c{ i_c }, solved_flag{ false }, timer{ 0 }
 	{
 		distribution = std::uniform_real_distribution<T>::uniform_real_distribution(0.0, 1.0);
-		population_constraints_checker(decision_variables, stdev);
+		population_constraints_checker(i_solver_struct.decision_variables, i_solver_struct.stdev);
 		find_min_cost();
 	}
+	//! Internal copy of the structure used for parameters of the algorithm
+	const S<T> solver_struct;
 	/*! The fitness and constraints functions are copied 
 	so that even if they are not available in the current scope, the solver will still execute properly.
 	At the same time, std::function could be have used, thus eliminating the need for template parameters F and C.
@@ -122,8 +126,8 @@ protected:
 	void find_min_cost();
 };
 
-template<typename T, typename F, typename C>
-std::vector<T> Solver_base<T, F, C>::randomise_individual(const std::vector<T>& decision_variables, const std::vector<T>& stdev)
+template<typename Derived, template<typename> class S, typename T, typename F, typename C>
+std::vector<T> Solver_base<Derived, S, T, F, C>::randomise_individual(const std::vector<T>& decision_variables, const std::vector<T>& stdev)
 {
 	std::random_device generator;
 	std::vector<T> individual = decision_variables;
@@ -138,8 +142,8 @@ std::vector<T> Solver_base<T, F, C>::randomise_individual(const std::vector<T>& 
 	return individual;
 }
 
-template<typename T, typename F, typename C>
-std::vector<std::vector<T>> Solver_base<T, F, C>::init_individuals(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev)
+template<typename Derived, template<typename> class S, typename T, typename F, typename C>
+std::vector<std::vector<T>> Solver_base<Derived, S, T, F, C>::init_individuals(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev)
 {
 	const auto& ndv = decision_variables.size();
 	std::vector<std::vector<T>> individuals(npop, std::vector<T>(ndv));
@@ -150,8 +154,8 @@ std::vector<std::vector<T>> Solver_base<T, F, C>::init_individuals(const std::ve
 	return individuals;
 }
 
-template<typename T, typename F, typename C>
-void Solver_base<T, F, C>::population_constraints_checker(const std::vector<T>& decision_variables, const std::vector<T>& stdev)
+template<typename Derived, template<typename> class S, typename T, typename F, typename C>
+void Solver_base<Derived, S, T, F, C>::population_constraints_checker(const std::vector<T>& decision_variables, const std::vector<T>& stdev)
 {
 	for (auto& p : individuals)
 	{
@@ -162,8 +166,8 @@ void Solver_base<T, F, C>::population_constraints_checker(const std::vector<T>& 
 	}
 };
 
-template<typename T, typename F, typename C>
-void Solver_base<T, F, C>::find_min_cost()
+template<typename Derived, template<typename> class S, typename T, typename F, typename C>
+void Solver_base<Derived, S, T, F, C>::find_min_cost()
 {
 	for (const auto& p : individuals)
 	{
@@ -174,8 +178,8 @@ void Solver_base<T, F, C>::find_min_cost()
 	}
 }
 
-template<typename T, typename F, typename C>
-void Solver_base<T, F, C>::display_results()
+template<typename Derived, template<typename> class S, typename T, typename F, typename C>
+void Solver_base<Derived, S, T, F, C>::display_results()
 {
 	if (!solved_flag)
 	{
@@ -191,9 +195,9 @@ void Solver_base<T, F, C>::display_results()
 }
 
 //! Solver wrapper function, interface to solvers : free function used for benchmarks
-template<typename F, typename C, typename S, typename T = S::fp_type>
-std::vector<T> solve(const F& f, const C& c, const S& solver_struct)
+template<typename F, typename C, template<typename> class S, typename T = S::fp_type>
+std::vector<T> solve(const F& f, const C& c, const S<T>& solver_struct)
 {
-	Solver<S, F, C> solver(solver_struct, f, c);
-	return solver.solver_bench(solver, solver_struct);
+	Solver<S, T, F, C> solver(solver_struct, f, c);
+	return solver.solver_bench();
 }

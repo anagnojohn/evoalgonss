@@ -30,12 +30,12 @@ public:
 
 //! Genetic Algorithms (GA) Class
 template<typename T, typename F, typename C>
-class Solver<GA<T>, F, C> : public Solver_base<T, F, C>
+class Solver<GA, T, F, C> : public Solver_base<Solver<GA, T, F, C>, GA, T, F, C>
 {
 public:
 	//! Constructor
 	Solver(const GA<T>& i_ga, F f, C c) : 
-		Solver_base<T, F, C>{ i_ga.decision_variables, i_ga.npop, i_ga.stdev, i_ga.tol, f, c }, ga{ i_ga }, npop{ i_ga.npop }, stdev{ i_ga.stdev }
+		Solver_base<Solver<GA, T, F, C>, GA, T, F, C>{ i_ga, f, c }, ga{ solver_struct }, npop{ i_ga.npop }, stdev{ i_ga.stdev }
 	{
 		bdistribution = boost::math::beta_distribution<T>::beta_distribution(1, ga.alpha);
 	}
@@ -44,8 +44,8 @@ public:
 	//! Runs the algorithm until stopping criteria
 	void run_algo();
 private:
-	//! Genetic Algorithms structure used internally
-	const GA<T> ga;
+	//! Genetic Algorithms structure used internally (reference to solver_struct)
+	const GA<T>& ga;
 	//! Size of the population is mutable
 	size_t npop;
 	//! Standard deviation is mutable, so a copy is created
@@ -63,7 +63,7 @@ private:
 };
 
 template<typename T, typename F, typename C>
-std::vector<T> Solver<GA<T>, F, C>::crossover(std::vector<T> r, std::vector<T> s)
+std::vector<T> Solver<GA, T, F, C>::crossover(std::vector<T> r, std::vector<T> s)
 {
 	std::vector<T> offspring(ga.ndv);
 	std::vector<T> psi(ga.ndv);
@@ -76,7 +76,7 @@ std::vector<T> Solver<GA<T>, F, C>::crossover(std::vector<T> r, std::vector<T> s
 }
 
 template<typename T, typename F, typename C>
-std::vector<T> Solver<GA<T>, F, C>::selection()
+std::vector<T> Solver<GA, T, F, C>::selection()
 {
 	//! Generate r and s indices
 	T xi = quantile(bdistribution, distribution(generator));
@@ -89,7 +89,7 @@ std::vector<T> Solver<GA<T>, F, C>::selection()
 }
 
 template<typename T, typename F, typename C>
-std::vector<T> Solver<GA<T>, F, C>::mutation(const std::vector<T>& individual)
+std::vector<T> Solver<GA, T, F, C>::mutation(const std::vector<T>& individual)
 {
 	std::vector<T> mutated = individual;
 	for (auto j = 0; j < ga.ndv; ++j)
@@ -106,13 +106,13 @@ std::vector<T> Solver<GA<T>, F, C>::mutation(const std::vector<T>& individual)
 }
 
 template<typename T, typename F, typename C>
-size_t Solver<GA<T>, F, C>::nkeep()
+size_t Solver<GA, T, F, C>::nkeep()
 {
 	return static_cast<size_t>(std::ceil(npop * ga.x_rate));
 }
 
 template<typename T, typename F, typename C>
-void Solver<GA<T>, F, C>::run_algo()
+void Solver<GA, T, F, C>::run_algo()
 {
 	auto comparator = [&](const std::vector<T>& l, const std::vector<T>& r)
 	{

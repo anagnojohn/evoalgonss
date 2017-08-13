@@ -38,11 +38,12 @@ public:
 
 //! Local Best Particle Swarm Optimisation (PSO) Class
 template<typename T, typename F, typename C>
-class Solver<PSO<T>, F, C> : public Solver_base<T, F, C>
+class Solver<PSO, T, F, C> : public Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>
 {
 public:
 	//! Constructor
-	Solver(const PSO<T>& i_pso, F f, C c) : Solver_base<T, F, C>{ i_pso.decision_variables, i_pso.npop, i_pso.stdev, i_pso.tol, f, c }, w{ i_pso.w }, vmax{ i_pso.vmax }, pso{ i_pso }
+	Solver(const PSO<T>& i_pso, F f, C c) : 
+		Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>{ i_pso, f, c }, w{ i_pso.w }, vmax{ i_pso.vmax }, pso{ solver_struct }
 	{
 		nneigh = static_cast<size_t>(std::ceil(pso.npop / pso.sneigh));
 		velocity.resize(pso.npop, std::vector<T>(pso.ndv));
@@ -78,8 +79,8 @@ public:
 	//! Runs the algorithm until stopping criteria
 	void run_algo();
 protected:
-	//! Particle Swarm Optimisation structure used internally
-	const PSO<T> pso;
+	//! Particle Swarm Optimisation structure used internally (reference to solver_struct)
+	const PSO<T>& pso;
 	//! Inertia is mutable, so a copy is created
 	T w;
 	//! Maximum Velocity is mutable, so a copy is created
@@ -123,7 +124,7 @@ protected:
 };
 
 template<typename T, typename F, typename C>
-void Solver<PSO<T>, F, C>::set_neighbourhoods()
+void Solver<PSO, T, F, C>::set_neighbourhoods()
 {
 	size_t neigh_index = 0;
 	size_t counter = 0;
@@ -143,7 +144,7 @@ void Solver<PSO<T>, F, C>::set_neighbourhoods()
 }
 
 template<typename T, typename F, typename C>
-std::vector<std::vector<T>> Solver<PSO<T>, F, C>::generate_r()
+std::vector<std::vector<T>> Solver<PSO, T, F, C>::generate_r()
 {
 	std::vector<std::vector<T>> r(2, std::vector<T>(pso.ndv));
 	for (auto i = 0; i < 2; ++i)
@@ -157,7 +158,7 @@ std::vector<std::vector<T>> Solver<PSO<T>, F, C>::generate_r()
 }
 
 template<typename T, typename F, typename C>
-void Solver<PSO<T>, F, C>::position_update()
+void Solver<PSO, T, F, C>::position_update()
 {
 	const auto& r = generate_r();
 	for (auto i = 0; i < pso.npop; ++i)
@@ -176,7 +177,7 @@ void Solver<PSO<T>, F, C>::position_update()
 }
 
 template<typename T, typename F, typename C>
-void Solver<PSO<T>, F, C>::best_update()
+void Solver<PSO, T, F, C>::best_update()
 {
 	for (auto i = 0; i < pso.npop; ++i)
 	{
@@ -197,7 +198,7 @@ void Solver<PSO<T>, F, C>::best_update()
 }
 
 template<typename T, typename F, typename C>
-void Solver<PSO<T>, F, C>::find_min_local_best()
+void Solver<PSO, T, F, C>::find_min_local_best()
 {
 	for (auto k = 0; k < nneigh; ++k)
 	{
@@ -209,7 +210,7 @@ void Solver<PSO<T>, F, C>::find_min_local_best()
 }
 
 template<typename T, typename F, typename C>
-bool Solver<PSO<T>, F, C>::check_pso_criteria()
+bool Solver<PSO, T, F, C>::check_pso_criteria()
 {
 	for (auto i = 0; i < pso.npop; ++i)
 	{
@@ -237,7 +238,7 @@ bool Solver<PSO<T>, F, C>::check_pso_criteria()
 }
 
 template<typename T, typename F, typename C>
-void Solver<PSO<T>, F, C>::run_algo()
+void Solver<PSO, T, F, C>::run_algo()
 {
 	//! Local Best Particle Swarm starts here
 	for (iter = 0; iter < pso.iter_max; ++iter)

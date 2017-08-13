@@ -43,9 +43,9 @@ class Solver<PSO, T, F, C> : public Solver_base<Solver<PSO, T, F, C>, PSO, T, F,
 public:
 	//! Constructor
 	Solver(const PSO<T>& i_pso, F f, C c) : 
-		Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>{ i_pso, f, c }, w{ i_pso.w }, vmax{ i_pso.vmax }, pso{ solver_struct }
+		Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>{ i_pso, f, c }, w{ i_pso.w }, vmax{ i_pso.vmax }, pso{ solver_struct },
+		nneigh { static_cast<size_t>(std::ceil(pso.npop / pso.sneigh)) }, neighbourhoods{ set_neighbourhoods() }
 	{
-		nneigh = static_cast<size_t>(std::ceil(pso.npop / pso.sneigh));
 		velocity.resize(pso.npop, std::vector<T>(pso.ndv));
 		local_best.resize(nneigh);
 		for (auto& p : velocity)
@@ -63,7 +63,6 @@ public:
 		{
 			p = personal_best[0];
 		}
-		set_neighbourhoods();
 		distance.resize(pso.npop);
 		for (auto i = 0; i < pso.npop; ++i)
 		{
@@ -92,7 +91,7 @@ protected:
 	//! Velocity of the particles
 	std::vector<std::vector<T>> velocity;
 	//! Number of neighbourhoods
-	size_t nneigh;
+	const size_t nneigh;
 	//! Neighbourhoods
 	std::unordered_map<size_t, size_t> neighbourhoods;
 	//! Maximum Radius
@@ -100,7 +99,7 @@ protected:
 	//! Distance betwwen individuals
 	std::vector<T> distance;
 	//! Set the neighbourhoods of the algorithm using particle indices
-	void set_neighbourhoods();
+	std::unordered_map<size_t, size_t> set_neighbourhoods();
 	//! This method generates r1 and r2 for the velocity update rule
 	std::vector<std::vector<T>> generate_r();
 	//! Position update of the particles
@@ -124,8 +123,9 @@ protected:
 };
 
 template<typename T, typename F, typename C>
-void Solver<PSO, T, F, C>::set_neighbourhoods()
+std::unordered_map<size_t, size_t> Solver<PSO, T, F, C>::set_neighbourhoods()
 {
+	std::unordered_map<size_t, size_t> neighbourhoods;
 	size_t neigh_index = 0;
 	size_t counter = 0;
 	for (auto i = 0; i < pso.npop; ++i)
@@ -141,6 +141,7 @@ void Solver<PSO, T, F, C>::set_neighbourhoods()
 			counter = 0;
 		}
 	}
+	return neighbourhoods;
 }
 
 template<typename T, typename F, typename C>

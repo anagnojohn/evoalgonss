@@ -20,7 +20,7 @@ public:
 		: coupon_percentage{ i_coupon_percentage }, price{ i_price }, nominal_value{ i_nominal_value }, frequency{ i_frequency },
 		settlement_date{ boost::gregorian::from_simple_string(i_settlement_date) },
 		maturity_date{ boost::gregorian::from_simple_string(i_maturity_date) },
-		coupon_value{ coupon_percentage * nominal_value / frequency }
+		coupon_value{ coupon_percentage * nominal_value / frequency }, yield{ 0 }, duration{ 0 }
 	{
 		assert(price > 0);
 		assert(coupon_percentage > 0 && coupon_percentage < 1);

@@ -55,7 +55,7 @@ class Solver_base
 public:
 	//! Displays the results
 	void display_results();
-	//! solve wrapper function for Solvers, used for benchmarks
+	//! Solve wrapper function for Solvers, used for benchmarks
 	std::vector<T> solver_bench()
 	{
 		std::cout << static_cast<Derived*>(this)->type << " used as solver." << "\n";
@@ -73,7 +73,7 @@ public:
 			static_cast<Derived*>(this)->run_algo();
 			end = std::chrono::system_clock::now();
 			std::chrono::duration<double> elapsed_seconds = end - start;
-			std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+			const std::time_t end_time = std::chrono::system_clock::to_time_t(end);
 			timer = elapsed_seconds.count();
 			display_results();
 			//! Return minimum cost individual
@@ -84,11 +84,10 @@ protected:
 	//! Constructor
 	Solver_base(const S<T>& i_solver_struct, const F& i_f, const C& i_c)
 		: solver_struct{ i_solver_struct },
-		individuals{ init_individuals(i_solver_struct.decision_variables, i_solver_struct.npop, i_solver_struct.stdev) },
-		min_cost{ individuals[0] }, iter{ 0 }, f{ i_f }, c{ i_c }, solved_flag{ false }, timer{ 0 }
+		individuals{ init_individuals() },
+		min_cost{ individuals[0] }, iter{ 0 }, f{ i_f }, c{ i_c }, solved_flag{ false }, timer{ 0 },
+		distribution{ std::uniform_real_distribution<T>::uniform_real_distribution(0.0, 1.0) }
 	{
-		distribution = std::uniform_real_distribution<T>::uniform_real_distribution(0.0, 1.0);
-		population_constraints_checker(i_solver_struct.decision_variables, i_solver_struct.stdev);
 		find_min_cost();
 	}
 	//! Internal copy of the structure used for parameters of the algorithm
@@ -117,25 +116,22 @@ protected:
 	//! Timer
 	T timer;
 	//! Returns a randomised individual using the initial decision variables and standard deviation
-	std::vector<T> randomise_individual(const std::vector<T>& decision_variables, const std::vector<T>& stdev);
+	std::vector<T> randomise_individual();
 	//! Initialises the population by randomising aroung the decision variables using the given standard deviation
-	std::vector<std::vector<T>> init_individuals(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev);
-	//! Check population constraints
-	void population_constraints_checker(const std::vector<T>& decision_variables, const std::vector<T>& stdev);
+	std::vector<std::vector<T>> init_individuals();
 	//! Find the minimum cost individual of the fitness function for the population
 	void find_min_cost();
 };
 
 template<typename Derived, template<typename> class S, typename T, typename F, typename C>
-std::vector<T> Solver_base<Derived, S, T, F, C>::randomise_individual(const std::vector<T>& decision_variables, const std::vector<T>& stdev)
+std::vector<T> Solver_base<Derived, S, T, F, C>::randomise_individual()
 {
 	std::random_device generator;
-	std::vector<T> individual = decision_variables;
-	const auto& ndv = decision_variables.size();
-	T epsilon;
-	for (auto j = 0; j < ndv; ++j)
+	std::vector<T> individual = solver_struct.decision_variables;
+	T epsilon = 0;
+	for (auto j = 0; j < solver_struct.ndv; ++j)
 	{
-		std::normal_distribution<T> ndistribution(0, stdev[j]);
+		std::normal_distribution<T> ndistribution(0, solver_struct.stdev[j]);
 		epsilon = std::abs(ndistribution(generator));
 		individual[j] = individual[j] + epsilon;
 	}
@@ -143,28 +139,20 @@ std::vector<T> Solver_base<Derived, S, T, F, C>::randomise_individual(const std:
 }
 
 template<typename Derived, template<typename> class S, typename T, typename F, typename C>
-std::vector<std::vector<T>> Solver_base<Derived, S, T, F, C>::init_individuals(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev)
+std::vector<std::vector<T>> Solver_base<Derived, S, T, F, C>::init_individuals()
 {
-	const auto& ndv = decision_variables.size();
-	std::vector<std::vector<T>> individuals(npop, std::vector<T>(ndv));
+	std::vector<std::vector<T>> individuals(solver_struct.npop, std::vector<T>(solver_struct.ndv));
 	for (auto& p : individuals)
 	{
-		p = randomise_individual(decision_variables, stdev);
+		p = randomise_individual();
+		//! Check population constraints
+		while (!c(p))
+		{
+			p = randomise_individual();
+		}
 	}
 	return individuals;
 }
-
-template<typename Derived, template<typename> class S, typename T, typename F, typename C>
-void Solver_base<Derived, S, T, F, C>::population_constraints_checker(const std::vector<T>& decision_variables, const std::vector<T>& stdev)
-{
-	for (auto& p : individuals)
-	{
-		while (!c(p))
-		{
-			p = randomise_individual(decision_variables, stdev);
-		}
-	}
-};
 
 template<typename Derived, template<typename> class S, typename T, typename F, typename C>
 void Solver_base<Derived, S, T, F, C>::find_min_cost()

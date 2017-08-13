@@ -35,9 +35,9 @@ class Solver<GA, T, F, C> : public Solver_base<Solver<GA, T, F, C>, GA, T, F, C>
 public:
 	//! Constructor
 	Solver(const GA<T>& i_ga, F f, C c) : 
-		Solver_base<Solver<GA, T, F, C>, GA, T, F, C>{ i_ga, f, c }, ga{ solver_struct }, npop{ i_ga.npop }, stdev{ i_ga.stdev }
+		Solver_base<Solver<GA, T, F, C>, GA, T, F, C>{ i_ga, f, c }, ga{ solver_struct }, npop{ i_ga.npop }, stdev{ i_ga.stdev },
+		bdistribution{ boost::math::beta_distribution<T>::beta_distribution(1, ga.alpha) }
 	{
-		bdistribution = boost::math::beta_distribution<T>::beta_distribution(1, ga.alpha);
 	}
 	//! Type of the algorithm
 	const std::string type = "Genetic Algorithms";

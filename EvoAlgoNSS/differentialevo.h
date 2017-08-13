@@ -27,13 +27,9 @@ class Solver<DE, T, F, C> : public Solver_base<Solver<DE, T, F, C>, DE, T, F, C>
 {
 public:
 	//! Constructor
-	Solver(const DE<T>& i_de, const F& f, const C& c) : Solver_base<Solver<DE, T, F, C>, DE, T, F, C>{ i_de, f, c }, de{ solver_struct }
+	Solver(const DE<T>& i_de, const F& f, const C& c) : Solver_base<Solver<DE, T, F, C>, DE, T, F, C>{ i_de, f, c }, de{ solver_struct }, indices{ set_indices() },
+		ind_distribution{ std::uniform_int_distribution<size_t>::uniform_int_distribution(0, de.npop - 1) }
 	{
-		for (auto i = 0; i < de.npop; ++i)
-		{
-			indices.push_back(i);
-		}
-		ind_distribution = std::uniform_int_distribution<size_t>::uniform_int_distribution(0, de.npop - 1);
 	}
 	//! Type of the algorithm :: string
 	const std::string type = "Differential Evolution";
@@ -43,7 +39,17 @@ private:
 	//! Differential Evolution structure used internally (reference to solver_struct)
 	const DE<T>& de;
 	//! Indices of population
-	std::vector<size_t> indices;
+	const std::vector<size_t> indices;
+	//! Generate the indices
+	std::vector<size_t> set_indices()
+	{
+		std::vector<size_t> indices;
+		for (auto i = 0; i < de.npop; ++i)
+		{
+			indices.push_back(i);
+		}
+		return indices;
+	};
 	//! Random number engine for the indices
 	std::mt19937 engine{ generator() };
 	//! Uniform size_t distribution of the indices
@@ -79,16 +85,16 @@ template<typename T, typename F, typename C>
 std::vector<T> Solver<DE, T, F, C>::construct_trial(const std::vector<T>& target, const std::vector<T>& donor)
 {
 	std::vector<T> trial(de.ndv);
-	std::vector<size_t> j_indices;
+	std::vector<size_t> j_indices(de.ndv);
 	for (auto j = 0; j < de.ndv; ++j)
 	{
-		j_indices.push_back(j);
+		j_indices[j] = j;
 	}
 	std::uniform_int_distribution<size_t> j_ind_distribution(0, de.ndv - 1);
 	for (auto j = 0; j < de.ndv; ++j)
 	{
-		T epsilon = distribution(generator);
-		size_t jrand = j_indices[j_ind_distribution(engine)];
+		const T& epsilon = distribution(generator);
+		const size_t& jrand = j_indices[j_ind_distribution(engine)];
 		if (epsilon <= de.cr || j == jrand)
 		{
 			trial[j] = donor[j];
@@ -110,12 +116,12 @@ void Solver<DE, T, F, C>::run_algo()
 		for (auto& p : individuals)
 		{
 			//! Construct donor and trial vectors
-			std::vector<T> donor = construct_donor();
+			std::vector<T>& donor = construct_donor();
 			while (!c(donor))
 			{
 				donor = construct_donor();
 			}
-			std::vector<T> trial = construct_trial(p, donor);
+			const std::vector<T>& trial = construct_trial(p, donor);
 			if (f(trial) <= f(p))
 			{
 				p = trial;

@@ -35,10 +35,9 @@ class Solver<GA<T>, F, C> : public Solver_base<T, F, C>
 public:
 	//! Constructor
 	Solver(const GA<T>& i_ga, F f, C c) : 
-		Solver_base<T, F, C>{ i_ga.decision_variables, i_ga.npop, i_ga.stdev, i_ga.tol, f, c }, ga{ i_ga }, npop { i_ga.npop }, stdev { i_ga.stdev }
+		Solver_base<T, F, C>{ i_ga.decision_variables, i_ga.npop, i_ga.stdev, i_ga.tol, f, c }, ga{ i_ga }, npop{ i_ga.npop }, stdev{ i_ga.stdev }
 	{
 		bdistribution = boost::math::beta_distribution<T>::beta_distribution(1, ga.alpha);
-		nkeep = static_cast<size_t>(std::ceil(npop * ga.x_rate));
 	}
 	//! Type of the algorithm
 	const std::string type = "Genetic Algorithms";
@@ -47,12 +46,10 @@ public:
 private:
 	//! Genetic Algorithms structure used internally
 	const GA<T> ga;
-	//! Size of the population is mutable, so a copy is created
+	//! Size of the population is mutable
 	size_t npop;
 	//! Standard deviation is mutable, so a copy is created
 	std::vector<T> stdev;
-	//! Number of individuals to be kept
-	size_t nkeep;
 	//! Beta distribution
 	boost::math::beta_distribution<T> bdistribution;
 	//! Crossover step of GA
@@ -61,6 +58,8 @@ private:
 	std::vector<T> selection();
 	//! Mutation step of GA
 	std::vector<T> mutation(const std::vector<T>& individual);
+	//! Returns number of individuals to be kept in each generation, thus 
+	size_t nkeep();
 };
 
 template<typename T, typename F, typename C>
@@ -81,9 +80,9 @@ std::vector<T> Solver<GA<T>, F, C>::selection()
 {
 	//! Generate r and s indices
 	T xi = quantile(bdistribution, distribution(generator));
-	size_t r = static_cast<size_t>(std::round(static_cast<T>(npop) * xi));
+	size_t r = static_cast<size_t>(std::round(static_cast<T>(individuals.size()) * xi));
 	xi = quantile(bdistribution, distribution(generator));
-	size_t s = static_cast<size_t>(std::round(static_cast<T>(npop) * xi));
+	size_t s = static_cast<size_t>(std::round(static_cast<T>(individuals.size()) * xi));
 	//! Produce offsrping using r and s indices by crossover
 	std::vector<T> offspring = crossover(individuals[r], individuals[s]);
 	return offspring;
@@ -107,16 +106,22 @@ std::vector<T> Solver<GA<T>, F, C>::mutation(const std::vector<T>& individual)
 }
 
 template<typename T, typename F, typename C>
+size_t Solver<GA<T>, F, C>::nkeep()
+{
+	return static_cast<size_t>(std::ceil(npop * ga.x_rate));
+}
+
+template<typename T, typename F, typename C>
 void Solver<GA<T>, F, C>::run_algo()
 {
 	auto comparator = [&](const std::vector<T>& l, const std::vector<T>& r)
 	{
 		return f(l) < f(r);
 	};
-	std::sort(individuals.begin(), individuals.end(), comparator);
 	for (iter = 0; iter < ga.iter_max; ++iter)
 	{
 		std::sort(individuals.begin(), individuals.end(), comparator);
+		individuals.erase(individuals.begin() + nkeep(), individuals.begin() + individuals.size());
 		min_cost = individuals[0];
 		if (ga.tol > std::abs(f(min_cost)))
 		{
@@ -125,18 +130,13 @@ void Solver<GA<T>, F, C>::run_algo()
 		}
 		if (individuals.size() > 500)
 		{
-			individuals.erase(individuals.begin() + 500, individuals.begin() + npop);
+			individuals.erase(individuals.begin() + 500, individuals.begin() + individuals.size());
 		}
-		npop = individuals.size();
-		nkeep = static_cast<size_t>(std::ceil(npop * ga.x_rate));
 		for (auto i = 0; i < npop; ++i)
 		{
 			std::vector<T> offspring = selection();
 			individuals.push_back(offspring);
 		}
-		nkeep = static_cast<size_t>(std::ceil(npop * ga.x_rate));
-		individuals.erase(individuals.begin() + nkeep, individuals.begin() + npop);
-		npop = individuals.size();
 		for (auto i = 1; i < individuals.size(); ++i)
 		{
 			std::vector<T> mutated = mutation(individuals[i]);
@@ -178,8 +178,8 @@ void Solver<GA<T>, F, C>::run_algo()
 				individuals[i] = mutated;
 			}
 		}
+		//! Set the new population size which previous population size + natural selection rate * population size
 		npop = individuals.size();
-		nkeep = static_cast<size_t>(std::ceil(npop * ga.x_rate));
 		//! Standard Deviation is not constant in GA
 		for (auto& p : stdev)
 		{

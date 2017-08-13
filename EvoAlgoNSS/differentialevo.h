@@ -124,7 +124,7 @@ void Solver<DE<T>, F, C>::run_algo()
 		//! Recalculate minimum cost individual of the population
 		find_min_cost();
 		//! Stopping Criteria
-		if (de.tol > std::abs(fitness_cost))
+		if (de.tol > std::abs(f(min_cost)))
 		{
 			solved_flag = true;
 			break;

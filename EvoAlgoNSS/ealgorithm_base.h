@@ -53,34 +53,41 @@ template<typename T, typename F, typename C>
 class Solver_base
 {
 public:
-	//! Returns the minimum cost solution
-	std::vector<T> ret_min_cost() { return min_cost; };
-	//! Returns the population size
-	size_t ret_npop() const { return individuals.size(); };
-	//! Returns the fitness cost of the minimum cost solution
-	T ret_fitness_cost() const { return fitness_cost; };
-	//! Returns the number of iterations that were executed
-	size_t ret_iter() const { return iter; };
-	//! Returns the flag which determines if the solver has already solved the problem
-	bool ret_solved_flag() const { return solved_flag; };
 	//! Displays the results
 	void display_results();
 	//! solve wrapper function for Solvers, used for benchmarks
+	template<typename S> std::vector<T> solver_bench(Solver<S, F, C>& solver, const S& solver_struct)
+	{
+		std::cout << solver.type << " used as solver." << "\n";
+		if (solver_struct.tol > std::abs(f(solver.min_cost)))
+		{
+			timer = 0;
+			solver.display_results();
+			return solver.min_cost;
+		}
+		else
+		{
+			//! Time the computation
+			std::chrono::time_point<std::chrono::system_clock> start, end;
+			start = std::chrono::system_clock::now();
+			solver.run_algo();
+			end = std::chrono::system_clock::now();
+			std::chrono::duration<double> elapsed_seconds = end - start;
+			std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+			timer = elapsed_seconds.count();
+			solver.display_results();
+			//! Return minimum cost individual
+			return solver.min_cost;
+		}
+	}
 protected:
 	//! Constructor
 	Solver_base(const std::vector<T>& decision_variables, const size_t& npop, const std::vector<T>& stdev, const T& tol, const F& i_f, const C& i_c)
-		: individuals{ init_individuals(decision_variables, npop, stdev) }, min_cost{ individuals[0] }, iter{ 0 }, solved_flag{ false }, f(i_f), c(i_c)
+		: individuals{ init_individuals(decision_variables, npop, stdev) }, min_cost{ individuals[0] }, iter{ 0 }, f{ i_f }, c{ i_c }, solved_flag{ false }, timer{ 0 }
 	{
 		distribution = std::uniform_real_distribution<T>::uniform_real_distribution(0.0, 1.0);
 		population_constraints_checker(decision_variables, stdev);
 		find_min_cost();
-		if (tol > std::abs(fitness_cost))
-		{
-			solved_flag = true;
-		}
-		else
-		{
-		}
 	}
 	/*! The fitness and constraints functions are copied 
 	so that even if they are not available in the current scope, the solver will still execute properly.
@@ -93,11 +100,9 @@ protected:
 	C c;
 	//! Population
 	std::vector<std::vector<T>> individuals;
-	//! Best fitness
-	T fitness_cost;
 	//! Last iteration to solution
 	size_t iter;
-	//! Best solution
+	//! Best solution / lowest fitness
 	std::vector<T> min_cost;
 	//! Random number generator
 	std::random_device generator;
@@ -105,6 +110,8 @@ protected:
 	std::uniform_real_distribution<T> distribution;
 	//! A flag which determines if the solver has already solved the problem
 	bool solved_flag;
+	//! Timer
+	T timer;
 	//! Returns a randomised individual using the initial decision variables and standard deviation
 	std::vector<T> randomise_individual(const std::vector<T>& decision_variables, const std::vector<T>& stdev);
 	//! Initialises the population by randomising aroung the decision variables using the given standard deviation
@@ -165,14 +172,22 @@ void Solver_base<T, F, C>::find_min_cost()
 			min_cost = p;
 		}
 	}
-	fitness_cost = f(min_cost);
 }
 
 template<typename T, typename F, typename C>
 void Solver_base<T, F, C>::display_results()
 {
-	std::cout << "Optimum solution: " << min_cost << " Fitness Value: " << fitness_cost << "\n";
+	if (!solved_flag)
+	{
+		std::cout << "!!!The optimisation problem was not solved.!!!" << "\n";
+	}
+	else
+	{
+		std::cout << "!!!Problem was successfully solved.!!!" << "\n";
+	}
+	std::cout << "Optimum solution: " << min_cost << " Fitness Value: " << f(min_cost) << "\n";
 	std::cout << "Population: " << individuals.size() << " Solved at iteration: " << iter << "\n";
+	std::cout << "Elapsed time in seconds: " << timer << "\n";
 }
 
 //! Solver wrapper function, interface to solvers : free function used for benchmarks
@@ -180,31 +195,5 @@ template<typename F, typename C, typename S, typename T = S::fp_type>
 std::vector<T> solve(const F& f, const C& c, const S& solver_struct)
 {
 	Solver<S, F, C> solver(solver_struct, f, c);
-	std::cout << solver.type << " used as solver." << "\n";
-	if (solver.ret_solved_flag())
-	{
-		T timer = 0;
-		solver.display_results();
-		std::cout << "Elapsed time in seconds: " << timer << "\n";
-		return solver.ret_min_cost();
-	}
-	else
-	{
-		//! Time the computation
-		std::chrono::time_point<std::chrono::system_clock> start, end;
-		start = std::chrono::system_clock::now();
-		solver.run_algo();
-		end = std::chrono::system_clock::now();
-		std::chrono::duration<double> elapsed_seconds = end - start;
-		std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-		T timer = elapsed_seconds.count();
-		if (!solver.ret_solved_flag())
-		{
-			std::cout << "!!!The optimisation problem was not solved.!!!" << "\n";
-		}
-		solver.display_results();
-		std::cout << "Elapsed time in seconds: " << timer << "\n";
-		//! Return minimum cost individual
-		return solver.ret_min_cost();
-	}
+	return solver.solver_bench(solver, solver_struct);
 }

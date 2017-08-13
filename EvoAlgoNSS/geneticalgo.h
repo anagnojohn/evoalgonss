@@ -3,6 +3,9 @@
 #include <boost/math/distributions.hpp>
 #include "ealgorithm_base.h"
 
+//! Replacing or remove individuals strategies during mutation
+enum class Strategy { keep_same, re_mutate, remove };
+
 //! Genetic Algorithms Structure, used in the actual algorithm and for type deduction
 template<typename T>
 struct GA : EA_base<T>
@@ -10,8 +13,8 @@ struct GA : EA_base<T>
 public:
 	//! Constructor
 	GA(const T& i_x_rate, const T& i_pi, const T& i_alpha, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
-		const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-		: x_rate{ i_x_rate }, pi{ i_pi }, alpha{ i_alpha }, EA_base{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }
+		const size_t& i_npop, const T& i_tol, const size_t& i_iter_max, const Strategy& i_strategy)
+		: x_rate{ i_x_rate }, pi{ i_pi }, alpha{ i_alpha }, EA_base{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }, strategy { i_strategy }
 	{
 		assert(x_rate > 0 && x_rate <= 1);
 		assert(pi > 0 && pi <= 1);
@@ -22,6 +25,7 @@ public:
 	const T pi;
 	//! Parameter alpha for Beta distribution
 	const T alpha;
+	Strategy strategy;
 };
 
 //! Genetic Algorithms (GA) Class
@@ -33,7 +37,7 @@ public:
 	Solver(const GA<T>& i_ga, F f, C c) : 
 		Solver_base<T, F, C>{ i_ga.decision_variables, i_ga.npop, i_ga.stdev, i_ga.tol, f, c }, ga{ i_ga }, npop { i_ga.npop }, stdev { i_ga.stdev }
 	{
-		dist = boost::math::beta_distribution<T>::beta_distribution(1, ga.alpha);
+		bdistribution = boost::math::beta_distribution<T>::beta_distribution(1, ga.alpha);
 		nkeep = static_cast<size_t>(std::ceil(npop * ga.x_rate));
 	}
 	//! Type of the algorithm
@@ -50,7 +54,7 @@ private:
 	//! Number of individuals to be kept
 	size_t nkeep;
 	//! Beta distribution
-	boost::math::beta_distribution<T> dist;
+	boost::math::beta_distribution<T> bdistribution;
 	//! Crossover step of GA
 	std::vector<T> crossover(std::vector<T> r, std::vector<T> s);
 	//!	Selection step of GA
@@ -76,10 +80,10 @@ template<typename T, typename F, typename C>
 std::vector<T> Solver<GA<T>, F, C>::selection()
 {
 	//! Generate r and s indices
-	T xi = quantile(dist, distribution(generator));
-	size_t r = static_cast<size_t>(std::round(npop * xi));
-	xi = quantile(dist, distribution(generator));
-	size_t s = static_cast<size_t>(std::round(npop * xi));
+	T xi = quantile(bdistribution, distribution(generator));
+	size_t r = static_cast<size_t>(std::round(static_cast<T>(npop) * xi));
+	xi = quantile(bdistribution, distribution(generator));
+	size_t s = static_cast<size_t>(std::round(static_cast<T>(npop) * xi));
 	//! Produce offsrping using r and s indices by crossover
 	std::vector<T> offspring = crossover(individuals[r], individuals[s]);
 	return offspring;
@@ -109,42 +113,77 @@ void Solver<GA<T>, F, C>::run_algo()
 	{
 		return f(l) < f(r);
 	};
+	std::sort(individuals.begin(), individuals.end(), comparator);
 	for (iter = 0; iter < ga.iter_max; ++iter)
 	{
 		std::sort(individuals.begin(), individuals.end(), comparator);
-		std::vector<std::vector<T>> offsprings;
-		for (auto i = 0; i < npop; ++i)
-		{
-			std::vector<T> offspring = selection();
-			offsprings.push_back(offspring);
-		}
-		npop = individuals.size();
-		individuals.erase(individuals.begin() + nkeep, individuals.begin() + npop);
-		npop = individuals.size();
-		nkeep = static_cast<size_t>(std::ceil(npop * ga.x_rate));
-		for (auto& p : individuals)
-		{
-			p = mutation(p);
-			while (!c(p))
-			{
-				p = mutation(p);
-			}
-		}
-		//! Standard Deviation is not constant in GA
-		for (auto& p : stdev)
-		{
-			p = p + 0.02 * p;
-		}
-		fitness_cost = f(individuals[0]);
-		if (ga.tol > std::abs(fitness_cost))
+		min_cost = individuals[0];
+		if (ga.tol > std::abs(f(min_cost)))
 		{
 			solved_flag = true;
 			break;
 		}
-		if (individuals.size() < 3)
+		if (individuals.size() > 500)
 		{
-			solved_flag = false;
-			break;
+			individuals.erase(individuals.begin() + 500, individuals.begin() + npop);
+		}
+		npop = individuals.size();
+		nkeep = static_cast<size_t>(std::ceil(npop * ga.x_rate));
+		for (auto i = 0; i < npop; ++i)
+		{
+			std::vector<T> offspring = selection();
+			individuals.push_back(offspring);
+		}
+		nkeep = static_cast<size_t>(std::ceil(npop * ga.x_rate));
+		individuals.erase(individuals.begin() + nkeep, individuals.begin() + npop);
+		npop = individuals.size();
+		for (auto i = 1; i < individuals.size(); ++i)
+		{
+			std::vector<T> mutated = mutation(individuals[i]);
+			if (ga.strategy == Strategy::remove)
+			{
+				if (!c(mutated))
+				{
+					if (i == individuals.size() - 1)
+					{
+						individuals.pop_back();
+					}
+					else
+					{
+						individuals.erase(individuals.begin() + i, individuals.begin() + i + 1);
+					}
+				}
+				else
+				{
+					individuals[i] = mutated;
+				}
+			}
+			if (ga.strategy == Strategy::keep_same)
+			{
+				if (!c(mutated))
+				{
+					
+				}
+				else
+				{
+					individuals[i] = mutated;
+				}
+			}
+			if (ga.strategy == Strategy::re_mutate)
+			{
+				while (!c(mutated))
+				{
+					mutated = mutation(individuals[i]);
+				}
+				individuals[i] = mutated;
+			}
+		}
+		npop = individuals.size();
+		nkeep = static_cast<size_t>(std::ceil(npop * ga.x_rate));
+		//! Standard Deviation is not constant in GA
+		for (auto& p : stdev)
+		{
+			p = p + 0.02 * p;
 		}
 	}
 }

@@ -47,6 +47,18 @@ public:
 	template<typename S> void bondpricing_prices(const S& solver);
 	//! This methods solves the bond pricing problem using yield-to-maturities and the supplied solver
 	template<typename S> void bondpricing_yields(const S& solver);
+	//! This method prints the bond pricing results
+	void print_bond_pricing_results (const std::vector<T>& res)
+	{
+		for (const auto& p : bonds)
+		{
+			std::cout << "Estimated yield: " << svensson(res, p.duration) << " Actual Yield: " << p.yield << "\n";
+		}
+		for (const auto& p : bonds)
+		{
+			std::cout << "Estimated price: " << estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods) << " Actual Price: " << p.price << "\n";
+		}
+	};
 private:
 	//! Vector of bonds
 	std::vector<Bond<T>> bonds;
@@ -169,14 +181,7 @@ void BondHelper<T>::bondpricing_prices(const S& solver)
 	auto c = [&](const auto& solution) { return constraints_svensson(solution); };
 	std::cout << "Solving bond pricing using bond prices..." << "\n";
 	auto res = solve(f, c, solver);
-	for (const auto& p : bonds)
-	{
-		std::cout << "Estimated yield: " << svensson(res, p.duration) << " Actual Yield: " << p.yield << "\n";
-	}
-	for (const auto& p : bonds)
-	{
-		std::cout << "Estimated price: " << estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods) << " Actual Price: " << p.price << "\n";
-	};
+	print_bond_pricing_results(res);
 }
 
 template<typename T>
@@ -193,12 +198,5 @@ void BondHelper<T>::bondpricing_yields(const S& solver)
 	auto c = [&](const auto& solution) { return constraints_svensson(solution); };
 	std::cout << "Solving bond pricing using bond yields..." << "\n";
 	auto res = solve(f, c, solver);
-	for (const auto& p : bonds)
-	{
-		std::cout << "Estimated yield: " << svensson(res, p.duration) << " Actual Yield: " << p.yield << "\n";
-	}
-	for (const auto& p : bonds)
-	{
-		std::cout << "Estimated price: " << estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods) << " Actual Price: " << p.price << "\n";
-	}
+	print_bond_pricing_results(res);
 }

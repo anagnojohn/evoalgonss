@@ -206,7 +206,6 @@ void Solver<PSO<T>, F, C>::find_min_local_best()
 			min_cost = local_best[k];
 		}
 	}
-	fitness_cost = f(min_cost);
 }
 
 template<typename T, typename F, typename C>
@@ -227,7 +226,7 @@ bool Solver<PSO<T>, F, C>::check_pso_criteria()
 		{
 		}
 	}
-	if (pso.tol > std::abs(fitness_cost) || rmax < pso.tol)
+	if (pso.tol > std::abs(f(min_cost)) || rmax < pso.tol)
 	{
 		return true;
 	}

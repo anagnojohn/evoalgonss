@@ -68,12 +68,10 @@ public:
 		else
 		{
 			//! Time the computation
-			std::chrono::time_point<std::chrono::system_clock> start, end;
-			start = std::chrono::system_clock::now();
+			const std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
 			static_cast<Derived*>(this)->run_algo();
-			end = std::chrono::system_clock::now();
-			std::chrono::duration<double> elapsed_seconds = end - start;
-			const std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+			const std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
+			const std::chrono::duration<double> elapsed_seconds = end - start;
 			timer = elapsed_seconds.count();
 			display_results();
 			//! Return minimum cost individual

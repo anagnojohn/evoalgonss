@@ -262,3 +262,5 @@ __pycache__/
 /EvoAlgoNSS/cmake-build-debug
 /EvoAlgoNSS/cmake-build-release
 /EvoAlgoNSS/CMakeLists.txt
+/EvoAlgoNSS/a.exe.stackdump
+/EvoAlgoNSS/a.exe

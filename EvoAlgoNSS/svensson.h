@@ -1,8 +1,5 @@
 #pragma once
 
-#include "bond.h"
-
-
 //! Nelson-Siegel-Svensson (NSS) model
 namespace nss
 {

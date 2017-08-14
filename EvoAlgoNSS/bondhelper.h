@@ -31,8 +31,7 @@ namespace bond
 			std::string settlement_date;
 			std::string maturity_date;
 			std::istringstream stream(line);
-			stream >> coupon_percentage >> price >> nominal_value >> frequency >> settlement_date
-				>> maturity_date;
+			stream >> coupon_percentage >> price >> nominal_value >> frequency >> settlement_date >> maturity_date;
 			const Bond<T> bond{ coupon_percentage, price, nominal_value, frequency, settlement_date, maturity_date };
 			bonds.push_back(bond);
 		}
@@ -214,8 +213,8 @@ namespace bond
 	template<typename T>
 	std::vector<T> set_init_nss_params(std::vector<Bond<T>>& bonds)
 	{
-		read_bonds_from_file<double>("bond_data.txt")
-			bonds[0].yield = 0.054308895;
+		read_bonds_from_file<double>("bond_data.txt");
+		bonds[0].yield = 0.054308895;
 		bonds[1].yield = 0.090624152;
 		bonds[2].yield = 0.030896968;
 		bonds[3].yield = 0.006625537;

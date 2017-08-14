@@ -88,7 +88,7 @@ namespace ea
 			: solver_struct{ i_solver_struct },
 			individuals{ init_individuals() },
 			min_cost{ individuals[0] }, iter{ 0 }, f{ i_f }, c{ i_c }, solved_flag{ false }, timer{ 0 },
-			distribution{ std::uniform_real_distribution<T>::uniform_real_distribution(0.0, 1.0) }
+			  distribution {std::uniform_real_distribution<>::param_type(0.0,1.0)}
 		{
 			find_min_cost();
 		}
@@ -112,7 +112,7 @@ namespace ea
 		//! Random number generator
 		std::random_device generator;
 		//! Uniform real distribution
-		std::uniform_real_distribution<T> distribution;
+		std::uniform_real_distribution<> distribution;
 		//! A flag which determines if the solver has already solved the problem
 		bool solved_flag;
 		//! Timer
@@ -187,7 +187,7 @@ namespace ea
 	/*!
 	\brief Solver wrapper function, interface to solvers : free function used for benchmarks
 	*/
-	template<typename F, typename C, template<typename> class S, typename T = S::fp_type>
+	template<typename F, typename C, template<typename> class S, typename T>
 	std::vector<T> solve(const F& f, const C& c, const S<T>& solver_struct)
 	{
 		Solver<S, T, F, C> solver{ solver_struct, f, c };

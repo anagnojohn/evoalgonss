@@ -259,3 +259,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/EvoAlgoNSS/cmake-build-debug
+/EvoAlgoNSS/cmake-build-release
+/EvoAlgoNSS/CMakeLists.txt

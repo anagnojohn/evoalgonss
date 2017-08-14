@@ -4,8 +4,9 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include "svensson.h"
 
-template<typename T> class InterestRate_Helper;
+using namespace nss;
 
 //! Struct for interest rates
 template<typename T>

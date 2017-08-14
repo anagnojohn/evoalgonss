@@ -14,7 +14,7 @@ namespace ea
 			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max) :
 			cr{ i_cr },
 			f_param{ i_f_param },
-			EA_base{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }
+			EA_base<T>{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }
 		{
 			assert(cr > 0 && cr <= 1);
 			assert(f_param > 0 && f_param <= 1);
@@ -31,8 +31,8 @@ namespace ea
 	{
 	public:
 		//! Constructor
-		Solver(const DE<T>& i_de, const F& f, const C& c) : Solver_base<Solver<DE, T, F, C>, DE, T, F, C>{ i_de, f, c }, de{ solver_struct }, indices{ set_indices() },
-			ind_distribution{ std::uniform_int_distribution<size_t>::uniform_int_distribution(0, de.npop - 1) }
+		Solver(const DE<T>& i_de, const F& f, const C& c) : Solver_base<Solver<DE, T, F, C>, DE, T, F, C>{ i_de, f, c }, de{ this->solver_struct }, indices{ set_indices() },
+			ind_distribution{ std::uniform_int_distribution<size_t>::param_type(0,de.npop - 1) }
 		{};
 		//! Type of the algorithm :: string
 		const std::string type = "Differential Evolution";
@@ -54,7 +54,7 @@ namespace ea
 			return indices;
 		};
 		//! Random number engine for the indices
-		std::mt19937 engine{ generator() };
+		std::mt19937 engine{ this->generator() };
 		//! Uniform size_t distribution of the indices
 		std::uniform_int_distribution<size_t> ind_distribution;
 		//! Method that constructs the donor vector
@@ -79,7 +79,7 @@ namespace ea
 		}
 		for (auto j = 0; j < de.ndv; ++j)
 		{
-			donor[j] = individuals[r_i[0]][j] + de.f_param * (individuals[r_i[1]][j] - individuals[r_i[2]][j]);
+			donor[j] = this->individuals[r_i[0]][j] + de.f_param * (this->individuals[r_i[1]][j] - this->individuals[r_i[2]][j]);
 		}
 		return donor;
 	}
@@ -96,7 +96,7 @@ namespace ea
 		std::uniform_int_distribution<size_t> j_ind_distribution(0, de.ndv - 1);
 		for (auto j = 0; j < de.ndv; ++j)
 		{
-			const T& epsilon = distribution(generator);
+			const T& epsilon = this->distribution(this->generator);
 			const size_t& jrand = j_indices[j_ind_distribution(engine)];
 			if (epsilon <= de.cr || j == jrand)
 			{
@@ -114,28 +114,28 @@ namespace ea
 	void Solver<DE, T, F, C>::run_algo()
 	{
 		//! Differential Evolution starts here
-		for (iter = 0; iter < de.iter_max; ++iter)
+		for (this->iter = 0; this->iter < de.iter_max; ++this->iter)
 		{
-			for (auto& p : individuals)
+			for (auto& p : this->individuals)
 			{
 				//! Construct donor and trial vectors
-				std::vector<T>& donor = construct_donor();
-				while (!c(donor))
+				std::vector<T> donor = construct_donor();
+				while (!this->c(donor))
 				{
 					donor = construct_donor();
 				}
 				const std::vector<T>& trial = construct_trial(p, donor);
-				if (f(trial) <= f(p))
+				if (this->f(trial) <= this->f(p))
 				{
 					p = trial;
 				}
 			}
 			//! Recalculate minimum cost individual of the population
-			find_min_cost();
+			this->find_min_cost();
 			//! Stopping Criteria
-			if (de.tol > std::abs(f(min_cost)))
+			if (de.tol > std::abs(this->f(this->min_cost)))
 			{
-				solved_flag = true;
+				this->solved_flag = true;
 				break;
 			}
 		}

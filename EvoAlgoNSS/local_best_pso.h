@@ -13,16 +13,16 @@ namespace ea
 		//! Constructor
 		PSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const T& i_alpha, const std::vector<T>& i_vmax, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
 			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-			: c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, EA_base{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }, w{ i_w }, alpha{ i_alpha }, vmax{ i_vmax }
+			: c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, EA_base<T> { i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }, w{ i_w }, alpha{ i_alpha }, vmax{ i_vmax }
 		{
 			assert(c1 > 0);
 			assert(c2 > 0);
 			assert(sneigh > 0);
-			assert(sneigh < npop);
+			assert(sneigh < i_npop);
 			assert(w > 0);
 			assert(alpha > 0);
 			for (const auto& p : vmax) { assert(p > 0); };
-			assert(vmax.size() == ndv);
+			assert(vmax.size() == this->ndv);
 		}
 		//! Parameter c1 for velocity update
 		const T c1;
@@ -45,7 +45,7 @@ namespace ea
 	public:
 		//! Constructor
 		Solver(const PSO<T>& i_pso, F f, C c) :
-			Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>{ i_pso, f, c }, w{ i_pso.w }, vmax{ i_pso.vmax }, pso{ solver_struct },
+			Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>{ i_pso, f, c }, w{ i_pso.w }, vmax{ i_pso.vmax }, pso{ this->solver_struct },
 			nneigh{ static_cast<size_t>(std::ceil(pso.npop / pso.sneigh)) }, neighbourhoods{ set_neighbourhoods() }
 		{
 			velocity.resize(pso.npop, std::vector<T>(pso.ndv));
@@ -57,7 +57,7 @@ namespace ea
 					n = 0.0;
 				}
 			}
-			for (const auto& p : individuals)
+			for (const auto& p : this->individuals)
 			{
 				personal_best.push_back(p);
 			}
@@ -154,7 +154,7 @@ namespace ea
 		{
 			for (auto j = 0; j < pso.ndv; ++j)
 			{
-				r[i][j] = (distribution(generator));
+				r[i][j] = (this->distribution(this->generator));
 			}
 		}
 		return r;
@@ -168,13 +168,13 @@ namespace ea
 		{
 			for (auto j = 0; j < pso.ndv; ++j)
 			{
-				velocity[i][j] = w * velocity[i][j] + pso.c1 * r[0][j] * (personal_best[i][j] - individuals[i][j])
-					+ pso.c2 * r[1][j] * (local_best[neighbourhoods[i]][j] - individuals[i][j]);
+				velocity[i][j] = w * velocity[i][j] + pso.c1 * r[0][j] * (personal_best[i][j] - this->individuals[i][j])
+					+ pso.c2 * r[1][j] * (local_best[neighbourhoods[i]][j] - this->individuals[i][j]);
 				if (velocity[i][j] > vmax[j])
 				{
 					velocity[i][j] = vmax[j];
 				}
-				individuals[i][j] = individuals[i][j] + velocity[i][j];
+				this->individuals[i][j] = this->individuals[i][j] + velocity[i][j];
 			}
 		}
 	}
@@ -185,15 +185,15 @@ namespace ea
 		for (auto i = 0; i < pso.npop; ++i)
 		{
 			//! Checks that the candidate is feasible
-			if (!c(individuals[i]))
+			if (!this->c(this->individuals[i]))
 			{
-				individuals[i] = personal_best[i];
+				this->individuals[i] = personal_best[i];
 			}
-			if (f(individuals[i]) < f(personal_best[i]))
+			if (this->f(this->individuals[i]) < this->f(personal_best[i]))
 			{
-				personal_best[i] = individuals[i];
+				personal_best[i] = this->individuals[i];
 			}
-			if (f(personal_best[i]) < f(local_best[neighbourhoods[i]]))
+			if (this->f(personal_best[i]) < this->f(local_best[neighbourhoods[i]]))
 			{
 				local_best[neighbourhoods[i]] = personal_best[i];
 			}
@@ -205,9 +205,9 @@ namespace ea
 	{
 		for (auto k = 0; k < nneigh; ++k)
 		{
-			if (f(local_best[k]) < f(min_cost))
+			if (this->f(local_best[k]) < this->f(this->min_cost))
 			{
-				min_cost = local_best[k];
+				this->min_cost = local_best[k];
 			}
 		}
 	}
@@ -217,7 +217,7 @@ namespace ea
 	{
 		for (auto i = 0; i < pso.npop; ++i)
 		{
-			distance[i] = euclid_distance(individuals[i], min_cost);
+			distance[i] = euclid_distance(this->individuals[i], this->min_cost);
 		}
 		rmax = distance[0];
 		for (auto i = 0; i < pso.npop; ++i)
@@ -230,7 +230,7 @@ namespace ea
 			{
 			}
 		}
-		if (pso.tol > std::abs(f(min_cost)) || rmax < pso.tol)
+		if (pso.tol > std::abs(this->f(this->min_cost)) || rmax < pso.tol)
 		{
 			return true;
 		}
@@ -244,21 +244,21 @@ namespace ea
 	void Solver<PSO, T, F, C>::run_algo()
 	{
 		//! Local Best Particle Swarm starts here
-		for (iter = 0; iter < pso.iter_max; ++iter)
+		for (this->iter = 0; this->iter < pso.iter_max; ++this->iter)
 		{
 			position_update();
 			best_update();
 			find_min_local_best();
 			//! Velocities of the particles is updated using inertia as well
-			w = ((w - 0.4) * (pso.iter_max - iter)) / (pso.iter_max + 0.4);
+			w = ((w - 0.4) * (pso.iter_max - this->iter)) / (pso.iter_max + 0.4);
 			//! Maximum velocity is reduced using the current iteration and 
 			for (auto& p : vmax)
 			{
-				p = (1 - std::pow(iter / pso.iter_max, pso.alpha)) * p;
+				p = (1 - std::pow(this->iter / pso.iter_max, pso.alpha)) * p;
 			}
 			if (check_pso_criteria())
 			{
-				solved_flag = true;
+				this->solved_flag = true;
 				break;
 			}
 		}

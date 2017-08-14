@@ -2,8 +2,11 @@
 
 #include <iostream>
 #include <vector>
-#include "boost/date_time/gregorian/gregorian.hpp"
-#include "boost/date_time/time.hpp"
+#include <iomanip>
+#include <sstream>
+#include <locale>
+#include <assert.h>
+#include "date.h"
 #include "irr.h"
 
 using namespace irr;
@@ -22,17 +25,22 @@ namespace bond
 		friend class BondHelper<T>;
 	public:
 		//! Construct in the case price is given but the yield and the macaulay duration are not given
-		Bond(const T& i_coupon_percentage, const T& i_price, const T& i_nominal_value, const T& i_frequency, const std::string& i_settlement_date, const std::string& i_maturity_date)
+		Bond(const T& i_coupon_percentage, const T& i_price, const T& i_nominal_value, const T& i_frequency,
+			 const std::string& i_settlement_date, const std::string& i_maturity_date)
 			: coupon_percentage{ i_coupon_percentage }, price{ i_price }, nominal_value{ i_nominal_value }, frequency{ i_frequency },
-			settlement_date{ boost::gregorian::from_simple_string(i_settlement_date) },
-			maturity_date{ boost::gregorian::from_simple_string(i_maturity_date) },
 			coupon_value{ coupon_percentage * nominal_value / frequency }, yield{ 0 }, duration{ 0 }
 		{
 			assert(price > 0);
 			assert(coupon_percentage > 0 && coupon_percentage < 1);
 			assert(nominal_value > 0);
 			assert(frequency > 0);
-			cash_flows = compute_cash_flows(coupon_value, frequency, settlement_date, maturity_date);
+			std::tm t1 {};
+			std::tm t2 {};
+			static_cast<std::istringstream>(i_settlement_date) >> std::get_time(&t1, "%Y-%m-%d");
+			static_cast<std::istringstream>(i_maturity_date) >> std::get_time(&t2, "%Y-%m-%d");
+			settlement_date = date::year(t1.tm_year) / (t1.tm_mon+1) / t1.tm_mday;
+			maturity_date = date::year(t2.tm_year) / (t2.tm_mon+1) / t2.tm_mday;
+			cash_flows = compute_cash_flows();
 			time_periods.resize(cash_flows.size());
 			for (auto i = 0; i < time_periods.size(); ++i)
 			{
@@ -61,25 +69,25 @@ namespace bond
 		//! A vector with all the coupon payments corresponding to time periods
 		std::vector<T> cash_flows;
 		//! Settlement date of the bond
-		const boost::gregorian::date settlement_date;
+		date::sys_days settlement_date;
 		//! Maturity date of the bond
-		const boost::gregorian::date maturity_date;
+		date::sys_days maturity_date;
 		//! Yield-to-maturity of the bond
 		T yield;
 		//! Macaulay duration of the bond
 		T duration;
 		//! Calculate the cash flows of the bond
-		std::vector<T> compute_cash_flows(const T& coupon_value, const T& frequency, boost::gregorian::date settlement_date, boost::gregorian::date maturity_date);
+		std::vector<T> compute_cash_flows();
 		//! Calculates the Macaulay duration of the bond
 		T compute_macaulay_duration();
 	};
 
 	template<typename T>
-	std::vector<T> Bond<T>::compute_cash_flows(const T& coupon_value, const T& frequency, boost::gregorian::date settlement_date, boost::gregorian::date maturity_date)
+	std::vector<T> Bond<T>::compute_cash_flows()
 	{
 		assert(settlement_date < maturity_date);
 		const T number_of_days_coupon = 365 / frequency;
-		const auto days_difference = maturity_date.day_number() - settlement_date.day_number();
+		const auto days_difference = (maturity_date - settlement_date).count();
 		const auto time_periods = static_cast<T>(days_difference) / number_of_days_coupon;
 		const size_t num_time_periods = static_cast<size_t>(std::ceil(time_periods));
 		std::vector<T> cash_flows(num_time_periods);

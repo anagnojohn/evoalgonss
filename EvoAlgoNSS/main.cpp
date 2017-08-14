@@ -2,12 +2,12 @@
 //!
 
 #include "stdafx.h"
-#include "svensson.h"
-#include "bond.h"
 #include "bondhelper.h"
+
 
 int main()
 {
+	using namespace bond;
 	const std::vector<double> stdev { 0.7, 0.7, 0.7, 0.7, 0.7, 0.7 };
 	const std::vector<double> stdev_ga{ 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 };
 	double irr_tol = 0.0000001;

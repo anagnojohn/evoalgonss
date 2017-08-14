@@ -12,9 +12,9 @@ namespace ea
 		//! Constructor
 		DE(const T& i_cr, const T& i_f_param, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
 			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max) :
+			EA_base<T>{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max },
 			cr{ i_cr },
-			f_param{ i_f_param },
-			EA_base<T>{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }
+			f_param{ i_f_param }
 		{
 			assert(cr > 0 && cr <= 1);
 			assert(f_param > 0 && f_param <= 1);
@@ -31,9 +31,13 @@ namespace ea
 	{
 	public:
 		//! Constructor
-		Solver(const DE<T>& i_de, const F& f, const C& c) : Solver_base<Solver<DE, T, F, C>, DE, T, F, C>{ i_de, f, c }, de{ this->solver_struct }, indices{ set_indices() },
-			ind_distribution{ std::uniform_int_distribution<size_t>::param_type(0,de.npop - 1) }
-		{};
+		Solver(const DE<T>& i_de, const F& f, const C& c) :
+                Solver_base<Solver<DE, T, F, C>, DE, T, F, C>{ i_de, f, c },
+                de{ this->solver_struct },
+                indices{ set_indices() }
+		{
+            ind_distribution = std::uniform_int_distribution<size_t>(0,de.npop - 1);
+        };
 		//! Type of the algorithm :: string
 		const std::string type = "Differential Evolution";
 		//! Runs the algorithm until stopping criteria
@@ -47,14 +51,12 @@ namespace ea
 		std::vector<size_t> set_indices()
 		{
 			std::vector<size_t> indices;
-			for (auto i = 0; i < de.npop; ++i)
+			for (size_t i = 0; i < de.npop; ++i)
 			{
 				indices.push_back(i);
 			}
 			return indices;
 		};
-		//! Random number engine for the indices
-		std::mt19937 engine{ this->generator() };
 		//! Uniform size_t distribution of the indices
 		std::uniform_int_distribution<size_t> ind_distribution;
 		//! Method that constructs the donor vector
@@ -71,13 +73,13 @@ namespace ea
 		//! Check that the indices are not the same
 		while (r_i.size() < 3)
 		{
-			r_i.push_back(indices[ind_distribution(engine)]);
+			r_i.push_back(indices[ind_distribution(generator)]);
 			if (r_i.size() > 1 && r_i.end()[-1] == r_i.end()[-2])
 			{
 				r_i.pop_back();
 			}
 		}
-		for (auto j = 0; j < de.ndv; ++j)
+		for (size_t j = 0; j < de.ndv; ++j)
 		{
 			donor[j] = this->individuals[r_i[0]][j] + de.f_param * (this->individuals[r_i[1]][j] - this->individuals[r_i[2]][j]);
 		}
@@ -89,15 +91,15 @@ namespace ea
 	{
 		std::vector<T> trial(de.ndv);
 		std::vector<size_t> j_indices(de.ndv);
-		for (auto j = 0; j < de.ndv; ++j)
+		for (size_t j = 0; j < de.ndv; ++j)
 		{
 			j_indices[j] = j;
 		}
 		std::uniform_int_distribution<size_t> j_ind_distribution(0, de.ndv - 1);
-		for (auto j = 0; j < de.ndv; ++j)
+		for (size_t j = 0; j < de.ndv; ++j)
 		{
-			const T& epsilon = this->distribution(this->generator);
-			const size_t& jrand = j_indices[j_ind_distribution(engine)];
+			const T& epsilon = this->distribution(generator);
+			const size_t& jrand = j_indices[j_ind_distribution(generator)];
 			if (epsilon <= de.cr || j == jrand)
 			{
 				trial[j] = donor[j];

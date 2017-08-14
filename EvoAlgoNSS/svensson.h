@@ -9,8 +9,6 @@ namespace nss
 	{
 		const T& b0 = solution[0];
 		const T& b1 = solution[1];
-		const T& b2 = solution[2];
-		const T& b3 = solution[3];
 		const T& tau1 = solution[4];
 		const T& tau2 = solution[5];
 		if (b0 > 0 && b0 + b1 > 0 && tau1 > 0 && tau2 > 0)

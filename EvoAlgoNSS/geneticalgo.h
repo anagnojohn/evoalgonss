@@ -16,7 +16,8 @@ namespace ea
 		//! Constructor
 		GA(const T& i_x_rate, const T& i_pi, const T& i_alpha, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
 			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max, const Strategy& i_strategy)
-			: x_rate{ i_x_rate }, pi{ i_pi }, alpha{ i_alpha }, EA_base<T> { i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }, strategy{ i_strategy }
+			:  EA_base<T> { i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max },
+			   x_rate{ i_x_rate }, pi{ i_pi }, alpha{ i_alpha }, strategy{ i_strategy }
 		{
 			assert(x_rate > 0 && x_rate <= 1);
 			assert(pi > 0 && pi <= 1);
@@ -70,9 +71,9 @@ namespace ea
 	{
 		std::vector<T> offspring(ga.ndv);
 		std::vector<T> psi(ga.ndv);
-		for (auto j = 0; j < ga.ndv; ++j)
+		for (size_t j = 0; j < ga.ndv; ++j)
 		{
-			psi[j] = this->distribution(this->generator);
+			psi[j] = this->distribution(generator);
 			offspring[j] = psi[j] * r[j] + (1 - psi[j]) * s[j];
 		}
 		return offspring;
@@ -82,9 +83,9 @@ namespace ea
 	std::vector<T> Solver<GA, T, F, C>::selection()
 	{
 		//! Generate r and s indices
-		T xi = quantile(bdistribution, this->distribution(this->generator));
+		T xi = quantile(bdistribution, this->distribution(generator));
 		size_t r = static_cast<size_t>(std::round(static_cast<T>(this->individuals.size()) * xi));
-		xi = quantile(bdistribution, this->distribution(this->generator));
+		xi = quantile(bdistribution, this->distribution(generator));
 		size_t s = static_cast<size_t>(std::round(static_cast<T>(this->individuals.size()) * xi));
 		//! Produce offsrping using r and s indices by crossover
 		std::vector<T> offspring = crossover(this->individuals[r], this->individuals[s]);
@@ -95,13 +96,13 @@ namespace ea
 	std::vector<T> Solver<GA, T, F, C>::mutation(const std::vector<T>& individual)
 	{
 		std::vector<T> mutated = individual;
-		for (auto j = 0; j < ga.ndv; ++j)
+		for (size_t j = 0; j < ga.ndv; ++j)
 		{
-			T r = this->distribution(this->generator);
+			T r = this->distribution(generator);
 			if (ga.pi < r)
 			{
 				std::normal_distribution<T> ndistribution(0, stdev[j]);
-				T epsilon = ndistribution(this->generator);
+				T epsilon = ndistribution(generator);
 				mutated[j] = mutated[j] + epsilon;
 			}
 		}
@@ -135,12 +136,12 @@ namespace ea
 			{
 				this->individuals.erase(this->individuals.begin() + 500, this->individuals.begin() + this->individuals.size());
 			}
-			for (auto i = 0; i < npop; ++i)
+			for (size_t i = 0; i < npop; ++i)
 			{
 				std::vector<T> offspring = selection();
 				this->individuals.push_back(offspring);
 			}
-			for (auto i = 1; i < this->individuals.size(); ++i)
+			for (size_t i = 1; i < this->individuals.size(); ++i)
 			{
 				std::vector<T> mutated = mutation(this->individuals[i]);
 				if (ga.strategy == Strategy::remove)

@@ -67,7 +67,7 @@ private:
 	{
 		//! The sum of squares of errors betwwen the actual rates and the rates computed by svensson are used
 		T sum_of_squares = 0;
-		for (auto i = 0; i < ir_vec.size(); ++i)
+		for (size_t i = 0; i < ir_vec.size(); ++i)
 		{
 			T estimate = svensson(solution, ir_vec[i].period);
 			sum_of_squares = sum_of_squares + std::pow(ir_vec[i].rate - estimate, 2);

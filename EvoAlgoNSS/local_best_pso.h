@@ -13,7 +13,8 @@ namespace ea
 		//! Constructor
 		PSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const T& i_alpha, const std::vector<T>& i_vmax, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
 			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-			: c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, EA_base<T> { i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max }, w{ i_w }, alpha{ i_alpha }, vmax{ i_vmax }
+			: EA_base<T> { i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max },
+			  c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, w{ i_w }, alpha{ i_alpha }, vmax{ i_vmax }
 		{
 			assert(c1 > 0);
 			assert(c2 > 0);
@@ -45,7 +46,7 @@ namespace ea
 	public:
 		//! Constructor
 		Solver(const PSO<T>& i_pso, F f, C c) :
-			Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>{ i_pso, f, c }, w{ i_pso.w }, vmax{ i_pso.vmax }, pso{ this->solver_struct },
+			Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>{ i_pso, f, c }, pso{ this->solver_struct }, w{ i_pso.w }, vmax{ i_pso.vmax },
 			nneigh{ static_cast<size_t>(std::ceil(pso.npop / pso.sneigh)) }, neighbourhoods{ set_neighbourhoods() }
 		{
 			velocity.resize(pso.npop, std::vector<T>(pso.ndv));
@@ -66,7 +67,7 @@ namespace ea
 				p = personal_best[0];
 			}
 			distance.resize(pso.npop);
-			for (auto i = 0; i < pso.npop; ++i)
+			for (size_t i = 0; i < pso.npop; ++i)
 			{
 				if (f(personal_best[i]) < f(local_best[neighbourhoods[i]]))
 				{
@@ -116,7 +117,7 @@ namespace ea
 		T euclid_distance(const std::vector<T>& x, const std::vector<T>& y)
 		{
 			T sum = 0;
-			for (auto i = 0; i < x.size(); ++i)
+			for (size_t i = 0; i < x.size(); ++i)
 			{
 				sum = sum + std::pow(x[i] - y[i], 2);
 			}
@@ -130,7 +131,7 @@ namespace ea
 		std::unordered_map<size_t, size_t> neighbourhoods;
 		size_t neigh_index = 0;
 		size_t counter = 0;
-		for (auto i = 0; i < pso.npop; ++i)
+		for (size_t i = 0; i < pso.npop; ++i)
 		{
 			if (counter < pso.sneigh)
 			{
@@ -152,9 +153,9 @@ namespace ea
 		std::vector<std::vector<T>> r(2, std::vector<T>(pso.ndv));
 		for (auto i = 0; i < 2; ++i)
 		{
-			for (auto j = 0; j < pso.ndv; ++j)
+			for (size_t j = 0; j < pso.ndv; ++j)
 			{
-				r[i][j] = (this->distribution(this->generator));
+				r[i][j] = (this->distribution(generator));
 			}
 		}
 		return r;
@@ -164,9 +165,9 @@ namespace ea
 	void Solver<PSO, T, F, C>::position_update()
 	{
 		const auto& r = generate_r();
-		for (auto i = 0; i < pso.npop; ++i)
+		for (size_t i = 0; i < pso.npop; ++i)
 		{
-			for (auto j = 0; j < pso.ndv; ++j)
+			for (size_t j = 0; j < pso.ndv; ++j)
 			{
 				velocity[i][j] = w * velocity[i][j] + pso.c1 * r[0][j] * (personal_best[i][j] - this->individuals[i][j])
 					+ pso.c2 * r[1][j] * (local_best[neighbourhoods[i]][j] - this->individuals[i][j]);
@@ -182,7 +183,7 @@ namespace ea
 	template<typename T, typename F, typename C>
 	void Solver<PSO, T, F, C>::best_update()
 	{
-		for (auto i = 0; i < pso.npop; ++i)
+		for (size_t i = 0; i < pso.npop; ++i)
 		{
 			//! Checks that the candidate is feasible
 			if (!this->c(this->individuals[i]))
@@ -203,7 +204,7 @@ namespace ea
 	template<typename T, typename F, typename C>
 	void Solver<PSO, T, F, C>::find_min_local_best()
 	{
-		for (auto k = 0; k < nneigh; ++k)
+		for (size_t k = 0; k < nneigh; ++k)
 		{
 			if (this->f(local_best[k]) < this->f(this->min_cost))
 			{
@@ -215,12 +216,12 @@ namespace ea
 	template<typename T, typename F, typename C>
 	bool Solver<PSO, T, F, C>::check_pso_criteria()
 	{
-		for (auto i = 0; i < pso.npop; ++i)
+		for (size_t i = 0; i < pso.npop; ++i)
 		{
 			distance[i] = euclid_distance(this->individuals[i], this->min_cost);
 		}
 		rmax = distance[0];
-		for (auto i = 0; i < pso.npop; ++i)
+		for (size_t i = 0; i < pso.npop; ++i)
 		{
 			if (rmax < distance[i])
 			{

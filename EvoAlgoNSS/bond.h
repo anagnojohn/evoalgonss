@@ -26,7 +26,7 @@ namespace bond
 	public:
 		//! Construct in the case price is given but the yield and the macaulay duration are not given
 		Bond(const T& i_coupon_percentage, const T& i_price, const T& i_nominal_value, const T& i_frequency,
-			 const std::string& i_settlement_date, const std::string& i_maturity_date)
+			 std::string& i_settlement_date, const std::string& i_maturity_date)
 			: coupon_percentage{ i_coupon_percentage }, price{ i_price }, nominal_value{ i_nominal_value }, frequency{ i_frequency },
 			coupon_value{ coupon_percentage * nominal_value / frequency }, yield{ 0 }, duration{ 0 }
 		{
@@ -36,13 +36,17 @@ namespace bond
 			assert(frequency > 0);
 			std::tm t1 {};
 			std::tm t2 {};
-			static_cast<std::istringstream>(i_settlement_date) >> std::get_time(&t1, "%Y-%m-%d");
-			static_cast<std::istringstream>(i_maturity_date) >> std::get_time(&t2, "%Y-%m-%d");
+            std::stringstream s1;
+            std::stringstream s2;
+            s1 << i_settlement_date;
+            s2 << i_maturity_date;
+			s1 >> std::get_time(&t1, "%Y-%m-%d");
+			s2 >> std::get_time(&t2, "%Y-%m-%d");
 			settlement_date = date::year(t1.tm_year) / (t1.tm_mon+1) / t1.tm_mday;
 			maturity_date = date::year(t2.tm_year) / (t2.tm_mon+1) / t2.tm_mday;
 			cash_flows = compute_cash_flows();
 			time_periods.resize(cash_flows.size());
-			for (auto i = 0; i < time_periods.size(); ++i)
+			for (size_t i = 0; i < time_periods.size(); ++i)
 			{
 				time_periods[i] = static_cast<T>(i + 1) / frequency;
 			}
@@ -127,13 +131,13 @@ namespace bond
 		T pv = 0.0;
 		//! Macaulay duration
 		T duration = 0.0;
-		for (auto i = 0; i < cash_flows.size(); ++i)
+		for (size_t i = 0; i < cash_flows.size(); ++i)
 		{
 			discount_factor = compute_discount_factor(yield, frequency, static_cast<T>(i + 1));
 			pv_cash_flow = pv_cash_flow + coupon_value * discount_factor;
 		}
 		pv_cash_flow = pv_cash_flow + nominal_value * discount_factor;
-		for (auto i = 0; i < cash_flows.size(); ++i)
+		for (size_t i = 0; i < cash_flows.size(); ++i)
 		{
 			discount_factor = compute_discount_factor(yield, frequency, static_cast<T>(i + 1));
 			pv = coupon_value * discount_factor;
@@ -152,7 +156,7 @@ namespace bond
 		T sum = 0.0;
 		T pv_cash_flow = 0.0;
 		T discount_factor = 0.0;
-		for (auto i = 0; i < num_time_periods; ++i)
+		for (size_t i = 0; i < num_time_periods; ++i)
 		{
 			discount_factor = std::exp(-ytm * time_periods[i]);
 			pv_cash_flow = pv_cash_flow + coupon_value * discount_factor;
@@ -174,13 +178,13 @@ namespace bond
 		T duration = 0.0;
 		T coupon_value = cash_flows[0];
 		T pv = 0.0;
-		for (auto i = 0; i < cash_flows.size(); ++i)
+		for (size_t i = 0; i < cash_flows.size(); ++i)
 		{
 			discount_factor = std::exp(-yield * (static_cast<T>(i + 1) / frequency));
 			pv_cash_flow = pv_cash_flow + coupon_value * discount_factor;
 		}
 		pv_cash_flow = pv_cash_flow + nominal_value * discount_factor;
-		for (auto i = 0; i < cash_flows.size(); ++i)
+		for (size_t i = 0; i < cash_flows.size(); ++i)
 		{
 			discount_factor = std::exp(-yield * (static_cast<T>(i + 1) / frequency));
 			pv = coupon_value * discount_factor;

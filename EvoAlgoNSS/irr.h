@@ -34,7 +34,7 @@ namespace irr
 	{
 		const size_t& num_time_periods = cash_flows.size();
 		T sum = 0.0;
-		for (auto i = 0; i < num_time_periods; ++i)
+		for (size_t i = 0; i < num_time_periods; ++i)
 		{
 			sum = sum + cash_flows[i] * compute_discount_factor(r, frequency, static_cast<T>(i + 1));
 		}

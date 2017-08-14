@@ -102,7 +102,7 @@ namespace bond
 	{
 		//! The sum of squares of errors between the actual bond yield to maturity and the estimated yield to maturity by svensson is used
 		T sum_of_squares = 0;
-		for (auto i = 0; i < bonds.size(); ++i)
+		for (size_t i = 0; i < bonds.size(); ++i)
 		{
 			T estimate = svensson(solution, bonds[i].duration);
 			sum_of_squares = sum_of_squares + std::pow((bonds[i].yield - estimate), 2);
@@ -116,7 +116,7 @@ namespace bond
 	{
 		//! The sum of squares of errors between the actual bond price and the estimated price from estimate_bond_pricing
 		T sum_of_squares = 0.0;
-		for (auto i = 0; i < bonds.size(); ++i)
+		for (size_t i = 0; i < bonds.size(); ++i)
 		{
 			T estimate = estimate_bond_pricing(solution, bonds[i].coupon_value, bonds[i].nominal_value, bonds[i].time_periods);
 			sum_of_squares = sum_of_squares + std::pow((bonds[i].price - estimate) / bonds[i].nominal_value, 2) / std::sqrt(bonds[i].duration);
@@ -129,14 +129,14 @@ namespace bond
 	template<typename S>
 	std::vector<T> BondHelper<T>::set_init_nss_params(S& solver)
 	{
-		for (auto i = 0; i < bonds.size(); ++i)
+		for (size_t i = 0; i < bonds.size(); ++i)
 		{
 			std::cout << "Processing bond: " << i + 1 << "\n";
 			bonds[i].compute_yield(solver);
 		}
 		size_t minimum_index = 0;
 		size_t maximum_index = 0;
-		for (auto i = 0; i < bonds.size(); ++i)
+		for (size_t i = 0; i < bonds.size(); ++i)
 		{
 			if (bonds[i].duration < bonds[minimum_index].duration)
 			{
@@ -159,7 +159,7 @@ namespace bond
 		double b3 = 0;
 		T target = (b0 + b0 + b1) / 2;
 		size_t index = 0;
-		for (auto i = 0; i < bonds.size(); ++i)
+		for (size_t i = 0; i < bonds.size(); ++i)
 		{
 			if (std::abs(target - bonds[i].yield) < std::abs(target - bonds[index].yield))
 			{

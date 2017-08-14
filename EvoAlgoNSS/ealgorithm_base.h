@@ -48,6 +48,8 @@ namespace ea
 			assert(iter_max > 0);
 		}
 	};
+	//! Random number generator
+	std::mt19937 generator(std::random_device{}());
 
 	//! Template Class for Solvers
 	template<template<typename> class S, typename T, typename F, typename C> class Solver;
@@ -87,9 +89,10 @@ namespace ea
 		Solver_base(const S<T>& i_solver_struct, const F& i_f, const C& i_c)
 			: solver_struct{ i_solver_struct },
 			individuals{ init_individuals() },
-			min_cost{ individuals[0] }, iter{ 0 }, f{ i_f }, c{ i_c }, solved_flag{ false }, timer{ 0 },
-			  distribution {std::uniform_real_distribution<>::param_type(0.0,1.0)}
+			min_cost{ individuals[0] }, iter{ 0 }, f{ i_f }, c{ i_c }, solved_flag{ false }, timer{ 0 }
+
 		{
+            distribution = std::uniform_real_distribution<T>(0.0,1.0);
 			find_min_cost();
 		}
 		//! Internal copy of the structure used for parameters of the algorithm
@@ -99,20 +102,18 @@ namespace ea
 		At the same time, std::function could be have used, thus eliminating the need for template parameters F and C.
 		However, that comes at a runtime cost, since calls to the functions would be virtual and there is a possibility
 		that allocation could happen on the heap.*/
+		//! Population
+		std::vector<std::vector<T>> individuals;
+		//! Best solution / lowest fitness
+		std::vector<T> min_cost;
+		//! Last iteration to solution
+		size_t iter;
 		//! Copy of the fitness function passed as a lambda
 		F f;
 		//! Copy of the constraints function passed as a lambda
 		C c;
-		//! Population
-		std::vector<std::vector<T>> individuals;
-		//! Last iteration to solution
-		size_t iter;
-		//! Best solution / lowest fitness
-		std::vector<T> min_cost;
-		//! Random number generator
-		std::random_device generator;
 		//! Uniform real distribution
-		std::uniform_real_distribution<> distribution;
+		std::uniform_real_distribution<T> distribution;
 		//! A flag which determines if the solver has already solved the problem
 		bool solved_flag;
 		//! Timer
@@ -128,13 +129,12 @@ namespace ea
 	template<typename Derived, template<typename> class S, typename T, typename F, typename C>
 	std::vector<T> Solver_base<Derived, S, T, F, C>::randomise_individual()
 	{
-		std::random_device generator;
 		std::vector<T> individual = solver_struct.decision_variables;
 		T epsilon = 0;
-		for (auto j = 0; j < solver_struct.ndv; ++j)
+		for (size_t j = 0; j < solver_struct.ndv; ++j)
 		{
 			std::normal_distribution<T> ndistribution(0, solver_struct.stdev[j]);
-			epsilon = std::abs(ndistribution(generator));
+			epsilon = ndistribution(generator);
 			individual[j] = individual[j] + epsilon;
 		}
 		return individual;
@@ -143,6 +143,7 @@ namespace ea
 	template<typename Derived, template<typename> class S, typename T, typename F, typename C>
 	std::vector<std::vector<T>> Solver_base<Derived, S, T, F, C>::init_individuals()
 	{
+		generator.discard(700000);
 		std::vector<std::vector<T>> individuals(solver_struct.npop, std::vector<T>(solver_struct.ndv));
 		for (auto& p : individuals)
 		{
@@ -163,7 +164,7 @@ namespace ea
 		{
 			if (f(min_cost) > f(p))
 			{
-				min_cost = p;
+                min_cost = p;
 			}
 		}
 	}
@@ -185,7 +186,7 @@ namespace ea
 	}
 
 	/*!
-	\brief Solver wrapper function, interface to solvers : free function used for benchmarks
+	/brief Solver wrapper function, interface to solvers : free function used for benchmarks
 	*/
 	template<typename F, typename C, template<typename> class S, typename T>
 	std::vector<T> solve(const F& f, const C& c, const S<T>& solver_struct)

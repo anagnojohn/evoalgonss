@@ -8,6 +8,8 @@
 #include <ctime>
 #include <random>
 #include <vector>
+#include <fstream>
+#include <sstream>
 #include "helper_functions.h"
 
 //! Evolutionary Algorithms
@@ -20,7 +22,7 @@ namespace ea
 	public:
 		//! The floating point number type used for type deduction
 		using fp_type = T;
-		//! Decision Variables
+		//! Initial Decision Variables
 		const std::vector<T> decision_variables;
 		//! Standard deviation of the decision variables
 		const std::vector<T> stdev;
@@ -60,37 +62,22 @@ namespace ea
 	{
 	public:
 		//! Displays the results
-		void display_results();
+		std::stringstream display_results();
 		//! Solve wrapper function for Solvers, used for benchmarks
-		std::vector<T> solver_bench()
-		{
-			std::cout << static_cast<Derived*>(this)->type << " used as solver." << "\n";
-			if (solver_struct.tol > std::abs(f(min_cost)))
-			{
-				timer = 0;
-				display_results();
-				return min_cost;
-			}
-			else
-			{
-				//! Time the computation
-				const std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
-				static_cast<Derived*>(this)->run_algo();
-				const std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
-				const std::chrono::duration<double> elapsed_seconds = end - start;
-				timer = elapsed_seconds.count();
-				display_results();
-				//! Return minimum cost individual
-				return min_cost;
-			}
-		}
+		std::vector<T> solver_bench();
+		//! Write the results to a file
+		void write_results_to_file();
 	protected:
 		//! Constructor
-		Solver_base(const S<T>& i_solver_struct, const F& i_f, const C& i_c)
-			: solver_struct{ i_solver_struct },
+		Solver_base(const S<T>& i_solver_struct, const F& i_f, const C& i_c) :
+			solver_struct{ i_solver_struct },
 			individuals{ init_individuals() },
-			min_cost{ individuals[0] }, iter{ 0 }, f{ i_f }, c{ i_c }, solved_flag{ false }, timer{ 0 }
-
+			min_cost{ individuals[0] },
+			last_iter{ 0 }, 
+			f{ i_f }, 
+			c{ i_c }, 
+			solved_flag{ false }, 
+			timer{ 0 }
 		{
             distribution = std::uniform_real_distribution<T>(0.0,1.0);
 			find_min_cost();
@@ -107,7 +94,7 @@ namespace ea
 		//! Best solution / lowest fitness
 		std::vector<T> min_cost;
 		//! Last iteration to solution
-		size_t iter;
+		size_t last_iter;
 		//! Copy of the fitness function passed as a lambda
 		F f;
 		//! Copy of the constraints function passed as a lambda
@@ -170,21 +157,57 @@ namespace ea
 	}
 
 	template<typename Derived, template<typename> class S, typename T, typename F, typename C>
-	void Solver_base<Derived, S, T, F, C>::display_results()
+	std::stringstream Solver_base<Derived, S, T, F, C>::display_results()
 	{
+		std::stringstream results;
+		results << static_cast<Derived*>(this)->type << " used as solver." << "\n";
+		results << "Initial Decision Variables: " << solver_struct.decision_variables << "\n";
+		results << "Standard deviation of the decision variables: " << solver_struct.stdev << "\n";
+		results << "Size of the population: " << solver_struct.npop << "\n";
+		results << "Tolerance: " << solver_struct.tol << "\n";
+		results << "Number of maximum iterations: " << solver_struct.iter_max << "\n";
+		results << static_cast<Derived*>(this)->display_parameters().str();
 		if (!solved_flag)
 		{
-			std::cout << "!!!The optimisation problem was not solved.!!!" << "\n";
+			results << "!!!The optimisation problem was not solved.!!!" << "\n";
 		}
 		else
 		{
-			std::cout << "!!!Problem was successfully solved.!!!" << "\n";
+			results << "!!!Problem was successfully solved.!!!" << "\n";
 		}
-		std::cout << "Optimum solution: " << min_cost << " Fitness Value: " << f(min_cost) << "\n";
-		std::cout << "Population: " << individuals.size() << " Solved at iteration: " << iter << "\n";
-		std::cout << "Elapsed time in seconds: " << timer << "\n";
+		results << "Optimum solution: " << min_cost << " Fitness Value: " << f(min_cost) << "\n";
+		results << "Population: " << individuals.size() << " Iterations: " << last_iter << "\n";
+		results << "Elapsed time in seconds: " << timer << "\n";
+		return results;
 	}
 
+	template<typename Derived, template<typename> class S, typename T, typename F, typename C>
+	void Solver_base<Derived, S, T, F, C>::write_results_to_file()
+	{
+		ofstream out("results.txt");
+		out << display_results();
+	}
+
+	template<typename Derived, template<typename> class S, typename T, typename F, typename C>
+	std::vector<T> Solver_base<Derived, S, T, F, C>::solver_bench()
+	{
+		if (solver_struct.tol > std::abs(f(min_cost)))
+		{
+			timer = 0;
+		}
+		else
+		{
+			//! Time the computation
+			const std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
+			static_cast<Derived*>(this)->run_algo();
+			const std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
+			const std::chrono::duration<double> elapsed_seconds = end - start;
+			timer = elapsed_seconds.count();
+		}
+		//! Return minimum cost individual
+		std::cout << display_results().str();
+		return min_cost;
+	}
 	/*!
 	/brief Solver wrapper function, interface to solvers : free function used for benchmarks
 	*/

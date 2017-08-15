@@ -47,7 +47,7 @@ namespace ea
 		//! Constructor
 		Solver(const PSO<T>& i_pso, F f, C c) :
 			Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>{ i_pso, f, c }, pso{ this->solver_struct }, w{ i_pso.w }, vmax{ i_pso.vmax },
-			nneigh{ static_cast<size_t>(std::ceil(pso.npop / pso.sneigh)) }, neighbourhoods{ set_neighbourhoods() }
+			nneigh{ static_cast<size_t>(std::ceil(pso.npop / pso.sneigh)) }, neighbourhoods{ set_neighbourhoods() }, rmax{ 0 }
 		{
 			velocity.resize(pso.npop, std::vector<T>(pso.ndv));
 			local_best.resize(nneigh);
@@ -78,6 +78,17 @@ namespace ea
 		}
 		//! Type of the algorithm
 		const std::string type = "Local Best Particle Swarm Optimisation";
+		std::stringstream display_parameters()
+		{
+			std::stringstream parameters;
+			parameters << "Parameter c1 for velocity update: " << pso.c1 << "\n";
+			parameters << "Parameter c2 for velocity update: " << pso.c2 << "\n";
+			parameters << "Neighbourhood size: " << pso.sneigh << "\n";
+			parameters << "Inertia: " << pso.w << "\n";
+			parameters << "Alpha Parameter for maximum velocity: " << pso.alpha << "\n";
+			parameters << "Maximum Velocity: " << pso.vmax << "\n";
+			return parameters;
+		}
 		//! Runs the algorithm until stopping criteria
 		void run_algo();
 	protected:
@@ -245,23 +256,26 @@ namespace ea
 	void Solver<PSO, T, F, C>::run_algo()
 	{
 		//! Local Best Particle Swarm starts here
-		for (this->iter = 0; this->iter < pso.iter_max; ++this->iter)
+		for (size_t iter = 0; iter < pso.iter_max; ++iter)
 		{
 			position_update();
 			best_update();
 			find_min_local_best();
 			//! Velocities of the particles is updated using inertia as well
-			w = ((w - 0.4) * (pso.iter_max - this->iter)) / (pso.iter_max + 0.4);
+			w = ((w - 0.4) * (pso.iter_max - iter)) / (pso.iter_max + 0.4);
 			//! Maximum velocity is reduced using the current iteration and 
 			for (auto& p : vmax)
 			{
-				p = (1 - std::pow(this->iter / pso.iter_max, pso.alpha)) * p;
+				p = (1 - std::pow(iter / pso.iter_max, pso.alpha)) * p;
 			}
 			if (check_pso_criteria())
 			{
 				this->solved_flag = true;
+				this->last_iter = iter;
 				break;
 			}
 		}
+		this->last_iter = pso.iter_max;
 	}
+	
 }

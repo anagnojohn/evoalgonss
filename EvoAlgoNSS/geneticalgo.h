@@ -22,7 +22,7 @@ namespace ea
 			assert(x_rate > 0 && x_rate <= 1);
 			assert(pi > 0 && pi <= 1);
 		}
-		//!Natural Selection rate
+		//! Natural Selection rate
 		const T x_rate;
 		//! Probability of mutating
 		const T pi;
@@ -45,6 +45,22 @@ namespace ea
 		}
 		//! Type of the algorithm
 		const std::string type = "Genetic Algorithms";
+		std::stringstream display_parameters()
+		{
+			std::stringstream parameters;
+			parameters << "Natural Selection rate: " << ga.x_rate << "\n";
+			parameters << "Probability of mutating: " << ga.pi << "\n";
+			parameters << "Parameter alpha for Beta distribution: " << ga.alpha << "\n";
+			parameters << "Using constraint handler strategy: ";
+			switch(ga.strategy)
+			{
+				case Strategy::keep_same: parameters << "Keep same individual" << "\n"; break;
+				case Strategy::re_mutate: parameters << "Re-mutate individual" << "\n"; break;
+				case Strategy::remove: parameters << "Remove individual" << "\n"; break;
+				default: parameters << "Do nothing" << "\n"; break;
+			}
+			return parameters;
+		}
 		//! Runs the algorithm until stopping criteria
 		void run_algo();
 	private:
@@ -98,7 +114,7 @@ namespace ea
 		std::vector<T> mutated = individual;
 		for (size_t j = 0; j < ga.ndv; ++j)
 		{
-			T r = this->distribution(generator);
+			const T r = this->distribution(generator);
 			if (ga.pi < r)
 			{
 				std::normal_distribution<T> ndistribution(0, stdev[j]);
@@ -122,7 +138,7 @@ namespace ea
 		{
 			return this->f(l) < this->f(r);
 		};
-		for (this->iter = 0; this->iter < ga.iter_max; ++this->iter)
+		for (size_t iter = 0; iter < ga.iter_max; ++iter)
 		{
 			std::sort(this->individuals.begin(), this->individuals.end(), comparator);
 			this->individuals.erase(this->individuals.begin() + nkeep(), this->individuals.begin() + this->individuals.size());
@@ -130,6 +146,7 @@ namespace ea
 			if (ga.tol > std::abs(this->f(this->min_cost)))
 			{
 				this->solved_flag = true;
+				this->last_iter = iter;
 				break;
 			}
 			if (this->individuals.size() > 500)
@@ -144,9 +161,13 @@ namespace ea
 			for (size_t i = 1; i < this->individuals.size(); ++i)
 			{
 				std::vector<T> mutated = mutation(this->individuals[i]);
-				if (ga.strategy == Strategy::remove)
+				while (!this->c(mutated))
 				{
-					if (!this->c(mutated))
+					switch (ga.strategy)
+					{
+					case Strategy::keep_same: mutated = individuals[i]; break;
+					case Strategy::re_mutate: mutated = mutation(this->individuals[i]); break;
+					case Strategy::remove:
 					{
 						if (i == this->individuals.size() - 1)
 						{
@@ -156,31 +177,12 @@ namespace ea
 						{
 							this->individuals.erase(this->individuals.begin() + i, this->individuals.begin() + i + 1);
 						}
+						break;
 					}
-					else
-					{
-						this->individuals[i] = mutated;
-					}
-				}
-				if (ga.strategy == Strategy::keep_same)
-				{
-					if (!this->c(mutated))
-					{
-
-					}
-					else
-					{
-						this->individuals[i] = mutated;
+					default: break;
 					}
 				}
-				if (ga.strategy == Strategy::re_mutate)
-				{
-					while (!this->c(mutated))
-					{
-						mutated = mutation(this->individuals[i]);
-					}
-					this->individuals[i] = mutated;
-				}
+				this->individuals[i] = mutated;				
 			}
 			//! Set the new population size which previous population size + natural selection rate * population size
 			this->npop = this->individuals.size();
@@ -190,5 +192,7 @@ namespace ea
 				p = p + 0.02 * p;
 			}
 		}
+		this->last_iter = ga.iter_max;
 	}
+	
 }

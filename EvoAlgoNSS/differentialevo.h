@@ -40,6 +40,14 @@ namespace ea
         };
 		//! Type of the algorithm :: string
 		const std::string type = "Differential Evolution";
+		//! Method that displays the parameters of DE
+		std::stringstream display_parameters()
+		{
+			std::stringstream parameters;
+			parameters << "Crossover Rate: " << de.cr << "\n";
+			parameters << "Mutation Scale Factor: " << de.f_param << "\n";
+			return parameters;
+		}
 		//! Runs the algorithm until stopping criteria
 		void run_algo();
 	private:
@@ -116,7 +124,7 @@ namespace ea
 	void Solver<DE, T, F, C>::run_algo()
 	{
 		//! Differential Evolution starts here
-		for (this->iter = 0; this->iter < de.iter_max; ++this->iter)
+		for (size_t iter = 0; iter < de.iter_max; ++iter)
 		{
 			for (auto& p : this->individuals)
 			{
@@ -138,8 +146,10 @@ namespace ea
 			if (de.tol > std::abs(this->f(this->min_cost)))
 			{
 				this->solved_flag = true;
+				this->last_iter = iter;
 				break;
 			}
+			this->last_iter = de.iter_max;
 		}
 	}
 }

@@ -78,15 +78,18 @@ namespace ea
 		}
 		//! Type of the algorithm
 		const std::string type = "Local Best Particle Swarm Optimisation";
+		//! String that holds the additional parameter names
+		const std::string solver_add_types = "c1,c2,Neighbourhood size,Inertia,alpha,Maximum Velocity";
+		//! Display PSO parameters
 		std::stringstream display_parameters()
 		{
 			std::stringstream parameters;
-			parameters << "Parameter c1 for velocity update: " << pso.c1 << "\n";
-			parameters << "Parameter c2 for velocity update: " << pso.c2 << "\n";
-			parameters << "Neighbourhood size: " << pso.sneigh << "\n";
-			parameters << "Inertia: " << pso.w << "\n";
-			parameters << "Alpha Parameter for maximum velocity: " << pso.alpha << "\n";
-			parameters << "Maximum Velocity: " << pso.vmax << "\n";
+			parameters << pso.c1 << ",";
+			parameters << pso.c2 << ",";
+			parameters << pso.sneigh << ",";
+			parameters << pso.w << ",";
+			parameters << pso.alpha << ",";
+			parameters << pso.vmax;
 			return parameters;
 		}
 		//! Runs the algorithm until stopping criteria

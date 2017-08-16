@@ -9,9 +9,9 @@ std::ostream& operator<<(std::ostream& stream, const std::vector<T>& vector)
 {
 	if (!vector.empty())
 	{
-		stream << '[';
-		std::copy(vector.begin(), vector.end(), std::ostream_iterator<T>(stream, ", "));
-		stream << "\b\b]";
+		stream << "[ ";
+		std::copy(vector.begin(), vector.end(), std::ostream_iterator<T>(stream, " "));
+		stream << "]";
 	}
 	return stream;
 }

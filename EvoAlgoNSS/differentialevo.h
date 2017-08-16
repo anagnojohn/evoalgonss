@@ -40,12 +40,14 @@ namespace ea
         };
 		//! Type of the algorithm :: string
 		const std::string type = "Differential Evolution";
-		//! Method that displays the parameters of DE
+		//! String that holds the additional parameter names
+		const std::string solver_add_types = "Crossover Rate,Mutation Scale Factor";
+		//! Display the parameters of DE
 		std::stringstream display_parameters()
 		{
 			std::stringstream parameters;
-			parameters << "Crossover Rate: " << de.cr << "\n";
-			parameters << "Mutation Scale Factor: " << de.f_param << "\n";
+			parameters << de.cr << ",";
+			parameters << de.f_param;
 			return parameters;
 		}
 		//! Runs the algorithm until stopping criteria

@@ -32,7 +32,7 @@ std::vector<Interest_Rate<T>> read_ir_from_file(const std::string & filename)
 		T rate;
 		std::istringstream stream(line);
 		stream >> period >> rate;
-		const Interest_Rate<T> ir{ period, rate / 100.0 };
+		const Interest_Rate<T> ir{ period, rate };
 		ir_vec.push_back(ir);
 	}
 	return ir_vec;
@@ -53,11 +53,14 @@ public:
 		auto f = [&](const auto& solution) { return fitness_yield_curve_fitting(solution); };
 		auto c = [&](const auto& solution) { return constraints_svensson(solution); };
 		std::cout << "Yield Curve fitting." << "\n";
-		auto res = solve(f, c, solver);
+		auto res = solve(f, c, solver,"YFT");
+		T error = 0;
 		for (const auto& p : ir_vec)
 		{
-			std::cout << "Estimated interest rates: " << svensson(res, p.period) << " Actual interest rates: " << p.rate << "\n";
+			error = error + std::pow(svensson(res, p.period) - p.rate,2);
+			//std::cout << "Estimated interest rates: " << svensson(res, p.period) << " Actual interest rates: " << p.rate << "\n";
 		}
+		std::cout << "Zero-rate Mean Squared Error: " << error / ir_vec.size() << "\n";
 	};
 private:
 	//! Vector of interest rates

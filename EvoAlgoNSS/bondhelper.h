@@ -46,69 +46,37 @@ namespace bond
 		//! Constructor
 		BondHelper(const std::vector<Bond<T>>& i_bonds) : bonds{ i_bonds } {};
 		//! This method sets the nss initial svensson parameters by computing the bond yields-to-maturity and Macaulay durations
-		template<typename S> std::vector<T> set_init_nss_params(S& solver);
+		template<typename S> std::vector<T> set_init_nss_params(const S& solver);
 		//! This methods solves the bond pricing problem using prices and the supplied solver
-		template<typename S> void bondpricing_prices(const S& solver);
+		template<typename S1, typename S2> void bondpricing_prices(const S1& solver, const S2& solver_irr);
 		//! This methods solves the bond pricing problem using yield-to-maturities and the supplied solver
-		template<typename S> void bondpricing_yields(const S& solver);
+		template<typename S1, typename S2> void bondpricing_yields(const S1& solver, const S2& solver_irr);
 		//! This method prints to screen the bond pricing results
-		void print_bond_pricing_results(const std::vector<T>& res)
-		{
-			for (const auto& p : bonds)
-			{
-				std::cout << "Estimated yield: " << svensson(res, p.duration) << " Actual Yield: " << p.yield << "\n";
-			}
-			for (const auto& p : bonds)
-			{
-				std::cout << "Estimated price: " << estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods) << " Actual Price: " << p.price << "\n";
-			}
-		};
+		template<typename S> void print_bond_pricing_results(const std::vector<T>& res, const S& solver_irr);
 	private:
 		//! Vector of bonds
 		std::vector<Bond<T>> bonds;
-		//! Calculates the discount factors
-		T discount_factor(T yield, T period);
 		//! Returns the bond prices using the estimated spot interest rates computed with svensson
 		T estimate_bond_pricing(const std::vector<T>& solution, const T& coupon_value, const T& nominal_value, const std::vector<T>& time_periods);
 		//! This is the fitness function for bond pricing using the bonds' yields-to-maturity
-		T fitness_bond_pricing_yields(const std::vector<T>& solution);
+		template<typename S> T fitness_bond_pricing_yields(const std::vector<T>& solution, const S& solver_irr);
 		//! This is the fitness function for bond pricing using the bonds' prices
 		T fitness_bond_pricing_prices(const std::vector<T>& solution);
 	};
 
-	template<typename T>
-	T BondHelper<T>::discount_factor(T yield, T period)
-	{
-		return std::exp(-yield * period);
-	}
 
 	template<typename T>
 	T BondHelper<T>::estimate_bond_pricing(const std::vector<T>& solution, const T& coupon_value, const T& nominal_value, const std::vector<T>& time_periods)
 	{
 		T sum = 0.0;
 		//! Call svensson for period
-		for (const auto& p : time_periods)
+		for (const auto& t : time_periods)
 		{
-			sum = coupon_value * discount_factor(svensson(solution, p), p);
-		}
-		T m = time_periods[time_periods.size() - 1];
-		T last_payment = nominal_value * discount_factor(svensson(solution, m), m);
-		sum = sum + last_payment;
+			sum = sum + coupon_value * compute_discount_factor(svensson(solution, t), t);
+		}		
+		T m = time_periods.back();
+		sum = sum + nominal_value * compute_discount_factor(svensson(solution, m), m);
 		return sum;
-	}
-
-	template<typename T>
-	T BondHelper<T>::fitness_bond_pricing_yields(const std::vector<T>& solution)
-	{
-		//! The sum of squares of errors between the actual bond yield to maturity and the estimated yield to maturity by svensson is used
-		T sum_of_squares = 0;
-		for (size_t i = 0; i < bonds.size(); ++i)
-		{
-			T estimate = svensson(solution, bonds[i].duration);
-			sum_of_squares = sum_of_squares + std::pow((bonds[i].yield - estimate), 2);
-		}
-		sum_of_squares = sum_of_squares + penalty_svensson(solution);
-		return sum_of_squares;
 	}
 
 	template<typename T>
@@ -116,10 +84,10 @@ namespace bond
 	{
 		//! The sum of squares of errors between the actual bond price and the estimated price from estimate_bond_pricing
 		T sum_of_squares = 0.0;
-		for (size_t i = 0; i < bonds.size(); ++i)
+		for (const auto& k : bonds)
 		{
-			T estimate = estimate_bond_pricing(solution, bonds[i].coupon_value, bonds[i].nominal_value, bonds[i].time_periods);
-			sum_of_squares = sum_of_squares + std::pow((bonds[i].price - estimate) / bonds[i].nominal_value, 2) / std::sqrt(bonds[i].duration);
+			T estimate = estimate_bond_pricing(solution, k.coupon_value, k.nominal_value, k.time_periods);
+			sum_of_squares = sum_of_squares + std::pow((k.price/100 - estimate/100), 2) / std::sqrt(k.duration);
 		}
 		sum_of_squares = sum_of_squares + penalty_svensson(solution);
 		return sum_of_squares;
@@ -127,12 +95,34 @@ namespace bond
 
 	template<typename T>
 	template<typename S>
-	std::vector<T> BondHelper<T>::set_init_nss_params(S& solver)
+	T BondHelper<T>::fitness_bond_pricing_yields(const std::vector<T>& solution, const S& solver_irr)
+	{
+		//! The sum of squares of errors between the actual bond yield to maturity and the estimated yield to maturity by svensson is used
+		T sum_of_squares = 0;
+		for (size_t i = 0; i < bonds.size(); ++i)
+		{
+			T estimate_price = estimate_bond_pricing(solution, bonds[i].coupon_value, bonds[i].nominal_value, bonds[i].time_periods);
+			auto f = [&](const auto& solution) { return fitness_irr(solution, estimate_price, bonds[i].nominal_value, bonds[i].cash_flows, bonds[i].time_periods); };
+			auto c = [&](const auto& solution) { return constraints_irr(solution); };
+			T estimate = solve(f, c, solver_irr, "")[0];
+			sum_of_squares = sum_of_squares + std::pow((bonds[i].yield - estimate), 2);
+		}
+		sum_of_squares = sum_of_squares; //+ penalty_svensson(solution);
+		return sum_of_squares;
+	}
+
+	template<typename T>
+	template<typename S>
+	std::vector<T> BondHelper<T>::set_init_nss_params(const S& solver)
 	{
 		for (size_t i = 0; i < bonds.size(); ++i)
 		{
 			std::cout << "Processing bond: " << i + 1 << "\n";
-			bonds[i].compute_yield(solver);
+			bonds[i].yield = bonds[i].compute_yield(bonds[i].price, solver);
+			bonds[i].duration = bonds[i].compute_macaulay_duration();
+			std::cout << "Yield to Maturity: " << bonds[i].yield << "\n";
+			std::cout << "Macaulay Duration: " << bonds[i].duration << "\n";
+			std::cout << "Estimated Price: " << compute_pv(bonds[i].yield, bonds[i].nominal_value, bonds[i].cash_flows, bonds[i].time_periods) << " Actual Price: " << bonds[i].price << "\n";
 		}
 		size_t minimum_index = 0;
 		size_t maximum_index = 0;
@@ -177,7 +167,31 @@ namespace bond
 
 	template<typename T>
 	template<typename S>
-	void BondHelper<T>::bondpricing_prices(const S& solver)
+	void BondHelper<T>::print_bond_pricing_results(const std::vector<T>& res, const S& solver_irr)
+	{
+		T error = 0;
+		for (const auto& p : bonds)
+		{
+			T estimate_price = estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods);
+			auto f = [&](const auto& solution) { return fitness_irr(solution, estimate_price, p.nominal_value, p.cash_flows, p.time_periods); };
+			auto c = [&](const auto& solution) { return constraints_irr(solution); };
+			T estimate = solve(f, c, solver_irr, "")[0];
+			error = error + std::pow(estimate - p.yield, 2);
+			//std::cout << "Estimated yield: " << estimate << " Actual Yield: " << p.yield << "\n";
+		}
+		std::cout << "Yield Mean Squared Error: " << error / bonds.size() << "\n";
+		error = 0;
+		for (const auto& p : bonds)
+		{
+			error = error + std::pow(estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods) - p.price, 2);
+			//std::cout << "Estimated price: " << estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods) << " Actual Price: " << p.price << "\n";
+		}
+		std::cout << "Price Mean Squared Error: " << error / bonds.size() << "\n";
+	}
+
+	template<typename T>
+	template<typename S1, typename S2>
+	void BondHelper<T>::bondpricing_prices(const S1& solver, const S2& solver_irr)
 	{
 		assert(solver.ndv == 6);
 		for (const auto& p : bonds)
@@ -187,14 +201,15 @@ namespace bond
 		}
 		auto f = [&](const auto& solution) { return fitness_bond_pricing_prices(solution); };
 		auto c = [&](const auto& solution) { return constraints_svensson(solution); };
+		//auto c = [&](const auto& solution) { return true; };
 		std::cout << "Solving bond pricing using bond prices..." << "\n";
-		auto res = solve(f, c, solver);
-		print_bond_pricing_results(res);
+		auto res = solve(f, c, solver,"BPP");
+		print_bond_pricing_results(res, solver_irr);
 	}
 
 	template<typename T>
-	template<typename S>
-	void BondHelper<T>::bondpricing_yields(const S& solver)
+	template<typename S1, typename S2>
+	void BondHelper<T>::bondpricing_yields(const S1& solver, const S2& solver_irr)
 	{
 		assert(solver.ndv == 6);
 		for (const auto& p : bonds)
@@ -202,11 +217,11 @@ namespace bond
 			assert(p.yield > 0 && p.yield < 1);
 			assert(p.duration > 0);
 		}
-		auto f = [&](const auto& solution) { return fitness_bond_pricing_yields(solution); };
+		auto f = [&](const auto& solution) { return fitness_bond_pricing_yields(solution, solver_irr); };
 		auto c = [&](const auto& solution) { return constraints_svensson(solution); };
 		std::cout << "Solving bond pricing using bond yields..." << "\n";
-		auto res = solve(f, c, solver);
-		print_bond_pricing_results(res);
+		auto res = solve(f, c, solver,"BPY");
+		print_bond_pricing_results(res, solver_irr);
 	}
 
 	//! This method sets the nss initial svensson parameters using test data

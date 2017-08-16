@@ -7,11 +7,32 @@ namespace nss
 	template<typename T>
 	bool constraints_svensson(const std::vector<T>& solution)
 	{
+		/*
 		const T& b0 = solution[0];
 		const T& b1 = solution[1];
 		const T& tau1 = solution[4];
 		const T& tau2 = solution[5];
 		if (b0 > 0 && b0 + b1 > 0 && tau1 > 0 && tau2 > 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		*/
+		const T& b0 = solution[0];
+		const T& b1 = solution[1];
+		const T& b2 = solution[2];
+		const T& b3 = solution[3];
+		const T& tau1 = solution[4];
+		const T& tau2 = solution[5];
+		if ((b0 > 0 && b0 < 15)
+			&& (b1 > -15 && b1 < 30)
+			&& (b2 > -30 && b2 < 30)
+			&& (b3 > -30 && b3 < 30)
+			&& (tau1 > 0 && tau1 < 2.5)
+			&& (tau2 > 2.5 && tau2 < 5.5))
 		{
 			return true;
 		}
@@ -36,6 +57,10 @@ namespace nss
 		}
 		else
 		{
+			//T result = b0;
+			//result = result + b1 * ((1 - (std::exp(-tau1 * m))) / (tau1 * m));
+			//result = result + b2 * (((1 - (std::exp(-tau1 * m))) / (tau1 * m)) - std::exp(-tau1 * m));
+			//result = result + b3 * (((1 - (std::exp(-tau2 * m))) / (tau2 * m)) - std::exp(-tau2 * m));
 			T result = b0 + (b1 + b2) * (tau1 / m) * (1 - std::exp(-m / tau1))
 				- b2 * std::exp(-m / tau1) + b3 * (tau2 / m) * (1 - std::exp(-m / tau2))
 				- b3 * std::exp(-m / tau2);
@@ -53,7 +78,7 @@ namespace nss
 		const T& b3 = solution[3];
 		const T& tau1 = solution[4];
 		const T& tau2 = solution[5];
-		const T C = 1000;
+		const T C = 100000;
 		T sum = 0;
 		if (b0 < 0 || b0 > 15)
 		{

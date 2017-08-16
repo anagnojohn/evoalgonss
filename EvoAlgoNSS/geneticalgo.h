@@ -45,19 +45,21 @@ namespace ea
 		}
 		//! Type of the algorithm
 		const std::string type = "Genetic Algorithms";
+		//! String that holds the additional parameter names
+		const std::string solver_add_types = "Natural Selection Rate,Probability of Mutation,Beta Distribution alpha,Strategy";
+		//! Display GA parameters
 		std::stringstream display_parameters()
 		{
 			std::stringstream parameters;
-			parameters << "Natural Selection rate: " << ga.x_rate << "\n";
-			parameters << "Probability of mutating: " << ga.pi << "\n";
-			parameters << "Parameter alpha for Beta distribution: " << ga.alpha << "\n";
-			parameters << "Using constraint handler strategy: ";
+			parameters << ga.x_rate << ",";
+			parameters << ga.pi << ",";
+			parameters << ga.alpha << ",";
 			switch(ga.strategy)
 			{
-				case Strategy::keep_same: parameters << "Keep same individual" << "\n"; break;
-				case Strategy::re_mutate: parameters << "Re-mutate individual" << "\n"; break;
-				case Strategy::remove: parameters << "Remove individual" << "\n"; break;
-				default: parameters << "Do nothing" << "\n"; break;
+				case Strategy::keep_same: parameters << "Keep same individual"; break;
+				case Strategy::re_mutate: parameters << "Re-mutate individual"; break;
+				case Strategy::remove: parameters << "Remove individual"; break;
+				default: parameters << "Do nothing"; break;
 			}
 			return parameters;
 		}
@@ -149,10 +151,11 @@ namespace ea
 				this->last_iter = iter;
 				break;
 			}
-			if (this->individuals.size() > 500)
+			if (this->individuals.size() > 1000)
 			{
-				this->individuals.erase(this->individuals.begin() + 500, this->individuals.begin() + this->individuals.size());
+				//this->individuals.erase(this->individuals.begin() + 1000, this->individuals.begin() + this->individuals.size());
 			}
+			npop = individuals.size();
 			for (size_t i = 0; i < npop; ++i)
 			{
 				std::vector<T> offspring = selection();
@@ -161,12 +164,19 @@ namespace ea
 			for (size_t i = 1; i < this->individuals.size(); ++i)
 			{
 				std::vector<T> mutated = mutation(this->individuals[i]);
-				while (!this->c(mutated))
+				if (!this->c(mutated))
 				{
 					switch (ga.strategy)
 					{
 					case Strategy::keep_same: mutated = individuals[i]; break;
-					case Strategy::re_mutate: mutated = mutation(this->individuals[i]); break;
+					case Strategy::re_mutate: 
+					{
+						while (!this->c(mutated))
+						{
+							mutated = mutation(this->individuals[i]);
+						}
+						break;
+					}
 					case Strategy::remove:
 					{
 						if (i == this->individuals.size() - 1)
@@ -182,7 +192,7 @@ namespace ea
 					default: break;
 					}
 				}
-				this->individuals[i] = mutated;				
+				this->individuals[i] = mutated;
 			}
 			//! Set the new population size which previous population size + natural selection rate * population size
 			this->npop = this->individuals.size();

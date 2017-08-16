@@ -50,8 +50,10 @@ namespace ea
 			assert(iter_max > 0);
 		}
 	};
+	
+	std::random_device rd;
 	//! Random number generator
-	std::mt19937 generator(std::random_device{}());
+	std::mt19937_64 generator(rd());
 
 	//! Template Class for Solvers
 	template<template<typename> class S, typename T, typename F, typename C> class Solver;
@@ -64,22 +66,22 @@ namespace ea
 		//! Displays the results
 		std::stringstream display_results();
 		//! Solve wrapper function for Solvers, used for benchmarks
-		std::vector<T> solver_bench();
+		std::vector<T> solver_bench(const std::string& problem_name);
 		//! Write the results to a file
-		void write_results_to_file();
+		void write_results_to_file(const std::string& problem_name);
 	protected:
 		//! Constructor
 		Solver_base(const S<T>& i_solver_struct, const F& i_f, const C& i_c) :
 			solver_struct{ i_solver_struct },
 			individuals{ init_individuals() },
 			min_cost{ individuals[0] },
-			last_iter{ 0 }, 
-			f{ i_f }, 
-			c{ i_c }, 
-			solved_flag{ false }, 
+			last_iter{ 0 },
+			f{ i_f },
+			c{ i_c },
+			solved_flag{ false },
 			timer{ 0 }
 		{
-            distribution = std::uniform_real_distribution<T>(0.0,1.0);
+			distribution = std::uniform_real_distribution<T>(0.0, 1.0);
 			find_min_cost();
 		}
 		//! Internal copy of the structure used for parameters of the algorithm
@@ -105,6 +107,8 @@ namespace ea
 		bool solved_flag;
 		//! Timer
 		T timer;
+		//! String that holds the parameter and results names
+		const std::string solver_types = "Solved,Solution,Fitness,Population,Iterations,Elapsed Time,Initial Solution,Standard Deviation,Initial Population,Tolerance,Maximum Iterations,";
 		//! Returns a randomised individual using the initial decision variables and standard deviation
 		std::vector<T> randomise_individual();
 		//! Initialises the population by randomising aroung the decision variables using the given standard deviation
@@ -160,37 +164,67 @@ namespace ea
 	std::stringstream Solver_base<Derived, S, T, F, C>::display_results()
 	{
 		std::stringstream results;
-		results << static_cast<Derived*>(this)->type << " used as solver." << "\n";
-		results << "Initial Decision Variables: " << solver_struct.decision_variables << "\n";
-		results << "Standard deviation of the decision variables: " << solver_struct.stdev << "\n";
-		results << "Size of the population: " << solver_struct.npop << "\n";
-		results << "Tolerance: " << solver_struct.tol << "\n";
-		results << "Number of maximum iterations: " << solver_struct.iter_max << "\n";
-		results << static_cast<Derived*>(this)->display_parameters().str();
 		if (!solved_flag)
 		{
-			results << "!!!The optimisation problem was not solved.!!!" << "\n";
+			results << "False" << ",";
 		}
 		else
 		{
-			results << "!!!Problem was successfully solved.!!!" << "\n";
+			results << "True" << ",";
 		}
-		results << "Optimum solution: " << min_cost << " Fitness Value: " << f(min_cost) << "\n";
-		results << "Population: " << individuals.size() << " Iterations: " << last_iter << "\n";
-		results << "Elapsed time in seconds: " << timer << "\n";
+		results << min_cost << ",";
+		results << f(min_cost) << ",";
+		results << individuals.size() << ",";
+		results << last_iter << ",";
+		results << timer << ",";
+		results << solver_struct.decision_variables << ",";
+		results << solver_struct.stdev << ",";
+		results << solver_struct.npop << ",";
+		results << solver_struct.tol << ",";
+		results << solver_struct.iter_max << ",";
+		results << static_cast<Derived*>(this)->display_parameters().str() << "\n";
 		return results;
 	}
 
 	template<typename Derived, template<typename> class S, typename T, typename F, typename C>
-	void Solver_base<Derived, S, T, F, C>::write_results_to_file()
+	void Solver_base<Derived, S, T, F, C>::write_results_to_file(const std::string& problem_name)
 	{
-		ofstream out("results.txt");
-		out << display_results();
+		std::string filename;
+		std::string stypes;
+		stypes.append(solver_types);
+		stypes.append(static_cast<Derived*>(this)->solver_add_types);
+		filename.append(problem_name);
+		filename.append("-");
+		filename.append(static_cast<Derived*>(this)->type);
+		filename.append("-results.csv");
+		std::ifstream in(filename);
+		bool written_first_line = false;
+		if (in.good())
+		{
+			std::string line;
+			std::getline(in, line);
+			if (line == stypes)
+			{
+				written_first_line = true;
+			}
+		}
+		in.close();
+		std::ofstream out;
+		out.open(filename, std::ofstream::out | std::ofstream::app);
+		if (!written_first_line)
+		{
+			out << stypes << "\n";
+		}
+		out << display_results().str();
 	}
 
 	template<typename Derived, template<typename> class S, typename T, typename F, typename C>
-	std::vector<T> Solver_base<Derived, S, T, F, C>::solver_bench()
+	std::vector<T> Solver_base<Derived, S, T, F, C>::solver_bench(const std::string& problem_name)
 	{
+		if (problem_name != "")
+		{
+			std::cout << static_cast<Derived*>(this)->type << " used as solver." << "\n";
+		}
 		if (solver_struct.tol > std::abs(f(min_cost)))
 		{
 			timer = 0;
@@ -205,16 +239,20 @@ namespace ea
 			timer = elapsed_seconds.count();
 		}
 		//! Return minimum cost individual
-		std::cout << display_results().str();
+		if (problem_name != "")
+		{
+			std::cout << display_results().str();
+			write_results_to_file(problem_name);
+		}
 		return min_cost;
 	}
 	/*!
 	/brief Solver wrapper function, interface to solvers : free function used for benchmarks
 	*/
 	template<typename F, typename C, template<typename> class S, typename T>
-	std::vector<T> solve(const F& f, const C& c, const S<T>& solver_struct)
+	std::vector<T> solve(const F& f, const C& c, const S<T>& solver_struct, const std::string& problem_name)
 	{
 		Solver<S, T, F, C> solver{ solver_struct, f, c };
-		return solver.solver_bench();
+		return solver.solver_bench(problem_name);
 	}
 }

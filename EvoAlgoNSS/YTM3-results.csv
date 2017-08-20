@@ -1,0 +1,13 @@
+Algorithm,Solved,Solution,Fitness,Population,Iterations,Elapsed Time,Initial Solution,Standard Deviation,Initial Population,Tolerance,Maximum Iterations
+Differential Evolution,True,[ 0.0471706 ],6.92193e-08,30,28,0.0013661,[ 0.05 ],[ 0.7 ],30,1e-07,200,Crossover Rate,0.6,Mutation Scale Factor,1
+Genetic Algorithms,False,[ 0.0446755 ],2.58897,8,30,0.0006831,[ 0.05 ],[ 0.5 ],10,1e-07,30,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Local Best Particle Swarm Optimisation,False,[ 0.0470627 ],0.00481682,16,500,0.0136802,[ 0.05 ],[ 0.7 ],16,1e-07,500,C1,2.05,C2,2.05,Neighbourhood size,4,Inertia,0.729,Alpha parameter for maximum velocity,1,Maximum Velocity,[ 1e+06 ]
+Differential Evolution,True,[ 0.0471706 ],7.33303e-08,30,20,0.0006795,[ 0.05 ],[ 0.7 ],30,1e-07,200,Crossover Rate,0.6,Mutation Scale Factor,1
+Genetic Algorithms,False,[ 0.046614 ],0.127656,8,30,0.000454,[ 0.05 ],[ 0.5 ],10,1e-07,30,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Local Best Particle Swarm Optimisation,False,[ 0.0456737 ],0.92693,16,500,0.0199545,[ 0.05 ],[ 0.7 ],16,1e-07,500,C1,2.05,C2,2.05,Neighbourhood size,4,Inertia,0.729,Alpha parameter for maximum velocity,1,Maximum Velocity,[ 1e+06 ]
+Differential Evolution,True,[ 0.0471714 ],7.20278e-08,30,31,0.002334,[ 0.05 ],[ 0.7 ],30,1e-07,200,Crossover Rate,0.6,Mutation Scale Factor,1
+Genetic Algorithms,False,[ 0.0580895 ],46.0911,8,30,0.0008526,[ 0.05 ],[ 0.5 ],10,1e-07,30,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Local Best Particle Swarm Optimisation,True,[ 0.0471712 ],1.17781e-08,16,500,0.0238964,[ 0.05 ],[ 0.7 ],16,1e-07,500,C1,2.05,C2,2.05,Neighbourhood size,4,Inertia,0.729,Alpha parameter for maximum velocity,1,Maximum Velocity,[ 1e+06 ]
+Differential Evolution,True,[ 0.0471711 ],5.75905e-09,30,22,0.0010631,[ 0.05 ],[ 0.7 ],30,1e-07,200,Crossover Rate,0.6,Mutation Scale Factor,1
+Genetic Algorithms,False,[ 0.0471236 ],0.000921577,8,30,0.0002461,[ 0.05 ],[ 0.5 ],10,1e-07,30,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Local Best Particle Swarm Optimisation,False,[ 0.0473955 ],0.0206377,16,500,0.0103233,[ 0.05 ],[ 0.7 ],16,1e-07,500,C1,2.05,C2,2.05,Neighbourhood size,4,Inertia,0.729,Alpha parameter for maximum velocity,1,Maximum Velocity,[ 1e+06 ]

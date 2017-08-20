@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <iterator>
 
 //! Overload the operator << for printing vectors
 template <typename T>

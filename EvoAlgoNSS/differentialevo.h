@@ -4,15 +4,17 @@
 
 namespace ea
 {
-	//! Differntial Evolution Structure, used in the actual algorithm and for type deduction
+	//! Differential Evolution Structure, used in the actual algorithm and for type deduction
 	template<typename T>
 	struct DE : EA_base<T>
 	{
 	public:
 		//! Constructor
 		DE(const T& i_cr, const T& i_f_param, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
-			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max) :
-			EA_base<T>{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max },
+			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max,
+			const bool& i_use_penalty_method = false, const Constraints_type& i_constraints_type = Constraints_type::none,
+			const bool& i_print_to_output = true, const bool& i_print_to_file = true) :
+			EA_base<T>{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max, i_use_penalty_method, i_constraints_type, i_print_to_output, i_print_to_file },
 			cr{ i_cr },
 			f_param{ i_f_param }
 		{
@@ -23,6 +25,8 @@ namespace ea
 		const T cr;
 		//! Mutation Scale Fuctor
 		const T f_param;
+		//! Type of the algorithm
+		const std::string type = "Differential Evolution";
 	};
 
 	//! Differential Evolution Algorithm (DE) Class
@@ -30,6 +34,7 @@ namespace ea
 	class Solver<DE, T, F, C> : public Solver_base<Solver<DE, T, F, C>, DE, T, F, C>
 	{
 	public:
+		friend class Solver_base<Solver<DE, T, F, C>, DE, T, F, C>;
 		//! Constructor
 		Solver(const DE<T>& i_de, const F& f, const C& c) :
                 Solver_base<Solver<DE, T, F, C>, DE, T, F, C>{ i_de, f, c },
@@ -38,20 +43,6 @@ namespace ea
 		{
             ind_distribution = std::uniform_int_distribution<size_t>(0,de.npop - 1);
         };
-		//! Type of the algorithm :: string
-		const std::string type = "Differential Evolution";
-		//! String that holds the additional parameter names
-		const std::string solver_add_types = "Crossover Rate,Mutation Scale Factor";
-		//! Display the parameters of DE
-		std::stringstream display_parameters()
-		{
-			std::stringstream parameters;
-			parameters << de.cr << ",";
-			parameters << de.f_param;
-			return parameters;
-		}
-		//! Runs the algorithm until stopping criteria
-		void run_algo();
 	private:
 		//! Differential Evolution structure used internally (reference to solver_struct)
 		const DE<T>& de;
@@ -73,6 +64,16 @@ namespace ea
 		std::vector<T> construct_donor();
 		//! Method that constructs the trial vector
 		std::vector<T> construct_trial(const std::vector<T>& target, const std::vector<T>& donor);
+		//! Runs the algorithm until stopping criteria
+		void run_algo();
+		//! Display the parameters of DE
+		std::stringstream display_parameters()
+		{
+			std::stringstream parameters;
+			parameters << "Crossover Rate" << "," << de.cr << ",";
+			parameters << "Mutation Scale Factor" << "," << de.f_param;
+			return parameters;
+		}
 	};
 
 	template<typename T, typename F, typename C>

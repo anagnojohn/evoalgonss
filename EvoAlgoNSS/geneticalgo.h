@@ -1,12 +1,12 @@
 #pragma once
 
-#include <boost/math/distributions.hpp>
 #include "ealgorithm_base.h"
+#include <boost/math/distributions.hpp>
 
 namespace ea
 {
 	//! Replacing or remove individuals strategies during mutation
-	enum class Strategy { keep_same, re_mutate, remove };
+	enum class Strategy { keep_same, re_mutate, remove, none };
 
 	//! Genetic Algorithms Structure, used in the actual algorithm and for type deduction
 	template<typename T>
@@ -15,8 +15,10 @@ namespace ea
 	public:
 		//! Constructor
 		GA(const T& i_x_rate, const T& i_pi, const T& i_alpha, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
-			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max, const Strategy& i_strategy)
-			:  EA_base<T> { i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max },
+			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max, const bool& i_use_penalty_method = false,
+			const Constraints_type& i_constraints_type = Constraints_type::none, const Strategy& i_strategy = Strategy::keep_same,
+			const bool& i_print_to_output = true, const bool& i_print_to_file = true)
+			:  EA_base<T> { i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max, i_use_penalty_method, i_constraints_type, i_print_to_output, i_print_to_file },
 			   x_rate{ i_x_rate }, pi{ i_pi }, alpha{ i_alpha }, strategy{ i_strategy }
 		{
 			assert(x_rate > 0 && x_rate <= 1);
@@ -30,6 +32,8 @@ namespace ea
 		const T alpha;
 		//! Replacing or remove individuals strategies during mutation
 		const Strategy strategy;
+		//! Type of the algorithm
+		const std::string type = "Genetic Algorithms";
 	};
 
 	//! Genetic Algorithms (GA) Class
@@ -37,34 +41,13 @@ namespace ea
 	class Solver<GA, T, F, C> : public Solver_base<Solver<GA, T, F, C>, GA, T, F, C>
 	{
 	public:
+		friend class Solver_base<Solver<GA, T, F, C>, GA, T, F, C>;
 		//! Constructor
 		Solver(const GA<T>& i_ga, F f, C c) :
 			Solver_base<Solver<GA, T, F, C>, GA, T, F, C> { i_ga, f, c }, ga{ this->solver_struct }, npop{ i_ga.npop }, stdev{ i_ga.stdev }
 		{
 			bdistribution = boost::math::beta_distribution<T>(1, ga.alpha);
 		}
-		//! Type of the algorithm
-		const std::string type = "Genetic Algorithms";
-		//! String that holds the additional parameter names
-		const std::string solver_add_types = "Natural Selection Rate,Probability of Mutation,Beta Distribution alpha,Strategy";
-		//! Display GA parameters
-		std::stringstream display_parameters()
-		{
-			std::stringstream parameters;
-			parameters << ga.x_rate << ",";
-			parameters << ga.pi << ",";
-			parameters << ga.alpha << ",";
-			switch(ga.strategy)
-			{
-				case Strategy::keep_same: parameters << "Keep same individual"; break;
-				case Strategy::re_mutate: parameters << "Re-mutate individual"; break;
-				case Strategy::remove: parameters << "Remove individual"; break;
-				default: parameters << "Do nothing"; break;
-			}
-			return parameters;
-		}
-		//! Runs the algorithm until stopping criteria
-		void run_algo();
 	private:
 		//! Genetic Algorithms structure used internally (reference to solver_struct)
 		const GA<T>& ga;
@@ -82,6 +65,25 @@ namespace ea
 		std::vector<T> mutation(const std::vector<T>& individual);
 		//! Returns number of individuals to be kept in each generation, thus 
 		size_t nkeep();
+		//! Runs the algorithm until stopping criteria
+		void run_algo();
+		//! Display GA parameters
+		std::stringstream display_parameters()
+		{
+			std::stringstream parameters;
+			parameters << "Natural Selection Rate" << "," << ga.x_rate << ",";
+			parameters << "Probability of Mutation" << "," << ga.pi << ",";
+			parameters << "Beta Distribution alpha" << "," << ga.alpha << ",";
+			parameters << "Strategy" << ",";
+			switch (ga.strategy)
+			{
+			case Strategy::keep_same: parameters << "Keep same individual"; break;
+			case Strategy::re_mutate: parameters << "Re-mutate individual"; break;
+			case Strategy::remove: parameters << "Remove individual"; break;
+			default: parameters << "Do nothing"; break;
+			}
+			return parameters;
+		}
 	};
 
 	template<typename T, typename F, typename C>
@@ -155,7 +157,7 @@ namespace ea
 			{
 				//this->individuals.erase(this->individuals.begin() + 1000, this->individuals.begin() + this->individuals.size());
 			}
-			npop = individuals.size();
+			npop = this->individuals.size();
 			for (size_t i = 0; i < npop; ++i)
 			{
 				std::vector<T> offspring = selection();
@@ -168,7 +170,7 @@ namespace ea
 				{
 					switch (ga.strategy)
 					{
-					case Strategy::keep_same: mutated = individuals[i]; break;
+					case Strategy::keep_same: mutated = this->individuals[i]; break;
 					case Strategy::re_mutate: 
 					{
 						while (!this->c(mutated))
@@ -189,7 +191,7 @@ namespace ea
 						}
 						break;
 					}
-					default: break;
+					case Strategy::none: break;
 					}
 				}
 				this->individuals[i] = mutated;

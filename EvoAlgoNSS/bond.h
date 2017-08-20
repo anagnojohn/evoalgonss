@@ -52,12 +52,9 @@ namespace bond
 				time_periods[i] = static_cast<T>(i + 1) / frequency;
 			}
 		}
-		//! Returns the Macaulday duration of a bond
-		T ret_duration() const { return duration; };
-		//! Returns the yield-to-maturity of a bond
-		T ret_yield() const { return yield; };
-		//! Calculates the yield-to-maturity and Macaulay duration using the supplied solver
-		template<typename S> T compute_yield(const T& price, const S& solver);
+		//! Calculates the yield-to-maturity using the supplied solver
+		template<typename S> T compute_yield(const T& price, const S& solver, const DF_type& df_type) const;
+		template<typename S> T compute_yield(const T& i_price, const S& solver, const DF_type& df_type, const std::string& bonds_identifier) const;
 	private:
 		//! Bond's annual coupon rate
 		const T coupon_percentage;
@@ -84,7 +81,7 @@ namespace bond
 		//! Calculate the cash flows of the bond
 		std::vector<T> compute_cash_flows();
 		//! Calculates the Macaulay duration of the bond
-		T compute_macaulay_duration();
+		T compute_macaulay_duration(const DF_type& df_type) const;
 	};
 
 	template<typename T>
@@ -105,19 +102,32 @@ namespace bond
 
 	template<typename T>
 	template<typename S>
-	T Bond<T>::compute_yield(const T& i_price, const S& solver)
+	T Bond<T>::compute_yield(const T& i_price, const S& solver, const DF_type& df_type) const
 	{
 		assert(solver.ndv == 1);
-		auto f = [&](const auto& solution) { return fitness_irr(solution, i_price, nominal_value, cash_flows, time_periods); };
-		auto c = [&](const auto& solution) { return constraints_irr(solution); };
+		auto f = [&,use_penalty_method = solver.use_penalty_method](const auto& solution) { return fitness_irr(solution, i_price, nominal_value, cash_flows, time_periods, df_type, use_penalty_method); };
+		auto c = [&,constraints_type = solver.constraints_type](const auto& solution) { return constraints_irr(solution, constraints_type); };
 		auto res = solve(f, c, solver, "YTM");
+		T yield = res[0];
+		return yield;
+	}
+
+	template<typename T>
+	template<typename S>
+	T Bond<T>::compute_yield(const T& i_price, const S& solver, const DF_type& df_type, const std::string& bonds_identifier) const
+	{
+		assert(solver.ndv == 1);
+		auto f = [&, use_penalty_method = solver.use_penalty_method](const auto& solution) { return fitness_irr(solution, i_price, nominal_value, cash_flows, time_periods, df_type, use_penalty_method); };
+		auto c = [&, constraints_type = solver.constraints_type](const auto& solution) { return constraints_irr(solution, constraints_type); };
+		std::string problem = "YTM";
+		auto res = solve(f, c, solver, problem.append(bonds_identifier));
 		T yield = res[0];
 		return yield;
 	}
 
 	//! Calculate the macaulay_duration of a bond
 	template<typename T>
-	T Bond<T>::compute_macaulay_duration()
+	T Bond<T>::compute_macaulay_duration(const DF_type& df_type) const
 	{
 		assert(yield > 0 && yield < 1);
 		assert(cash_flows.size() > 0);
@@ -133,11 +143,10 @@ namespace bond
 		T numerator = 0.0;
 		for (size_t i = 0; i < time_periods.size(); ++i)
 		{
-			discount_factor = compute_discount_factor(yield, time_periods[i]);
+			discount_factor = compute_discount_factor(yield, time_periods[i], df_type);
 			pv = coupon_value * discount_factor;
 			numerator = numerator + pv * time_periods[i];
 			denominator = denominator + pv;
-
 		}
 		pv = nominal_value * discount_factor;
 		numerator = numerator + pv * time_periods.back();

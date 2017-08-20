@@ -5,40 +5,48 @@ namespace nss
 {
 	//! Constraints function for the NSS model
 	template<typename T>
-	bool constraints_svensson(const std::vector<T>& solution)
+	bool constraints_svensson(const std::vector<T>& solution, const Constraints_type& constraints_type)
 	{
-		/*
-		const T& b0 = solution[0];
-		const T& b1 = solution[1];
-		const T& tau1 = solution[4];
-		const T& tau2 = solution[5];
-		if (b0 > 0 && b0 + b1 > 0 && tau1 > 0 && tau2 > 0)
+		switch (constraints_type)
 		{
-			return true;
+		case(Constraints_type::normal):
+		{
+			const T& b0 = solution[0];
+			const T& b1 = solution[1];
+			const T& tau1 = solution[4];
+			const T& tau2 = solution[5];
+			if (b0 > 0 && b0 + b1 > 0 && tau1 > 0 && tau2 > 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
-		else
+		case(Constraints_type::tight):
 		{
-			return false;
+			const T& b0 = solution[0];
+			const T& b1 = solution[1];
+			const T& b2 = solution[2];
+			const T& b3 = solution[3];
+			const T& tau1 = solution[4];
+			const T& tau2 = solution[5];
+			if ((b0 > 0 && b0 < 15)
+				&& (b1 > -15 && b1 < 30)
+				&& (b2 > -30 && b2 < 30)
+				&& (b3 > -30 && b3 < 30)
+				&& (tau1 > 0 && tau1 < 2.5)
+				&& (tau2 > 2.5 && tau2 < 5.5))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
-		*/
-		const T& b0 = solution[0];
-		const T& b1 = solution[1];
-		const T& b2 = solution[2];
-		const T& b3 = solution[3];
-		const T& tau1 = solution[4];
-		const T& tau2 = solution[5];
-		if ((b0 > 0 && b0 < 15)
-			&& (b1 > -15 && b1 < 30)
-			&& (b2 > -30 && b2 < 30)
-			&& (b3 > -30 && b3 < 30)
-			&& (tau1 > 0 && tau1 < 2.5)
-			&& (tau2 > 2.5 && tau2 < 5.5))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
+		case(Constraints_type::none): return true;
 		}
 	}
 	//! Spot interest rate at term m using the NSS model
@@ -72,6 +80,7 @@ namespace nss
 	template<typename T>
 	T penalty_svensson(const std::vector<T>& solution)
 	{
+		T sum = 0;
 		const T& b0 = solution[0];
 		const T& b1 = solution[1];
 		const T& b2 = solution[2];
@@ -79,7 +88,6 @@ namespace nss
 		const T& tau1 = solution[4];
 		const T& tau2 = solution[5];
 		const T C = 100000;
-		T sum = 0;
 		if (b0 < 0 || b0 > 15)
 		{
 			sum = sum + C * std::pow(std::abs(b0), 2);

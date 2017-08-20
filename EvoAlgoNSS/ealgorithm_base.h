@@ -34,10 +34,20 @@ namespace ea
 		const size_t iter_max;
 		//! Number of decision variables
 		const size_t ndv;
+		//! Use penalty function or not
+		const bool use_penalty_method;
+		//! Constraints type
+		const Constraints_type constraints_type;
+		//! Print to output or not
+		const bool print_to_output;
+		//! Print to file
+		const bool print_to_file;
 	protected:
 		//! Constructor
-		EA_base(const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-			: decision_variables{ i_decision_variables }, stdev{ i_stdev }, npop{ i_npop }, tol{ i_tol }, iter_max{ i_iter_max }, ndv{ i_decision_variables.size() }
+		EA_base(const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev, const size_t& i_npop, const T& i_tol, const size_t& i_iter_max,
+			const bool& i_use_penalty_method, const Constraints_type& i_constraints_type, const bool& i_print_to_output, const bool& i_print_to_file)
+			: decision_variables{ i_decision_variables }, stdev{ i_stdev }, npop{ i_npop }, tol{ i_tol }, iter_max{ i_iter_max }, ndv{ i_decision_variables.size() },
+			use_penalty_method{ i_use_penalty_method }, constraints_type{ i_constraints_type }, print_to_output{ i_print_to_output }, print_to_file{ i_print_to_file }
 		{
 			assert(decision_variables.size() > 0);
 			assert(decision_variables.size() == stdev.size());
@@ -63,12 +73,8 @@ namespace ea
 	class Solver_base
 	{
 	public:
-		//! Displays the results
-		std::stringstream display_results();
 		//! Solve wrapper function for Solvers, used for benchmarks
 		std::vector<T> solver_bench(const std::string& problem_name);
-		//! Write the results to a file
-		void write_results_to_file(const std::string& problem_name);
 	protected:
 		//! Constructor
 		Solver_base(const S<T>& i_solver_struct, const F& i_f, const C& i_c) :
@@ -82,6 +88,16 @@ namespace ea
 			timer{ 0 }
 		{
 			distribution = std::uniform_real_distribution<T>(0.0, 1.0);
+			generator.discard(700000);
+			for (auto& p : individuals)
+			{
+				p = randomise_individual();
+				//! Check population constraints
+				while (!c(p))
+				{
+					p = randomise_individual();
+				}
+			}
 			find_min_cost();
 		}
 		//! Internal copy of the structure used for parameters of the algorithm
@@ -107,14 +123,16 @@ namespace ea
 		bool solved_flag;
 		//! Timer
 		T timer;
-		//! String that holds the parameter and results names
-		const std::string solver_types = "Solved,Solution,Fitness,Population,Iterations,Elapsed Time,Initial Solution,Standard Deviation,Initial Population,Tolerance,Maximum Iterations,";
 		//! Returns a randomised individual using the initial decision variables and standard deviation
 		std::vector<T> randomise_individual();
 		//! Initialises the population by randomising aroung the decision variables using the given standard deviation
 		std::vector<std::vector<T>> init_individuals();
 		//! Find the minimum cost individual of the fitness function for the population
 		void find_min_cost();
+		//! Displays the results
+		std::stringstream display_results();
+		//! Write the results to a file
+		void write_results_to_file(const std::string& problem_name);
 	};
 
 	template<typename Derived, template<typename> class S, typename T, typename F, typename C>
@@ -134,17 +152,7 @@ namespace ea
 	template<typename Derived, template<typename> class S, typename T, typename F, typename C>
 	std::vector<std::vector<T>> Solver_base<Derived, S, T, F, C>::init_individuals()
 	{
-		generator.discard(700000);
 		std::vector<std::vector<T>> individuals(solver_struct.npop, std::vector<T>(solver_struct.ndv));
-		for (auto& p : individuals)
-		{
-			p = randomise_individual();
-			//! Check population constraints
-			while (!c(p))
-			{
-				p = randomise_individual();
-			}
-		}
 		return individuals;
 	}
 
@@ -164,6 +172,7 @@ namespace ea
 	std::stringstream Solver_base<Derived, S, T, F, C>::display_results()
 	{
 		std::stringstream results;
+		results << solver_struct.type << ",";
 		if (!solved_flag)
 		{
 			results << "False" << ",";
@@ -191,11 +200,8 @@ namespace ea
 	{
 		std::string filename;
 		std::string stypes;
-		stypes.append(solver_types);
-		stypes.append(static_cast<Derived*>(this)->solver_add_types);
+		stypes.append("Algorithm,Solved,Solution,Fitness,Population,Iterations,Elapsed Time,Initial Solution,Standard Deviation,Initial Population,Tolerance,Maximum Iterations");
 		filename.append(problem_name);
-		filename.append("-");
-		filename.append(static_cast<Derived*>(this)->type);
 		filename.append("-results.csv");
 		std::ifstream in(filename);
 		bool written_first_line = false;
@@ -221,10 +227,6 @@ namespace ea
 	template<typename Derived, template<typename> class S, typename T, typename F, typename C>
 	std::vector<T> Solver_base<Derived, S, T, F, C>::solver_bench(const std::string& problem_name)
 	{
-		if (problem_name != "")
-		{
-			std::cout << static_cast<Derived*>(this)->type << " used as solver." << "\n";
-		}
 		if (solver_struct.tol > std::abs(f(min_cost)))
 		{
 			timer = 0;
@@ -239,11 +241,16 @@ namespace ea
 			timer = elapsed_seconds.count();
 		}
 		//! Return minimum cost individual
-		if (problem_name != "")
+		if (solver_struct.print_to_output)
 		{
 			std::cout << display_results().str();
+		}
+		else {};
+		if (solver_struct.print_to_file)
+		{
 			write_results_to_file(problem_name);
 		}
+		else {};
 		return min_cost;
 	}
 	/*!

@@ -12,8 +12,10 @@ namespace ea
 	public:
 		//! Constructor
 		PSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const T& i_alpha, const std::vector<T>& i_vmax, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
-			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max)
-			: EA_base<T> { i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max },
+			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max,
+			const bool& i_use_penalty_method = false, const Constraints_type& i_constraints_type = Constraints_type::none,
+			const bool& i_print_to_output = true, const bool& i_print_to_file = true)
+			: EA_base<T> { i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max, i_use_penalty_method, i_constraints_type, i_print_to_output, i_print_to_file},
 			  c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, w{ i_w }, alpha{ i_alpha }, vmax{ i_vmax }
 		{
 			assert(c1 > 0);
@@ -37,6 +39,8 @@ namespace ea
 		const T alpha;
 		//! Velocity Clamping Variant of PSO : Maximum Velocity
 		const std::vector<T> vmax;
+		//! Type of the algorithm
+		const std::string type = "Local Best Particle Swarm Optimisation";
 	};
 
 	//! Local Best Particle Swarm Optimisation (PSO) Class
@@ -44,6 +48,7 @@ namespace ea
 	class Solver<PSO, T, F, C> : public Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>
 	{
 	public:
+		friend class Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>;
 		//! Constructor
 		Solver(const PSO<T>& i_pso, F f, C c) :
 			Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>{ i_pso, f, c }, pso{ this->solver_struct }, w{ i_pso.w }, vmax{ i_pso.vmax },
@@ -76,25 +81,7 @@ namespace ea
 			}
 			find_min_local_best();
 		}
-		//! Type of the algorithm
-		const std::string type = "Local Best Particle Swarm Optimisation";
-		//! String that holds the additional parameter names
-		const std::string solver_add_types = "c1,c2,Neighbourhood size,Inertia,alpha,Maximum Velocity";
-		//! Display PSO parameters
-		std::stringstream display_parameters()
-		{
-			std::stringstream parameters;
-			parameters << pso.c1 << ",";
-			parameters << pso.c2 << ",";
-			parameters << pso.sneigh << ",";
-			parameters << pso.w << ",";
-			parameters << pso.alpha << ",";
-			parameters << pso.vmax;
-			return parameters;
-		}
-		//! Runs the algorithm until stopping criteria
-		void run_algo();
-	protected:
+	private:
 		//! Particle Swarm Optimisation structure used internally (reference to solver_struct)
 		const PSO<T>& pso;
 		//! Inertia is mutable, so a copy is created
@@ -127,6 +114,8 @@ namespace ea
 		void find_min_local_best();
 		//! Define the maximum radius stopping criterion
 		bool check_pso_criteria();
+		//! Runs the algorithm until stopping criteria
+		void run_algo();
 		//! Euclidean Distance of two vectors
 		T euclid_distance(const std::vector<T>& x, const std::vector<T>& y)
 		{
@@ -136,6 +125,18 @@ namespace ea
 				sum = sum + std::pow(x[i] - y[i], 2);
 			}
 			return std::sqrt(sum);
+		}
+		//! Display PSO parameters
+		std::stringstream display_parameters()
+		{
+			std::stringstream parameters;
+			parameters << "C1" << "," << pso.c1 << ",";
+			parameters << "C2" << "," << pso.c2 << ",";
+			parameters << "Neighbourhood size" << "," << pso.sneigh << ",";
+			parameters << "Inertia" << "," << pso.w << ",";
+			parameters << "Alpha parameter for maximum velocity" << "," << pso.alpha << ",";
+			parameters << "Maximum Velocity" << "," << pso.vmax;
+			return parameters;
 		}
 	};
 

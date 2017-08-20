@@ -50,8 +50,8 @@ public:
 	void yieldcurve_fitting(const S& solver)
 	{
 		assert(solver.ndv == 6);
-		auto f = [&](const auto& solution) { return fitness_yield_curve_fitting(solution); };
-		auto c = [&](const auto& solution) { return constraints_svensson(solution); };
+		auto f = [&, use_penalty_method = solver.use_penalty_method](const auto& solution) { return fitness_yield_curve_fitting(solution, use_penalty_method); };
+		auto c = [&, constraints_type = solver.constraints_type](const auto& solution) { return constraints_svensson(solution, constraints_type); };
 		std::cout << "Yield Curve fitting." << "\n";
 		auto res = solve(f, c, solver,"YFT");
 		T error = 0;
@@ -66,7 +66,7 @@ private:
 	//! Vector of interest rates
 	std::vector<Interest_Rate<T>> ir_vec;
 	//! This is the fitness function for yield-curve fitting using Interest Rates
-	T fitness_yield_curve_fitting(const std::vector<T>& solution)
+	T fitness_yield_curve_fitting(const std::vector<T>& solution, const bool& use_penalty_method)
 	{
 		//! The sum of squares of errors betwwen the actual rates and the rates computed by svensson are used
 		T sum_of_squares = 0;
@@ -75,7 +75,13 @@ private:
 			T estimate = svensson(solution, ir_vec[i].period);
 			sum_of_squares = sum_of_squares + std::pow(ir_vec[i].rate - estimate, 2);
 		}
-		sum_of_squares = sum_of_squares + penalty_svensson(solution);
-		return sum_of_squares;
+		if (use_penalty_method)
+		{
+			return sum_of_squares + penalty_svensson(solution);
+		}
+		else
+		{
+			return sum_of_squares;
+		}
 	};
 };

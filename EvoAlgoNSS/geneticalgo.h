@@ -8,66 +8,122 @@ namespace ea
 	//! Replacing or remove individuals strategies during mutation
 	enum class Strategy { keep_same, re_mutate, remove, none };
 
-	//! Genetic Algorithms Structure, used in the actual algorithm and for type deduction
+	/** \struct GA
+	*  \brief Genetic Algorithms Structure, used in the actual algorithm and for type deduction
+	*/
 	template<typename T>
 	struct GA : EA_base<T>
 	{
 	public:
-		//! Constructor
-		GA(const T& i_x_rate, const T& i_pi, const T& i_alpha, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
+		/** \fn GA(const T& i_x_rate, const T& i_pi, const T& i_alpha, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
 			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max, const bool& i_use_penalty_method = false,
 			const Constraints_type& i_constraints_type = Constraints_type::none, const Strategy& i_strategy = Strategy::keep_same,
 			const bool& i_print_to_output = true, const bool& i_print_to_file = true)
-			:  EA_base<T> { i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max, i_use_penalty_method, i_constraints_type, i_print_to_output, i_print_to_file },
-			   x_rate{ i_x_rate }, pi{ i_pi }, alpha{ i_alpha }, strategy{ i_strategy }
+		*	\brief Constructor
+		*	\param i_x_rate Selection Rate or percentage of population to keep up to the next generation
+		*	\param i_pi Probability of mutation
+		*	\param i_alpha Alpha parameter of the Beta Distribution
+		*	\param i_strategy The strategy used for handling constraints
+		*	\param i_decision_variables The starting values of the decision variables
+		*	\param i_stdev The standard deviation
+		*	\param i_npop The population size
+		*	\param i_tol The tolerance
+		*	\param i_iter_max The maximum number of iterations
+		*	\param i_use_penalty_method Whether to used penalties or not
+		*	\param i_constraints_type What kind of constraints to use
+		*	\param i_print_to_output Whether to print to terminal or not
+		*	\param i_print_to_file Whether to print to a file or not
+		*	\return A GA<T> object
+		*/
+		GA(const T& i_x_rate, const T& i_pi, const T& i_alpha, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
+			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max, const bool& i_use_penalty_method = false,
+			const Constraints_type& i_constraints_type = Constraints_type::none, const Strategy& i_strategy = Strategy::keep_same,
+			const bool& i_print_to_output = true, const bool& i_print_to_file = true) :
+			EA_base<T> ( i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max, i_use_penalty_method, i_constraints_type, i_print_to_output, i_print_to_file ),
+			x_rate ( i_x_rate ),
+			pi ( i_pi ),
+			alpha ( i_alpha ),
+			strategy ( i_strategy )
 		{
 			assert(x_rate > 0 && x_rate <= 1);
 			assert(pi > 0 && pi <= 1);
 		}
-		//! Natural Selection rate
+		/** \brief Natural Selection rate */
 		const T x_rate;
-		//! Probability of mutating
+		/** \brief Probability of mutating */
 		const T pi;
-		//! Parameter alpha for Beta distribution
+		/** \brief Parameter alpha for Beta distribution */
 		const T alpha;
-		//! Replacing or remove individuals strategies during mutation
+		/** \brief Replacing or remove individuals strategies during mutation */
 		const Strategy strategy;
-		//! Type of the algorithm
+		/** \brief Type of the algorithm */
 		const std::string type = "Genetic Algorithms";
 	};
 
-	//! Genetic Algorithms (GA) Class
+	/*! \class  Solver<GA, T, F, C>
+	*  \brief Genetic Algorithms (GA) Class
+	*/
 	template<typename T, typename F, typename C>
 	class Solver<GA, T, F, C> : public Solver_base<Solver<GA, T, F, C>, GA, T, F, C>
 	{
 	public:
 		friend class Solver_base<Solver<GA, T, F, C>, GA, T, F, C>;
-		//! Constructor
+		/*! \fn Solver(const GA<T>& i_ga, const F& f, const C& c)
+		*  \brief Constructor
+		*  \param i_ga The genetic algorithms parameter structure that is used to construct the solver
+		*  \param f A reference to the objective function
+		*  \param c A reference to the constraints function
+		*  \return A Solver<GA, T, F, C> object
+		*/
 		Solver(const GA<T>& i_ga, F f, C c) :
-			Solver_base<Solver<GA, T, F, C>, GA, T, F, C> { i_ga, f, c }, ga{ this->solver_struct }, npop{ i_ga.npop }, stdev{ i_ga.stdev }
+			Solver_base<Solver<GA, T, F, C>, GA, T, F, C> ( i_ga, f, c ), 
+			ga ( this->solver_struct ),
+			npop ( i_ga.npop ),
+			stdev ( i_ga.stdev ),
+			bdistribution (boost::math::beta_distribution<T>(1, ga.alpha))
 		{
-			bdistribution = boost::math::beta_distribution<T>(1, ga.alpha);
 		}
 	private:
-		//! Genetic Algorithms structure used internally (reference to solver_struct)
+		/** \brief Genetic Algorithms structure used internally (reference to solver_struct) */
 		const GA<T>& ga;
-		//! Size of the population is mutable
+		/** \brief Size of the population is mutable */
 		size_t npop;
-		//! Standard deviation is mutable, so a copy is created
+		/** \brief Standard deviation is mutable, so a copy is created */
 		std::vector<T> stdev;
-		//! Beta distribution
+		/** \brief Beta distribution */
 		boost::math::beta_distribution<T> bdistribution;
-		//! Crossover step of GA
+		/** \fn crossover(std::vector<T> r, std::vector<T> s)
+		*  \brief Crossover step of GA
+		*  \param r,s Parent individuals
+		*  \return An offspring from the two parents r and s
+		*/
 		std::vector<T> crossover(std::vector<T> r, std::vector<T> s);
-		//!	Selection step of GA
+		/** \fn selection()
+		*  \brief Selection step of GA
+		*  \details Select two parents r and s using a Beta distribution and generates an offspring using the crossover method
+		*  \return An offspring from the two parents
+		*/
 		std::vector<T> selection();
-		//! Mutation step of GA
+		/** \fn mutation(const std::vector<T>& individual)
+		*  \brief Mutation step of GA
+		*  \param individual An individual of the population
+		*  \return A mutated individual
+		*/
 		std::vector<T> mutation(const std::vector<T>& individual);
-		//! Returns number of individuals to be kept in each generation, thus 
+		/** \fn nkeep()
+		*  \brief Returns number of individuals to be kept in each generation
+		*  \return The new nkeep
+		*/
 		size_t nkeep();
-		//! Runs the algorithm until stopping criteria
+		/** \fn run_algo
+		*  \brief Runs the algorithm until stopping criteria
+		*  return void
+		*/
 		void run_algo();
-		//! Display GA parameters
+		/*! \fn display_parameters()
+		*  \brief  Display the parameters of GA
+		*  \return A std::stringstream of the parameters
+		*/
 		std::stringstream display_parameters()
 		{
 			std::stringstream parameters;

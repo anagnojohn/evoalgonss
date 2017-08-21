@@ -5,18 +5,46 @@
 
 namespace ea
 {
-	//! Particle Swarm Optimisation Structure, used in the actual algorithm and for type deduction
+	/** \struct PSO
+	*  \brief Particle Swarm Optimisation Structure, used in the actual algorithm and for type deduction
+	*/
 	template<typename T>
 	struct PSO : EA_base<T>
 	{
 	public:
-		//! Constructor
-		PSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const T& i_alpha, const std::vector<T>& i_vmax, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
+		/** \fn PSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const T& i_alpha, const std::vector<T>& i_vmax, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
 			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max,
 			const bool& i_use_penalty_method = false, const Constraints_type& i_constraints_type = Constraints_type::none,
 			const bool& i_print_to_output = true, const bool& i_print_to_file = true)
-			: EA_base<T> { i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max, i_use_penalty_method, i_constraints_type, i_print_to_output, i_print_to_file},
-			  c1{ i_c1 }, c2{ i_c2 }, sneigh{ i_sneigh }, w{ i_w }, alpha{ i_alpha }, vmax{ i_vmax }
+		\brief Constructor
+		\param i_c1 c1 parameter for velocity update
+		\param i_c2 c2 parameter for velocity update
+		\param i_sneigh Number of neighbourhoods
+		\param i_w Inertia parameter for velocity update
+		\param i_alpha alpha parameter for maximum velocity decrease
+		\param i_vmax Maximum velocity
+		\param i_decision_variables The starting values of the decision variables
+		\param i_stdev The standard deviation
+		\param i_npop The population size
+		\param i_tol The tolerance
+		\param i_iter_max The maximum number of iterations
+		\param i_use_penalty_method Whether to used penalties or not
+		\param i_constraints_type What kind of constraints to use
+		\param i_print_to_output Whether to print to terminal or not
+		\param i_print_to_file Whether to print to a file or not
+		\return A PSO<T> object
+		*/
+		PSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const T& i_alpha, const std::vector<T>& i_vmax, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
+			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max,
+			const bool& i_use_penalty_method = false, const Constraints_type& i_constraints_type = Constraints_type::none,
+			const bool& i_print_to_output = true, const bool& i_print_to_file = true) :
+			EA_base<T>(i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max, i_use_penalty_method, i_constraints_type, i_print_to_output, i_print_to_file),
+			c1( i_c1 ),
+			c2( i_c2 ), 
+			sneigh( i_sneigh ), 
+			w( i_w ), 
+			alpha( i_alpha ), 
+			vmax( i_vmax )
 		{
 			assert(c1 > 0);
 			assert(c2 > 0);
@@ -27,32 +55,44 @@ namespace ea
 			for (const auto& p : vmax) { assert(p > 0); };
 			assert(vmax.size() == this->ndv);
 		}
-		//! Parameter c1 for velocity update
+		/** \brief Parameter c1 for velocity update */
 		const T c1;
-		//! Parameter c2 for velocity update
+		/** \brief Parameter c2 for velocity update */
 		const T c2;
-		//! Neighbourhood size
+		/** \brief Neighbourhood size */
 		const size_t sneigh;
-		//! Inertia Variant of PSO : Inertia
+		/** \brief Inertia Variant of PSO : Inertia */
 		const T w;
-		//! Alpha Parameter for maximum velocity
+		/** \brief Alpha Parameter for maximum velocity */
 		const T alpha;
-		//! Velocity Clamping Variant of PSO : Maximum Velocity
+		/** \brief  Velocity Clamping Variant of PSO : Maximum Velocity */
 		const std::vector<T> vmax;
-		//! Type of the algorithm
+		/** \brief Type of the algorithm */
 		const std::string type = "Local Best Particle Swarm Optimisation";
 	};
 
-	//! Local Best Particle Swarm Optimisation (PSO) Class
+	/*! \class Solver<PSO, T, F, C>
+	*  \brief Local Best Particle Swarm Optimisation (PSO) Class
+	*/
 	template<typename T, typename F, typename C>
 	class Solver<PSO, T, F, C> : public Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>
 	{
 	public:
 		friend class Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>;
-		//! Constructor
+		/*! \fn Solver(const PSO<T>& i_pso, F f, C c)
+		*  \brief Constructor
+		*  \param i_pso The particle swarm optimisation parameter structure that is used to construct the solver
+		*  \param f A reference to the objective function
+		*  \param c A reference to the constraints function
+		*  \return A Solver<PSO, T, F, C> object
+		*/
 		Solver(const PSO<T>& i_pso, F f, C c) :
-			Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>{ i_pso, f, c }, pso{ this->solver_struct }, w{ i_pso.w }, vmax{ i_pso.vmax },
-			nneigh{ static_cast<size_t>(std::ceil(pso.npop / pso.sneigh)) }, neighbourhoods{ set_neighbourhoods() }, rmax{ 0 }
+			Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>( i_pso, f, c ),
+			pso( this->solver_struct ), 
+			w( i_pso.w ), 
+			vmax( i_pso.vmax ),
+			nneigh( static_cast<size_t>(std::ceil(i_pso.npop / i_pso.sneigh)) ),
+			neighbourhoods( set_neighbourhoods() )
 		{
 			velocity.resize(pso.npop, std::vector<T>(pso.ndv));
 			local_best.resize(nneigh);
@@ -71,7 +111,6 @@ namespace ea
 			{
 				p = personal_best[0];
 			}
-			distance.resize(pso.npop);
 			for (size_t i = 0; i < pso.npop; ++i)
 			{
 				if (f(personal_best[i]) < f(local_best[neighbourhoods[i]]))
@@ -82,41 +121,62 @@ namespace ea
 			find_min_local_best();
 		}
 	private:
-		//! Particle Swarm Optimisation structure used internally (reference to solver_struct)
+		/** \brief Particle Swarm Optimisation structure used internally (reference to solver_struct) */
 		const PSO<T>& pso;
-		//! Inertia is mutable, so a copy is created
+		/** \brief Inertia is mutable, so a copy is created */
 		T w;
-		//! Maximum Velocity is mutable, so a copy is created
+		/** \brief Maximum Velocity is mutable, so a copy is created */
 		std::vector<T> vmax;
-		//! Personal best vector of the particles, holds the best position recorded for each particle
+		/** \brief Personal best vector of the particles, holds the best position recorded for each particle */
 		std::vector<std::vector<T>> personal_best;
-		//! Local best vector, holds the best position recorded for each neighbourhood
+		/** \brief Local best vector, holds the best position recorded for each neighbourhood */
 		std::vector<std::vector<T>> local_best;
-		//! Velocity of the particles
+		/** \brief Velocity of the particles */
 		std::vector<std::vector<T>> velocity;
-		//! Number of neighbourhoods
+		/** \brief Number of neighbourhoods */
 		const size_t nneigh;
-		//! Neighbourhoods
+		/** \brief Neighbourhoods */
 		std::unordered_map<size_t, size_t> neighbourhoods;
-		//! Maximum Radius
-		T rmax;
-		//! Distance betwwen individuals
-		std::vector<T> distance;
-		//! Set the neighbourhoods of the algorithm using particle indices
+		/** \fn set_neighbourhoods
+		*  \brief Set the neighbourhoods of the algorithm using particle indices
+		*  \return A map matching particle indices to neighbourhoods
+		*/
 		std::unordered_map<size_t, size_t> set_neighbourhoods();
-		//! This method generates r1 and r2 for the velocity update rule
+		/*! \fn generate_r()
+		*  \brief This method generates r1 and r2 for the velocity update rule
+		*  \return A vector containing r1 and r2
+		*/
 		std::vector<std::vector<T>> generate_r();
-		//! Position update of the particles
+		/** \fn position_update()
+		*  \brief Position update of the particles
+		*  \return void
+		*/
 		void position_update();
-		//! This method sets the personal and local best solutions
+		/** \fn best_update()
+		*  \brief This method sets the personal and local best solutions
+		*  \return void
+		*/
 		void best_update();
-		//! This is a faster way to calculate the minimum cost unless there is only one neighbourhood, in which case it is the same as find_min_cost(F f)
+		/** \fn find_min_local_best()
+		*  \brief This is a faster way to calculate the minimum cost unless there is only one neighbourhood, in which case it is the same as find_min_cost(F f)
+		*  \return void
+		*/
 		void find_min_local_best();
-		//! Define the maximum radius stopping criterion
+		/** \fn check_pso_criteria
+		*  \brief Define the maximum radius stopping criterion
+		*  \return true if criteria are met, false otherwise
+		*/
 		bool check_pso_criteria();
-		//! Runs the algorithm until stopping criteria
+		/** \fn run_algo
+		*  \brief Runs the algorithm until stopping criteria
+		*  return void
+		*/
 		void run_algo();
-		//! Euclidean Distance of two vectors
+		/** \fn euclid_distance
+		*  \brief Euclidean Distance of two vectors
+		*..\param x,y The two vectors for which the distance is calculated
+		*  \return Distance as a floating-point number
+		*/
 		T euclid_distance(const std::vector<T>& x, const std::vector<T>& y)
 		{
 			T sum = 0;
@@ -126,7 +186,10 @@ namespace ea
 			}
 			return std::sqrt(sum);
 		}
-		//! Display PSO parameters
+		/*! \fn display_parameters()
+		*  \brief Display PSO parameters
+		*  \return A std::stringstream of the parameters
+		*/ 
 		std::stringstream display_parameters()
 		{
 			std::stringstream parameters;
@@ -161,7 +224,7 @@ namespace ea
 		}
 		return neighbourhoods;
 	}
-
+	
 	template<typename T, typename F, typename C>
 	std::vector<std::vector<T>> Solver<PSO, T, F, C>::generate_r()
 	{
@@ -231,14 +294,15 @@ namespace ea
 	template<typename T, typename F, typename C>
 	bool Solver<PSO, T, F, C>::check_pso_criteria()
 	{
+		std::vector<T> distance(pso.npop);
 		for (size_t i = 0; i < pso.npop; ++i)
 		{
 			distance[i] = euclid_distance(this->individuals[i], this->min_cost);
 		}
-		rmax = distance[0];
+		T rmax = distance[0];
 		for (size_t i = 0; i < pso.npop; ++i)
 		{
-			if (rmax < distance[i])
+			if (rmax > distance[i])
 			{
 				rmax = distance[i];
 			}

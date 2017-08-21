@@ -8,28 +8,47 @@
 #include <assert.h>
 #include "date.h"
 #include "irr.h"
+#include "ealgorithm_base.h"
 
 
 
 //! Bond Class and Utilities
 namespace bond
 {
+	using namespace ea;
 	using namespace irr;
 	template<typename T>
 	class BondHelper;
 
-	//! Bond Class
+	/*! \class Bond
+	*  \brief Bond Class definition
+	*/
 	template<typename T>
 	class Bond
 	{
 		//! Friend class BondHelper
 		friend class BondHelper<T>;
 	public:
-		//! Construct in the case price is given but the yield and the macaulay duration are not given
+		/** \fn Bond(const T& i_coupon_percentage, const T& i_price, const T& i_nominal_value, const T& i_frequency,
+			std::string& i_settlement_date, const std::string& i_maturity_date)
+		*  \brief Constructor
+		*  \param i_coupon_percentage The coupon rate in %
+		*  \param i_price The price of the bond
+		*  \param i_nominal_value The nominal value of the bond
+		*  \param i_frequency The frequency of coupon payments per year
+		*  \param i_settlement_date The date the bond was bought
+		*  \param i_maturity_date The date the bond expires
+		*  \return A Bond<T> object
+		*/
 		Bond(const T& i_coupon_percentage, const T& i_price, const T& i_nominal_value, const T& i_frequency,
-			 std::string& i_settlement_date, const std::string& i_maturity_date)
-			: coupon_percentage{ i_coupon_percentage }, price{ i_price }, nominal_value{ i_nominal_value }, frequency{ i_frequency },
-			coupon_value{ coupon_percentage * nominal_value / frequency }, yield{ 0 }, duration{ 0 }
+			std::string& i_settlement_date, const std::string& i_maturity_date) :
+			coupon_percentage{ i_coupon_percentage },
+			price{ i_price },
+			nominal_value{ i_nominal_value },
+			frequency{ i_frequency },
+			coupon_value{ coupon_percentage * nominal_value / frequency },
+			yield{ 0 },
+			duration{ 0 }
 		{
 			assert(price > 0);
 			assert(coupon_percentage > 0 && coupon_percentage < 1);
@@ -52,36 +71,57 @@ namespace bond
 				time_periods[i] = static_cast<T>(i + 1) / frequency;
 			}
 		}
-		//! Calculates the yield-to-maturity using the supplied solver
-		template<typename S> T compute_yield(const T& price, const S& solver, const DF_type& df_type) const;
+		/** \fn compute_yield(const T& i_price, const S& solver, const DF_type& df_type) const
+		*  \brief Calculates the yield-to-maturity using the supplied solver
+		*  \param i_price The price of the bond
+		*  \param solver The parameter structure of the solver that is going to be used to estimate the yield of maturity
+		*  \param df_type The type of discount factor method
+		*  \return The yield-to-maturity of the bond
+		*/
+		template<typename S> T compute_yield(const T& i_price, const S& solver, const DF_type& df_type) const;
+		/** \fn compute_yield(const T& i_price, const S& solver, const DF_type& df_type, const std::string& bonds_identifier) const
+		*  \brief Calculates the yield-to-maturity using the supplied solver and passes the bond identifier to the solver
+		*  \param i_price The price of the bond
+		*  \param solver The parameter structure of the solver that is going to be used to estimate the yield of maturity
+		*  \param df_type The type of discount factor method
+		*  \param bonds_identifier An identifier for the bond in std::string form
+		*  \return The yield-to-maturity of the bond
+		*/
 		template<typename S> T compute_yield(const T& i_price, const S& solver, const DF_type& df_type, const std::string& bonds_identifier) const;
-	private:
-		//! Bond's annual coupon rate
-		const T coupon_percentage;
-		//! Bond's price
-		const T price;
-		//! Bond's face value
-		const T nominal_value;
-		//! Bond's coupon payment frequency
-		const T frequency;
-		//! This is the annual coupon divided by the frequency
-		const T coupon_value;
-		//! Coupon payment periods
-		std::vector<T> time_periods;
-		//! A vector with all the coupon payments corresponding to time periods
-		std::vector<T> cash_flows;
-		//! Settlement date of the bond
-		date::sys_days settlement_date;
-		//! Maturity date of the bond
-		date::sys_days maturity_date;
-		//! Yield-to-maturity of the bond
-		T yield;
-		//! Macaulay duration of the bond
-		T duration;
-		//! Calculate the cash flows of the bond
-		std::vector<T> compute_cash_flows();
-		//! Calculates the Macaulay duration of the bond
+		/** \fn compute_macaulay_duration(const DF_type& df_type)
+		*  \brief Calculates the Macaulay duration of the bond
+		*  \param df_type The type of discount factor method
+		*  \return The Macaulay Duration of the bond
+		*/
 		T compute_macaulay_duration(const DF_type& df_type) const;
+	private:
+		/** \brief Bond's annual coupon rate */
+		const T coupon_percentage;
+		/** \brief Bond's price */
+		const T price;
+		/** \brief Bond's face value */
+		const T nominal_value;
+		/** \brief Bond's coupon payment frequency */
+		const T frequency;
+		/** \brief This is the annual coupon divided by the frequency */
+		const T coupon_value;
+		/** \brief Coupon payment periods */
+		std::vector<T> time_periods;
+		/** \brief A vector with all the coupon payments corresponding to time periods */
+		std::vector<T> cash_flows;
+		/** \brief Settlement date of the bond */
+		date::sys_days settlement_date;
+		/** \brief Maturity date of the bond */
+		date::sys_days maturity_date;
+		/** \brief Yield-to-maturity of the bond */
+		T yield;
+		/** \brief Macaulay duration of the bond */
+		T duration;
+		/** \fn compute_cash_flows()
+		*  \brief Calculate the cash flows of the bond
+		*  \return The cash flows of the bonds (coupon payments)
+		*/
+		std::vector<T> compute_cash_flows();
 	};
 
 	template<typename T>
@@ -125,7 +165,6 @@ namespace bond
 		return yield;
 	}
 
-	//! Calculate the macaulay_duration of a bond
 	template<typename T>
 	T Bond<T>::compute_macaulay_duration(const DF_type& df_type) const
 	{

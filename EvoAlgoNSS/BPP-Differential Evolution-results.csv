@@ -1,3 +1,0 @@
-Solved,Solution,Fitness,Population,Iterations,Elapsed Time,Initial Solution,Standard Deviation,Initial Population,Tolerance,Maximum Iterations,
-False,[ 23.1236 -29.378 27.6374 -40.2666 7.54472 -895.901 ],0.129499,40,1000,1.85668,[ 0.045086 0.00370198 0 0 8.98754 8.98754 ],[ 0.7 0.7 0.7 0.7 0.7 0.7 ],40,0.01,1000,Crossover Rate,0.6,Mutation Scale Factor,0.99
-False,[ 0.435304 -0.234742 0.361749 -1.31883 10.2719 9.81722 ],0.0603211,40,1000,1.65793,[ 0.0450874 0.00370067 0 0 8.98754 8.98754 ],[ 0.7 0.7 0.7 0.7 0.7 0.7 ],40,0.01,1000,Crossover Rate,0.6,Mutation Scale Factor,0.99

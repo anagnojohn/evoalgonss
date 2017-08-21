@@ -18,7 +18,7 @@ set "PATH=%PATH%;%LLVMPath%\bin;%VSBasePath%\bin\HostX64\x64"
 
 :: Compiler Flags
 set CFLAGS= ^
- -std=c++17 -O3 -Wall -Wextra -fno-ms-compatibility
+ -std=c++17 -O3 -Wall -Wextra -fno-ms-compatibility -Wdocumentation
 
 set CPPFLAGS= ^
   -I "%VSBasePath%\include" ^

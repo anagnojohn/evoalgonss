@@ -4,51 +4,95 @@
 
 namespace ea
 {
-	//! Differential Evolution Structure, used in the actual algorithm and for type deduction
+	/** \struct DE
+	*  \brief Differential Evolution Structure, used in the actual algorithm and for type deduction
+	*/
 	template<typename T>
 	struct DE : EA_base<T>
 	{
 	public:
-		//! Constructor
+		/** \fn DE(const T& i_cr, const T& i_f_param, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
+			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max,
+			const bool& i_use_penalty_method = false, const Constraints_type& i_constraints_type = Constraints_type::none,
+			const bool& i_print_to_output = true, const bool& i_print_to_file = true)
+		*	\brief Constructor
+		*	\param i_cr Crossover Rate
+		*	\param i_f_param Mutation Scale Factor
+		*	\param i_decision_variables The starting values of the decision variables
+		*	\param i_stdev The standard deviation
+		*	\param i_npop The population size
+		*	\param i_tol The tolerance
+		*	\param i_iter_max The maximum number of iterations
+		*	\param i_use_penalty_method Whether to used penalties or not
+		*	\param i_constraints_type What kind of constraints to use
+		*	\param i_print_to_output Whether to print to terminal or not
+		*	\param i_print_to_file Whether to print to a file or not
+		*	\return A DE<T> object
+		*/
 		DE(const T& i_cr, const T& i_f_param, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
 			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max,
 			const bool& i_use_penalty_method = false, const Constraints_type& i_constraints_type = Constraints_type::none,
 			const bool& i_print_to_output = true, const bool& i_print_to_file = true) :
-			EA_base<T>{ i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max, i_use_penalty_method, i_constraints_type, i_print_to_output, i_print_to_file },
-			cr{ i_cr },
-			f_param{ i_f_param }
+			EA_base<T>(i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max, i_use_penalty_method, i_constraints_type, i_print_to_output, i_print_to_file),
+			cr( i_cr ),
+			f_param( i_f_param )
 		{
 			assert(cr > 0 && cr <= 1);
 			assert(f_param > 0 && f_param <= 1);
 		}
-		//! Crossover Rate
+		/** \brief Crossover Rate */
 		const T cr;
-		//! Mutation Scale Fuctor
+		/** \brief Mutation Scale Fuctor */
 		const T f_param;
-		//! Type of the algorithm
+		/** \brief Type of the algorithm */
 		const std::string type = "Differential Evolution";
 	};
 
-	//! Differential Evolution Algorithm (DE) Class
+	/*! \class Solver<DE, T, F, C>
+	*  \brief Differential Evolution Algorithm (DE) Class
+	*/
 	template<typename T, typename F, typename C>
 	class Solver<DE, T, F, C> : public Solver_base<Solver<DE, T, F, C>, DE, T, F, C>
 	{
 	public:
 		friend class Solver_base<Solver<DE, T, F, C>, DE, T, F, C>;
-		//! Constructor
+		/*! \fn Solver(const DE<T>& i_de, const F& f, const C& c)
+		*  \brief Constructor
+		*  \param i_de The differential evolution parameter structure that is used to construct the solver
+		*  \param f A reference to the objective function
+		*  \param c A reference to the constraints function
+		*  \return A Solver<DE, T, F, C> object
+		*/
 		Solver(const DE<T>& i_de, const F& f, const C& c) :
-                Solver_base<Solver<DE, T, F, C>, DE, T, F, C>{ i_de, f, c },
-                de{ this->solver_struct },
-                indices{ set_indices() }
+                Solver_base<Solver<DE, T, F, C>, DE, T, F, C>( i_de, f, c ),
+                de( this->solver_struct ),
+                indices( set_indices() ),
+				ind_distribution( std::uniform_int_distribution<size_t>(0,de.npop - 1) )
 		{
-            ind_distribution = std::uniform_int_distribution<size_t>(0,de.npop - 1);
         };
 	private:
-		//! Differential Evolution structure used internally (reference to solver_struct)
+		/** \brief Differential Evolution structure used internally (reference to solver_struct) */
 		const DE<T>& de;
-		//! Indices of population
+		/** \brief Indices of population */
 		const std::vector<size_t> indices;
-		//! Generate the indices
+		/** \brief Uniform size_t distribution of the indices */
+		std::uniform_int_distribution<size_t> ind_distribution;
+		/** \fn construct_donor()
+		*  \brief Method that constructs the donor vector
+		*  \return Donor vector
+		*/
+		std::vector<T> construct_donor();
+		/** \fn construct_trial()
+		*  \brief Method that constructs the trial vector
+		*  \param target Target vector (an individual)
+		*  \param donor Donor vector produced from construct_donor()
+		*  \result A trial vector that is compared with the current individual
+		*/
+		std::vector<T> construct_trial(const std::vector<T>& target, const std::vector<T>& donor);
+		/** \fn set_indices()
+		*  \brief Generate the indices
+		*  \return The vector of the population indices
+		*/
 		std::vector<size_t> set_indices()
 		{
 			std::vector<size_t> indices;
@@ -58,15 +102,10 @@ namespace ea
 			}
 			return indices;
 		};
-		//! Uniform size_t distribution of the indices
-		std::uniform_int_distribution<size_t> ind_distribution;
-		//! Method that constructs the donor vector
-		std::vector<T> construct_donor();
-		//! Method that constructs the trial vector
-		std::vector<T> construct_trial(const std::vector<T>& target, const std::vector<T>& donor);
-		//! Runs the algorithm until stopping criteria
-		void run_algo();
-		//! Display the parameters of DE
+		/*! \fn display_parameters()
+		*  \brief  Display the parameters of DE
+		*  \return A std::stringstream of the parameters
+		*/
 		std::stringstream display_parameters()
 		{
 			std::stringstream parameters;
@@ -74,6 +113,11 @@ namespace ea
 			parameters << "Mutation Scale Factor" << "," << de.f_param;
 			return parameters;
 		}
+		/** \fn run_algo
+		*  \brief Runs the algorithm until stopping criteria
+		*  return void
+		*/
+		void run_algo();
 	};
 
 	template<typename T, typename F, typename C>

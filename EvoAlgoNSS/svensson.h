@@ -1,9 +1,14 @@
 #pragma once
 
-//! Nelson-Siegel-Svensson (NSS) model
+//! Nelson-Siegel-Svensson (NSS) model namespace
 namespace nss
 {
-	//! Constraints function for the NSS model
+	/** \fn constraints_svensson(const std::vector<T>& solution, const Constraints_type& constraints_type)
+	*  \brief Constraints function for the NSS model
+	*  \param solution NSS parameters candindate solution
+	*  \param constraints_type Type of constraints used
+	*  \return True if constraints are satisfied, false otherwise
+	*/
 	template<typename T>
 	bool constraints_svensson(const std::vector<T>& solution, const Constraints_type& constraints_type)
 	{
@@ -49,7 +54,13 @@ namespace nss
 		case(Constraints_type::none): return true;
 		}
 	}
-	//! Spot interest rate at term m using the NSS model
+
+	/** \fn svensson(const std::vector<T>& solution, const T& m)
+	*  \brief Spot interest rate at term m using the NSS model
+	*  \param solution Candidate solution for the parameters of NSS
+	*  \param m The term at which the spot interest rate is recorded
+	*  \return The spot interest rate at term m
+	*/
 	template<typename T>
 	T svensson(const std::vector<T>& solution, const T& m)
 	{
@@ -76,7 +87,11 @@ namespace nss
 		}
 	}
 
-	//! Penalty function for NSS
+	/** \fn penalty_svensson(const std::vector<T>& solution)
+	*  \brief Penalty function for NSS
+	*  \param solution Candidate solution for the parameters of NSS
+	*  \return A penalty value, if constraints are not satisfied
+	*/
 	template<typename T>
 	T penalty_svensson(const std::vector<T>& solution)
 	{

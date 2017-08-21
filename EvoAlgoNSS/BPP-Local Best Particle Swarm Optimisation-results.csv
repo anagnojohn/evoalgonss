@@ -1,3 +1,0 @@
-Solved,Solution,Fitness,Population,Iterations,Elapsed Time,Initial Solution,Standard Deviation,Initial Population,Tolerance,Maximum Iterations,
-False,[ -0.0090637 0.100877 1.11368 -1.08799 8.33231 7.14566 ],0.00217212,24,2000,2.09081,[ 0.045086 0.00370198 0 0 8.98754 8.98754 ],[ 0.7 0.7 0.7 0.7 0.7 0.7 ],24,0.001,2000,C1,2.05,C2,2.05,Neighbourhood size,6,Inertia,0.729,Alpha parameter for maximum velocity,1,Maximum Velocity,[ 1.5 4.5 6 6 0.25 0.3 ]
-False,[ -0.0509283 0.085941 1.60962 -1.39757 9.35017 8.77298 ],0.00169725,24,2000,1.99234,[ 0.0450874 0.00370067 0 0 8.98754 8.98754 ],[ 0.7 0.7 0.7 0.7 0.7 0.7 ],24,0.001,2000,C1,2.05,C2,2.05,Neighbourhood size,6,Inertia,0.729,Alpha parameter for maximum velocity,1,Maximum Velocity,[ 1.5 4.5 6 6 0.25 0.3 ]

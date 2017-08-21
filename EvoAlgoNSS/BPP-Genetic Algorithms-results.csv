@@ -1,3 +1,0 @@
-Solved,Solution,Fitness,Population,Iterations,Elapsed Time,Initial Solution,Standard Deviation,Initial Population,Tolerance,Maximum Iterations,
-False,[ 0.152292 -0.0865667 0.393224 -0.631341 7.65217 9.06017 ],0.00336667,8,400,1.16087,[ 0.045086 0.00370198 0 0 8.98754 8.98754 ],[ 0.5 0.5 0.5 0.5 0.5 0.5 ],800,1e-05,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
-False,[ 0.106975 -0.0296374 -0.0884958 -0.07453 13.5277 4.469 ],0.00223293,8,400,1.16802,[ 0.0450874 0.00370067 0 0 8.98754 8.98754 ],[ 0.5 0.5 0.5 0.5 0.5 0.5 ],800,1e-05,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual

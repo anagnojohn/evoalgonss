@@ -5,21 +5,25 @@
 #include <limits>
 #include "bond.h"
 #include "svensson.h"
-#include "irr.h"
 #include "yield_curve_fitting.h"
-#include "geneticalgo.h"
-#include "local_best_pso.h"
-#include "differentialevo.h"
 
-
-using namespace ea;
-using namespace nss;
 namespace bond
 {
-	// Enumerator for type of bondpricing, using yields or prices
-	enum class Bond_pricing_type { bpp, bpy };
+	using namespace nss;
+	/** \enum Bond_pricing_type
+	*  \brief Enumeration for type of bondpricing, using yields or prices
+	*/
+	enum class Bond_pricing_type
+	{ 
+		bpp, /*!< Use bond prices */
+		bpy /*!< Use bond yields-to-maturities */
+	};
 
-	//! Reads bonds from file
+	/** \fn read_bonds_from_file(const std::string & filename)
+	*  \brief Reads bond data from a file
+	*  \param filename The name of the input file as an std::string
+	*  \return A vector of Bond<T> objects
+	*/
 	template<typename T>
 	std::vector<Bond<T>> read_bonds_from_file(const std::string & filename)
 	{
@@ -41,29 +45,72 @@ namespace bond
 		return bonds;
 	}
 
-	//! A class for the bond pricing problem
+	/*! \class BondHelper
+	*  \brief A class for the bond pricing problem as well as finding the yield-to-maturities of bonds
+	*/
 	template<typename T>
 	class BondHelper
 	{
 	public:
-		//! Constructor
-		BondHelper(const std::vector<Bond<T>>& i_bonds, const DF_type& i_df_type = DF_type::exp) : bonds{ i_bonds }, df_type{ i_df_type } {};
-		//! This method sets the nss initial svensson parameters by computing the bond yields-to-maturity and Macaulay durations
+		/** \fn BondHelper(const std::vector<Bond<T>>& i_bonds, const DF_type& i_df_type = DF_type::exp)
+		*  \brief Constructor
+		*  \param i_bonds A vector of Bond<T> objects
+		*  \param i_df_type The type of discount factor method
+		*  \return A BondHelper<T> object
+		*/
+		BondHelper(const std::vector<Bond<T>>& i_bonds, const DF_type& i_df_type = DF_type::exp) : 
+			bonds( i_bonds ), 
+			df_type( i_df_type )
+		{};
+		/** \fn set_init_nss_params(const S& solver)
+		*  \brief This method sets the nss initial svensson parameters by computing the bond yields-to-maturity and Macaulay durations
+		*  \param solver The parameter structure of the solver that is going to be used
+		*  \return A vector of decision variables for NSS
+		*/
 		template<typename S> std::vector<T> set_init_nss_params(const S& solver);
-		//! This methods solves the bond pricing problem using prices or yields and the supplied solver
+		/** \fn bond_pricing(const S1& solver, const S2& solver_irr, const Bond_pricing_type& bond_pricing_type)
+		*  \brief This methods solves the bond pricing problem using prices or yields and the supplied solver
+		*  \param solver The parameter structure of the solver that is going to be used for bond pricing
+		*  \param solver_irr The parameter structure of the solver that is going to be used to estimate the yield of maturity
+		*  \param bond_pricing_type Whether to use bond yields-to-maturities or bond prices to find the NSS parameters
+		*  \return void
+		*/
 		template<typename S1, typename S2> void bond_pricing(const S1& solver, const S2& solver_irr, const Bond_pricing_type& bond_pricing_type);
-		//! This method prints to screen the bond pricing results
+		/** \fn print_bond_pricing_results(const std::vector<T>& res, const S& solver_irr)
+		*  \brief This method prints to screen the bond pricing results
+		*  \param res The solution vector of NSS parameters
+		*  \param solver_irr The parameter structure of the solver that is going to be used to estimate the yield of maturity
+		*  \return void
+		*/
 		template<typename S> void print_bond_pricing_results(const std::vector<T>& res, const S& solver_irr);
 	private:
-		//! Vector of bonds
+		/** \brief Vector of bonds */
 		std::vector<Bond<T>> bonds;
-		//! Discount Factor type
+		/** \brief Discount Factor type */
 		const DF_type df_type;
-		//! Returns the bond prices using the estimated spot interest rates computed with svensson
+		/** \fn estimate_bond_pricing(const std::vector<T>& solution, const T& coupon_value, const T& nominal_value, const std::vector<T>& time_periods)
+		*  \brief Returns the bond prices using the estimated spot interest rates computed with svensson
+		*  \param solution NSS parameters candindate solution
+		*  \param coupon_value The value of the coupon payment
+		*  \param nominal_value The nominal value of the investment
+		*  \param time_periods The time periods that correspond to the coupon payments
+		*  \return The price of the bond
+		*/
 		T estimate_bond_pricing(const std::vector<T>& solution, const T& coupon_value, const T& nominal_value, const std::vector<T>& time_periods);
-		//! This is the fitness function for bond pricing using the bonds' yields-to-maturity
+		/** \fn fitness_bond_pricing_yields(const std::vector<T>& solution, const S& solver_irr, const bool& use_penalty_method)
+		*  \brief This is the fitness function for bond pricing using the bonds' yields-to-maturity
+		*  \param solution NSS parameters candindate solution
+		*  \param solver_irr The parameter structure of the solver that is going to be used to estimate the yield of maturity
+		*  \param use_penalty_method Whether to use the penalty method defined for NSS or not
+		*  \return The fitness cost of NSS for bond pricing
+		*/
 		template<typename S> T fitness_bond_pricing_yields(const std::vector<T>& solution, const S& solver_irr, const bool& use_penalty_method);
-		//! This is the fitness function for bond pricing using the bonds' prices
+		/** \fn fitness_bond_pricing_prices(const std::vector<T>& solution, const bool& use_penalty_method)
+		*  \brief This is the fitness function for bond pricing using the bonds' prices
+		*  \param solution NSS parameters candindate solution
+		*  \param use_penalty_method Whether to use the penalty method defined for NSS or not
+		*  \return The fitness cost of NSS for bond pricing
+		*/
 		T fitness_bond_pricing_prices(const std::vector<T>& solution, const bool& use_penalty_method);
 	};
 
@@ -232,36 +279,5 @@ namespace bond
 			//std::cout << "Estimated price: " << estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods) << " Actual Price: " << p.price << "\n";
 		}
 		std::cout << "Price Mean Squared Error: " << error / bonds.size() << "\n";
-	}
-
-	//! This method sets the nss initial svensson parameters using test data
-	template<typename T>
-	std::vector<T> set_init_nss_params(std::vector<Bond<T>>& bonds)
-	{
-		read_bonds_from_file<double>("bond_data.txt");
-		bonds[0].yield = 0.054308895;
-		bonds[1].yield = 0.090624152;
-		bonds[2].yield = 0.030896968;
-		bonds[3].yield = 0.006625537;
-		bonds[4].yield = 0.07972484;
-		bonds[5].yield = 0.03366204;
-		bonds[6].yield = 0.039963969;
-		bonds[7].yield = 0.070339142;
-		bonds[0].duration = 2.944988754;
-		bonds[1].duration = 4.966178711;
-		bonds[2].duration = 6.279674883;
-		bonds[3].duration = 9.474865358;
-		bonds[4].duration = 8.416273259;
-		bonds[5].duration = 14.93089635;
-		bonds[6].duration = 15.38446779;
-		bonds[7].duration = 12.22184684;
-		double b0 = bonds[0].yield;
-		double b1 = bonds[6].yield - b0;
-		double b2 = 0;
-		double b3 = 0;
-		double tau1 = bonds[0].duration;
-		double tau2 = tau1;
-		const std::vector<T> decision_variables{ b0, b1, b2, b3, tau1, tau2 };
-		return decision_variables;
 	}
 }

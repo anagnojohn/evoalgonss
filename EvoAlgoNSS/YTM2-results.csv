@@ -1,13 +1,38 @@
 Algorithm,Solved,Solution,Fitness,Population,Iterations,Elapsed Time,Initial Solution,Standard Deviation,Initial Population,Tolerance,Maximum Iterations
-Differential Evolution,True,[ 0.0455928 ],2.03959e-09,30,23,0.0010346,[ 0.05 ],[ 0.7 ],30,1e-07,200,Crossover Rate,0.6,Mutation Scale Factor,1
-Genetic Algorithms,False,[ 0.0444248 ],0.48419,8,30,0.0006511,[ 0.05 ],[ 0.5 ],10,1e-07,30,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
-Local Best Particle Swarm Optimisation,False,[ 0.0455915 ],6.82408e-07,16,500,0.0226112,[ 0.05 ],[ 0.7 ],16,1e-07,500,C1,2.05,C2,2.05,Neighbourhood size,4,Inertia,0.729,Alpha parameter for maximum velocity,1,Maximum Velocity,[ 1e+06 ]
-Differential Evolution,True,[ 0.045593 ],4.10581e-09,30,23,0.0009267,[ 0.05 ],[ 0.7 ],30,1e-07,200,Crossover Rate,0.6,Mutation Scale Factor,1
-Genetic Algorithms,False,[ 0.0442685 ],0.622986,8,30,0.0002556,[ 0.05 ],[ 0.5 ],10,1e-07,30,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
-Local Best Particle Swarm Optimisation,False,[ 0.0455912 ],9.26399e-07,16,500,0.0247471,[ 0.05 ],[ 0.7 ],16,1e-07,500,C1,2.05,C2,2.05,Neighbourhood size,4,Inertia,0.729,Alpha parameter for maximum velocity,1,Maximum Velocity,[ 1e+06 ]
-Differential Evolution,True,[ 0.0455932 ],4.51127e-08,30,20,0.0008411,[ 0.05 ],[ 0.7 ],30,1e-07,200,Crossover Rate,0.6,Mutation Scale Factor,1
-Genetic Algorithms,False,[ 0.0414741 ],6.11984,8,30,0.0007432,[ 0.05 ],[ 0.5 ],10,1e-07,30,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
-Local Best Particle Swarm Optimisation,True,[ 0.0455927 ],9.95318e-09,16,500,0.0237092,[ 0.05 ],[ 0.7 ],16,1e-07,500,C1,2.05,C2,2.05,Neighbourhood size,4,Inertia,0.729,Alpha parameter for maximum velocity,1,Maximum Velocity,[ 1e+06 ]
-Differential Evolution,True,[ 0.0455933 ],6.87883e-08,30,30,0.0015514,[ 0.05 ],[ 0.7 ],30,1e-07,200,Crossover Rate,0.6,Mutation Scale Factor,1
-Genetic Algorithms,False,[ 0.0460582 ],0.0761605,8,30,0.0003725,[ 0.05 ],[ 0.5 ],10,1e-07,30,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
-Local Best Particle Swarm Optimisation,False,[ 0.0328099 ],61.8803,16,500,0.0096197,[ 0.05 ],[ 0.7 ],16,1e-07,500,C1,2.05,C2,2.05,Neighbourhood size,4,Inertia,0.729,Alpha parameter for maximum velocity,1,Maximum Velocity,[ 1e+06 ]
+Genetic Algorithms,False,[ 0.0479543 ],1.94052,8,400,0.0040502,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0455386 ],0.00103621,8,400,0.0038424,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0455942 ],6.24655e-07,8,400,0.0034189,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0458271 ],0.0193291,8,400,0.0034671,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0430848 ],2.24905,8,400,0.003157,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0406814 ],8.74063,8,400,0.0032439,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0449711 ],0.136782,8,400,0.0034062,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0453018 ],0.029906,8,400,0.0034311,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.045475 ],0.00490191,8,400,0.0034236,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0437825 ],1.16724,8,400,0.0029969,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0455998 ],1.7149e-05,8,400,0.0033358,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0454556 ],0.00664421,8,400,0.0036503,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.046086 ],0.0855153,8,400,0.0033706,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0455866 ],1.38333e-05,8,400,0.0042536,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0460814 ],0.0839315,8,400,0.0037014,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0463199 ],0.185606,8,400,0.003475,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0455997 ],1.66884e-05,8,400,0.0030613,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0454042 ],0.0125632,8,400,0.0031144,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0465063 ],0.292707,8,400,0.0083646,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0460306 ],0.0673964,8,400,0.0030992,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0454442 ],0.00779742,8,400,0.0069223,[ 0.05 ],[ 0.5 ],20,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0457758 ],0.0117862,8,400,0.0028294,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0422823 ],3.93591,8,400,0.0029263,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0470101 ],0.702601,8,400,0.0089399,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0456571 ],0.0014573,8,400,0.0038344,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0456573 ],0.00146484,8,400,0.0033463,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0455721 ],0.000151846,8,400,0.003322,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0461537 ],0.110572,8,400,0.0032205,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0387774 ],17.0115,8,400,0.0034197,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0407209 ],8.59877,8,400,0.003234,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0457279 ],0.0064278,8,400,0.0032463,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0475358 ],1.31676,8,400,0.0031554,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Differential Evolution,True,[ 0.0455934 ],9.19462e-08,20,20,0.0006053,[ 0.05 ],[ 0.7 ],20,1e-07,400,Crossover Rate,0.6,Mutation Scale Factor,1
+Differential Evolution,True,[ 0.0455928 ],1.28964e-10,20,23,0.0007534,[ 0.05 ],[ 0.7 ],20,1e-07,400,Crossover Rate,0.6,Mutation Scale Factor,1
+Differential Evolution,True,[ 0.0455925 ],3.61183e-08,20,23,0.0006151,[ 0.05 ],[ 0.7 ],20,1e-07,400,Crossover Rate,0.6,Mutation Scale Factor,1
+Differential Evolution,True,[ 0.0455932 ],3.91792e-08,20,21,0.0259915,[ 0.05 ],[ 0.7 ],20,1e-07,400,Crossover Rate,0.6,Mutation Scale Factor,1
+Differential Evolution,True,[ 0.0455923 ],9.38759e-08,20,22,0.0006471,[ 0.05 ],[ 0.7 ],20,1e-07,400,Crossover Rate,0.6,Mutation Scale Factor,1

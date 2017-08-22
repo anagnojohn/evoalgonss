@@ -4,6 +4,9 @@
 build/
 EvoAlgoNSS/*.csv
 EvoAlgoNSS/tests/*.csv
+EvoAlgoNSS/cmake_build_debug
+EvoAlgoNSS/cmake_build_release
+EvoAlgoNSS/build
 
 # User-specific files
 *.suo

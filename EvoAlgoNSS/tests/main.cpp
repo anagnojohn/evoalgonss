@@ -1,9 +1,5 @@
 //! ConsoleApplication1.cpp : Defines the entry point for the console application.
 //!
-#ifdef _WIN32
-	#include "stdafx.h"
-#else
-#endif
 #include "../src/bondhelper.h"
 #include "../src/geneticalgo.h"
 #include "../src/local_best_pso.h"

@@ -36,8 +36,8 @@ namespace ea
 		*/
 		PSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const T& i_alpha, const std::vector<T>& i_vmax, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
 			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max,
-			const bool& i_use_penalty_method = false, const Constraints_type& i_constraints_type = Constraints_type::none,
-			const bool& i_print_to_output = true, const bool& i_print_to_file = true) :
+			const bool& i_use_penalty_method, const Constraints_type& i_constraints_type,
+			const bool& i_print_to_output, const bool& i_print_to_file) :
 			EA_base<T>(i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max, i_use_penalty_method, i_constraints_type, i_print_to_output, i_print_to_file),
 			c1( i_c1 ),
 			c2( i_c2 ), 
@@ -336,14 +336,13 @@ namespace ea
 			{
 				p = (1 - std::pow(iter / pso.iter_max, pso.alpha)) * p;
 			}
+			this->last_iter = iter;
 			if (check_pso_criteria())
 			{
 				this->solved_flag = true;
-				this->last_iter = iter;
 				break;
 			}
 		}
-		this->last_iter = pso.iter_max;
 	}
 	
 }

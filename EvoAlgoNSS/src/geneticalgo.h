@@ -36,9 +36,9 @@ namespace ea
 		*	\return A GA<T> object
 		*/
 		GA(const T& i_x_rate, const T& i_pi, const T& i_alpha, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
-			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max, const bool& i_use_penalty_method = false,
-			const Constraints_type& i_constraints_type = Constraints_type::none, const Strategy& i_strategy = Strategy::keep_same,
-			const bool& i_print_to_output = true, const bool& i_print_to_file = true) :
+			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max, const bool& i_use_penalty_method,
+			const Constraints_type& i_constraints_type, const Strategy& i_strategy,
+			const bool& i_print_to_output, const bool& i_print_to_file) :
 			EA_base<T> ( i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max, i_use_penalty_method, i_constraints_type, i_print_to_output, i_print_to_file ),
 			x_rate ( i_x_rate ),
 			pi ( i_pi ),
@@ -203,10 +203,10 @@ namespace ea
 			std::sort(this->individuals.begin(), this->individuals.end(), comparator);
 			this->individuals.erase(this->individuals.begin() + nkeep(), this->individuals.begin() + this->individuals.size());
 			this->min_cost = this->individuals[0];
+			this->last_iter = iter;
 			if (ga.tol > std::abs(this->f(this->min_cost)))
 			{
 				this->solved_flag = true;
-				this->last_iter = iter;
 				break;
 			}
 			if (this->individuals.size() > 1000)
@@ -261,7 +261,6 @@ namespace ea
 				p = p + 0.02 * p;
 			}
 		}
-		this->last_iter = ga.iter_max;
 	}
 	
 }

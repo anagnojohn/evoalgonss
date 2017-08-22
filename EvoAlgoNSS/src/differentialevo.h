@@ -31,8 +31,8 @@ namespace ea
 		*/
 		DE(const T& i_cr, const T& i_f_param, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
 			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max,
-			const bool& i_use_penalty_method = false, const Constraints_type& i_constraints_type = Constraints_type::none,
-			const bool& i_print_to_output = true, const bool& i_print_to_file = true) :
+			const bool& i_use_penalty_method, const Constraints_type& i_constraints_type,
+			const bool& i_print_to_output, const bool& i_print_to_file) :
 			EA_base<T>(i_decision_variables, i_stdev, i_npop, i_tol, i_iter_max, i_use_penalty_method, i_constraints_type, i_print_to_output, i_print_to_file),
 			cr( i_cr ),
 			f_param( i_f_param )
@@ -191,13 +191,12 @@ namespace ea
 			//! Recalculate minimum cost individual of the population
 			this->find_min_cost();
 			//! Stopping Criteria
+			this->last_iter = iter;
 			if (de.tol > std::abs(this->f(this->min_cost)))
 			{
 				this->solved_flag = true;
-				this->last_iter = iter;
 				break;
 			}
 		}
-		this->last_iter = de.iter_max;
 	}
 }

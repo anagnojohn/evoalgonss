@@ -58,7 +58,7 @@ namespace bond
 		*  \param i_df_type The type of discount factor method
 		*  \return A BondHelper<T> object
 		*/
-		BondHelper(const std::vector<Bond<T>>& i_bonds, const DF_type& i_df_type = DF_type::exp) : 
+		BondHelper(const std::vector<Bond<T>>& i_bonds, const DF_type& i_df_type) : 
 			bonds( i_bonds ), 
 			df_type( i_df_type )
 		{};
@@ -271,13 +271,13 @@ namespace bond
 			error = error + std::pow(estimate - p.yield, 2);
 			//std::cout << "Estimated yield: " << estimate << " Actual Yield: " << p.yield << "\n";
 		}
-		std::cout << "Yield Mean Squared Error: " << error / bonds.size() << "\n";
+		std::cout << "Yield Mean Squared Error: " << error << "\n";
 		error = 0;
 		for (const auto& p : bonds)
 		{
-			error = error + std::pow(estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods) - p.price, 2);
+			error = error + std::pow(estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods)/100 - p.price/100, 2);
 			std::cout << "Estimated price: " << estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods) << " Actual Price: " << p.price << "\n";
 		}
-		std::cout << "Price Mean Squared Error: " << error / bonds.size() << "\n";
+		std::cout << "Price Mean Squared Error: " << error << "\n";
 	}
 }

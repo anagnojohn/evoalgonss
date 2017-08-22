@@ -9,15 +9,13 @@ set(SOURCE_FILES
         differentialevo.h
         ealgorithm_base.h
         geneticalgo.h
-        helper_functions.h
         irr.h
         local_best_pso.h
         main.cpp
         svensson.h
+        utilities.h
         yield_curve_fitting.h)
-set(Boost_INCLUDE_DIR c:/mingw/include/)
-set(Date_INCLUDE_DIR c:/users/john/development/repositories/remote/date)
-set(Boost_LIBRARY_DIR c:/mingw/lib/)
-find_package(Boost COMPONENTS system filesystem REQUIRED)
+set(Boost_INCLUDE_DIR /home/test/Documents/boost_1_65_0)
+set(Date_INCLUDE_DIR /home/test/Documents/date)
 include_directories(${Boost_INCLUDE_DIR} ${Date_INCLUDE_DIR})
 add_executable(EvoAlgoNSS ${SOURCE_FILES})

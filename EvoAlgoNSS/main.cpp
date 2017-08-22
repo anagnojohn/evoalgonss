@@ -1,7 +1,7 @@
 //! ConsoleApplication1.cpp : Defines the entry point for the console application.
 //!
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "bondhelper.h"
 #include "geneticalgo.h"
 #include "local_best_pso.h"

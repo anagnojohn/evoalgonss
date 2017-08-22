@@ -127,10 +127,10 @@ namespace ea
 		std::stringstream display_parameters()
 		{
 			std::stringstream parameters;
-			parameters << "Natural Selection Rate" << "," << ga.x_rate << ",";
-			parameters << "Probability of Mutation" << "," << ga.pi << ",";
-			parameters << "Beta Distribution alpha" << "," << ga.alpha << ",";
-			parameters << "Strategy" << ",";
+			parameters << "Natural Selection Rate:" << "," << ga.x_rate << ",";
+			parameters << "Probability of Mutation:" << "," << ga.pi << ",";
+			parameters << "Beta Distribution alpha:" << "," << ga.alpha << ",";
+			parameters << "Strategy:" << ",";
 			switch (ga.strategy)
 			{
 			case Strategy::keep_same: parameters << "Keep same individual"; break;

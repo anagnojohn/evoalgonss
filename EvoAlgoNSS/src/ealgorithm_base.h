@@ -114,11 +114,11 @@ namespace ea
 		*/
 		Solver_base(const S<T>& i_solver_struct, const F& i_f, const C& i_c) :
 			solver_struct{ i_solver_struct },
-			individuals{ init_individuals(i_solver_struct) },
-			min_cost{ individuals[0] },
-			last_iter{ 0 },
 			f{ i_f },
 			c{ i_c },
+			individuals{ init_individuals(i_solver_struct, i_c) },
+			min_cost{ individuals[0] },
+			last_iter{ 0 },
 			solved_flag{ false },
 			timer{ 0 },
 			distribution{ std::uniform_real_distribution<T>(0.0, 1.0) }
@@ -128,16 +128,16 @@ namespace ea
 		}
 		/** \brief Internal copy of the structure used for parameters of the algorithm */
 		const S<T> solver_struct;
+		/** \brief Copy of the fitness function passed as a lambda */
+		F f;
+		/** \brief Copy of the constraints function passed as a lambda */
+		C c;
 		/** \brief Population */
 		std::vector<std::vector<T>> individuals;
 		/** \brief Best solution / lowest fitness */
 		std::vector<T> min_cost;
 		/** \brief  Last iteration to solution */
 		size_t last_iter;
-		/** \brief Copy of the fitness function passed as a lambda */
-		F f;
-		/** \brief Copy of the constraints function passed as a lambda */
-		C c;
         /** \brief A flag which determines if the solver has already solved the problem */
         bool solved_flag;
         /** \brief The timer used for benchmarks */
@@ -153,7 +153,7 @@ namespace ea
 		*  \brief Initialises the population by randomising aroung the decision variables using the given standard deviation
 		*  \return The population after checking the constraints of the optimisation problem
 		*/
-		std::vector<std::vector<T>> init_individuals(const S<T>& solver_struct);
+		std::vector<std::vector<T>> init_individuals(const S<T>& solver_struct, const C& c);
 		/*! \fn find_min_cost()
 		*  \brief Find the minimum cost individual of the fitness function for the population
 		*  \return void
@@ -187,7 +187,7 @@ namespace ea
 	}
 
 	template<typename Derived, template<typename> class S, typename T, typename F, typename C>
-	std::vector<std::vector<T>> Solver_base<Derived, S, T, F, C>::init_individuals(const S<T>& solver_struct)
+	std::vector<std::vector<T>> Solver_base<Derived, S, T, F, C>::init_individuals(const S<T>& solver_struct, const C& c)
 	{
 		std::vector<std::vector<T>> individuals(solver_struct.npop, std::vector<T>(solver_struct.ndv));
 		for (auto& p : individuals)
@@ -218,7 +218,7 @@ namespace ea
 	std::stringstream Solver_base<Derived, S, T, F, C>::display_results()
 	{
 		std::stringstream results;
-		results << solver_struct.type << ",";
+		results << "Algorithm" << "," << solver_struct.type << "," << "Solved" << ",";
 		if (!solved_flag)
 		{
 			results << "False" << ",";
@@ -227,16 +227,24 @@ namespace ea
 		{
 			results << "True" << ",";
 		}
-		results << min_cost << ",";
-		results << f(min_cost) << ",";
-		results << individuals.size() << ",";
-		results << last_iter << ",";
-		results << timer << ",";
-		results << solver_struct.decision_variables << ",";
-		results << solver_struct.stdev << ",";
-		results << solver_struct.npop << ",";
-		results << solver_struct.tol << ",";
-		results << solver_struct.iter_max << ",";
+		results << "Solution:" << "," <<  min_cost << ",";
+		results << "Fitness:" << "," << f(min_cost) << ",";
+		results << "Population:" << "," << individuals.size() << ",";
+		results << "Iterations:" << "," << last_iter << ",";
+		results << "Elapsed Time:" << "," << timer << ",";
+		results << "Starting Values:" << "," << solver_struct.decision_variables << ",";
+		results << "Standard Deviation:" << "," << solver_struct.stdev << ",";
+		results << "Initial Population:" << "," << solver_struct.npop << ",";
+		results << "Tolerance:" << "," << solver_struct.tol << ",";
+		results << "Maximum Iterations:" << "," << solver_struct.iter_max << ",";
+		results << "Using Penalty Function:" << "," << solver_struct.use_penalty_method << ",";
+		results << "Using Constraints:" << ",";
+		switch (solver_struct.constraints_type)
+		{
+		case(Constraints_type::normal): results << "Normal" << ","; break;
+		case(Constraints_type::tight): results << "Tight" << ","; break;
+		case(Constraints_type::none): results << "None" << ","; break;
+		}
 		results << static_cast<Derived*>(this)->display_parameters().str() << "\n";
 		return results;
 	}
@@ -245,28 +253,10 @@ namespace ea
 	void Solver_base<Derived, S, T, F, C>::write_results_to_file(const std::string& problem_name)
 	{
 		std::string filename;
-		std::string stypes;
-		stypes.append("Algorithm,Solved,Solution,Fitness,Population,Iterations,Elapsed Time,Initial Solution,Standard Deviation,Initial Population,Tolerance,Maximum Iterations");
 		filename.append(problem_name);
 		filename.append("-results.csv");
-		std::ifstream in(filename);
-		bool written_first_line = false;
-		if (in.good())
-		{
-			std::string line;
-			std::getline(in, line);
-			if (line == stypes)
-			{
-				written_first_line = true;
-			}
-		}
-		in.close();
 		std::ofstream out;
 		out.open(filename, std::ofstream::out | std::ofstream::app);
-		if (!written_first_line)
-		{
-			out << stypes << "\n";
-		}
 		out << display_results().str();
 	}
 	

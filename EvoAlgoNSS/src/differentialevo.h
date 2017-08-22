@@ -109,8 +109,8 @@ namespace ea
 		std::stringstream display_parameters()
 		{
 			std::stringstream parameters;
-			parameters << "Crossover Rate" << "," << de.cr << ",";
-			parameters << "Mutation Scale Factor" << "," << de.f_param;
+			parameters << "Crossover Rate:" << "," << de.cr << ",";
+			parameters << "Mutation Scale Factor:" << "," << de.f_param;
 			return parameters;
 		}
 		/** \fn run_algo
@@ -170,6 +170,7 @@ namespace ea
 	template<typename T, typename F, typename C>
 	void Solver<DE, T, F, C>::run_algo()
 	{
+		std::vector< std::vector<T> > personal_best = this->individuals;
 		//! Differential Evolution starts here
 		for (size_t iter = 0; iter < de.iter_max; ++iter)
 		{
@@ -196,7 +197,7 @@ namespace ea
 				this->last_iter = iter;
 				break;
 			}
-			this->last_iter = de.iter_max;
 		}
+		this->last_iter = de.iter_max;
 	}
 }

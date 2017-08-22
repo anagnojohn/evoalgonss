@@ -193,12 +193,12 @@ namespace ea
 		std::stringstream display_parameters()
 		{
 			std::stringstream parameters;
-			parameters << "C1" << "," << pso.c1 << ",";
-			parameters << "C2" << "," << pso.c2 << ",";
-			parameters << "Neighbourhood size" << "," << pso.sneigh << ",";
-			parameters << "Inertia" << "," << pso.w << ",";
-			parameters << "Alpha parameter for maximum velocity" << "," << pso.alpha << ",";
-			parameters << "Maximum Velocity" << "," << pso.vmax;
+			parameters << "C1:" << "," << pso.c1 << ",";
+			parameters << "C2:" << "," << pso.c2 << ",";
+			parameters << "Neighbourhood size:" << "," << pso.sneigh << ",";
+			parameters << "Inertia:" << "," << pso.w << ",";
+			parameters << "Alpha parameter for maximum velocity:" << "," << pso.alpha << ",";
+			parameters << "Maximum Velocity:" << "," << pso.vmax;
 			return parameters;
 		}
 	};

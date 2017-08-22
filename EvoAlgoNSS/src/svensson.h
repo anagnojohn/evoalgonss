@@ -52,6 +52,7 @@ namespace nss
 			}
 		}
 		case(Constraints_type::none): return true;
+		default: return true;
 		}
 	}
 

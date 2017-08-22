@@ -29,13 +29,13 @@ int main()
 	for (auto i = 0; i < 100; ++i)
 	{
 		//std::cout << "NEW RUN" << "\n" << "\n" << "\n";
-		de.set_init_nss_params(ga_irr);
+		//de.set_init_nss_params(ga_irr);
 		//de.set_init_nss_params(pso_irr);
 		//! Pricing solvers
-		//ir.yieldcurve_fitting(de_pricing);
+		ir.yieldcurve_fitting(de_pricing);
 		//ir.yieldcurve_fitting(ga_pricing);
 		//ir.yieldcurve_fitting(pso_pricing);
-		//de.bond_pricing(de_pricing, de_irr_check, Bond_pricing_type::bpp);
+		de.bond_pricing(de_pricing, de_irr_check, Bond_pricing_type::bpp);
 		//de.bond_pricing(ga_pricing, de_irr_check, Bond_pricing_type::bpp);
 		//de.bond_pricing(pso_pricing, de_irr_check, Bond_pricing_type::bpp);
 	}

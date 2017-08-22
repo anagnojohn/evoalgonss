@@ -276,7 +276,7 @@ namespace bond
 		for (const auto& p : bonds)
 		{
 			error = error + std::pow(estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods) - p.price, 2);
-			//std::cout << "Estimated price: " << estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods) << " Actual Price: " << p.price << "\n";
+			std::cout << "Estimated price: " << estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods) << " Actual Price: " << p.price << "\n";
 		}
 		std::cout << "Price Mean Squared Error: " << error / bonds.size() << "\n";
 	}

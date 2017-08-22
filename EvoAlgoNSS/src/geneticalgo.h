@@ -248,6 +248,7 @@ namespace ea
 						break;
 					}
 					case Strategy::none: break;
+					default: std::abort();
 					}
 				}
 				this->individuals[i] = mutated;

@@ -17,7 +17,6 @@ int main()
 	Interest_Rate_Helper<double> ir{ read_ir_from_file<double>("interest_rate_data_periods.txt") };
 	BondHelper<double> de{ read_bonds_from_file<double>("bond_data_3.txt") };
 	//! IRR solvers
-	
 	DE<double> de_irr{ 0.6, 1.00,{ 0.05 },{ 0.7 }, 20, irr_tol, 400, false, Constraints_type::normal, true, true };
 	DE<double> de_irr_check{ 0.6, 1.00,{ 0.05 },{ 0.7 }, 20, irr_tol, 400, false, Constraints_type::normal, false, false };
 	GA<double> ga_irr{ 0.4, 0.35, 6.0, { 0.05 },{ 0.5 }, 10, irr_tol, 400, false, Constraints_type::normal, Strategy::keep_same, true, true};

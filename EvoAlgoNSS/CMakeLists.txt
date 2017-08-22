@@ -3,6 +3,8 @@ project(EvoAlgoNSS)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS -Wall)
+set(CMAKE_C_COMPILER=clang)
+set(CMAKE_CXX_COMPILER=clang++)
 set(SOURCE_FILES
         bond.h
         bondhelper.h

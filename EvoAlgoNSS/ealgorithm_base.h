@@ -138,12 +138,12 @@ namespace ea
 		F f;
 		/** \brief Copy of the constraints function passed as a lambda */
 		C c;
+        /** \brief A flag which determines if the solver has already solved the problem */
+        bool solved_flag;
+        /** \brief The timer used for benchmarks */
+        T timer;
 		/** \brief Uniform real distribution */
 		std::uniform_real_distribution<T> distribution;
-		/** \brief A flag which determines if the solver has already solved the problem */
-		bool solved_flag;
-		/** \brief The timer used for benchmarks */
-		T timer;
 		/*! \fn randomise_individual()
 		*  \brief Returns a randomised individual using the initial decision variables and standard deviation
 		*  \return A randomised individual of type std::vector<T>, where T is a floating-point number type.

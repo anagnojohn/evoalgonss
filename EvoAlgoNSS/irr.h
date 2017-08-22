@@ -23,6 +23,7 @@ namespace irr
 		{
 		case (DF_type::frac): return 1 / std::pow((1 + r), period);
 		case (DF_type::exp): return std::exp(-r * period);
+            default: return std::exp(-r * period);
 		}
 	}
 
@@ -51,6 +52,7 @@ namespace irr
 		}
 		case(Constraints_type::tight): return true;
 		case(Constraints_type::none): return true;
+            default: return true;
 		}
 	}
 

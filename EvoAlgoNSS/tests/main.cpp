@@ -1,11 +1,13 @@
 //! ConsoleApplication1.cpp : Defines the entry point for the console application.
 //!
-
-//#include "stdafx.h"
-#include "bondhelper.h"
-#include "geneticalgo.h"
-#include "local_best_pso.h"
-#include "differentialevo.h"
+#ifdef _WIN32
+	#include "stdafx.h"
+#else
+#endif
+#include "../src/bondhelper.h"
+#include "../src/geneticalgo.h"
+#include "../src/local_best_pso.h"
+#include "../src/differentialevo.h"
 
 int main()
 {

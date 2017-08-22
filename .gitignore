@@ -3,7 +3,7 @@
 
 build/
 EvoAlgoNSS/*.csv
-
+EvoAlgoNSS/tests/*.csv
 
 # User-specific files
 *.suo

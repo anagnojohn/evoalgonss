@@ -114,7 +114,7 @@ namespace ea
 		*/
 		Solver_base(const S<T>& i_solver_struct, const F& i_f, const C& i_c) :
 			solver_struct{ i_solver_struct },
-			individuals{ init_individuals() },
+			individuals{ init_individuals(i_solver_struct) },
 			min_cost{ individuals[0] },
 			last_iter{ 0 },
 			f{ i_f },
@@ -153,7 +153,7 @@ namespace ea
 		*  \brief Initialises the population by randomising aroung the decision variables using the given standard deviation
 		*  \return The population after checking the constraints of the optimisation problem
 		*/
-		std::vector<std::vector<T>> init_individuals();
+		std::vector<std::vector<T>> init_individuals(const S<T>& solver_struct);
 		/*! \fn find_min_cost()
 		*  \brief Find the minimum cost individual of the fitness function for the population
 		*  \return void
@@ -187,7 +187,7 @@ namespace ea
 	}
 
 	template<typename Derived, template<typename> class S, typename T, typename F, typename C>
-	std::vector<std::vector<T>> Solver_base<Derived, S, T, F, C>::init_individuals()
+	std::vector<std::vector<T>> Solver_base<Derived, S, T, F, C>::init_individuals(const S<T>& solver_struct)
 	{
 		std::vector<std::vector<T>> individuals(solver_struct.npop, std::vector<T>(solver_struct.ndv));
 		for (auto& p : individuals)

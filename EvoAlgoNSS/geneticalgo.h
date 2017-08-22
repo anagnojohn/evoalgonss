@@ -213,7 +213,7 @@ namespace ea
 			{
 				//this->individuals.erase(this->individuals.begin() + 1000, this->individuals.begin() + this->individuals.size());
 			}
-			npop = this->individuals.size();
+			//npop = this->individuals.size();
 			for (size_t i = 0; i < npop; ++i)
 			{
 				std::vector<T> offspring = selection();
@@ -253,7 +253,7 @@ namespace ea
 				this->individuals[i] = mutated;
 			}
 			//! Set the new population size which previous population size + natural selection rate * population size
-			this->npop = this->individuals.size();
+			npop = this->individuals.size();
 			//! Standard Deviation is not constant in GA
 			for (auto& p : stdev)
 			{

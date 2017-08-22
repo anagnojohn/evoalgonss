@@ -36,3 +36,51 @@ Differential Evolution,True,[ 0.047819 ],8.83012e-08,20,25,0.0007377,[ 0.05 ],[ 
 Differential Evolution,True,[ 0.0478195 ],1.2902e-08,20,28,0.000973,[ 0.05 ],[ 0.7 ],20,1e-07,400,Crossover Rate,0.6,Mutation Scale Factor,1
 Differential Evolution,True,[ 0.0478195 ],5.29396e-09,20,25,0.0377966,[ 0.05 ],[ 0.7 ],20,1e-07,400,Crossover Rate,0.6,Mutation Scale Factor,1
 Differential Evolution,True,[ 0.0478193 ],9.30091e-09,20,29,0.0008292,[ 0.05 ],[ 0.7 ],20,1e-07,400,Crossover Rate,0.6,Mutation Scale Factor,1
+Differential Evolution,True,[ 0.0478193 ],3.78347e-09,20,20,0.0522634,[ 0.05 ],[ 0.7 ],20,1e-07,400,Crossover Rate,0.6,Mutation Scale Factor,1
+Genetic Algorithms,False,[ 0.0487026 ],0.586316,8,400,0.244606,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0483674 ],0.226345,8,400,0.23295,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0447265 ],7.43747,8,400,0.24195,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.047856 ],0.00101707,8,400,0.213958,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0476471 ],0.0225099,8,400,0.214761,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0495847 ],2.32487,8,400,0.214267,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.045934 ],2.73523,8,400,0.233796,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0417819 ],29.0645,8,400,0.211814,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0484283 ],0.279356,8,400,0.220051,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.047858 ],0.00113072,8,400,0.225467,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0474596 ],0.0983198,8,400,0.237029,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0477384 ],0.00496445,8,400,0.226226,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0477621 ],0.00248407,8,400,0.230169,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0475654 ],0.0489372,8,400,0.231897,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.046285 ],1.80635,8,400,0.230993,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0485272 ],0.377091,8,400,0.213626,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.045568 ],3.91268,8,400,0.229959,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0472803 ],0.221094,8,400,0.237335,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.047084 ],0.412045,8,400,0.23634,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0476248 ],0.0287237,8,400,0.227307,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0496091 ],2.38909,8,400,0.195906,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0465481 ],1.23721,8,400,0.207608,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0476777 ],0.0152214,8,400,0.210739,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.049055 ],1.1441,8,400,0.205942,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0474013 ],0.132822,8,400,0.20349,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0478101 ],6.54295e-05,8,400,0.213013,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0498208 ],2.98248,8,400,0.204643,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0490219 ],1.08395,8,400,0.205624,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0478354 ],0.000193496,8,400,0.240089,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0478163 ],7.15684e-06,8,400,0.198605,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.046627 ],1.08758,8,400,0.212884,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0469383 ],0.592255,8,400,0.202034,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.046704 ],0.951042,8,400,0.216517,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0470129 ],0.495914,8,400,0.22884,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0492684 ],1.57051,8,400,0.210356,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0478184 ],6.86212e-07,8,400,0.222521,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.045957 ],2.66862,8,400,0.207221,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0439616 ],11.6472,8,400,0.23009,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0478545 ],0.000932731,8,400,0.23,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0479345 ],0.0100323,8,400,0.256921,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0400885 ],48.3551,8,400,0.257684,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0483855 ],0.241519,8,400,0.221557,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0463659 ],1.61977,8,400,0.214467,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0443948 ],9.14437,8,400,0.212019,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Genetic Algorithms,False,[ 0.0477359 ],0.00527929,8,400,0.202585,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual
+Differential Evolution,True,[ 0.047819 ],8.84441e-08,20,21,0.0344038,[ 0.05 ],[ 0.7 ],20,1e-07,400,Crossover Rate,0.6,Mutation Scale Factor,1
+Genetic Algorithms,True,[ 0.0478191 ],5.40116e-08,63,400,0.143177,[ 0.05 ],[ 0.5 ],10,1e-07,400,Natural Selection Rate,0.4,Probability of Mutation,0.35,Beta Distribution alpha,6,Strategy,Keep same individual

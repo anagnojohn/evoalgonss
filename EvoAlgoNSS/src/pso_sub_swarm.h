@@ -326,6 +326,10 @@ namespace ea
 		}
 	}
 
+	/** \brief Inverse square of pi constant */
+	template<typename T>
+	const double inv_pi_sq = 1 / std::pow(boost::math::constants::pi<T>(), 2);
+
 	template<typename T, typename F, typename C>
 	void Solver<PSOs, T, F, C>::run_algo()
 	{

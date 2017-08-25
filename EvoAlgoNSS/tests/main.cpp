@@ -83,21 +83,20 @@ int main()
 	double tol_f = 0.001;
 	//! Call benchmark functions
 	Interest_Rate_Helper<double> ir{ read_ir_from_file<double>("interest_rate_data_periods.txt") };
-	BondHelper<double> de{ read_bonds_from_file<double>("bond_data_3.txt"), DF_type::exp };
+	BondHelper<double> de{ read_bonds_from_file<double>("bond_data.txt"), DF_type::exp };
 	//! IRR solvers
 	DE<double> de_irr{ 1, 0.6,{ 0.05 },{ 0.7 }, 10, irr_tol, 500, false, Constraints_type::normal, true, true };
 	DE<double> de_irr_check{ 1, 0.6,{ 0.05 },{ 0.7 }, 10, irr_tol, 500, false, Constraints_type::normal, false, false };
 	GA<double> ga_irr{ 0.4, 0.35, 6.0, { 0.05 },{ 0.5 }, 42, irr_tol, 2000, false, Constraints_type::normal, Strategy::remove, true, true};
 	PSOl<double> pso_irr{ 1.49618, 0.9, { 1000000 },{ 0.05 },{ 0.7 }, 22, irr_tol, 3000, false, Constraints_type::normal, true, true};
 	auto decision_variables = de.set_init_nss_params(de_irr);
-	//auto decision_variables1 = de.set_init_nss_params(pso_irr);
 	DE<double> de_pricing{ 1, 0.6, decision_variables, stdev, 60, tol, 500, false, Constraints_type::tight, true, true };
 	DE<double> de_fitting{ 1, 0.6, decision_variables, stdev, 60, tol_f, 500, false, Constraints_type::tight, true, true };
 	GA<double> ga_pricing{ 0.4, 0.35, 6.0, decision_variables, stdev_ga, 250, tol, 2000, false, Constraints_type::tight, Strategy::remove, true, true };
 	GA<double> ga_fitting{ 0.4, 0.35, 6.0, decision_variables, stdev_ga, 250, tol_f, 2000, false, Constraints_type::tight, Strategy::remove, true, true };
 	PSOl<double> pso_pricing{ 1.49618, 0.9, { 100000, 100000, 100000, 100000, 100000, 100000 }, decision_variables, stdev, 130, tol, 3000, false, Constraints_type::tight, true, true };
 	PSOl<double> pso_fitting{ 1.49618, 0.9, { 100000, 100000, 100000, 100000, 100000, 100000 }, decision_variables, stdev, 130, tol_f, 3000, false, Constraints_type::tight, true, true };
-	//PSOs<double> pso_pricing{ 2.05, 2.05, 6, 0.9, 1.0,{ 100000, 100000, 100000, 100000, 100000, 100000 }, decision_variables, stdev, 24, tol, 1000, false, Constraints_type::none, true, true };
+	PSOs<double> pso_pricing{ 2.05, 2.05, 6, 0.9, 1.0,{ 100000, 100000, 100000, 100000, 100000, 100000 }, decision_variables, stdev, 24, tol, 1000, false, Constraints_type::none, true, true };
 	for (size_t i = 0; i < 100; ++i)
 	{
 		de.bond_pricing(ga_pricing, de_irr_check, Bond_pricing_type::bpp);

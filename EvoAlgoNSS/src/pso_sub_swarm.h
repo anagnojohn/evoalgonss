@@ -73,7 +73,7 @@ namespace ea
 		/** \brief  Velocity Clamping Variant of PSO : Maximum Velocity */
 		const std::vector<T> vmax;
 		/** \brief Type of the algorithm */
-		const std::string type = "Local Best Particle Swarm Optimisation";
+		const std::string type = "Sub-swarm Particle Swarm Optimisation";
 	};
 
 	/*! \class Solver<PSOs, T, F, C>

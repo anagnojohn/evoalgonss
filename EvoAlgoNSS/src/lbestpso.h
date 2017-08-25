@@ -196,8 +196,6 @@ namespace ea
 	std::unordered_map<size_t, std::array<size_t, 3>> Solver<PSOl, T, F, C>::set_neighbourhoods()
 	{
 		std::unordered_map<size_t, std::array<size_t, 3>> neighbours;
-		size_t neigh_index = 0;
-		size_t counter = 0;
 		for (size_t i = 0; i < pso.npop; ++i)
 		{
 			if (i == 0)

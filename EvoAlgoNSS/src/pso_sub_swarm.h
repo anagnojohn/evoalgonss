@@ -328,7 +328,7 @@ namespace ea
 
 	/** \brief Inverse square of pi constant */
 	template<typename T>
-	const double inv_pi_sq = 1 / std::pow(boost::math::constants::pi<T>(), 2);
+	const double inv_pi_sq_2 = 1 / std::pow(boost::math::constants::pi<T>(), 2);
 
 	template<typename T, typename F, typename C>
 	void Solver<PSOs, T, F, C>::run_algo()
@@ -340,7 +340,7 @@ namespace ea
 			best_update();
 			find_min_local_best();
 			//! Inertia is updated
-			w = pso.w - (pso.w - 0.4) * std::pow((static_cast<T>(iter) / static_cast<T>(pso.iter_max)), inv_pi_sq<T>);
+			w = pso.w - (pso.w - 0.4) * std::pow((static_cast<T>(iter) / static_cast<T>(pso.iter_max)), inv_pi_sq_2<T>);
 			this->last_iter = iter;
 			if (check_pso_criteria())
 			{

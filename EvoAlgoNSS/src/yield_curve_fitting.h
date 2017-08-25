@@ -1,3 +1,8 @@
+/** \file yield_curve_fitting.h
+* \author Ioannis Anagnostopoulos
+* \brief Class and functions for the yield curve fitting problem
+*/
+
 #pragma once
 
 #include <iostream>

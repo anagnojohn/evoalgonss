@@ -1,3 +1,8 @@
+/** \file svensson.h
+* \author Ioannis Anagnostopoulos
+* \brief Functions for the Nelson-Siegel-Svensson model
+*/
+
 #pragma once
 
 //! Nelson-Siegel-Svensson (NSS) model namespace
@@ -77,13 +82,10 @@ namespace nss
 		}
 		else
 		{
-			//T result = b0;
-			//result = result + b1 * ((1 - (std::exp(-tau1 * m))) / (tau1 * m));
-			//result = result + b2 * (((1 - (std::exp(-tau1 * m))) / (tau1 * m)) - std::exp(-tau1 * m));
-			//result = result + b3 * (((1 - (std::exp(-tau2 * m))) / (tau2 * m)) - std::exp(-tau2 * m));
-			T result = b0 + (b1 + b2) * (tau1 / m) * (1 - std::exp(-m / tau1))
-				- b2 * std::exp(-m / tau1) + b3 * (tau2 / m) * (1 - std::exp(-m / tau2))
-				- b3 * std::exp(-m / tau2);
+			T result = b0;
+			result = result + b1 * ((1 - (std::exp(-m / tau1))) / (m / tau1));
+			result = result + b2 * (((1 - (std::exp(-m / tau1))) / (m / tau1)) - std::exp(-m / tau1));
+			result = result + b3 * (((1 - (std::exp(-m / tau2))) / (m / tau2)) - std::exp(-m / tau2));
 			return result;
 		}
 	}

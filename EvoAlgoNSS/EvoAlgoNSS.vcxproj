@@ -109,6 +109,10 @@
       <EnablePREfast>true</EnablePREfast>
       <AdditionalIncludeDirectories>C:\Users\John\Development\Repositories\Remote\date;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ControlFlowGuard>Guard</ControlFlowGuard>
+      <FloatingPointModel>Strict</FloatingPointModel>
+      <FloatingPointExceptions>true</FloatingPointExceptions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -165,7 +169,8 @@
     <ClInclude Include="src\ealgorithm_base.h" />
     <ClInclude Include="src\geneticalgo.h" />
     <ClInclude Include="src\irr.h" />
-    <ClInclude Include="src\local_best_pso.h" />
+    <ClInclude Include="src\lbestpso.h" />
+    <ClInclude Include="src\pso_sub_swarm.h" />
     <ClInclude Include="src\svensson.h" />
     <ClInclude Include="src\utilities.h" />
     <ClInclude Include="src\yield_curve_fitting.h" />

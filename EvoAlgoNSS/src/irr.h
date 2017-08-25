@@ -1,3 +1,8 @@
+/** \file irr.h
+* \author Ioannis Anagnostopoulos
+* \brief Functions for the Internal Rate of Return
+*/
+
 #pragma once
 
 #include <vector>

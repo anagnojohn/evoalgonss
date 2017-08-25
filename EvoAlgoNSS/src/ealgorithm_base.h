@@ -1,3 +1,8 @@
+/** \file ealgorithm_base.h
+* \author Ioannis Anagnostopoulos
+* \brief Classes and functions for the base of the solvers
+*/
+
 #pragma once
 
 #include <iostream>
@@ -76,7 +81,7 @@ namespace ea
 			assert(iter_max > 0);
 		}
 	};
-	/** \brief Random device/ Random number generator */
+	/** \brief Random device / Random number generator */
 	std::random_device rd;
 	/** \fn generator(rd())
 	*  \brief Pseudo-random number generator
@@ -116,7 +121,7 @@ namespace ea
 			solver_struct{ i_solver_struct },
 			f{ i_f },
 			c{ i_c },
-			individuals{ init_individuals(i_solver_struct, i_c) },
+			individuals{ init_individuals() },
 			min_cost{ individuals[0] },
 			last_iter{ 0 },
 			solved_flag{ false },
@@ -153,7 +158,7 @@ namespace ea
 		*  \brief Initialises the population by randomising aroung the decision variables using the given standard deviation
 		*  \return The population after checking the constraints of the optimisation problem
 		*/
-		std::vector<std::vector<T>> init_individuals(const S<T>& solver_struct, const C& c);
+		std::vector<std::vector<T>> init_individuals();
 		/*! \fn find_min_cost()
 		*  \brief Find the minimum cost individual of the fitness function for the population
 		*  \return void
@@ -187,7 +192,7 @@ namespace ea
 	}
 
 	template<typename Derived, template<typename> class S, typename T, typename F, typename C>
-	std::vector<std::vector<T>> Solver_base<Derived, S, T, F, C>::init_individuals(const S<T>& solver_struct, const C& c)
+	std::vector<std::vector<T>> Solver_base<Derived, S, T, F, C>::init_individuals()
 	{
 		std::vector<std::vector<T>> individuals(solver_struct.npop, std::vector<T>(solver_struct.ndv));
 		for (auto& p : individuals)
@@ -218,7 +223,7 @@ namespace ea
 	std::stringstream Solver_base<Derived, S, T, F, C>::display_results()
 	{
 		std::stringstream results;
-		results << "Algorithm" << "," << solver_struct.type << "," << "Solved" << ",";
+		results << "Algorithm:" << "," << solver_struct.type << "," << "Solved:" << ",";
 		if (!solved_flag)
 		{
 			results << "False" << ",";
@@ -254,6 +259,8 @@ namespace ea
 	{
 		std::string filename;
 		filename.append(problem_name);
+		//filename.append("-");
+		//filename.append(solver_struct.type);
 		filename.append("-results.csv");
 		std::ofstream out;
 		out.open(filename, std::ofstream::out | std::ofstream::app);
@@ -295,7 +302,7 @@ namespace ea
 	*  \param f The objective function
 	*  \param c The constraints function
 	*  \param solver_struct The parameter structure of the solver
-	*  \param problem_name The name of the problem in std::string form
+	*  \param problem_name The name of the problem in std::string form. It is used to print results to file.
 	*  \return The solution vector
 	*/
 	template<typename F, typename C, template<typename> class S, typename T>

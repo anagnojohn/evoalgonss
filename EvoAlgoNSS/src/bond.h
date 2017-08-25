@@ -1,3 +1,8 @@
+/** \file bond.h
+* \author Ioannis Anagnostopoulos
+* \brief Classes and functions for bonds and their internal rate of return
+*/
+
 #pragma once
 
 #include <iostream>

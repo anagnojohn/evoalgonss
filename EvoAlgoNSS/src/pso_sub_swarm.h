@@ -1,3 +1,8 @@
+/** \file pso_sub_swarm.h
+* \author Ioannis Anagnostopoulos
+* \brief Classes and functions for the initial implementation of Sub-Swarm Particle Swarm Optimisation
+*/
+
 #pragma once
 
 #include "ealgorithm_base.h"
@@ -5,14 +10,14 @@
 
 namespace ea
 {
-	/** \struct PSO
+	/** \struct PSOs
 	*  \brief Particle Swarm Optimisation Structure, used in the actual algorithm and for type deduction
 	*/
 	template<typename T>
-	struct PSO : EA_base<T>
+	struct PSOs : EA_base<T>
 	{
 	public:
-		/** \fn PSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const T& i_alpha, const std::vector<T>& i_vmax, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
+		/** \fn PSOs(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const T& i_alpha, const std::vector<T>& i_vmax, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
 			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max,
 			const bool& i_use_penalty_method = false, const Constraints_type& i_constraints_type = Constraints_type::none,
 			const bool& i_print_to_output = true, const bool& i_print_to_file = true)
@@ -34,7 +39,7 @@ namespace ea
 		\param i_print_to_file Whether to print to a file or not
 		\return A PSO<T> object
 		*/
-		PSO(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const T& i_alpha, const std::vector<T>& i_vmax, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
+		PSOs(const T& i_c1, const T& i_c2, const size_t& i_sneigh, const T& i_w, const T& i_alpha, const std::vector<T>& i_vmax, const std::vector<T>& i_decision_variables, const std::vector<T>& i_stdev,
 			const size_t& i_npop, const T& i_tol, const size_t& i_iter_max,
 			const bool& i_use_penalty_method, const Constraints_type& i_constraints_type,
 			const bool& i_print_to_output, const bool& i_print_to_file) :
@@ -71,23 +76,23 @@ namespace ea
 		const std::string type = "Local Best Particle Swarm Optimisation";
 	};
 
-	/*! \class Solver<PSO, T, F, C>
-	*  \brief Local Best Particle Swarm Optimisation (PSO) Class
+	/*! \class Solver<PSOs, T, F, C>
+	*  \brief Sub-Swarm Particle Swarm Optimisation (PSO) Class
 	*/
 	template<typename T, typename F, typename C>
-	class Solver<PSO, T, F, C> : public Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>
+	class Solver<PSOs, T, F, C> : public Solver_base<Solver<PSOs, T, F, C>, PSOs, T, F, C>
 	{
 	public:
-		friend class Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>;
-		/*! \fn Solver(const PSO<T>& i_pso, F f, C c)
+		friend class Solver_base<Solver<PSOs, T, F, C>, PSOs, T, F, C>;
+		/*! \fn Solver(const PSOs<T>& i_pso, F f, C c)
 		*  \brief Constructor
 		*  \param i_pso The particle swarm optimisation parameter structure that is used to construct the solver
 		*  \param f A reference to the objective function
 		*  \param c A reference to the constraints function
-		*  \return A Solver<PSO, T, F, C> object
+		*  \return A Solver<PSOs, T, F, C> object
 		*/
-		Solver(const PSO<T>& i_pso, F f, C c) :
-			Solver_base<Solver<PSO, T, F, C>, PSO, T, F, C>( i_pso, f, c ),
+		Solver(const PSOs<T>& i_pso, F f, C c) :
+			Solver_base<Solver<PSOs, T, F, C>, PSOs, T, F, C>( i_pso, f, c ),
 			pso( this->solver_struct ), 
 			w( i_pso.w ), 
 			vmax( i_pso.vmax ),
@@ -122,7 +127,7 @@ namespace ea
 		}
 	private:
 		/** \brief Particle Swarm Optimisation structure used internally (reference to solver_struct) */
-		const PSO<T>& pso;
+		const PSOs<T>& pso;
 		/** \brief Inertia is mutable, so a copy is created */
 		T w;
 		/** \brief Maximum Velocity is mutable, so a copy is created */
@@ -197,14 +202,14 @@ namespace ea
 			parameters << "C2:" << "," << pso.c2 << ",";
 			parameters << "Neighbourhood size:" << "," << pso.sneigh << ",";
 			parameters << "Inertia:" << "," << pso.w << ",";
-			parameters << "Alpha parameter for maximum velocity:" << "," << pso.alpha << ",";
+			parameters << "Alpha parameter for inertia:" << "," << pso.alpha << ",";
 			parameters << "Maximum Velocity:" << "," << pso.vmax;
 			return parameters;
 		}
 	};
 
 	template<typename T, typename F, typename C>
-	std::unordered_map<size_t, size_t> Solver<PSO, T, F, C>::set_neighbourhoods()
+	std::unordered_map<size_t, size_t> Solver<PSOs, T, F, C>::set_neighbourhoods()
 	{
 		std::unordered_map<size_t, size_t> neighbourhoods;
 		size_t neigh_index = 0;
@@ -226,10 +231,10 @@ namespace ea
 	}
 	
 	template<typename T, typename F, typename C>
-	std::vector<std::vector<T>> Solver<PSO, T, F, C>::generate_r()
+	std::vector<std::vector<T>> Solver<PSOs, T, F, C>::generate_r()
 	{
-		std::vector<std::vector<T>> r(2, std::vector<T>(pso.ndv));
-		for (auto i = 0; i < 2; ++i)
+		std::vector<std::vector<T>> r(3, std::vector<T>(pso.ndv));
+		for (auto i = 0; i < 3; ++i)
 		{
 			for (size_t j = 0; j < pso.ndv; ++j)
 			{
@@ -240,15 +245,16 @@ namespace ea
 	}
 
 	template<typename T, typename F, typename C>
-	void Solver<PSO, T, F, C>::position_update()
+	void Solver<PSOs, T, F, C>::position_update()
 	{
-		const auto& r = generate_r();
 		for (size_t i = 0; i < pso.npop; ++i)
 		{
 			for (size_t j = 0; j < pso.ndv; ++j)
 			{
-				velocity[i][j] = w * velocity[i][j] + pso.c1 * r[0][j] * (personal_best[i][j] - this->individuals[i][j])
-					+ pso.c2 * r[1][j] * (local_best[neighbourhoods[i]][j] - this->individuals[i][j]);
+				const auto& r = generate_r();
+				velocity[i][j] = 0.729 * velocity[i][j] + //pso.c1 * r[0][j] * (personal_best[i][j] - this->individuals[i][j])
+					+ pso.c2 * r[1][j] * (local_best[neighbourhoods[i]][j] - this->individuals[i][j]) //+(w / 2) * r[2][j]*(min_cost[j] - this->individuals[i][j]);
+					;
 				if (velocity[i][j] > vmax[j])
 				{
 					velocity[i][j] = vmax[j];
@@ -259,7 +265,7 @@ namespace ea
 	}
 
 	template<typename T, typename F, typename C>
-	void Solver<PSO, T, F, C>::best_update()
+	void Solver<PSOs, T, F, C>::best_update()
 	{
 		for (size_t i = 0; i < pso.npop; ++i)
 		{
@@ -280,7 +286,7 @@ namespace ea
 	}
 
 	template<typename T, typename F, typename C>
-	void Solver<PSO, T, F, C>::find_min_local_best()
+	void Solver<PSOs, T, F, C>::find_min_local_best()
 	{
 		for (size_t k = 0; k < nneigh; ++k)
 		{
@@ -292,7 +298,7 @@ namespace ea
 	}
 
 	template<typename T, typename F, typename C>
-	bool Solver<PSO, T, F, C>::check_pso_criteria()
+	bool Solver<PSOs, T, F, C>::check_pso_criteria()
 	{
 		std::vector<T> distance(pso.npop);
 		for (size_t i = 0; i < pso.npop; ++i)
@@ -302,7 +308,7 @@ namespace ea
 		T rmax = distance[0];
 		for (size_t i = 0; i < pso.npop; ++i)
 		{
-			if (rmax > distance[i])
+			if (rmax < distance[i])
 			{
 				rmax = distance[i];
 			}
@@ -310,7 +316,7 @@ namespace ea
 			{
 			}
 		}
-		if (pso.tol > std::abs(this->f(this->min_cost)) || rmax < pso.tol)
+		if (pso.tol > std::abs(this->f(this->min_cost))) //|| rmax < pso.tol)
 		{
 			return true;
 		}
@@ -321,7 +327,7 @@ namespace ea
 	}
 
 	template<typename T, typename F, typename C>
-	void Solver<PSO, T, F, C>::run_algo()
+	void Solver<PSOs, T, F, C>::run_algo()
 	{
 		//! Local Best Particle Swarm starts here
 		for (size_t iter = 0; iter < pso.iter_max; ++iter)
@@ -329,13 +335,8 @@ namespace ea
 			position_update();
 			best_update();
 			find_min_local_best();
-			//! Velocities of the particles is updated using inertia as well
-			w = ((w - 0.4) * (pso.iter_max - iter)) / (pso.iter_max + 0.4);
-			//! Maximum velocity is reduced using the current iteration and 
-			for (auto& p : vmax)
-			{
-				p = (1 - std::pow(iter / pso.iter_max, pso.alpha)) * p;
-			}
+			//! Inertia is updated
+			w = pso.w - (pso.w - 0.4) * std::pow((static_cast<T>(iter) / static_cast<T>(pso.iter_max)), inv_pi_sq<T>);
 			this->last_iter = iter;
 			if (check_pso_criteria())
 			{

@@ -1,3 +1,8 @@
+/** \file bondhelper.h
+* \author Ioannis Anagnostopoulos
+* \brief Classes and functions for the bond pricing problem
+*/
+
 #pragma once
 
 #include <vector>
@@ -163,8 +168,8 @@ namespace bond
 			{
 			}
 		}
-		double tau1 = bonds[index].duration;
-		double tau2 = tau1;
+		double tau1 = bonds[index].duration/4;
+		double tau2 = 2 * tau1;
 		const std::vector<T> decision_variables{ b0, b1, b2, b3, tau1, tau2 };
 		return decision_variables;
 	}
@@ -224,8 +229,6 @@ namespace bond
 			return sum_of_squares;
 		}
 	}
-	
-	
 
 	template<typename T>
 	template<typename S1, typename S2>
@@ -264,14 +267,14 @@ namespace bond
 	void BondHelper<T>::print_bond_pricing_results(const std::vector<T>& res, const S& solver_irr)
 	{
 		T error = 0;
-		for (const auto& p : bonds)
-		{
-			T estimate_price = estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods);
-			T estimate = p.compute_yield(estimate_price, solver_irr, df_type);
-			error = error + std::pow(estimate - p.yield, 2);
+		//for (const auto& p : bonds)
+		//{
+			//T estimate_price = estimate_bond_pricing(res, p.coupon_value, p.nominal_value, p.time_periods);
+			//T estimate = p.compute_yield(estimate_price, solver_irr, df_type);
+			//error = error + std::pow(estimate - p.yield, 2);
 			//std::cout << "Estimated yield: " << estimate << " Actual Yield: " << p.yield << "\n";
-		}
-		std::cout << "Yield Mean Squared Error: " << error << "\n";
+		//}
+		//std::cout << "Yield Mean Squared Error: " << error << "\n";
 		error = 0;
 		for (const auto& p : bonds)
 		{

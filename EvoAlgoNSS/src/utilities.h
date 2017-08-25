@@ -1,3 +1,8 @@
+/** \file utilities.h
+* \author Ioannis Anagnostopoulos
+* \brief Enumerations and functions used from the rest of the project
+*/
+
 #pragma once
 
 #include <iostream>

@@ -1,3 +1,8 @@
+/** \file differentialevo.h
+* \author Ioannis Anagnostopoulos
+* \brief Classes and functions for Differential Evolution
+*/
+
 #pragma once
 
 #include "ealgorithm_base.h"

@@ -4,9 +4,13 @@
 build/
 EvoAlgoNSS/*.csv
 EvoAlgoNSS/tests/*.csv
+EvoAlgoNSS/tests/*.xlsx
 EvoAlgoNSS/cmake_build_debug
 EvoAlgoNSS/cmake_build_release
 EvoAlgoNSS/build
+EvoAlgoNSS/doc/html
+EvoAlgoNSS/doc/latex
+
 
 # User-specific files
 *.suo

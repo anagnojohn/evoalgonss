@@ -1,3 +1,9 @@
+/** \file geneticalgo.h
+* \author Ioannis Anagnostopoulos
+* \brief Classes and functions for Genetic Algorithms
+*/
+
+
 #pragma once
 
 #include "ealgorithm_base.h"
@@ -160,9 +166,9 @@ namespace ea
 	{
 		//! Generate r and s indices
 		T xi = quantile(bdistribution, this->distribution(generator));
-		size_t r = static_cast<size_t>(std::round(static_cast<T>(this->individuals.size()) * xi));
+		size_t r = static_cast<size_t>(std::floor(static_cast<T>(nkeep()) * xi));
 		xi = quantile(bdistribution, this->distribution(generator));
-		size_t s = static_cast<size_t>(std::round(static_cast<T>(this->individuals.size()) * xi));
+		size_t s = static_cast<size_t>(std::floor(static_cast<T>(nkeep()) * xi));
 		//! Produce offsrping using r and s indices by crossover
 		std::vector<T> offspring = crossover(this->individuals[r], this->individuals[s]);
 		return offspring;
@@ -188,7 +194,7 @@ namespace ea
 	template<typename T, typename F, typename C>
 	size_t Solver<GA, T, F, C>::nkeep()
 	{
-		return static_cast<size_t>(std::ceil(this->npop * ga.x_rate));
+		return static_cast<size_t>(std::ceil(static_cast<T>(npop) * ga.x_rate));
 	}
 
 	template<typename T, typename F, typename C>
@@ -200,6 +206,8 @@ namespace ea
 		};
 		for (size_t iter = 0; iter < ga.iter_max; ++iter)
 		{
+			//! Set the new population size which is previous population size + natural selection rate * population size
+			npop = this->individuals.size();
 			std::sort(this->individuals.begin(), this->individuals.end(), comparator);
 			this->individuals.erase(this->individuals.begin() + nkeep(), this->individuals.begin() + this->individuals.size());
 			this->min_cost = this->individuals[0];
@@ -209,15 +217,14 @@ namespace ea
 				this->solved_flag = true;
 				break;
 			}
-			if (this->individuals.size() > 1000)
-			{
-				//this->individuals.erase(this->individuals.begin() + 1000, this->individuals.begin() + this->individuals.size());
-			}
-			//npop = this->individuals.size();
 			for (size_t i = 0; i < npop; ++i)
 			{
 				std::vector<T> offspring = selection();
 				this->individuals.push_back(offspring);
+			}
+			if (this->individuals.size() > 1000)
+			{
+				//this->individuals.erase(this->individuals.begin() + 1000, this->individuals.begin() + this->individuals.size());
 			}
 			for (size_t i = 1; i < this->individuals.size(); ++i)
 			{
@@ -226,7 +233,7 @@ namespace ea
 				{
 					switch (ga.strategy)
 					{
-					case Strategy::keep_same: mutated = this->individuals[i]; break;
+					case Strategy::keep_same: this->individuals[i] = this->individuals[i]; break;
 					case Strategy::re_mutate: 
 					{
 						while (!this->c(mutated))
@@ -234,6 +241,7 @@ namespace ea
 							mutated = mutation(this->individuals[i]);
 						}
 						break;
+						this->individuals[i] = mutated;
 					}
 					case Strategy::remove:
 					{
@@ -251,10 +259,11 @@ namespace ea
 					default: std::abort();
 					}
 				}
-				this->individuals[i] = mutated;
+				else
+				{
+					this->individuals[i] = mutated;
+				}
 			}
-			//! Set the new population size which previous population size + natural selection rate * population size
-			npop = this->individuals.size();
 			//! Standard Deviation is not constant in GA
 			for (auto& p : stdev)
 			{

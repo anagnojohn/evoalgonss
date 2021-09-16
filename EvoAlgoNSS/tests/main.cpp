@@ -47,7 +47,7 @@
 * date is used for date handling of the settlement and maturity dates.
 *
 * Both can be included only as their header versions.
-* 
+*
 * \section test_guide Showcase
 *
 * A showcase of the project is provided under <b>tests/main.cpp</b>.
@@ -74,40 +74,40 @@
 
 int main()
 {
-	using namespace yft;
-	using namespace bond;
-	const std::vector<double> stdev { 0.7, 0.7, 0.7, 0.7, 0.7, 0.7 };
-	const std::vector<double> stdev_ga{ 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 };
-	double irr_tol = 0.00000001;
-	double tol = 0.0001;
-	double tol_f = 0.001;
-	//! Call benchmark functions
-	Interest_Rate_Helper<double> ir{ read_ir_from_file<double>("interest_rate_data_periods.txt") };
-	BondHelper<double> de{ read_bonds_from_file<double>("bond_data.txt"), DF_type::exp };
-	//! IRR solvers
-	DE<double> de_irr{ 1, 0.6,{ 0.05 },{ 0.7 }, 10, irr_tol, 500, false, Constraints_type::normal, true, true };
-	DE<double> de_irr_check{ 1, 0.6,{ 0.05 },{ 0.7 }, 10, irr_tol, 500, false, Constraints_type::normal, false, false };
-	GA<double> ga_irr{ 0.4, 0.35, 6.0, { 0.05 },{ 0.5 }, 42, irr_tol, 2000, false, Constraints_type::normal, Strategy::remove, true, true};
-	PSOl<double> pso_irr{ 1.49618, 0.9, { 1000000 },{ 0.05 },{ 0.7 }, 22, irr_tol, 3000, false, Constraints_type::normal, true, true};
-	auto decision_variables = de.set_init_nss_params(de_irr);
-	DE<double> de_pricing{ 1, 0.6, decision_variables, stdev, 60, tol, 500, false, Constraints_type::tight, true, true };
-	DE<double> de_fitting{ 1, 0.6, decision_variables, stdev, 60, tol_f, 500, false, Constraints_type::tight, true, true };
-	GA<double> ga_pricing{ 0.4, 0.35, 6.0, decision_variables, stdev_ga, 250, tol, 2000, false, Constraints_type::tight, Strategy::remove, true, true };
-	GA<double> ga_fitting{ 0.4, 0.35, 6.0, decision_variables, stdev_ga, 250, tol_f, 2000, false, Constraints_type::tight, Strategy::remove, true, true };
-	PSOl<double> pso_pricing{ 1.49618, 0.9, { 100000, 100000, 100000, 100000, 100000, 100000 }, decision_variables, stdev, 130, tol, 3000, false, Constraints_type::tight, true, true };
-	PSOl<double> pso_fitting{ 1.49618, 0.9, { 100000, 100000, 100000, 100000, 100000, 100000 }, decision_variables, stdev, 130, tol_f, 3000, false, Constraints_type::tight, true, true };
-	PSOs<double> pso_pricing{ 2.05, 2.05, 6, 0.9, 1.0,{ 100000, 100000, 100000, 100000, 100000, 100000 }, decision_variables, stdev, 24, tol, 1000, false, Constraints_type::none, true, true };
-	for (size_t i = 0; i < 100; ++i)
-	{
-		de.bond_pricing(ga_pricing, de_irr_check, Bond_pricing_type::bpp);
-		ir.yieldcurve_fitting(ga_fitting);
-		de.bond_pricing(de_pricing, de_irr_check, Bond_pricing_type::bpp);
-		ir.yieldcurve_fitting(de_fitting);
-		de.bond_pricing(pso_pricing, de_irr_check, Bond_pricing_type::bpp);
-		ir.yieldcurve_fitting(pso_fitting);
-		de.set_init_nss_params(de_irr);
-		de.set_init_nss_params(pso_irr);
-		de.set_init_nss_params(ga_irr);
-	}
+    using namespace yft;
+    using namespace bond;
+    const std::vector<double> stdev{ 0.7, 0.7, 0.7, 0.7, 0.7, 0.7 };
+    const std::vector<double> stdev_ga{ 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 };
+    const double irr_tol = 0.001;
+    const double tol = 0.0001;
+    const double tol_f = 0.001;
+    //! Call benchmark functions
+    Interest_Rate_Helper<double> ir{ read_ir_from_file<double>("interest_rate_data_periods.txt") };
+    BondHelper<double> de{ read_bonds_from_file<double>("bond_data_3.txt"), DF_type::exp };
+    //! IRR solvers
+    DE<double> de_irr{ 1, 0.6,{ 0.05 },{ 0.7 }, 10, irr_tol, 500, false, Constraints_type::normal, true, true };
+    DE<double> de_irr_check{ 1, 0.6,{ 0.05 },{ 0.7 }, 10, irr_tol, 500, false, Constraints_type::normal, false, false };
+    GA<double> ga_irr{ 0.4, 0.35, 6.0, { 0.05 },{ 0.5 }, 42, irr_tol, 2000, false, Constraints_type::normal, Strategy::remove, true, true };
+    PSOl<double> pso_irr{ 1.49618, 0.9, { 1000000 },{ 0.05 },{ 0.7 }, 22, irr_tol, 3000, false, Constraints_type::normal, true, true };
+    auto decision_variables = de.set_init_nss_params(de_irr);
+
+    DE<double> de_pricing{ 1, 0.6, decision_variables, stdev, 60, tol, 500, false, Constraints_type::tight, true, true };
+    DE<double> de_fitting{ 1, 0.6, decision_variables, stdev, 60, tol_f, 500, false, Constraints_type::tight, true, true };
+    GA<double> ga_pricing{ 0.4, 0.35, 6.0, decision_variables, stdev_ga, 250, tol, 2000, false, Constraints_type::tight, Strategy::remove, true, true };
+    GA<double> ga_fitting{ 0.4, 0.35, 6.0, decision_variables, stdev_ga, 250, tol_f, 2000, false, Constraints_type::tight, Strategy::remove, true, true };
+    PSOl<double> pso_pricing{ 1.49618, 0.9, { 100000, 100000, 100000, 100000, 100000, 100000 }, decision_variables, stdev, 130, tol, 3000, false, Constraints_type::tight, true, true };
+    PSOl<double> pso_fitting{ 1.49618, 0.9, { 100000, 100000, 100000, 100000, 100000, 100000 }, decision_variables, stdev, 130, tol_f, 3000, false, Constraints_type::tight, true, true };
+    //PSOs<double> pso_pricing{ 2.05, 2.05, 6, 0.9, 1.0,{ 100000, 100000, 100000, 100000, 100000, 100000 }, decision_variables, stdev, 24, tol, 1000, false, Constraints_type::none, true, true };
+    for (size_t i = 0; i < 1; ++i)
+    {
+        de.set_init_nss_params(pso_irr);
+        de.set_init_nss_params(ga_irr);
+        de.bond_pricing(ga_pricing, de_irr_check, Bond_pricing_type::bpp);
+        ir.yieldcurve_fitting(ga_fitting);
+        de.bond_pricing(de_pricing, de_irr_check, Bond_pricing_type::bpp);
+        ir.yieldcurve_fitting(de_fitting);
+        de.bond_pricing(pso_pricing, de_irr_check, Bond_pricing_type::bpp);
+        ir.yieldcurve_fitting(pso_fitting);
+    }
     return 0;
 }

@@ -15,12 +15,12 @@ set(SOURCE_FILES
         src/ealgorithm_base.h
         src/geneticalgo.h
         src/irr.h
-        src/local_best_pso.h
+        src/lbestpso.h
+        src/pso_sub_swarm.h
         tests/main.cpp
         src/svensson.h
         src/utilities.h
         src/yield_curve_fitting.h)
-set(Boost_INCLUDE_DIR /home/test/Documents/boost_1_65_0)
-set(Date_INCLUDE_DIR /home/test/Documents/date)
+set(CMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake")
 include_directories(${Boost_INCLUDE_DIR} ${Date_INCLUDE_DIR})
 add_executable(EvoAlgoNSS ${SOURCE_FILES})

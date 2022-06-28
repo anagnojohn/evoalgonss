@@ -66,11 +66,11 @@
 * For example: <b>0.25 0.079573813</b> has the correct format.
 */
 
-#include "../src/bondhelper.h"
-#include "../src/geneticalgo.h"
-#include "../src/pso_sub_swarm.h"
-#include "../src/differentialevo.h"
-#include "../src/lbestpso.h"
+#include "../src/bond/bondhelper.h"
+#include "../src/solver/geneticalgo.h"
+#include "../src/solver/pso_sub_swarm.h"
+#include "../src/solver/differentialevo.h"
+#include "../src/solver/lbestpso.h"
 
 int main()
 {

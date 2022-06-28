@@ -12,8 +12,8 @@
 #include <locale>
 #include <assert.h>
 #include <date/date.h>
-#include "irr.h"
-#include "ealgorithm_base.h"
+#include "../model/irr.h"
+#include "../solver/ealgorithm_base.h"
 
 
 

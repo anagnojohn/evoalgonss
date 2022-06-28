@@ -9,8 +9,8 @@
 #include <tuple>
 #include <limits>
 #include "bond.h"
-#include "svensson.h"
-#include "yield_curve_fitting.h"
+#include "../model/svensson.h"
+#include "../model/yield_curve_fitting.h"
 
 namespace bond
 {

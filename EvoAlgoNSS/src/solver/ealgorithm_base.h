@@ -17,7 +17,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include "utilities.h"
+#include "../utilities.h"
 
 //! Evolutionary Algorithms
 namespace ea

@@ -117,6 +117,8 @@
       <FloatingPointModel>Strict</FloatingPointModel>
       <FloatingPointExceptions>true</FloatingPointExceptions>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -169,17 +171,17 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\bond.h" />
-    <ClInclude Include="src\bondhelper.h" />
-    <ClInclude Include="src\differentialevo.h" />
-    <ClInclude Include="src\ealgorithm_base.h" />
-    <ClInclude Include="src\geneticalgo.h" />
-    <ClInclude Include="src\irr.h" />
-    <ClInclude Include="src\lbestpso.h" />
-    <ClInclude Include="src\pso_sub_swarm.h" />
-    <ClInclude Include="src\svensson.h" />
+    <ClInclude Include="src\bond\bond.h" />
+    <ClInclude Include="src\bond\bondhelper.h" />
+    <ClInclude Include="src\model\irr.h" />
+    <ClInclude Include="src\model\svensson.h" />
+    <ClInclude Include="src\model\yield_curve_fitting.h" />
+    <ClInclude Include="src\solver\differentialevo.h" />
+    <ClInclude Include="src\solver\ealgorithm_base.h" />
+    <ClInclude Include="src\solver\geneticalgo.h" />
+    <ClInclude Include="src\solver\lbestpso.h" />
+    <ClInclude Include="src\solver\pso_sub_swarm.h" />
     <ClInclude Include="src\utilities.h" />
-    <ClInclude Include="src\yield_curve_fitting.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tests\main.cpp" />

@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <cmath>
-#include "utilities.h"
+#include "../utilities.h"
 
 using namespace utilities;
 

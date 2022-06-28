@@ -35,7 +35,7 @@ namespace bond
         friend class BondHelper<T>;
     public:
         /** \fn Bond(const T& i_coupon_percentage, const T& i_price, const T& i_nominal_value, const T& i_frequency,
-            std::string& i_settlement_date, const std::string& i_maturity_date)
+            std::string_view i_settlement_date, std::string_view i_maturity_date)
         *  \brief Constructor
         *  \param i_coupon_percentage The coupon rate in %
         *  \param i_price The price of the bond

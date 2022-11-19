@@ -111,7 +111,8 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <BrowseInformation>true</BrowseInformation>
       <EnablePREfast>true</EnablePREfast>
-      <AdditionalIncludeDirectories>C:\Users\John\Development\Repositories\Remote\date;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <ControlFlowGuard>Guard</ControlFlowGuard>
       <FloatingPointModel>Strict</FloatingPointModel>

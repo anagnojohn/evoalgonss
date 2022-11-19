@@ -1,0 +1,642 @@
+\hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4}{}\section{ea\+:\+:Solver$<$ P\+S\+Ol, T, F, C $>$ Class Template Reference}
+\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4}\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+
+
+Local Best Particle Swarm Optimisation (P\+SO) Class.  
+
+
+
+
+{\ttfamily \#include $<$lbestpso.\+h$>$}
+
+
+
+Inheritance diagram for ea\+:\+:Solver$<$ P\+S\+Ol, T, F, C $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_aa27c4e1663fa5d0400cd75191e695f40}{Solver} (const \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}$<$ T $>$ \&i\+\_\+pso, F \hyperlink{classea_1_1_solver__base_ae0a893780c93dfe17c1d17301de6494f}{f}, C \hyperlink{classea_1_1_solver__base_a6914e89d30e7484f2b4af1783f0de8c3}{c})
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unordered\+\_\+map$<$ size\+\_\+t, std\+::array$<$ size\+\_\+t, 3 $>$ $>$ \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae7599388d63b6905f4d9c49a3ad85387}{set\+\_\+neighbourhoods} ()
+\begin{DoxyCompactList}\small\item\em Set the neighbourhoods of the algorithm using particle indices. \end{DoxyCompactList}\item 
+void \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a9f20cae513cb6a44dddc59ef43ee206f}{position\+\_\+update} ()
+\begin{DoxyCompactList}\small\item\em Position update of the particles. \end{DoxyCompactList}\item 
+void \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a165112bf8f9e69d16c7a4d0680e1cd20}{best\+\_\+update} ()
+\begin{DoxyCompactList}\small\item\em This method sets the personal and local best solutions. \end{DoxyCompactList}\item 
+void \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae7821ee945e33732ec24d47c88d4b310}{find\+\_\+min\+\_\+local\+\_\+best} ()
+\begin{DoxyCompactList}\small\item\em This is a faster way to calculate the minimum cost unless there is only one neighbourhood, in which case it is the same as find\+\_\+min\+\_\+cost(\+F f) \end{DoxyCompactList}\item 
+bool \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a474c18a8544f7ae0d5fe9d1587de2ad3}{check\+\_\+pso\+\_\+criteria} ()
+\begin{DoxyCompactList}\small\item\em Define the maximum radius stopping criterion. \end{DoxyCompactList}\item 
+void \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a0fa43e874bb60282a742c4c3dff651a9}{run\+\_\+algo} ()
+\begin{DoxyCompactList}\small\item\em Runs the algorithm until stopping criteria return void. \end{DoxyCompactList}\item 
+T \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a21df6a4efb4d058ecd3bc342e318b59a}{euclid\+\_\+distance} (const std\+::vector$<$ T $>$ \&x, const std\+::vector$<$ T $>$ \&y)
+\begin{DoxyCompactList}\small\item\em Euclidean Distance of two vectors .. \end{DoxyCompactList}\item 
+std\+::stringstream \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_aaccd379111d0ebcf820fdce19ab23023}{display\+\_\+parameters} ()
+\begin{DoxyCompactList}\small\item\em Display P\+SO parameters. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}$<$ T $>$ \& \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}
+\begin{DoxyCompactList}\small\item\em Particle Swarm Optimisation structure used internally (reference to solver\+\_\+struct) \end{DoxyCompactList}\item 
+T \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a5c9d1a207892da92e2cf689b24c256ee}{w}
+\begin{DoxyCompactList}\small\item\em Inertia is mutable, so a copy is created. \end{DoxyCompactList}\item 
+std\+::vector$<$ T $>$ \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_abd93da2229dac4eb2d11f4904a65ae9a}{vmax}
+\begin{DoxyCompactList}\small\item\em Maximum Velocity is mutable, so a copy is created. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::vector$<$ T $>$ $>$ \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a0738e0ab079273c4d34c827fad533868}{personal\+\_\+best}
+\begin{DoxyCompactList}\small\item\em Personal best vector of the particles, holds the best position recorded for each particle. \end{DoxyCompactList}\item 
+std\+::vector$<$ T $>$ \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae728d584641709062919b0cedd3e77cc}{personal\+\_\+best\+\_\+cost}
+\begin{DoxyCompactList}\small\item\em Personal best cost vector of the particles. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::vector$<$ T $>$ $>$ \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a6671c3d551564e3b4cd0944bfb2c33fd}{local\+\_\+best}
+\begin{DoxyCompactList}\small\item\em Local best vector, holds the best position recorded for each neighbourhood. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::vector$<$ T $>$ $>$ \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae8293610cb6bffc00e0fda749754a1f2}{velocity}
+\begin{DoxyCompactList}\small\item\em Velocity of the particles. \end{DoxyCompactList}\item 
+const size\+\_\+t \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_adb34cfcd87307ee2271b5aa5ffdd779d}{nneigh}
+\begin{DoxyCompactList}\small\item\em Number of neighbourhoods. \end{DoxyCompactList}\item 
+std\+::unordered\+\_\+map$<$ size\+\_\+t, std\+::array$<$ size\+\_\+t, 3 $>$ $>$ \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ab92e8a0460092b8264bd9023a3455257}{neighbours}
+\begin{DoxyCompactList}\small\item\em Neighbours of each particle. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a95bfc162c6509fec9ecb02185ed094d3}{Solver\+\_\+base$<$ Solver$<$ P\+S\+Ol, T, F, C $>$, P\+S\+Ol, T, F, C $>$}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T, typename F, typename C$>$\newline
+class ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}
+
+Local Best Particle Swarm Optimisation (P\+SO) Class. 
+
+Definition at line 69 of file lbestpso.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_aa27c4e1663fa5d0400cd75191e695f40}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_aa27c4e1663fa5d0400cd75191e695f40}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!Solver@{Solver}}
+\index{Solver@{Solver}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{Solver()}{Solver()}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+\hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::\hyperlink{classea_1_1_solver}{Solver} (\begin{DoxyParamCaption}\item[{const \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}$<$ T $>$ \&}]{i\+\_\+pso,  }\item[{F}]{f,  }\item[{C}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i\+\_\+pso} & The particle swarm optimisation parameter structure that is used to construct the solver \\
+\hline
+{\em f} & A reference to the objective function \\
+\hline
+{\em c} & A reference to the constraints function \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A Solver$<$\+P\+S\+O, T, F, C$>$ object 
+\end{DoxyReturn}
+
+
+Definition at line 80 of file lbestpso.\+h.
+
+
+\begin{DoxyCode}
+80                                                :
+81             Solver\_base<Solver<PSOl, T, F, C>, PSOl, T, F, C>(i\_pso, \hyperlink{classea_1_1_solver__base_ae0a893780c93dfe17c1d17301de6494f}{f}, \hyperlink{classea_1_1_solver__base_a6914e89d30e7484f2b4af1783f0de8c3}{c}),
+82             \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}(this->\hyperlink{classea_1_1_solver__base_a5e1d821809f2d26c6f882942ad728127}{solver\_struct}),
+83             \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a5c9d1a207892da92e2cf689b24c256ee}{w}(i\_pso.w),
+84             \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_abd93da2229dac4eb2d11f4904a65ae9a}{vmax}(i\_pso.vmax),
+85             \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_adb34cfcd87307ee2271b5aa5ffdd779d}{nneigh}(i\_pso.npop),
+86             \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ab92e8a0460092b8264bd9023a3455257}{neighbours}(\hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae7599388d63b6905f4d9c49a3ad85387}{set\_neighbourhoods}())
+87         \{
+88             \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae8293610cb6bffc00e0fda749754a1f2}{velocity}.resize(\hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.npop, std::vector<T>(\hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.ndv));
+89             \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a6671c3d551564e3b4cd0944bfb2c33fd}{local\_best}.resize(\hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_adb34cfcd87307ee2271b5aa5ffdd779d}{nneigh});
+90             \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& p : \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae8293610cb6bffc00e0fda749754a1f2}{velocity})
+91             \{
+92                 \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& n : p)
+93                 \{
+94                     n = 0.0;
+95                 \}
+96             \}
+97             \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}& p : this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals})
+98             \{
+99                 \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a0738e0ab079273c4d34c827fad533868}{personal\_best}.push\_back(p);
+100                 \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae728d584641709062919b0cedd3e77cc}{personal\_best\_cost}.push\_back(\hyperlink{classea_1_1_solver__base_ae0a893780c93dfe17c1d17301de6494f}{f}(p));
+101             \}
+102             \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& p : \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a6671c3d551564e3b4cd0944bfb2c33fd}{local\_best})
+103             \{
+104                 p = \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a0738e0ab079273c4d34c827fad533868}{personal\_best}[0];
+105             \}
+106             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.npop; ++i)
+107             \{
+108                 \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}& index : \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ab92e8a0460092b8264bd9023a3455257}{neighbours}[i])
+109                 \{
+110                     \textcolor{keywordflow}{if} (\hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae728d584641709062919b0cedd3e77cc}{personal\_best\_cost}[index] < this->\hyperlink{classea_1_1_solver__base_ae0a893780c93dfe17c1d17301de6494f}{f}(local\_best[i]))
+111                     \{
+112                         local\_best[i] = \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a0738e0ab079273c4d34c827fad533868}{personal\_best}[index];
+113                     \}
+114                 \}
+115             \}
+116             \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae7821ee945e33732ec24d47c88d4b310}{find\_min\_local\_best}();
+117         \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a165112bf8f9e69d16c7a4d0680e1cd20}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a165112bf8f9e69d16c7a4d0680e1cd20}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!best\+\_\+update@{best\+\_\+update}}
+\index{best\+\_\+update@{best\+\_\+update}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{best\+\_\+update()}{best\_update()}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+void \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::best\+\_\+update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+This method sets the personal and local best solutions. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line 257 of file lbestpso.\+h.
+
+
+\begin{DoxyCode}
+258     \{
+259         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.npop; ++i)
+260         \{
+261         \}
+262     \}
+\end{DoxyCode}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a474c18a8544f7ae0d5fe9d1587de2ad3}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a474c18a8544f7ae0d5fe9d1587de2ad3}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!check\+\_\+pso\+\_\+criteria@{check\+\_\+pso\+\_\+criteria}}
+\index{check\+\_\+pso\+\_\+criteria@{check\+\_\+pso\+\_\+criteria}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{check\+\_\+pso\+\_\+criteria()}{check\_pso\_criteria()}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+bool \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::check\+\_\+pso\+\_\+criteria (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Define the maximum radius stopping criterion. 
+
+\begin{DoxyReturn}{Returns}
+true if criteria are met, false otherwise 
+\end{DoxyReturn}
+
+
+Definition at line 277 of file lbestpso.\+h.
+
+
+\begin{DoxyCode}
+278     \{
+279         std::vector<T> distance(\hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.npop);
+280         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.npop; ++i)
+281         \{
+282             distance[i] = \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a21df6a4efb4d058ecd3bc342e318b59a}{euclid\_distance}(this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[i], this->
+      \hyperlink{classea_1_1_solver__base_af745cded954be26280d842c1e7c7f989}{min\_cost});
+283         \}
+284         T rmax = distance[0];
+285         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.npop; ++i)
+286         \{
+287             \textcolor{keywordflow}{if} (rmax < distance[i])
+288             \{
+289                 rmax = distance[i];
+290             \}
+291             \textcolor{keywordflow}{else}
+292             \{
+293             \}
+294         \}
+295         \textcolor{keywordflow}{if} (\hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.tol > std::abs(this->f(this->min\_cost)))\textcolor{comment}{// || rmax < pso.tol)}
+296         \{
+297             \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+298         \}
+299         \textcolor{keywordflow}{else}
+300         \{
+301             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+302         \}
+303     \}
+\end{DoxyCode}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_aaccd379111d0ebcf820fdce19ab23023}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_aaccd379111d0ebcf820fdce19ab23023}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!display\+\_\+parameters@{display\+\_\+parameters}}
+\index{display\+\_\+parameters@{display\+\_\+parameters}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{display\+\_\+parameters()}{display\_parameters()}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+\hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::display\+\_\+parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+Display P\+SO parameters. 
+
+\begin{DoxyReturn}{Returns}
+A std\+::stringstream of the parameters 
+\end{DoxyReturn}
+
+
+Definition at line 185 of file lbestpso.\+h.
+
+
+
+References ea\+::\+P\+S\+Ol$<$ T $>$\+::c, ea\+::\+P\+S\+Ol$<$ T $>$\+::vmax, and ea\+::\+P\+S\+Ol$<$ T $>$\+::w.
+
+
+\begin{DoxyCode}
+186         \{
+187             std::stringstream parameters;
+188             parameters << \textcolor{stringliteral}{"C:"} << \textcolor{stringliteral}{","} << \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.c << \textcolor{stringliteral}{","};
+189             parameters << \textcolor{stringliteral}{"Inertia:"} << \textcolor{stringliteral}{","} << \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.w << \textcolor{stringliteral}{","};
+190             parameters << \textcolor{stringliteral}{"Maximum Velocity:"} << \textcolor{stringliteral}{","} << \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.vmax;
+191             \textcolor{keywordflow}{return} parameters;
+192         \}
+\end{DoxyCode}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a21df6a4efb4d058ecd3bc342e318b59a}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a21df6a4efb4d058ecd3bc342e318b59a}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!euclid\+\_\+distance@{euclid\+\_\+distance}}
+\index{euclid\+\_\+distance@{euclid\+\_\+distance}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{euclid\+\_\+distance()}{euclid\_distance()}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+\hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::euclid\+\_\+distance (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{x,  }\item[{const std\+::vector$<$ T $>$ \&}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+Euclidean Distance of two vectors .. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x,y} & The two vectors for which the distance is calculated \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Distance as a floating-\/point number 
+\end{DoxyReturn}
+
+
+Definition at line 172 of file lbestpso.\+h.
+
+
+\begin{DoxyCode}
+173         \{
+174             T sum = 0;
+175             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < x.size(); ++i)
+176             \{
+177                 sum = sum + std::pow(x[i] - y[i], 2);
+178             \}
+179             \textcolor{keywordflow}{return} std::sqrt(sum);
+180         \}
+\end{DoxyCode}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae7821ee945e33732ec24d47c88d4b310}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae7821ee945e33732ec24d47c88d4b310}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!find\+\_\+min\+\_\+local\+\_\+best@{find\+\_\+min\+\_\+local\+\_\+best}}
+\index{find\+\_\+min\+\_\+local\+\_\+best@{find\+\_\+min\+\_\+local\+\_\+best}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{find\+\_\+min\+\_\+local\+\_\+best()}{find\_min\_local\_best()}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+void \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::find\+\_\+min\+\_\+local\+\_\+best (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+This is a faster way to calculate the minimum cost unless there is only one neighbourhood, in which case it is the same as find\+\_\+min\+\_\+cost(\+F f) 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line 265 of file lbestpso.\+h.
+
+
+\begin{DoxyCode}
+266     \{
+267         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} k = 0; k < \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_adb34cfcd87307ee2271b5aa5ffdd779d}{nneigh}; ++k)
+268         \{
+269             \textcolor{keywordflow}{if} (this->\hyperlink{classea_1_1_solver__base_ae0a893780c93dfe17c1d17301de6494f}{f}(\hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a6671c3d551564e3b4cd0944bfb2c33fd}{local\_best}[k]) < this->\hyperlink{classea_1_1_solver__base_ae0a893780c93dfe17c1d17301de6494f}{f}(this->\hyperlink{classea_1_1_solver__base_af745cded954be26280d842c1e7c7f989}{min\_cost}))
+270             \{
+271                 this->\hyperlink{classea_1_1_solver__base_af745cded954be26280d842c1e7c7f989}{min\_cost} = \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a6671c3d551564e3b4cd0944bfb2c33fd}{local\_best}[k];
+272             \}
+273         \}
+274     \}
+\end{DoxyCode}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a9f20cae513cb6a44dddc59ef43ee206f}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a9f20cae513cb6a44dddc59ef43ee206f}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!position\+\_\+update@{position\+\_\+update}}
+\index{position\+\_\+update@{position\+\_\+update}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{position\+\_\+update()}{position\_update()}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+void \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::position\+\_\+update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Position update of the particles. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+Checks that the candidate is feasible 
+
+Definition at line 221 of file lbestpso.\+h.
+
+
+
+References ea\+::\+P\+S\+Ol$<$ T $>$\+::c, ea\+::generator(), ea\+::\+P\+S\+Ol$<$ T $>$\+::vmax, and ea\+::\+P\+S\+Ol$<$ T $>$\+::w.
+
+
+\begin{DoxyCode}
+222     \{
+223         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.npop; ++i)
+224         \{
+225             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} j = 0; j < \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.ndv; ++j)
+226             \{
+227                 std::uniform\_real\_distribution<double> \hyperlink{classea_1_1_solver__base_a6914e89d30e7484f2b4af1783f0de8c3}{c}(0, \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.c);
+228                 \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae8293610cb6bffc00e0fda749754a1f2}{velocity}[i][j] = \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a5c9d1a207892da92e2cf689b24c256ee}{w} * \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae8293610cb6bffc00e0fda749754a1f2}{velocity}[i][j] + \hyperlink{classea_1_1_solver__base_a6914e89d30e7484f2b4af1783f0de8c3}{c}(
+      \hyperlink{namespaceea_a385e8ca8ba4ae2f69dcfffa79f20c2ff}{generator}) * (\hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a0738e0ab079273c4d34c827fad533868}{personal\_best}[i][j] - this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[i][j])
+229                     + \hyperlink{classea_1_1_solver__base_a6914e89d30e7484f2b4af1783f0de8c3}{c}(\hyperlink{namespaceea_a385e8ca8ba4ae2f69dcfffa79f20c2ff}{generator}) * (\hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a6671c3d551564e3b4cd0944bfb2c33fd}{local\_best}[i][j] - this->
+      \hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[i][j]);
+230                 \textcolor{keywordflow}{if} (\hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae8293610cb6bffc00e0fda749754a1f2}{velocity}[i][j] > \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_abd93da2229dac4eb2d11f4904a65ae9a}{vmax}[j])
+231                 \{
+232                     \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae8293610cb6bffc00e0fda749754a1f2}{velocity}[i][j] = \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_abd93da2229dac4eb2d11f4904a65ae9a}{vmax}[j];
+233                 \}
+234                 this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[i][j] = this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[i][j] + 
+      \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae8293610cb6bffc00e0fda749754a1f2}{velocity}[i][j];
+235             \}
+237             \textcolor{keywordflow}{if} (!this->\hyperlink{classea_1_1_solver__base_a6914e89d30e7484f2b4af1783f0de8c3}{c}(this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[i]))
+238             \{
+239                 this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[i] = \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a0738e0ab079273c4d34c827fad533868}{personal\_best}[i];
+240             \}
+241             \textcolor{keywordflow}{if} (this->\hyperlink{classea_1_1_solver__base_ae0a893780c93dfe17c1d17301de6494f}{f}(this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[i]) < this->\hyperlink{classea_1_1_solver__base_ae0a893780c93dfe17c1d17301de6494f}{f}(
+      \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a0738e0ab079273c4d34c827fad533868}{personal\_best}[i]))
+242             \{
+243                 \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a0738e0ab079273c4d34c827fad533868}{personal\_best}[i] = this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[i];
+244                 \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae728d584641709062919b0cedd3e77cc}{personal\_best\_cost}[i] = this->\hyperlink{classea_1_1_solver__base_ae0a893780c93dfe17c1d17301de6494f}{f}(this->
+      \hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[i]);
+245             \}
+246             \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}& index : \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ab92e8a0460092b8264bd9023a3455257}{neighbours}[i])
+247             \{
+248                 \textcolor{keywordflow}{if} (\hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae728d584641709062919b0cedd3e77cc}{personal\_best\_cost}[index] < this->\hyperlink{classea_1_1_solver__base_ae0a893780c93dfe17c1d17301de6494f}{f}(
+      \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a6671c3d551564e3b4cd0944bfb2c33fd}{local\_best}[i]))
+249                 \{
+250                     \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a6671c3d551564e3b4cd0944bfb2c33fd}{local\_best}[i] = \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a0738e0ab079273c4d34c827fad533868}{personal\_best}[index];
+251                 \}
+252             \}
+253         \}
+254     \}
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=312pt]{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a9f20cae513cb6a44dddc59ef43ee206f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a0fa43e874bb60282a742c4c3dff651a9}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a0fa43e874bb60282a742c4c3dff651a9}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!run\+\_\+algo@{run\+\_\+algo}}
+\index{run\+\_\+algo@{run\+\_\+algo}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{run\+\_\+algo()}{run\_algo()}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+void \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::run\+\_\+algo (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Runs the algorithm until stopping criteria return void. 
+
+Local Best Particle Swarm starts here
+
+Inertia weight is updated -\/ Linear
+
+Non-\/linear 
+
+Definition at line 310 of file lbestpso.\+h.
+
+
+
+References ea\+::\+P\+S\+Ol$<$ T $>$\+::w.
+
+
+\begin{DoxyCode}
+311     \{
+313         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} iter = 0; iter < \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.iter\_max; ++iter)
+314         \{
+315             \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a9f20cae513cb6a44dddc59ef43ee206f}{position\_update}();
+316             \textcolor{comment}{//best\_update();}
+317             \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae7821ee945e33732ec24d47c88d4b310}{find\_min\_local\_best}();
+319             \textcolor{comment}{//w = pso.w - (pso.w - 0.4) * (static\_cast<T>(iter) / static\_cast<T>(pso.iter\_max));}
+321 \textcolor{comment}{}            \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a5c9d1a207892da92e2cf689b24c256ee}{w} = \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.w - (\hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.w - 0.4) * std::pow((static\_cast<T>(iter) / static\_cast<T>(
+      \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.iter\_max)), inv\_pi\_sq<T>);
+322             \textcolor{comment}{//w = 0.729;}
+323             \textcolor{comment}{//w = 0.5 + distribution(generator) / 2;}
+324             this->\hyperlink{classea_1_1_solver__base_a8f9a321eb87e57636cf0b0f3a57b6fc2}{last\_iter} = iter;
+325             \textcolor{keywordflow}{if} (\hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a474c18a8544f7ae0d5fe9d1587de2ad3}{check\_pso\_criteria}())
+326             \{
+327                 this->\hyperlink{classea_1_1_solver__base_a1cdb824e8df6d4a8f228820ea85c9b05}{solved\_flag} = \textcolor{keyword}{true};
+328                 \textcolor{keywordflow}{break};
+329             \}
+330         \}
+331     \}
+\end{DoxyCode}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae7599388d63b6905f4d9c49a3ad85387}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae7599388d63b6905f4d9c49a3ad85387}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!set\+\_\+neighbourhoods@{set\+\_\+neighbourhoods}}
+\index{set\+\_\+neighbourhoods@{set\+\_\+neighbourhoods}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{set\+\_\+neighbourhoods()}{set\_neighbourhoods()}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+std\+::unordered\+\_\+map$<$ size\+\_\+t, std\+::array$<$ size\+\_\+t, 3 $>$ $>$ \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::set\+\_\+neighbourhoods (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Set the neighbourhoods of the algorithm using particle indices. 
+
+\begin{DoxyReturn}{Returns}
+A map matching particle indices to neighbourhoods 
+\end{DoxyReturn}
+
+
+Definition at line 196 of file lbestpso.\+h.
+
+
+\begin{DoxyCode}
+197     \{
+198         std::unordered\_map<size\_t, std::array<size\_t, 3>> \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ab92e8a0460092b8264bd9023a3455257}{neighbours};
+199         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.npop; ++i)
+200         \{
+201             \textcolor{keywordflow}{if} (i == 0)
+202             \{
+203                 neighbours[i] = \{ \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.npop - 1, i, i + 1 \};
+204             \}
+205             \textcolor{keywordflow}{else}
+206             \{
+207                 \textcolor{keywordflow}{if} (i == \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.npop - 1)
+208                 \{
+209                     neighbours[i] = \{ \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}{pso}.npop - 2, i, 0 \};
+210                 \}
+211                 \textcolor{keywordflow}{else}
+212                 \{
+213                     neighbours[i] = \{ i - 1, i, i + 1 \};
+214                 \}
+215             \}
+216         \}
+217         \textcolor{keywordflow}{return} \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ab92e8a0460092b8264bd9023a3455257}{neighbours};
+218     \}
+\end{DoxyCode}
+
+
+\subsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a95bfc162c6509fec9ecb02185ed094d3}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a95bfc162c6509fec9ecb02185ed094d3}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!Solver\+\_\+base$<$ Solver$<$ P\+S\+Ol, T, F, C $>$, P\+S\+Ol, T, F, C $>$@{Solver\+\_\+base$<$ Solver$<$ P\+S\+Ol, T, F, C $>$, P\+S\+Ol, T, F, C $>$}}
+\index{Solver\+\_\+base$<$ Solver$<$ P\+S\+Ol, T, F, C $>$, P\+S\+Ol, T, F, C $>$@{Solver\+\_\+base$<$ Solver$<$ P\+S\+Ol, T, F, C $>$, P\+S\+Ol, T, F, C $>$}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{Solver\+\_\+base$<$ Solver$<$ P\+S\+Ol, T, F, C $>$, P\+S\+Ol, T, F, C $>$}{Solver\_base< Solver< PSOl, T, F, C >, PSOl, T, F, C >}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+friend class \hyperlink{classea_1_1_solver__base}{Solver\+\_\+base}$<$ \hyperlink{classea_1_1_solver}{Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$, \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Definition at line 72 of file lbestpso.\+h.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a6671c3d551564e3b4cd0944bfb2c33fd}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a6671c3d551564e3b4cd0944bfb2c33fd}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!local\+\_\+best@{local\+\_\+best}}
+\index{local\+\_\+best@{local\+\_\+best}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{local\+\_\+best}{local\_best}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+std\+::vector$<$std\+::vector$<$T$>$ $>$ \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::local\+\_\+best\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Local best vector, holds the best position recorded for each neighbourhood. 
+
+
+
+Definition at line 130 of file lbestpso.\+h.
+
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ab92e8a0460092b8264bd9023a3455257}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ab92e8a0460092b8264bd9023a3455257}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!neighbours@{neighbours}}
+\index{neighbours@{neighbours}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{neighbours}{neighbours}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+std\+::unordered\+\_\+map$<$size\+\_\+t, std\+::array$<$size\+\_\+t, 3$>$ $>$ \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::neighbours\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Neighbours of each particle. 
+
+
+
+Definition at line 136 of file lbestpso.\+h.
+
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_adb34cfcd87307ee2271b5aa5ffdd779d}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_adb34cfcd87307ee2271b5aa5ffdd779d}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!nneigh@{nneigh}}
+\index{nneigh@{nneigh}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{nneigh}{nneigh}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+const size\+\_\+t \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::nneigh\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Number of neighbourhoods. 
+
+
+
+Definition at line 134 of file lbestpso.\+h.
+
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a0738e0ab079273c4d34c827fad533868}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a0738e0ab079273c4d34c827fad533868}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!personal\+\_\+best@{personal\+\_\+best}}
+\index{personal\+\_\+best@{personal\+\_\+best}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{personal\+\_\+best}{personal\_best}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+std\+::vector$<$std\+::vector$<$T$>$ $>$ \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::personal\+\_\+best\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Personal best vector of the particles, holds the best position recorded for each particle. 
+
+
+
+Definition at line 126 of file lbestpso.\+h.
+
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae728d584641709062919b0cedd3e77cc}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae728d584641709062919b0cedd3e77cc}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!personal\+\_\+best\+\_\+cost@{personal\+\_\+best\+\_\+cost}}
+\index{personal\+\_\+best\+\_\+cost@{personal\+\_\+best\+\_\+cost}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{personal\+\_\+best\+\_\+cost}{personal\_best\_cost}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+std\+::vector$<$T$>$ \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::personal\+\_\+best\+\_\+cost\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Personal best cost vector of the particles. 
+
+
+
+Definition at line 128 of file lbestpso.\+h.
+
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a3098f083ef04a0ce7ae0eef22dd80442}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!pso@{pso}}
+\index{pso@{pso}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{pso}{pso}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+const \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}$<$T$>$\& \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::pso\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Particle Swarm Optimisation structure used internally (reference to solver\+\_\+struct) 
+
+
+
+Definition at line 120 of file lbestpso.\+h.
+
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae8293610cb6bffc00e0fda749754a1f2}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_ae8293610cb6bffc00e0fda749754a1f2}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!velocity@{velocity}}
+\index{velocity@{velocity}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{velocity}{velocity}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+std\+::vector$<$std\+::vector$<$T$>$ $>$ \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::velocity\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Velocity of the particles. 
+
+
+
+Definition at line 132 of file lbestpso.\+h.
+
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_abd93da2229dac4eb2d11f4904a65ae9a}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_abd93da2229dac4eb2d11f4904a65ae9a}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!vmax@{vmax}}
+\index{vmax@{vmax}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{vmax}{vmax}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+std\+::vector$<$T$>$ \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::vmax\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Maximum Velocity is mutable, so a copy is created. 
+
+
+
+Definition at line 124 of file lbestpso.\+h.
+
+\mbox{\Hypertarget{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a5c9d1a207892da92e2cf689b24c256ee}\label{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4_a5c9d1a207892da92e2cf689b24c256ee}} 
+\index{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}!w@{w}}
+\index{w@{w}!ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$@{ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}}
+\subsubsection{\texorpdfstring{w}{w}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+T \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}, T, F, C $>$\+::w\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Inertia is mutable, so a copy is created. 
+
+
+
+Definition at line 122 of file lbestpso.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{lbestpso_8h}{lbestpso.\+h}\end{DoxyCompactItemize}

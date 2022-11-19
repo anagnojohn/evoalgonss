@@ -1,0 +1,213 @@
+\hypertarget{structea_1_1_g_a}{}\section{ea\+:\+:GA$<$ T $>$ Struct Template Reference}
+\label{structea_1_1_g_a}\index{ea\+::\+G\+A$<$ T $>$@{ea\+::\+G\+A$<$ T $>$}}
+
+
+Genetic Algorithms Structure, used in the actual algorithm and for type deduction.  
+
+
+
+
+{\ttfamily \#include $<$geneticalgo.\+h$>$}
+
+
+
+Inheritance diagram for ea\+:\+:GA$<$ T $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{structea_1_1_g_a__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structea_1_1_g_a_a5a8abc8d099a169a0c141079552be2c3}{GA} (const T \&i\+\_\+x\+\_\+rate, const T \&i\+\_\+pi, const T \&i\+\_\+alpha, const std\+::vector$<$ T $>$ \&i\+\_\+decision\+\_\+variables, const std\+::vector$<$ T $>$ \&i\+\_\+stdev, const size\+\_\+t \&i\+\_\+npop, const T \&i\+\_\+tol, const size\+\_\+t \&i\+\_\+iter\+\_\+max, const bool \&i\+\_\+use\+\_\+penalty\+\_\+method, const \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}{Constraints\+\_\+type} \&i\+\_\+constraints\+\_\+type, const \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89}{Strategy} \&i\+\_\+strategy, const bool \&i\+\_\+print\+\_\+to\+\_\+output, const bool \&i\+\_\+print\+\_\+to\+\_\+file)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const T \hyperlink{structea_1_1_g_a_ab72149b9ca39f385432e5310f4ae5ed6}{x\+\_\+rate}
+\begin{DoxyCompactList}\small\item\em Natural Selection rate. \end{DoxyCompactList}\item 
+const T \hyperlink{structea_1_1_g_a_a1efaa83a84ddebf8825308cdf2b7b2ce}{pi}
+\begin{DoxyCompactList}\small\item\em Probability of mutating. \end{DoxyCompactList}\item 
+const T \hyperlink{structea_1_1_g_a_a620f9573d21cc8eb9f49bfd8dc5086cc}{alpha}
+\begin{DoxyCompactList}\small\item\em Parameter alpha for Beta distribution. \end{DoxyCompactList}\item 
+const \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89}{Strategy} \hyperlink{structea_1_1_g_a_a0bb275a7550304c1ae4c19db06ed8969}{strategy}
+\begin{DoxyCompactList}\small\item\em Replacing or remove individuals strategies during mutation. \end{DoxyCompactList}\item 
+const std\+::string \hyperlink{structea_1_1_g_a_a513eb50f77399d52e1aebf7d200b44c8}{type} = \char`\"{}Genetic Algorithms\char`\"{}
+\begin{DoxyCompactList}\small\item\em Type of the algorithm. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+struct ea\+::\+G\+A$<$ T $>$}
+
+Genetic Algorithms Structure, used in the actual algorithm and for type deduction. 
+
+Definition at line 21 of file geneticalgo.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structea_1_1_g_a_a5a8abc8d099a169a0c141079552be2c3}\label{structea_1_1_g_a_a5a8abc8d099a169a0c141079552be2c3}} 
+\index{ea\+::\+GA@{ea\+::\+GA}!GA@{GA}}
+\index{GA@{GA}!ea\+::\+GA@{ea\+::\+GA}}
+\subsubsection{\texorpdfstring{G\+A()}{GA()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{structea_1_1_g_a}{ea\+::\+GA}$<$ T $>$\+::\hyperlink{structea_1_1_g_a}{GA} (\begin{DoxyParamCaption}\item[{const T \&}]{i\+\_\+x\+\_\+rate,  }\item[{const T \&}]{i\+\_\+pi,  }\item[{const T \&}]{i\+\_\+alpha,  }\item[{const std\+::vector$<$ T $>$ \&}]{i\+\_\+decision\+\_\+variables,  }\item[{const std\+::vector$<$ T $>$ \&}]{i\+\_\+stdev,  }\item[{const size\+\_\+t \&}]{i\+\_\+npop,  }\item[{const T \&}]{i\+\_\+tol,  }\item[{const size\+\_\+t \&}]{i\+\_\+iter\+\_\+max,  }\item[{const bool \&}]{i\+\_\+use\+\_\+penalty\+\_\+method = {\ttfamily false},  }\item[{const \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}{Constraints\+\_\+type} \&}]{i\+\_\+constraints\+\_\+type = {\ttfamily \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89a334c4a4c42fdb79d7ebc3e73b517e6f8}{Constraints\+\_\+type\+::none}},  }\item[{const \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89}{Strategy} \&}]{i\+\_\+strategy = {\ttfamily \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89ac4a301043ce8554dfced7a0c0698bdad}{Strategy\+::keep\+\_\+same}},  }\item[{const bool \&}]{i\+\_\+print\+\_\+to\+\_\+output = {\ttfamily true},  }\item[{const bool \&}]{i\+\_\+print\+\_\+to\+\_\+file = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i\+\_\+x\+\_\+rate} & Selection Rate or percentage of population to keep up to the next generation \\
+\hline
+{\em i\+\_\+pi} & Probability of mutation \\
+\hline
+{\em i\+\_\+alpha} & Alpha parameter of the Beta Distribution \\
+\hline
+{\em i\+\_\+strategy} & The strategy used for handling constraints \\
+\hline
+{\em i\+\_\+decision\+\_\+variables} & The starting values of the decision variables \\
+\hline
+{\em i\+\_\+stdev} & The standard deviation \\
+\hline
+{\em i\+\_\+npop} & The population size \\
+\hline
+{\em i\+\_\+tol} & The tolerance \\
+\hline
+{\em i\+\_\+iter\+\_\+max} & The maximum number of iterations \\
+\hline
+{\em i\+\_\+use\+\_\+penalty\+\_\+method} & Whether to used penalties or not \\
+\hline
+{\em i\+\_\+constraints\+\_\+type} & What kind of constraints to use \\
+\hline
+{\em i\+\_\+print\+\_\+to\+\_\+output} & Whether to print to terminal or not \\
+\hline
+{\em i\+\_\+print\+\_\+to\+\_\+file} & Whether to print to a file or not \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A G\+A$<$\+T$>$ object 
+\end{DoxyReturn}
+
+
+Definition at line 44 of file geneticalgo.\+h.
+
+
+\begin{DoxyCode}
+47                                                                         :
+48             EA\_base<T> ( i\_decision\_variables, i\_stdev, i\_npop, i\_tol, i\_iter\_max, i\_use\_penalty\_method, 
+      i\_constraints\_type, i\_print\_to\_output, i\_print\_to\_file ),
+49             \hyperlink{structea_1_1_g_a_ab72149b9ca39f385432e5310f4ae5ed6}{x\_rate} ( i\_x\_rate ),
+50             \hyperlink{structea_1_1_g_a_a1efaa83a84ddebf8825308cdf2b7b2ce}{pi} ( i\_pi ),
+51             \hyperlink{structea_1_1_g_a_a620f9573d21cc8eb9f49bfd8dc5086cc}{alpha} ( i\_alpha ),
+52             \hyperlink{structea_1_1_g_a_a0bb275a7550304c1ae4c19db06ed8969}{strategy} ( i\_strategy )
+53         \{
+54             assert(\hyperlink{structea_1_1_g_a_ab72149b9ca39f385432e5310f4ae5ed6}{x\_rate} > 0 && \hyperlink{structea_1_1_g_a_ab72149b9ca39f385432e5310f4ae5ed6}{x\_rate} <= 1);
+55             assert(\hyperlink{structea_1_1_g_a_a1efaa83a84ddebf8825308cdf2b7b2ce}{pi} > 0 && \hyperlink{structea_1_1_g_a_a1efaa83a84ddebf8825308cdf2b7b2ce}{pi} <= 1);
+56         \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structea_1_1_g_a_a620f9573d21cc8eb9f49bfd8dc5086cc}\label{structea_1_1_g_a_a620f9573d21cc8eb9f49bfd8dc5086cc}} 
+\index{ea\+::\+GA@{ea\+::\+GA}!alpha@{alpha}}
+\index{alpha@{alpha}!ea\+::\+GA@{ea\+::\+GA}}
+\subsubsection{\texorpdfstring{alpha}{alpha}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const T \hyperlink{structea_1_1_g_a}{ea\+::\+GA}$<$ T $>$\+::alpha}
+
+
+
+Parameter alpha for Beta distribution. 
+
+
+
+Definition at line 62 of file geneticalgo.\+h.
+
+
+
+Referenced by ea\+::\+Solver$<$ G\+A, T, F, C $>$\+::display\+\_\+parameters().
+
+\mbox{\Hypertarget{structea_1_1_g_a_a1efaa83a84ddebf8825308cdf2b7b2ce}\label{structea_1_1_g_a_a1efaa83a84ddebf8825308cdf2b7b2ce}} 
+\index{ea\+::\+GA@{ea\+::\+GA}!pi@{pi}}
+\index{pi@{pi}!ea\+::\+GA@{ea\+::\+GA}}
+\subsubsection{\texorpdfstring{pi}{pi}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const T \hyperlink{structea_1_1_g_a}{ea\+::\+GA}$<$ T $>$\+::pi}
+
+
+
+Probability of mutating. 
+
+
+
+Definition at line 60 of file geneticalgo.\+h.
+
+
+
+Referenced by ea\+::\+Solver$<$ G\+A, T, F, C $>$\+::display\+\_\+parameters().
+
+\mbox{\Hypertarget{structea_1_1_g_a_a0bb275a7550304c1ae4c19db06ed8969}\label{structea_1_1_g_a_a0bb275a7550304c1ae4c19db06ed8969}} 
+\index{ea\+::\+GA@{ea\+::\+GA}!strategy@{strategy}}
+\index{strategy@{strategy}!ea\+::\+GA@{ea\+::\+GA}}
+\subsubsection{\texorpdfstring{strategy}{strategy}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89}{Strategy} \hyperlink{structea_1_1_g_a}{ea\+::\+GA}$<$ T $>$\+::strategy}
+
+
+
+Replacing or remove individuals strategies during mutation. 
+
+
+
+Definition at line 64 of file geneticalgo.\+h.
+
+
+
+Referenced by ea\+::\+Solver$<$ G\+A, T, F, C $>$\+::display\+\_\+parameters().
+
+\mbox{\Hypertarget{structea_1_1_g_a_a513eb50f77399d52e1aebf7d200b44c8}\label{structea_1_1_g_a_a513eb50f77399d52e1aebf7d200b44c8}} 
+\index{ea\+::\+GA@{ea\+::\+GA}!type@{type}}
+\index{type@{type}!ea\+::\+GA@{ea\+::\+GA}}
+\subsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const std\+::string \hyperlink{structea_1_1_g_a}{ea\+::\+GA}$<$ T $>$\+::type = \char`\"{}Genetic Algorithms\char`\"{}}
+
+
+
+Type of the algorithm. 
+
+
+
+Definition at line 66 of file geneticalgo.\+h.
+
+\mbox{\Hypertarget{structea_1_1_g_a_ab72149b9ca39f385432e5310f4ae5ed6}\label{structea_1_1_g_a_ab72149b9ca39f385432e5310f4ae5ed6}} 
+\index{ea\+::\+GA@{ea\+::\+GA}!x\+\_\+rate@{x\+\_\+rate}}
+\index{x\+\_\+rate@{x\+\_\+rate}!ea\+::\+GA@{ea\+::\+GA}}
+\subsubsection{\texorpdfstring{x\+\_\+rate}{x\_rate}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const T \hyperlink{structea_1_1_g_a}{ea\+::\+GA}$<$ T $>$\+::x\+\_\+rate}
+
+
+
+Natural Selection rate. 
+
+
+
+Definition at line 58 of file geneticalgo.\+h.
+
+
+
+Referenced by ea\+::\+Solver$<$ G\+A, T, F, C $>$\+::display\+\_\+parameters().
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{geneticalgo_8h}{geneticalgo.\+h}\end{DoxyCompactItemize}

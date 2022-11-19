@@ -1,0 +1,336 @@
+\hypertarget{namespaceirr}{}\section{irr Namespace Reference}
+\label{namespaceirr}\index{irr@{irr}}
+
+
+Internal Rate of Return (I\+RR) namespace.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{namespaceirr_ae00c3409ca39fa2dc47ce61da4169a66}{compute\+\_\+discount\+\_\+factor} (const T \&r, const T \&period, const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&df\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Calculates discount factors. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\bool \hyperlink{namespaceirr_a6801aa96a307b3f52817dd1a3bcd065e}{constraints\+\_\+irr} (const std\+::vector$<$ T $>$ \&solution, const \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}{Constraints\+\_\+type} \&constraints\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Constraints function for Internal Rate of Return. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{namespaceirr_ac3411cd2ad174f399c525d8d17dcdad0}{compute\+\_\+pv} (const T \&r, const T \&nominal\+\_\+value, const std\+::vector$<$ T $>$ \&cash\+\_\+flows, const std\+::vector$<$ T $>$ \&time\+\_\+periods, const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&df\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Returns the present value of an investment. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{namespaceirr_abd1d21a84003df6b46dc32c3a30d2269}{penalty\+\_\+irr} (const T \&r)
+\begin{DoxyCompactList}\small\item\em Penalty function for I\+RR. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{namespaceirr_aced01c5e5ef9e171a3b892275d442f8d}{fitness\+\_\+irr} (const std\+::vector$<$ T $>$ \&solution, const T \&price, const T \&nominal\+\_\+value, const std\+::vector$<$ T $>$ \&cash\+\_\+flows, const std\+::vector$<$ T $>$ \&time\+\_\+periods, const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&df\+\_\+type, const bool \&use\+\_\+penalty\+\_\+method)
+\begin{DoxyCompactList}\small\item\em This is the fitness function for finding the internal rate of return of a bond, in this case it is equal to its yield to maturity. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Internal Rate of Return (I\+RR) namespace. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespaceirr_ae00c3409ca39fa2dc47ce61da4169a66}\label{namespaceirr_ae00c3409ca39fa2dc47ce61da4169a66}} 
+\index{irr@{irr}!compute\+\_\+discount\+\_\+factor@{compute\+\_\+discount\+\_\+factor}}
+\index{compute\+\_\+discount\+\_\+factor@{compute\+\_\+discount\+\_\+factor}!irr@{irr}}
+\subsubsection{\texorpdfstring{compute\+\_\+discount\+\_\+factor()}{compute\_discount\_factor()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+irr\+::compute\+\_\+discount\+\_\+factor (\begin{DoxyParamCaption}\item[{const T \&}]{r,  }\item[{const T \&}]{period,  }\item[{const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&}]{df\+\_\+type }\end{DoxyParamCaption})}
+
+
+
+Calculates discount factors. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & Rate \\
+\hline
+{\em period} & The period the rate was recorded \\
+\hline
+{\em df\+\_\+type} & The method used to calculate the discount factor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The discount factor 
+\end{DoxyReturn}
+
+
+Definition at line 25 of file irr.\+h.
+
+
+
+References utilities\+::exp, and utilities\+::frac.
+
+
+
+Referenced by bond\+::\+Bond$<$ T $>$\+::compute\+\_\+macaulay\+\_\+duration(), compute\+\_\+pv(), and bond\+::\+Bond\+Helper$<$ T $>$\+::estimate\+\_\+bond\+\_\+pricing().
+
+
+\begin{DoxyCode}
+26     \{
+27         \textcolor{keywordflow}{switch} (df\_type)
+28         \{
+29         \textcolor{keywordflow}{case} (DF\_type::frac): \textcolor{keywordflow}{return} 1 / std::pow((1 + r), period);
+30         \textcolor{keywordflow}{case} (DF\_type::exp): \textcolor{keywordflow}{return} std::exp(-r * period);
+31             \textcolor{keywordflow}{default}: std::abort();
+32         \}
+33     \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceirr_ae00c3409ca39fa2dc47ce61da4169a66_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceirr_ac3411cd2ad174f399c525d8d17dcdad0}\label{namespaceirr_ac3411cd2ad174f399c525d8d17dcdad0}} 
+\index{irr@{irr}!compute\+\_\+pv@{compute\+\_\+pv}}
+\index{compute\+\_\+pv@{compute\+\_\+pv}!irr@{irr}}
+\subsubsection{\texorpdfstring{compute\+\_\+pv()}{compute\_pv()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+irr\+::compute\+\_\+pv (\begin{DoxyParamCaption}\item[{const T \&}]{r,  }\item[{const T \&}]{nominal\+\_\+value,  }\item[{const std\+::vector$<$ T $>$ \&}]{cash\+\_\+flows,  }\item[{const std\+::vector$<$ T $>$ \&}]{time\+\_\+periods,  }\item[{const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&}]{df\+\_\+type }\end{DoxyParamCaption})}
+
+
+
+Returns the present value of an investment. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & Internal Rate of Return \\
+\hline
+{\em nominal\+\_\+value} & The nominal value of the investment \\
+\hline
+{\em cash\+\_\+flows} & The cash flows of the investment \\
+\hline
+{\em time\+\_\+periods} & The time periods that correspond to the cash flows of the investment \\
+\hline
+{\em df\+\_\+type} & The method used to calculate the discount factor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The present value of the investment 
+\end{DoxyReturn}
+
+
+Definition at line 74 of file irr.\+h.
+
+
+
+References compute\+\_\+discount\+\_\+factor().
+
+
+
+Referenced by fitness\+\_\+irr().
+
+
+\begin{DoxyCode}
+75     \{
+76         assert(cash\_flows.size() == time\_periods.size());
+77         \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t}& num\_time\_periods =time\_periods.size();
+78         T sum = 0.0;
+79         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < num\_time\_periods; ++i)
+80         \{
+81             sum = sum + cash\_flows[i] * \hyperlink{namespaceirr_ae00c3409ca39fa2dc47ce61da4169a66}{compute\_discount\_factor}(r, time\_periods[i], 
+      df\_type);
+82         \}
+83         \textcolor{keywordflow}{return} sum + nominal\_value * \hyperlink{namespaceirr_ae00c3409ca39fa2dc47ce61da4169a66}{compute\_discount\_factor}(r, time\_periods.back(),
+       df\_type);
+84     \}
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=309pt]{namespaceirr_ac3411cd2ad174f399c525d8d17dcdad0_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceirr_ac3411cd2ad174f399c525d8d17dcdad0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceirr_a6801aa96a307b3f52817dd1a3bcd065e}\label{namespaceirr_a6801aa96a307b3f52817dd1a3bcd065e}} 
+\index{irr@{irr}!constraints\+\_\+irr@{constraints\+\_\+irr}}
+\index{constraints\+\_\+irr@{constraints\+\_\+irr}!irr@{irr}}
+\subsubsection{\texorpdfstring{constraints\+\_\+irr()}{constraints\_irr()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+irr\+::constraints\+\_\+irr (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{solution,  }\item[{const \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}{Constraints\+\_\+type} \&}]{constraints\+\_\+type }\end{DoxyParamCaption})}
+
+
+
+Constraints function for Internal Rate of Return. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em solution} & Internal Rate of Return candindate solution \\
+\hline
+{\em constraints\+\_\+type} & Type of constraints used \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if constraints are satisfied, false otherwise 
+\end{DoxyReturn}
+
+
+Definition at line 42 of file irr.\+h.
+
+
+
+References utilities\+::none, utilities\+::normal, and utilities\+::tight.
+
+
+
+Referenced by bond\+::\+Bond$<$ T $>$\+::compute\+\_\+yield().
+
+
+\begin{DoxyCode}
+43     \{
+44         \textcolor{keywordflow}{switch} (constraints\_type)
+45         \{
+46         \textcolor{keywordflow}{case}(Constraints\_type::normal):
+47         \{
+48             \textcolor{keyword}{const} T& r = solution[0];
+49             \textcolor{keywordflow}{if} (r > 0 && r < 1)
+50             \{
+51                 \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+52             \}
+53             \textcolor{keywordflow}{else}
+54             \{
+55                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+56             \}
+57         \}
+58         \textcolor{keywordflow}{case}(Constraints\_type::tight): \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+59         \textcolor{keywordflow}{case}(Constraints\_type::none): \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+60             \textcolor{keywordflow}{default}: std::abort();
+61         \}
+62     \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=318pt]{namespaceirr_a6801aa96a307b3f52817dd1a3bcd065e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceirr_aced01c5e5ef9e171a3b892275d442f8d}\label{namespaceirr_aced01c5e5ef9e171a3b892275d442f8d}} 
+\index{irr@{irr}!fitness\+\_\+irr@{fitness\+\_\+irr}}
+\index{fitness\+\_\+irr@{fitness\+\_\+irr}!irr@{irr}}
+\subsubsection{\texorpdfstring{fitness\+\_\+irr()}{fitness\_irr()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+irr\+::fitness\+\_\+irr (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{solution,  }\item[{const T \&}]{price,  }\item[{const T \&}]{nominal\+\_\+value,  }\item[{const std\+::vector$<$ T $>$ \&}]{cash\+\_\+flows,  }\item[{const std\+::vector$<$ T $>$ \&}]{time\+\_\+periods,  }\item[{const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&}]{df\+\_\+type,  }\item[{const bool \&}]{use\+\_\+penalty\+\_\+method }\end{DoxyParamCaption})}
+
+
+
+This is the fitness function for finding the internal rate of return of a bond, in this case it is equal to its yield to maturity. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em solution} & Internal Rate of Return candindate solution \\
+\hline
+{\em price} & The present value of the investment \\
+\hline
+{\em nominal\+\_\+value} & The nominal value of the investment \\
+\hline
+{\em cash\+\_\+flows} & The cash flows of the investment \\
+\hline
+{\em time\+\_\+periods} & The time periods that correspond to the cash flows of the investment \\
+\hline
+{\em df\+\_\+type} & The method used to calculate the discount factor \\
+\hline
+{\em use\+\_\+penalty\+\_\+method} & Whether to use the penalty method defined for I\+RR or not \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The fitness cost of I\+RR 
+\end{DoxyReturn}
+
+
+Definition at line 116 of file irr.\+h.
+
+
+
+References compute\+\_\+pv(), and penalty\+\_\+irr().
+
+
+
+Referenced by bond\+::\+Bond$<$ T $>$\+::compute\+\_\+yield().
+
+
+\begin{DoxyCode}
+118     \{
+119         T sum\_of\_squares = 0;
+120         sum\_of\_squares = sum\_of\_squares + std::pow(price - \hyperlink{namespaceirr_ac3411cd2ad174f399c525d8d17dcdad0}{compute\_pv}(solution[0], nominal\_value,
+       cash\_flows, time\_periods, df\_type), 2);
+121         \textcolor{keywordflow}{if} (use\_penalty\_method)
+122         \{
+123             \textcolor{keywordflow}{return} sum\_of\_squares + \hyperlink{namespaceirr_abd1d21a84003df6b46dc32c3a30d2269}{penalty\_irr}(solution[0]);
+124         \}
+125         \textcolor{keywordflow}{else}
+126         \{
+127             \textcolor{keywordflow}{return} sum\_of\_squares;
+128         \}
+129     \}
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceirr_aced01c5e5ef9e171a3b892275d442f8d_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=299pt]{namespaceirr_aced01c5e5ef9e171a3b892275d442f8d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceirr_abd1d21a84003df6b46dc32c3a30d2269}\label{namespaceirr_abd1d21a84003df6b46dc32c3a30d2269}} 
+\index{irr@{irr}!penalty\+\_\+irr@{penalty\+\_\+irr}}
+\index{penalty\+\_\+irr@{penalty\+\_\+irr}!irr@{irr}}
+\subsubsection{\texorpdfstring{penalty\+\_\+irr()}{penalty\_irr()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+irr\+::penalty\+\_\+irr (\begin{DoxyParamCaption}\item[{const T \&}]{r }\end{DoxyParamCaption})}
+
+
+
+Penalty function for I\+RR. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & Candidate solution for the Internal Rate of Return \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A penalty value, if constraints are not satisfied 
+\end{DoxyReturn}
+
+
+Definition at line 92 of file irr.\+h.
+
+
+
+Referenced by fitness\+\_\+irr().
+
+
+\begin{DoxyCode}
+93     \{
+94         T sum = 0;
+95         \textcolor{keyword}{const} T C = 1000;
+96         \textcolor{keywordflow}{if} (r < 0 || r > 1)
+97         \{
+98             sum = sum + C * std::pow(std::abs(r), 2);
+99         \}
+100         \textcolor{keywordflow}{return} sum;
+101     \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceirr_abd1d21a84003df6b46dc32c3a30d2269_icgraph}
+\end{center}
+\end{figure}

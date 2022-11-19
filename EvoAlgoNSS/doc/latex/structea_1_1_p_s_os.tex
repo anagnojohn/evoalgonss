@@ -1,0 +1,271 @@
+\hypertarget{structea_1_1_p_s_os}{}\section{ea\+:\+:P\+S\+Os$<$ T $>$ Struct Template Reference}
+\label{structea_1_1_p_s_os}\index{ea\+::\+P\+S\+Os$<$ T $>$@{ea\+::\+P\+S\+Os$<$ T $>$}}
+
+
+Particle Swarm Optimisation Structure, used in the actual algorithm and for type deduction.  
+
+
+
+
+{\ttfamily \#include $<$pso\+\_\+sub\+\_\+swarm.\+h$>$}
+
+
+
+Inheritance diagram for ea\+:\+:P\+S\+Os$<$ T $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{structea_1_1_p_s_os__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structea_1_1_p_s_os_ae9c6e48cd827aadb4463101211baaa16}{P\+S\+Os} (const T \&i\+\_\+c1, const T \&i\+\_\+c2, const size\+\_\+t \&i\+\_\+sneigh, const T \&i\+\_\+w, const T \&i\+\_\+alpha, const std\+::vector$<$ T $>$ \&i\+\_\+vmax, const std\+::vector$<$ T $>$ \&i\+\_\+decision\+\_\+variables, const std\+::vector$<$ T $>$ \&i\+\_\+stdev, const size\+\_\+t \&i\+\_\+npop, const T \&i\+\_\+tol, const size\+\_\+t \&i\+\_\+iter\+\_\+max, const bool \&i\+\_\+use\+\_\+penalty\+\_\+method, const \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}{Constraints\+\_\+type} \&i\+\_\+constraints\+\_\+type, const bool \&i\+\_\+print\+\_\+to\+\_\+output, const bool \&i\+\_\+print\+\_\+to\+\_\+file)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const T \hyperlink{structea_1_1_p_s_os_ad714859d3155b4492fb01eb1664e7c65}{c1}
+\begin{DoxyCompactList}\small\item\em Parameter c1 for velocity update. \end{DoxyCompactList}\item 
+const T \hyperlink{structea_1_1_p_s_os_a905b431f08e1617a0e30bdac1093927b}{c2}
+\begin{DoxyCompactList}\small\item\em Parameter c2 for velocity update. \end{DoxyCompactList}\item 
+const size\+\_\+t \hyperlink{structea_1_1_p_s_os_a60d85bb8fdc3913239c5769906c3f917}{sneigh}
+\begin{DoxyCompactList}\small\item\em Neighbourhood size. \end{DoxyCompactList}\item 
+const T \hyperlink{structea_1_1_p_s_os_a31794d89fb98ef9f4e887458c0982982}{w}
+\begin{DoxyCompactList}\small\item\em Inertia Variant of P\+SO \+: Inertia. \end{DoxyCompactList}\item 
+const T \hyperlink{structea_1_1_p_s_os_ae12721e5571bed1300a16dac83ab27cc}{alpha}
+\begin{DoxyCompactList}\small\item\em Alpha Parameter for maximum velocity. \end{DoxyCompactList}\item 
+const std\+::vector$<$ T $>$ \hyperlink{structea_1_1_p_s_os_a58dfadd4951b668607176b290a18c1fa}{vmax}
+\begin{DoxyCompactList}\small\item\em Velocity Clamping Variant of P\+SO \+: Maximum Velocity. \end{DoxyCompactList}\item 
+const std\+::string \hyperlink{structea_1_1_p_s_os_a70f9529943125d7f2811961e1d25b30b}{type} = \char`\"{}Sub-\/swarm Particle Swarm Optimisation\char`\"{}
+\begin{DoxyCompactList}\small\item\em Type of the algorithm. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+struct ea\+::\+P\+S\+Os$<$ T $>$}
+
+Particle Swarm Optimisation Structure, used in the actual algorithm and for type deduction. 
+
+Definition at line 17 of file pso\+\_\+sub\+\_\+swarm.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structea_1_1_p_s_os_ae9c6e48cd827aadb4463101211baaa16}\label{structea_1_1_p_s_os_ae9c6e48cd827aadb4463101211baaa16}} 
+\index{ea\+::\+P\+S\+Os@{ea\+::\+P\+S\+Os}!P\+S\+Os@{P\+S\+Os}}
+\index{P\+S\+Os@{P\+S\+Os}!ea\+::\+P\+S\+Os@{ea\+::\+P\+S\+Os}}
+\subsubsection{\texorpdfstring{P\+S\+Os()}{PSOs()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{structea_1_1_p_s_os}{ea\+::\+P\+S\+Os}$<$ T $>$\+::\hyperlink{structea_1_1_p_s_os}{P\+S\+Os} (\begin{DoxyParamCaption}\item[{const T \&}]{i\+\_\+c1,  }\item[{const T \&}]{i\+\_\+c2,  }\item[{const size\+\_\+t \&}]{i\+\_\+sneigh,  }\item[{const T \&}]{i\+\_\+w,  }\item[{const T \&}]{i\+\_\+alpha,  }\item[{const std\+::vector$<$ T $>$ \&}]{i\+\_\+vmax,  }\item[{const std\+::vector$<$ T $>$ \&}]{i\+\_\+decision\+\_\+variables,  }\item[{const std\+::vector$<$ T $>$ \&}]{i\+\_\+stdev,  }\item[{const size\+\_\+t \&}]{i\+\_\+npop,  }\item[{const T \&}]{i\+\_\+tol,  }\item[{const size\+\_\+t \&}]{i\+\_\+iter\+\_\+max,  }\item[{const bool \&}]{i\+\_\+use\+\_\+penalty\+\_\+method = {\ttfamily false},  }\item[{const \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}{Constraints\+\_\+type} \&}]{i\+\_\+constraints\+\_\+type = {\ttfamily \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89a334c4a4c42fdb79d7ebc3e73b517e6f8}{Constraints\+\_\+type\+::none}},  }\item[{const bool \&}]{i\+\_\+print\+\_\+to\+\_\+output = {\ttfamily true},  }\item[{const bool \&}]{i\+\_\+print\+\_\+to\+\_\+file = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i\+\_\+c1} & c1 parameter for velocity update \\
+\hline
+{\em i\+\_\+c2} & c2 parameter for velocity update \\
+\hline
+{\em i\+\_\+sneigh} & Number of neighbourhoods \\
+\hline
+{\em i\+\_\+w} & Inertia parameter for velocity update \\
+\hline
+{\em i\+\_\+alpha} & alpha parameter for maximum velocity decrease \\
+\hline
+{\em i\+\_\+vmax} & Maximum velocity \\
+\hline
+{\em i\+\_\+decision\+\_\+variables} & The starting values of the decision variables \\
+\hline
+{\em i\+\_\+stdev} & The standard deviation \\
+\hline
+{\em i\+\_\+npop} & The population size \\
+\hline
+{\em i\+\_\+tol} & The tolerance \\
+\hline
+{\em i\+\_\+iter\+\_\+max} & The maximum number of iterations \\
+\hline
+{\em i\+\_\+use\+\_\+penalty\+\_\+method} & Whether to used penalties or not \\
+\hline
+{\em i\+\_\+constraints\+\_\+type} & What kind of constraints to use \\
+\hline
+{\em i\+\_\+print\+\_\+to\+\_\+output} & Whether to print to terminal or not \\
+\hline
+{\em i\+\_\+print\+\_\+to\+\_\+file} & Whether to print to a file or not \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A P\+S\+O$<$\+T$>$ object 
+\end{DoxyReturn}
+
+
+Definition at line 42 of file pso\+\_\+sub\+\_\+swarm.\+h.
+
+
+
+References ea\+::\+P\+S\+Os$<$ T $>$\+::alpha, ea\+::\+P\+S\+Os$<$ T $>$\+::c1, ea\+::\+P\+S\+Os$<$ T $>$\+::c2, ea\+::\+E\+A\+\_\+base$<$ T $>$\+::ndv, ea\+::\+P\+S\+Os$<$ T $>$\+::sneigh, ea\+::\+P\+S\+Os$<$ T $>$\+::vmax, and ea\+::\+P\+S\+Os$<$ T $>$\+::w.
+
+
+\begin{DoxyCode}
+45                                                                         :
+46             EA\_base<T>(i\_decision\_variables, i\_stdev, i\_npop, i\_tol, i\_iter\_max, i\_use\_penalty\_method, 
+      i\_constraints\_type, i\_print\_to\_output, i\_print\_to\_file),
+47             \hyperlink{structea_1_1_p_s_os_ad714859d3155b4492fb01eb1664e7c65}{c1}( i\_c1 ),
+48             \hyperlink{structea_1_1_p_s_os_a905b431f08e1617a0e30bdac1093927b}{c2}( i\_c2 ), 
+49             \hyperlink{structea_1_1_p_s_os_a60d85bb8fdc3913239c5769906c3f917}{sneigh}( i\_sneigh ), 
+50             \hyperlink{structea_1_1_p_s_os_a31794d89fb98ef9f4e887458c0982982}{w}( i\_w ), 
+51             \hyperlink{structea_1_1_p_s_os_ae12721e5571bed1300a16dac83ab27cc}{alpha}( i\_alpha ), 
+52             \hyperlink{structea_1_1_p_s_os_a58dfadd4951b668607176b290a18c1fa}{vmax}( i\_vmax )
+53         \{
+54             assert(\hyperlink{structea_1_1_p_s_os_ad714859d3155b4492fb01eb1664e7c65}{c1} > 0);
+55             assert(\hyperlink{structea_1_1_p_s_os_a905b431f08e1617a0e30bdac1093927b}{c2} > 0);
+56             assert(\hyperlink{structea_1_1_p_s_os_a60d85bb8fdc3913239c5769906c3f917}{sneigh} > 0);
+57             assert(\hyperlink{structea_1_1_p_s_os_a60d85bb8fdc3913239c5769906c3f917}{sneigh} < i\_npop);
+58             assert(\hyperlink{structea_1_1_p_s_os_a31794d89fb98ef9f4e887458c0982982}{w} > 0);
+59             assert(\hyperlink{structea_1_1_p_s_os_ae12721e5571bed1300a16dac83ab27cc}{alpha} > 0);
+60             \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}& p : \hyperlink{structea_1_1_p_s_os_a58dfadd4951b668607176b290a18c1fa}{vmax}) \{ assert(p > 0); \};
+61             assert(vmax.size() == this->\hyperlink{structea_1_1_e_a__base_a6996abed1c0b9642bdae67547fa6474c}{ndv});
+62         \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structea_1_1_p_s_os_ae12721e5571bed1300a16dac83ab27cc}\label{structea_1_1_p_s_os_ae12721e5571bed1300a16dac83ab27cc}} 
+\index{ea\+::\+P\+S\+Os@{ea\+::\+P\+S\+Os}!alpha@{alpha}}
+\index{alpha@{alpha}!ea\+::\+P\+S\+Os@{ea\+::\+P\+S\+Os}}
+\subsubsection{\texorpdfstring{alpha}{alpha}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const T \hyperlink{structea_1_1_p_s_os}{ea\+::\+P\+S\+Os}$<$ T $>$\+::alpha}
+
+
+
+Alpha Parameter for maximum velocity. 
+
+
+
+Definition at line 72 of file pso\+\_\+sub\+\_\+swarm.\+h.
+
+
+
+Referenced by ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$\+::display\+\_\+parameters(), and ea\+::\+P\+S\+Os$<$ T $>$\+::\+P\+S\+Os().
+
+\mbox{\Hypertarget{structea_1_1_p_s_os_ad714859d3155b4492fb01eb1664e7c65}\label{structea_1_1_p_s_os_ad714859d3155b4492fb01eb1664e7c65}} 
+\index{ea\+::\+P\+S\+Os@{ea\+::\+P\+S\+Os}!c1@{c1}}
+\index{c1@{c1}!ea\+::\+P\+S\+Os@{ea\+::\+P\+S\+Os}}
+\subsubsection{\texorpdfstring{c1}{c1}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const T \hyperlink{structea_1_1_p_s_os}{ea\+::\+P\+S\+Os}$<$ T $>$\+::c1}
+
+
+
+Parameter c1 for velocity update. 
+
+
+
+Definition at line 64 of file pso\+\_\+sub\+\_\+swarm.\+h.
+
+
+
+Referenced by ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$\+::display\+\_\+parameters(), and ea\+::\+P\+S\+Os$<$ T $>$\+::\+P\+S\+Os().
+
+\mbox{\Hypertarget{structea_1_1_p_s_os_a905b431f08e1617a0e30bdac1093927b}\label{structea_1_1_p_s_os_a905b431f08e1617a0e30bdac1093927b}} 
+\index{ea\+::\+P\+S\+Os@{ea\+::\+P\+S\+Os}!c2@{c2}}
+\index{c2@{c2}!ea\+::\+P\+S\+Os@{ea\+::\+P\+S\+Os}}
+\subsubsection{\texorpdfstring{c2}{c2}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const T \hyperlink{structea_1_1_p_s_os}{ea\+::\+P\+S\+Os}$<$ T $>$\+::c2}
+
+
+
+Parameter c2 for velocity update. 
+
+
+
+Definition at line 66 of file pso\+\_\+sub\+\_\+swarm.\+h.
+
+
+
+Referenced by ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$\+::display\+\_\+parameters(), and ea\+::\+P\+S\+Os$<$ T $>$\+::\+P\+S\+Os().
+
+\mbox{\Hypertarget{structea_1_1_p_s_os_a60d85bb8fdc3913239c5769906c3f917}\label{structea_1_1_p_s_os_a60d85bb8fdc3913239c5769906c3f917}} 
+\index{ea\+::\+P\+S\+Os@{ea\+::\+P\+S\+Os}!sneigh@{sneigh}}
+\index{sneigh@{sneigh}!ea\+::\+P\+S\+Os@{ea\+::\+P\+S\+Os}}
+\subsubsection{\texorpdfstring{sneigh}{sneigh}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const size\+\_\+t \hyperlink{structea_1_1_p_s_os}{ea\+::\+P\+S\+Os}$<$ T $>$\+::sneigh}
+
+
+
+Neighbourhood size. 
+
+
+
+Definition at line 68 of file pso\+\_\+sub\+\_\+swarm.\+h.
+
+
+
+Referenced by ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$\+::display\+\_\+parameters(), and ea\+::\+P\+S\+Os$<$ T $>$\+::\+P\+S\+Os().
+
+\mbox{\Hypertarget{structea_1_1_p_s_os_a70f9529943125d7f2811961e1d25b30b}\label{structea_1_1_p_s_os_a70f9529943125d7f2811961e1d25b30b}} 
+\index{ea\+::\+P\+S\+Os@{ea\+::\+P\+S\+Os}!type@{type}}
+\index{type@{type}!ea\+::\+P\+S\+Os@{ea\+::\+P\+S\+Os}}
+\subsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const std\+::string \hyperlink{structea_1_1_p_s_os}{ea\+::\+P\+S\+Os}$<$ T $>$\+::type = \char`\"{}Sub-\/swarm Particle Swarm Optimisation\char`\"{}}
+
+
+
+Type of the algorithm. 
+
+
+
+Definition at line 76 of file pso\+\_\+sub\+\_\+swarm.\+h.
+
+\mbox{\Hypertarget{structea_1_1_p_s_os_a58dfadd4951b668607176b290a18c1fa}\label{structea_1_1_p_s_os_a58dfadd4951b668607176b290a18c1fa}} 
+\index{ea\+::\+P\+S\+Os@{ea\+::\+P\+S\+Os}!vmax@{vmax}}
+\index{vmax@{vmax}!ea\+::\+P\+S\+Os@{ea\+::\+P\+S\+Os}}
+\subsubsection{\texorpdfstring{vmax}{vmax}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const std\+::vector$<$T$>$ \hyperlink{structea_1_1_p_s_os}{ea\+::\+P\+S\+Os}$<$ T $>$\+::vmax}
+
+
+
+Velocity Clamping Variant of P\+SO \+: Maximum Velocity. 
+
+
+
+Definition at line 74 of file pso\+\_\+sub\+\_\+swarm.\+h.
+
+
+
+Referenced by ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$\+::display\+\_\+parameters(), ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$\+::position\+\_\+update(), and ea\+::\+P\+S\+Os$<$ T $>$\+::\+P\+S\+Os().
+
+\mbox{\Hypertarget{structea_1_1_p_s_os_a31794d89fb98ef9f4e887458c0982982}\label{structea_1_1_p_s_os_a31794d89fb98ef9f4e887458c0982982}} 
+\index{ea\+::\+P\+S\+Os@{ea\+::\+P\+S\+Os}!w@{w}}
+\index{w@{w}!ea\+::\+P\+S\+Os@{ea\+::\+P\+S\+Os}}
+\subsubsection{\texorpdfstring{w}{w}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const T \hyperlink{structea_1_1_p_s_os}{ea\+::\+P\+S\+Os}$<$ T $>$\+::w}
+
+
+
+Inertia Variant of P\+SO \+: Inertia. 
+
+
+
+Definition at line 70 of file pso\+\_\+sub\+\_\+swarm.\+h.
+
+
+
+Referenced by ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$\+::display\+\_\+parameters(), ea\+::\+P\+S\+Os$<$ T $>$\+::\+P\+S\+Os(), and ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$\+::run\+\_\+algo().
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{pso__sub__swarm_8h}{pso\+\_\+sub\+\_\+swarm.\+h}\end{DoxyCompactItemize}

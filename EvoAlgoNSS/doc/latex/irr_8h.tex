@@ -1,0 +1,52 @@
+\hypertarget{irr_8h}{}\section{irr.\+h File Reference}
+\label{irr_8h}\index{irr.\+h@{irr.\+h}}
+
+
+Functions for the Internal Rate of Return.  
+
+
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include \char`\"{}utilities.\+h\char`\"{}}\newline
+Include dependency graph for irr.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=273pt]{irr_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=152pt]{irr_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceirr}{irr}
+\begin{DoxyCompactList}\small\item\em Internal Rate of Return (I\+RR) namespace. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{namespaceirr_ae00c3409ca39fa2dc47ce61da4169a66}{irr\+::compute\+\_\+discount\+\_\+factor} (const T \&r, const T \&period, const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&df\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Calculates discount factors. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\bool \hyperlink{namespaceirr_a6801aa96a307b3f52817dd1a3bcd065e}{irr\+::constraints\+\_\+irr} (const std\+::vector$<$ T $>$ \&solution, const \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}{Constraints\+\_\+type} \&constraints\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Constraints function for Internal Rate of Return. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{namespaceirr_ac3411cd2ad174f399c525d8d17dcdad0}{irr\+::compute\+\_\+pv} (const T \&r, const T \&nominal\+\_\+value, const std\+::vector$<$ T $>$ \&cash\+\_\+flows, const std\+::vector$<$ T $>$ \&time\+\_\+periods, const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&df\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Returns the present value of an investment. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{namespaceirr_abd1d21a84003df6b46dc32c3a30d2269}{irr\+::penalty\+\_\+irr} (const T \&r)
+\begin{DoxyCompactList}\small\item\em Penalty function for I\+RR. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{namespaceirr_aced01c5e5ef9e171a3b892275d442f8d}{irr\+::fitness\+\_\+irr} (const std\+::vector$<$ T $>$ \&solution, const T \&price, const T \&nominal\+\_\+value, const std\+::vector$<$ T $>$ \&cash\+\_\+flows, const std\+::vector$<$ T $>$ \&time\+\_\+periods, const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&df\+\_\+type, const bool \&use\+\_\+penalty\+\_\+method)
+\begin{DoxyCompactList}\small\item\em This is the fitness function for finding the internal rate of return of a bond, in this case it is equal to its yield to maturity. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Functions for the Internal Rate of Return. 
+
+\begin{DoxyAuthor}{Author}
+Ioannis Anagnostopoulos 
+\end{DoxyAuthor}

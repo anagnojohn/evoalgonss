@@ -1,0 +1,65 @@
+\hypertarget{namespaceyft}{}\section{yft Namespace Reference}
+\label{namespaceyft}\index{yft@{yft}}
+
+
+Yield Curve Fitting namespace.  
+
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structyft_1_1_interest___rate}{Interest\+\_\+\+Rate}
+\begin{DoxyCompactList}\small\item\em Structure for interest rates. \end{DoxyCompactList}\item 
+class \hyperlink{classyft_1_1_interest___rate___helper}{Interest\+\_\+\+Rate\+\_\+\+Helper}
+\begin{DoxyCompactList}\small\item\em A class for the yield-\/curve-\/fitting problem. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::vector$<$ \hyperlink{structyft_1_1_interest___rate}{Interest\+\_\+\+Rate}$<$ T $>$ $>$ \hyperlink{namespaceyft_a5e004e321696f199f8cf25b1dc604108}{read\+\_\+ir\+\_\+from\+\_\+file} (const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Reads the interest rates and periods from file and constructs a vector of interest rate structs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Yield Curve Fitting namespace. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespaceyft_a5e004e321696f199f8cf25b1dc604108}\label{namespaceyft_a5e004e321696f199f8cf25b1dc604108}} 
+\index{yft@{yft}!read\+\_\+ir\+\_\+from\+\_\+file@{read\+\_\+ir\+\_\+from\+\_\+file}}
+\index{read\+\_\+ir\+\_\+from\+\_\+file@{read\+\_\+ir\+\_\+from\+\_\+file}!yft@{yft}}
+\subsubsection{\texorpdfstring{read\+\_\+ir\+\_\+from\+\_\+file()}{read\_ir\_from\_file()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+yft\+::read\+\_\+ir\+\_\+from\+\_\+file (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename }\end{DoxyParamCaption})}
+
+
+
+Reads the interest rates and periods from file and constructs a vector of interest rate structs. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the input file as an std\+::string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A vector of \hyperlink{structyft_1_1_interest___rate}{Interest\+\_\+\+Rate} objects 
+\end{DoxyReturn}
+
+
+Definition at line 45 of file yield\+\_\+curve\+\_\+fitting.\+h.
+
+
+\begin{DoxyCode}
+46     \{
+47         std::vector<Interest\_Rate<T>> ir\_vec;
+48         std::ifstream input(filename);
+49         \textcolor{keywordflow}{for} (std::string line; getline(input, line); )
+50         \{
+51             T period;
+52             T rate;
+53             std::istringstream stream(line);
+54             stream >> period >> rate;
+55             \textcolor{keyword}{const} Interest\_Rate<T> ir\{ period, rate \};
+56             ir\_vec.push\_back(ir);
+57         \}
+58         \textcolor{keywordflow}{return} ir\_vec;
+59     \}
+\end{DoxyCode}

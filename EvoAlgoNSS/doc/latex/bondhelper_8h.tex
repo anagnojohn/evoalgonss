@@ -1,0 +1,59 @@
+\hypertarget{bondhelper_8h}{}\section{bondhelper.\+h File Reference}
+\label{bondhelper_8h}\index{bondhelper.\+h@{bondhelper.\+h}}
+
+
+Classes and functions for the bond pricing problem.  
+
+
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$tuple$>$}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+{\ttfamily \#include \char`\"{}bond.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}svensson.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}yield\+\_\+curve\+\_\+fitting.\+h\char`\"{}}\newline
+Include dependency graph for bondhelper.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{bondhelper_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=152pt]{bondhelper_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classbond_1_1_bond_helper}{bond\+::\+Bond\+Helper$<$ T $>$}
+\begin{DoxyCompactList}\small\item\em A class for the bond pricing problem as well as finding the yield-\/to-\/maturities of bonds. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacebond}{bond}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classbond_1_1_bond}{Bond} Class and Utilities. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespacebond_a7ff8132c72465682a65a634ca0958df9}{bond\+::\+Bond\+\_\+pricing\+\_\+type} \{ \hyperlink{namespacebond_a7ff8132c72465682a65a634ca0958df9a0c68c2daa0334704116676287d54c2ae}{bond\+::\+Bond\+\_\+pricing\+\_\+type\+::bpp}, 
+\hyperlink{namespacebond_a7ff8132c72465682a65a634ca0958df9afebbcc7d14e1ada7b0eee6411e82665b}{bond\+::\+Bond\+\_\+pricing\+\_\+type\+::bpy}
+ \}\begin{DoxyCompactList}\small\item\em Enumeration for type of bondpricing, using yields or prices. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::vector$<$ Bond$<$ T $>$ $>$ \hyperlink{namespacebond_a20b23f0d31139a065334fd997507b1ae}{bond\+::read\+\_\+bonds\+\_\+from\+\_\+file} (const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Reads bond data from a file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Classes and functions for the bond pricing problem. 
+
+\begin{DoxyAuthor}{Author}
+Ioannis Anagnostopoulos 
+\end{DoxyAuthor}

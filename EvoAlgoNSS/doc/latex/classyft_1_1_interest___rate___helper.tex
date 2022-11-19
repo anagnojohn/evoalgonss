@@ -1,0 +1,207 @@
+\hypertarget{classyft_1_1_interest___rate___helper}{}\section{yft\+:\+:Interest\+\_\+\+Rate\+\_\+\+Helper$<$ T $>$ Class Template Reference}
+\label{classyft_1_1_interest___rate___helper}\index{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper$<$ T $>$@{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper$<$ T $>$}}
+
+
+A class for the yield-\/curve-\/fitting problem.  
+
+
+
+
+{\ttfamily \#include $<$yield\+\_\+curve\+\_\+fitting.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classyft_1_1_interest___rate___helper_a153c17e7c5545068f466a8f291e72dc9}{Interest\+\_\+\+Rate\+\_\+\+Helper} (const std\+::vector$<$ \hyperlink{structyft_1_1_interest___rate}{Interest\+\_\+\+Rate}$<$ T $>$$>$ \&i\+\_\+ir\+\_\+vec)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename S $>$ }\\void \hyperlink{classyft_1_1_interest___rate___helper_a2bf0217c985329f0f32c9df92b29456c}{yieldcurve\+\_\+fitting} (const S \&solver)
+\begin{DoxyCompactList}\small\item\em Yield Curve Fitting using interest rates and recorded periods. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+T \hyperlink{classyft_1_1_interest___rate___helper_ab8f50bcc6788356b008716a44dc134b8}{fitness\+\_\+yield\+\_\+curve\+\_\+fitting} (const std\+::vector$<$ T $>$ \&solution, const bool \&use\+\_\+penalty\+\_\+method)
+\begin{DoxyCompactList}\small\item\em This is the fitness function for yield-\/curve fitting using Interest Rates. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \hyperlink{structyft_1_1_interest___rate}{Interest\+\_\+\+Rate}$<$ T $>$ $>$ \hyperlink{classyft_1_1_interest___rate___helper_aaa22a1a41fd5eead9ea61136ebc8446c}{ir\+\_\+vec}
+\begin{DoxyCompactList}\small\item\em Vector of interest rates. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper$<$ T $>$}
+
+A class for the yield-\/curve-\/fitting problem. 
+
+Definition at line 65 of file yield\+\_\+curve\+\_\+fitting.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classyft_1_1_interest___rate___helper_a153c17e7c5545068f466a8f291e72dc9}\label{classyft_1_1_interest___rate___helper_a153c17e7c5545068f466a8f291e72dc9}} 
+\index{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper@{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}!Interest\+\_\+\+Rate\+\_\+\+Helper@{Interest\+\_\+\+Rate\+\_\+\+Helper}}
+\index{Interest\+\_\+\+Rate\+\_\+\+Helper@{Interest\+\_\+\+Rate\+\_\+\+Helper}!yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper@{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}}
+\subsubsection{\texorpdfstring{Interest\+\_\+\+Rate\+\_\+\+Helper()}{Interest\_Rate\_Helper()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\hyperlink{classyft_1_1_interest___rate___helper}{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}$<$ T $>$\+::\hyperlink{classyft_1_1_interest___rate___helper}{Interest\+\_\+\+Rate\+\_\+\+Helper} (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \hyperlink{structyft_1_1_interest___rate}{Interest\+\_\+\+Rate}$<$ T $>$$>$ \&}]{i\+\_\+ir\+\_\+vec }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i\+\_\+ir\+\_\+vec} & A vector of Interest\+\_\+\+Rate$<$\+T$>$ objects \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An \hyperlink{classyft_1_1_interest___rate___helper}{Interest\+\_\+\+Rate\+\_\+\+Helper} object 
+\end{DoxyReturn}
+
+
+Definition at line 73 of file yield\+\_\+curve\+\_\+fitting.\+h.
+
+
+\begin{DoxyCode}
+73                                                                           :
+74             \hyperlink{classyft_1_1_interest___rate___helper_aaa22a1a41fd5eead9ea61136ebc8446c}{ir\_vec}\{ i\_ir\_vec \} \{\};
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classyft_1_1_interest___rate___helper_ab8f50bcc6788356b008716a44dc134b8}\label{classyft_1_1_interest___rate___helper_ab8f50bcc6788356b008716a44dc134b8}} 
+\index{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper@{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}!fitness\+\_\+yield\+\_\+curve\+\_\+fitting@{fitness\+\_\+yield\+\_\+curve\+\_\+fitting}}
+\index{fitness\+\_\+yield\+\_\+curve\+\_\+fitting@{fitness\+\_\+yield\+\_\+curve\+\_\+fitting}!yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper@{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}}
+\subsubsection{\texorpdfstring{fitness\+\_\+yield\+\_\+curve\+\_\+fitting()}{fitness\_yield\_curve\_fitting()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\hyperlink{classyft_1_1_interest___rate___helper}{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}$<$ T $>$\+::fitness\+\_\+yield\+\_\+curve\+\_\+fitting (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{solution,  }\item[{const bool \&}]{use\+\_\+penalty\+\_\+method }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+This is the fitness function for yield-\/curve fitting using Interest Rates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em solution} & N\+SS parameters candindate solution \\
+\hline
+{\em use\+\_\+penalty\+\_\+method} & Whether to use the penalty method defined for N\+SS or not \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The fitness cost of N\+SS for yield curve fitting 
+\end{DoxyReturn}
+The sum of squares of errors betwwen the actual rates and the rates computed by svensson are used 
+
+Definition at line 105 of file yield\+\_\+curve\+\_\+fitting.\+h.
+
+
+
+References nss\+::penalty\+\_\+svensson(), and nss\+::svensson().
+
+
+\begin{DoxyCode}
+106         \{
+108             T sum\_of\_squares = 0;
+109             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < \hyperlink{classyft_1_1_interest___rate___helper_aaa22a1a41fd5eead9ea61136ebc8446c}{ir\_vec}.size(); ++i)
+110             \{
+111                 T estimate = \hyperlink{namespacenss_a71aad246261afa16f8bb1a4057570d4b}{svensson}(solution, \hyperlink{classyft_1_1_interest___rate___helper_aaa22a1a41fd5eead9ea61136ebc8446c}{ir\_vec}[i].period);
+112                 sum\_of\_squares = sum\_of\_squares + std::pow(\hyperlink{classyft_1_1_interest___rate___helper_aaa22a1a41fd5eead9ea61136ebc8446c}{ir\_vec}[i].rate - estimate, 2);
+113             \}
+114             \textcolor{keywordflow}{if} (use\_penalty\_method)
+115             \{
+116                 \textcolor{keywordflow}{return} sum\_of\_squares + \hyperlink{namespacenss_a009a0ebbca20f7969d0c2ed5a241aa82}{penalty\_svensson}(solution);
+117             \}
+118             \textcolor{keywordflow}{else}
+119             \{
+120                 \textcolor{keywordflow}{return} sum\_of\_squares;
+121             \}
+122         \};
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{classyft_1_1_interest___rate___helper_ab8f50bcc6788356b008716a44dc134b8_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classyft_1_1_interest___rate___helper_a2bf0217c985329f0f32c9df92b29456c}\label{classyft_1_1_interest___rate___helper_a2bf0217c985329f0f32c9df92b29456c}} 
+\index{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper@{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}!yieldcurve\+\_\+fitting@{yieldcurve\+\_\+fitting}}
+\index{yieldcurve\+\_\+fitting@{yieldcurve\+\_\+fitting}!yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper@{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}}
+\subsubsection{\texorpdfstring{yieldcurve\+\_\+fitting()}{yieldcurve\_fitting()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+template$<$typename S $>$ \\
+\hyperlink{classyft_1_1_interest___rate___helper}{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}$<$ T $>$\+::yieldcurve\+\_\+fitting (\begin{DoxyParamCaption}\item[{const S \&}]{solver }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Yield Curve Fitting using interest rates and recorded periods. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em solver} & The parameter structure of the solver that is going to be used for yield curve fitting \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line 81 of file yield\+\_\+curve\+\_\+fitting.\+h.
+
+
+
+References nss\+::constraints\+\_\+svensson(), ea\+::solve(), and nss\+::svensson().
+
+
+\begin{DoxyCode}
+82         \{
+83             assert(solver.ndv == 6);
+84             \textcolor{keyword}{auto} f = [&, use\_penalty\_method = solver.use\_penalty\_method](\textcolor{keyword}{const} \textcolor{keyword}{auto}& solution) \{ \textcolor{keywordflow}{return} 
+      \hyperlink{classyft_1_1_interest___rate___helper_ab8f50bcc6788356b008716a44dc134b8}{fitness\_yield\_curve\_fitting}(solution, use\_penalty\_method); \};
+85             \textcolor{keyword}{auto} c = [&, constraints\_type = solver.constraints\_type](\textcolor{keyword}{const} \textcolor{keyword}{auto}& solution) \{ \textcolor{keywordflow}{return} 
+      \hyperlink{namespacenss_a39de3569a71e773f9da82c713eb7e6eb}{constraints\_svensson}(solution, constraints\_type); \};
+86             std::cout << \textcolor{stringliteral}{"Yield Curve fitting."} << \textcolor{stringliteral}{"\(\backslash\)n"};
+87             \textcolor{keyword}{auto} res = \hyperlink{namespaceea_a6450b5bf61e9fdca8b6c19267e14c560}{solve}(f, c, solver, \textcolor{stringliteral}{"YFT"});
+88             T error = 0;
+89             \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}& p : \hyperlink{classyft_1_1_interest___rate___helper_aaa22a1a41fd5eead9ea61136ebc8446c}{ir\_vec})
+90             \{
+91                 error = error + std::pow(\hyperlink{namespacenss_a71aad246261afa16f8bb1a4057570d4b}{svensson}(res, p.period) - p.rate, 2);
+92                 \textcolor{comment}{//std::cout << "Estimated interest rates: " << svensson(res, p.period) << " Actual interest
+       rates: " << p.rate << "\(\backslash\)n";}
+93             \}
+94             std::cout << \textcolor{stringliteral}{"Zero-rate Mean Squared Error: "} << error / ir\_vec.size() << \textcolor{stringliteral}{"\(\backslash\)n"};
+95         \};
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=346pt]{classyft_1_1_interest___rate___helper_a2bf0217c985329f0f32c9df92b29456c_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classyft_1_1_interest___rate___helper_aaa22a1a41fd5eead9ea61136ebc8446c}\label{classyft_1_1_interest___rate___helper_aaa22a1a41fd5eead9ea61136ebc8446c}} 
+\index{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper@{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}!ir\+\_\+vec@{ir\+\_\+vec}}
+\index{ir\+\_\+vec@{ir\+\_\+vec}!yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper@{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}}
+\subsubsection{\texorpdfstring{ir\+\_\+vec}{ir\_vec}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$\hyperlink{structyft_1_1_interest___rate}{Interest\+\_\+\+Rate}$<$T$>$ $>$ \hyperlink{classyft_1_1_interest___rate___helper}{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}$<$ T $>$\+::ir\+\_\+vec\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Vector of interest rates. 
+
+
+
+Definition at line 95 of file yield\+\_\+curve\+\_\+fitting.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{yield__curve__fitting_8h}{yield\+\_\+curve\+\_\+fitting.\+h}\end{DoxyCompactItemize}

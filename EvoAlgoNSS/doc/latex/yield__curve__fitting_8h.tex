@@ -1,0 +1,53 @@
+\hypertarget{yield__curve__fitting_8h}{}\section{yield\+\_\+curve\+\_\+fitting.\+h File Reference}
+\label{yield__curve__fitting_8h}\index{yield\+\_\+curve\+\_\+fitting.\+h@{yield\+\_\+curve\+\_\+fitting.\+h}}
+
+
+Class and functions for the yield curve fitting problem.  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include \char`\"{}svensson.\+h\char`\"{}}\newline
+Include dependency graph for yield\+\_\+curve\+\_\+fitting.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{yield__curve__fitting_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{yield__curve__fitting_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structyft_1_1_interest___rate}{yft\+::\+Interest\+\_\+\+Rate$<$ T $>$}
+\begin{DoxyCompactList}\small\item\em Structure for interest rates. \end{DoxyCompactList}\item 
+class \hyperlink{classyft_1_1_interest___rate___helper}{yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper$<$ T $>$}
+\begin{DoxyCompactList}\small\item\em A class for the yield-\/curve-\/fitting problem. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceyft}{yft}
+\begin{DoxyCompactList}\small\item\em Yield Curve Fitting namespace. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::vector$<$ Interest\+\_\+\+Rate$<$ T $>$ $>$ \hyperlink{namespaceyft_a5e004e321696f199f8cf25b1dc604108}{yft\+::read\+\_\+ir\+\_\+from\+\_\+file} (const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Reads the interest rates and periods from file and constructs a vector of interest rate structs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class and functions for the yield curve fitting problem. 
+
+\begin{DoxyAuthor}{Author}
+Ioannis Anagnostopoulos 
+\end{DoxyAuthor}

@@ -1,0 +1,310 @@
+\hypertarget{structea_1_1_e_a__base}{}\section{ea\+:\+:E\+A\+\_\+base$<$ T $>$ Struct Template Reference}
+\label{structea_1_1_e_a__base}\index{ea\+::\+E\+A\+\_\+base$<$ T $>$@{ea\+::\+E\+A\+\_\+base$<$ T $>$}}
+
+
+Evolutionary algorithm stucture base.  
+
+
+
+
+{\ttfamily \#include $<$ealgorithm\+\_\+base.\+h$>$}
+
+
+
+Inheritance diagram for ea\+:\+:E\+A\+\_\+base$<$ T $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structea_1_1_e_a__base__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{structea_1_1_e_a__base_ab626cb28104f750a38092a742c9fa996}{fp\+\_\+type} = T
+\begin{DoxyCompactList}\small\item\em The floating point number type used for type deduction. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const std\+::vector$<$ T $>$ \hyperlink{structea_1_1_e_a__base_a71e09437e78efc6e93e0a6e510d13100}{decision\+\_\+variables}
+\begin{DoxyCompactList}\small\item\em Initial Decision Variables. \end{DoxyCompactList}\item 
+const std\+::vector$<$ T $>$ \hyperlink{structea_1_1_e_a__base_a28216728d1e1355337d8bf2a484d5569}{stdev}
+\begin{DoxyCompactList}\small\item\em Standard deviation of the decision variables. \end{DoxyCompactList}\item 
+const size\+\_\+t \hyperlink{structea_1_1_e_a__base_a41b6ed30e866d5f6a782a90e6a1b0f79}{npop}
+\begin{DoxyCompactList}\small\item\em Size of the population. \end{DoxyCompactList}\item 
+const T \hyperlink{structea_1_1_e_a__base_a9b7a33797adc1cbeab7a9f3786c41a27}{tol}
+\begin{DoxyCompactList}\small\item\em Tolerance. \end{DoxyCompactList}\item 
+const size\+\_\+t \hyperlink{structea_1_1_e_a__base_affe85fad1da440e091a9d09cf46d502f}{iter\+\_\+max}
+\begin{DoxyCompactList}\small\item\em Number of maximum iterations. \end{DoxyCompactList}\item 
+const size\+\_\+t \hyperlink{structea_1_1_e_a__base_a6996abed1c0b9642bdae67547fa6474c}{ndv}
+\begin{DoxyCompactList}\small\item\em Number of decision variables. \end{DoxyCompactList}\item 
+const bool \hyperlink{structea_1_1_e_a__base_ad3b4a962208b72c67b663ba0d40bebfb}{use\+\_\+penalty\+\_\+method}
+\begin{DoxyCompactList}\small\item\em Use penalty function or not. \end{DoxyCompactList}\item 
+const \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}{Constraints\+\_\+type} \hyperlink{structea_1_1_e_a__base_a8f6f21a54d24fa69833cfd1a59beeed3}{constraints\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Constraints type. \end{DoxyCompactList}\item 
+const bool \hyperlink{structea_1_1_e_a__base_aea758485e2120469ca02c52c7cff9e5a}{print\+\_\+to\+\_\+output}
+\begin{DoxyCompactList}\small\item\em Print to output or not. \end{DoxyCompactList}\item 
+const bool \hyperlink{structea_1_1_e_a__base_a9ad71465eab92ffd0fe98b625d2d15bc}{print\+\_\+to\+\_\+file}
+\begin{DoxyCompactList}\small\item\em Print to file or not. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structea_1_1_e_a__base_a4dd8bb67732d28ba3d084ddcd6ee1858}{E\+A\+\_\+base} (const std\+::vector$<$ T $>$ \&i\+\_\+decision\+\_\+variables, const std\+::vector$<$ T $>$ \&i\+\_\+stdev, const size\+\_\+t \&i\+\_\+npop, const T \&i\+\_\+tol, const size\+\_\+t \&i\+\_\+iter\+\_\+max, const bool \&i\+\_\+use\+\_\+penalty\+\_\+method, const \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}{Constraints\+\_\+type} \&i\+\_\+constraints\+\_\+type, const bool \&i\+\_\+print\+\_\+to\+\_\+output, const bool \&i\+\_\+print\+\_\+to\+\_\+file)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+struct ea\+::\+E\+A\+\_\+base$<$ T $>$}
+
+Evolutionary algorithm stucture base. 
+
+Definition at line 28 of file ealgorithm\+\_\+base.\+h.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{structea_1_1_e_a__base_ab626cb28104f750a38092a742c9fa996}\label{structea_1_1_e_a__base_ab626cb28104f750a38092a742c9fa996}} 
+\index{ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}!fp\+\_\+type@{fp\+\_\+type}}
+\index{fp\+\_\+type@{fp\+\_\+type}!ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}}
+\subsubsection{\texorpdfstring{fp\+\_\+type}{fp\_type}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+using \hyperlink{structea_1_1_e_a__base}{ea\+::\+E\+A\+\_\+base}$<$ T $>$\+::\hyperlink{structea_1_1_e_a__base_ab626cb28104f750a38092a742c9fa996}{fp\+\_\+type} =  T}
+
+
+
+The floating point number type used for type deduction. 
+
+
+
+Definition at line 32 of file ealgorithm\+\_\+base.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structea_1_1_e_a__base_a4dd8bb67732d28ba3d084ddcd6ee1858}\label{structea_1_1_e_a__base_a4dd8bb67732d28ba3d084ddcd6ee1858}} 
+\index{ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}!E\+A\+\_\+base@{E\+A\+\_\+base}}
+\index{E\+A\+\_\+base@{E\+A\+\_\+base}!ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}}
+\subsubsection{\texorpdfstring{E\+A\+\_\+base()}{EA\_base()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\hyperlink{structea_1_1_e_a__base}{ea\+::\+E\+A\+\_\+base}$<$ T $>$\+::\hyperlink{structea_1_1_e_a__base}{E\+A\+\_\+base} (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{i\+\_\+decision\+\_\+variables,  }\item[{const std\+::vector$<$ T $>$ \&}]{i\+\_\+stdev,  }\item[{const size\+\_\+t \&}]{i\+\_\+npop,  }\item[{const T \&}]{i\+\_\+tol,  }\item[{const size\+\_\+t \&}]{i\+\_\+iter\+\_\+max,  }\item[{const bool \&}]{i\+\_\+use\+\_\+penalty\+\_\+method,  }\item[{const \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}{Constraints\+\_\+type} \&}]{i\+\_\+constraints\+\_\+type,  }\item[{const bool \&}]{i\+\_\+print\+\_\+to\+\_\+output,  }\item[{const bool \&}]{i\+\_\+print\+\_\+to\+\_\+file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i\+\_\+decision\+\_\+variables} & The starting values of the decision variables \\
+\hline
+{\em i\+\_\+stdev} & The standard deviation \\
+\hline
+{\em i\+\_\+npop} & The population size \\
+\hline
+{\em i\+\_\+tol} & The tolerance \\
+\hline
+{\em i\+\_\+iter\+\_\+max} & The maximum number of iterations \\
+\hline
+{\em i\+\_\+use\+\_\+penalty\+\_\+method} & Whether to used penalties or not \\
+\hline
+{\em i\+\_\+constraints\+\_\+type} & What kind of constraints to use \\
+\hline
+{\em i\+\_\+print\+\_\+to\+\_\+output} & Whether to print to terminal or not \\
+\hline
+{\em i\+\_\+print\+\_\+to\+\_\+file} & Whether to print to a file or not \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A E\+A\+\_\+base$<$\+T$>$ object 
+\end{DoxyReturn}
+
+
+Definition at line 68 of file ealgorithm\+\_\+base.\+h.
+
+
+\begin{DoxyCode}
+70             : \hyperlink{structea_1_1_e_a__base_a71e09437e78efc6e93e0a6e510d13100}{decision\_variables}\{ i\_decision\_variables \}, 
+      \hyperlink{structea_1_1_e_a__base_a28216728d1e1355337d8bf2a484d5569}{stdev}\{ i\_stdev \}, \hyperlink{structea_1_1_e_a__base_a41b6ed30e866d5f6a782a90e6a1b0f79}{npop}\{ i\_npop \}, \hyperlink{structea_1_1_e_a__base_a9b7a33797adc1cbeab7a9f3786c41a27}{tol}\{ i\_tol \}, \hyperlink{structea_1_1_e_a__base_affe85fad1da440e091a9d09cf46d502f}{iter\_max}\{ i\_iter\_max \}, 
+      \hyperlink{structea_1_1_e_a__base_a6996abed1c0b9642bdae67547fa6474c}{ndv}\{ i\_decision\_variables.size() \},
+71             \hyperlink{structea_1_1_e_a__base_ad3b4a962208b72c67b663ba0d40bebfb}{use\_penalty\_method}\{ i\_use\_penalty\_method \}, 
+      \hyperlink{structea_1_1_e_a__base_a8f6f21a54d24fa69833cfd1a59beeed3}{constraints\_type}\{ i\_constraints\_type \}, \hyperlink{structea_1_1_e_a__base_aea758485e2120469ca02c52c7cff9e5a}{print\_to\_output}\{ i\_print\_to\_output \}
+      , \hyperlink{structea_1_1_e_a__base_a9ad71465eab92ffd0fe98b625d2d15bc}{print\_to\_file}\{ i\_print\_to\_file \}
+72         \{
+73             assert(\hyperlink{structea_1_1_e_a__base_a71e09437e78efc6e93e0a6e510d13100}{decision\_variables}.size() > 0);
+74             assert(\hyperlink{structea_1_1_e_a__base_a71e09437e78efc6e93e0a6e510d13100}{decision\_variables}.size() == \hyperlink{structea_1_1_e_a__base_a28216728d1e1355337d8bf2a484d5569}{stdev}.size());
+75             \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}& p : \hyperlink{structea_1_1_e_a__base_a28216728d1e1355337d8bf2a484d5569}{stdev})
+76             \{
+77                 assert(p > 0);
+78             \}
+79             assert(\hyperlink{structea_1_1_e_a__base_a41b6ed30e866d5f6a782a90e6a1b0f79}{npop} > 0);
+80             assert(\hyperlink{structea_1_1_e_a__base_a9b7a33797adc1cbeab7a9f3786c41a27}{tol} > 0);
+81             assert(\hyperlink{structea_1_1_e_a__base_affe85fad1da440e091a9d09cf46d502f}{iter\_max} > 0);
+82         \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structea_1_1_e_a__base_a8f6f21a54d24fa69833cfd1a59beeed3}\label{structea_1_1_e_a__base_a8f6f21a54d24fa69833cfd1a59beeed3}} 
+\index{ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}!constraints\+\_\+type@{constraints\+\_\+type}}
+\index{constraints\+\_\+type@{constraints\+\_\+type}!ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}}
+\subsubsection{\texorpdfstring{constraints\+\_\+type}{constraints\_type}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}{Constraints\+\_\+type} \hyperlink{structea_1_1_e_a__base}{ea\+::\+E\+A\+\_\+base}$<$ T $>$\+::constraints\+\_\+type}
+
+
+
+Constraints type. 
+
+
+
+Definition at line 48 of file ealgorithm\+\_\+base.\+h.
+
+\mbox{\Hypertarget{structea_1_1_e_a__base_a71e09437e78efc6e93e0a6e510d13100}\label{structea_1_1_e_a__base_a71e09437e78efc6e93e0a6e510d13100}} 
+\index{ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}!decision\+\_\+variables@{decision\+\_\+variables}}
+\index{decision\+\_\+variables@{decision\+\_\+variables}!ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}}
+\subsubsection{\texorpdfstring{decision\+\_\+variables}{decision\_variables}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const std\+::vector$<$T$>$ \hyperlink{structea_1_1_e_a__base}{ea\+::\+E\+A\+\_\+base}$<$ T $>$\+::decision\+\_\+variables}
+
+
+
+Initial Decision Variables. 
+
+
+
+Definition at line 34 of file ealgorithm\+\_\+base.\+h.
+
+\mbox{\Hypertarget{structea_1_1_e_a__base_affe85fad1da440e091a9d09cf46d502f}\label{structea_1_1_e_a__base_affe85fad1da440e091a9d09cf46d502f}} 
+\index{ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}!iter\+\_\+max@{iter\+\_\+max}}
+\index{iter\+\_\+max@{iter\+\_\+max}!ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}}
+\subsubsection{\texorpdfstring{iter\+\_\+max}{iter\_max}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const size\+\_\+t \hyperlink{structea_1_1_e_a__base}{ea\+::\+E\+A\+\_\+base}$<$ T $>$\+::iter\+\_\+max}
+
+
+
+Number of maximum iterations. 
+
+
+
+Definition at line 42 of file ealgorithm\+\_\+base.\+h.
+
+\mbox{\Hypertarget{structea_1_1_e_a__base_a6996abed1c0b9642bdae67547fa6474c}\label{structea_1_1_e_a__base_a6996abed1c0b9642bdae67547fa6474c}} 
+\index{ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}!ndv@{ndv}}
+\index{ndv@{ndv}!ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}}
+\subsubsection{\texorpdfstring{ndv}{ndv}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const size\+\_\+t \hyperlink{structea_1_1_e_a__base}{ea\+::\+E\+A\+\_\+base}$<$ T $>$\+::ndv}
+
+
+
+Number of decision variables. 
+
+
+
+Definition at line 44 of file ealgorithm\+\_\+base.\+h.
+
+
+
+Referenced by ea\+::\+P\+S\+Ol$<$ T $>$\+::\+P\+S\+Ol(), and ea\+::\+P\+S\+Os$<$ T $>$\+::\+P\+S\+Os().
+
+\mbox{\Hypertarget{structea_1_1_e_a__base_a41b6ed30e866d5f6a782a90e6a1b0f79}\label{structea_1_1_e_a__base_a41b6ed30e866d5f6a782a90e6a1b0f79}} 
+\index{ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}!npop@{npop}}
+\index{npop@{npop}!ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}}
+\subsubsection{\texorpdfstring{npop}{npop}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const size\+\_\+t \hyperlink{structea_1_1_e_a__base}{ea\+::\+E\+A\+\_\+base}$<$ T $>$\+::npop}
+
+
+
+Size of the population. 
+
+
+
+Definition at line 38 of file ealgorithm\+\_\+base.\+h.
+
+
+
+Referenced by ea\+::\+Solver$<$ D\+E, T, F, C $>$\+::set\+\_\+indices().
+
+\mbox{\Hypertarget{structea_1_1_e_a__base_a9ad71465eab92ffd0fe98b625d2d15bc}\label{structea_1_1_e_a__base_a9ad71465eab92ffd0fe98b625d2d15bc}} 
+\index{ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}!print\+\_\+to\+\_\+file@{print\+\_\+to\+\_\+file}}
+\index{print\+\_\+to\+\_\+file@{print\+\_\+to\+\_\+file}!ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}}
+\subsubsection{\texorpdfstring{print\+\_\+to\+\_\+file}{print\_to\_file}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const bool \hyperlink{structea_1_1_e_a__base}{ea\+::\+E\+A\+\_\+base}$<$ T $>$\+::print\+\_\+to\+\_\+file}
+
+
+
+Print to file or not. 
+
+
+
+Definition at line 52 of file ealgorithm\+\_\+base.\+h.
+
+\mbox{\Hypertarget{structea_1_1_e_a__base_aea758485e2120469ca02c52c7cff9e5a}\label{structea_1_1_e_a__base_aea758485e2120469ca02c52c7cff9e5a}} 
+\index{ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}!print\+\_\+to\+\_\+output@{print\+\_\+to\+\_\+output}}
+\index{print\+\_\+to\+\_\+output@{print\+\_\+to\+\_\+output}!ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}}
+\subsubsection{\texorpdfstring{print\+\_\+to\+\_\+output}{print\_to\_output}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const bool \hyperlink{structea_1_1_e_a__base}{ea\+::\+E\+A\+\_\+base}$<$ T $>$\+::print\+\_\+to\+\_\+output}
+
+
+
+Print to output or not. 
+
+
+
+Definition at line 50 of file ealgorithm\+\_\+base.\+h.
+
+\mbox{\Hypertarget{structea_1_1_e_a__base_a28216728d1e1355337d8bf2a484d5569}\label{structea_1_1_e_a__base_a28216728d1e1355337d8bf2a484d5569}} 
+\index{ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}!stdev@{stdev}}
+\index{stdev@{stdev}!ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}}
+\subsubsection{\texorpdfstring{stdev}{stdev}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const std\+::vector$<$T$>$ \hyperlink{structea_1_1_e_a__base}{ea\+::\+E\+A\+\_\+base}$<$ T $>$\+::stdev}
+
+
+
+Standard deviation of the decision variables. 
+
+
+
+Definition at line 36 of file ealgorithm\+\_\+base.\+h.
+
+\mbox{\Hypertarget{structea_1_1_e_a__base_a9b7a33797adc1cbeab7a9f3786c41a27}\label{structea_1_1_e_a__base_a9b7a33797adc1cbeab7a9f3786c41a27}} 
+\index{ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}!tol@{tol}}
+\index{tol@{tol}!ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}}
+\subsubsection{\texorpdfstring{tol}{tol}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const T \hyperlink{structea_1_1_e_a__base}{ea\+::\+E\+A\+\_\+base}$<$ T $>$\+::tol}
+
+
+
+Tolerance. 
+
+
+
+Definition at line 40 of file ealgorithm\+\_\+base.\+h.
+
+\mbox{\Hypertarget{structea_1_1_e_a__base_ad3b4a962208b72c67b663ba0d40bebfb}\label{structea_1_1_e_a__base_ad3b4a962208b72c67b663ba0d40bebfb}} 
+\index{ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}!use\+\_\+penalty\+\_\+method@{use\+\_\+penalty\+\_\+method}}
+\index{use\+\_\+penalty\+\_\+method@{use\+\_\+penalty\+\_\+method}!ea\+::\+E\+A\+\_\+base@{ea\+::\+E\+A\+\_\+base}}
+\subsubsection{\texorpdfstring{use\+\_\+penalty\+\_\+method}{use\_penalty\_method}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const bool \hyperlink{structea_1_1_e_a__base}{ea\+::\+E\+A\+\_\+base}$<$ T $>$\+::use\+\_\+penalty\+\_\+method}
+
+
+
+Use penalty function or not. 
+
+
+
+Definition at line 46 of file ealgorithm\+\_\+base.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{ealgorithm__base_8h}{ealgorithm\+\_\+base.\+h}\end{DoxyCompactItemize}

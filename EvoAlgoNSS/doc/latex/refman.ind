@@ -1,0 +1,606 @@
+\begin{theindex}
+
+  \item {alpha}
+    \subitem {ea\+::\+GA}, \hyperpage{58}
+    \subitem {ea\+::\+P\+S\+Os}, \hyperpage{71}
+
+  \indexspace
+
+  \item {bdistribution}
+    \subitem {ea\+::\+Solver$<$ G\+A, T, F, C $>$}, \hyperpage{88}
+  \item {best\+\_\+update}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{93}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{104}
+  \item {Bond}
+    \subitem {bond\+::\+Bond}, \hyperpage{32}
+  \item {bond}, \hyperpage{11}
+    \subitem {Bond\+\_\+pricing\+\_\+type}, \hyperpage{11}
+    \subitem {bpp}, \hyperpage{12}
+    \subitem {bpy}, \hyperpage{12}
+    \subitem {read\+\_\+bonds\+\_\+from\+\_\+file}, \hyperpage{12}
+  \item {bond.\+h}, \hyperpage{119}
+  \item {bond\+::\+Bond}
+    \subitem {Bond}, \hyperpage{32}
+    \subitem {Bond\+Helper$<$ T $>$}, \hyperpage{37}
+    \subitem {cash\+\_\+flows}, \hyperpage{37}
+    \subitem {compute\+\_\+cash\+\_\+flows}, \hyperpage{33}
+    \subitem {compute\+\_\+macaulay\+\_\+duration}, \hyperpage{34}
+    \subitem {compute\+\_\+yield}, \hyperpage{35, 36}
+    \subitem {coupon\+\_\+percentage}, \hyperpage{37}
+    \subitem {coupon\+\_\+value}, \hyperpage{38}
+    \subitem {duration}, \hyperpage{38}
+    \subitem {frequency}, \hyperpage{38}
+    \subitem {maturity\+\_\+date}, \hyperpage{38}
+    \subitem {nominal\+\_\+value}, \hyperpage{38}
+    \subitem {price}, \hyperpage{39}
+    \subitem {settlement\+\_\+date}, \hyperpage{39}
+    \subitem {time\+\_\+periods}, \hyperpage{39}
+    \subitem {yield}, \hyperpage{39}
+  \item {bond\+::\+Bond$<$ T $>$}, \hyperpage{31}
+  \item {bond\+::\+Bond\+Helper}
+    \subitem {bond\+\_\+pricing}, \hyperpage{41}
+    \subitem {Bond\+Helper}, \hyperpage{41}
+    \subitem {bonds}, \hyperpage{47}
+    \subitem {df\+\_\+type}, \hyperpage{47}
+    \subitem {estimate\+\_\+bond\+\_\+pricing}, \hyperpage{42}
+    \subitem {fitness\+\_\+bond\+\_\+pricing\+\_\+prices}, 
+		\hyperpage{43}
+    \subitem {fitness\+\_\+bond\+\_\+pricing\+\_\+yields}, 
+		\hyperpage{44}
+    \subitem {print\+\_\+bond\+\_\+pricing\+\_\+results}, 
+		\hyperpage{45}
+    \subitem {set\+\_\+init\+\_\+nss\+\_\+params}, \hyperpage{46}
+  \item {bond\+::\+Bond\+Helper$<$ T $>$}, \hyperpage{40}
+  \item {bond\+\_\+pricing}
+    \subitem {bond\+::\+Bond\+Helper}, \hyperpage{41}
+  \item {Bond\+\_\+pricing\+\_\+type}
+    \subitem {bond}, \hyperpage{11}
+  \item {Bond\+Helper}
+    \subitem {bond\+::\+Bond\+Helper}, \hyperpage{41}
+  \item {Bond\+Helper$<$ T $>$}
+    \subitem {bond\+::\+Bond}, \hyperpage{37}
+  \item {bondhelper.\+h}, \hyperpage{120}
+  \item {bonds}
+    \subitem {bond\+::\+Bond\+Helper}, \hyperpage{47}
+  \item {bpp}
+    \subitem {bond}, \hyperpage{12}
+  \item {bpy}
+    \subitem {bond}, \hyperpage{12}
+
+  \indexspace
+
+  \item {c}
+    \subitem {ea\+::\+P\+S\+Ol}, \hyperpage{67}
+    \subitem {ea\+::\+Solver\+\_\+base}, \hyperpage{117}
+  \item {c1}
+    \subitem {ea\+::\+P\+S\+Os}, \hyperpage{71}
+  \item {c2}
+    \subitem {ea\+::\+P\+S\+Os}, \hyperpage{72}
+  \item {cash\+\_\+flows}
+    \subitem {bond\+::\+Bond}, \hyperpage{37}
+  \item {check\+\_\+pso\+\_\+criteria}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{93}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{104}
+  \item {compute\+\_\+cash\+\_\+flows}
+    \subitem {bond\+::\+Bond}, \hyperpage{33}
+  \item {compute\+\_\+discount\+\_\+factor}
+    \subitem {irr}, \hyperpage{18}
+  \item {compute\+\_\+macaulay\+\_\+duration}
+    \subitem {bond\+::\+Bond}, \hyperpage{34}
+  \item {compute\+\_\+pv}
+    \subitem {irr}, \hyperpage{19}
+  \item {compute\+\_\+yield}
+    \subitem {bond\+::\+Bond}, \hyperpage{35, 36}
+  \item {constraints\+\_\+irr}
+    \subitem {irr}, \hyperpage{20}
+  \item {constraints\+\_\+svensson}
+    \subitem {nss}, \hyperpage{23}
+  \item {Constraints\+\_\+type}
+    \subitem {utilities}, \hyperpage{28}
+  \item {constraints\+\_\+type}
+    \subitem {ea\+::\+E\+A\+\_\+base}, \hyperpage{54}
+  \item {construct\+\_\+donor}
+    \subitem {ea\+::\+Solver$<$ D\+E, T, F, C $>$}, \hyperpage{76}
+  \item {construct\+\_\+trial}
+    \subitem {ea\+::\+Solver$<$ D\+E, T, F, C $>$}, \hyperpage{77}
+  \item {coupon\+\_\+percentage}
+    \subitem {bond\+::\+Bond}, \hyperpage{37}
+  \item {coupon\+\_\+value}
+    \subitem {bond\+::\+Bond}, \hyperpage{38}
+  \item {cr}
+    \subitem {ea\+::\+DE}, \hyperpage{50}
+  \item {crossover}
+    \subitem {ea\+::\+Solver$<$ G\+A, T, F, C $>$}, \hyperpage{83}
+
+  \indexspace
+
+  \item {D\+F\+\_\+type}
+    \subitem {utilities}, \hyperpage{28}
+  \item {DE}
+    \subitem {ea\+::\+DE}, \hyperpage{49}
+  \item {de}
+    \subitem {ea\+::\+Solver$<$ D\+E, T, F, C $>$}, \hyperpage{80}
+  \item {decision\+\_\+variables}
+    \subitem {ea\+::\+E\+A\+\_\+base}, \hyperpage{54}
+  \item {df\+\_\+type}
+    \subitem {bond\+::\+Bond\+Helper}, \hyperpage{47}
+  \item {differentialevo.\+h}, \hyperpage{122}
+  \item {display\+\_\+parameters}
+    \subitem {ea\+::\+Solver$<$ D\+E, T, F, C $>$}, \hyperpage{78}
+    \subitem {ea\+::\+Solver$<$ G\+A, T, F, C $>$}, \hyperpage{84}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{94}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{105}
+  \item {display\+\_\+results}
+    \subitem {ea\+::\+Solver\+\_\+base}, \hyperpage{113}
+  \item {distribution}
+    \subitem {ea\+::\+Solver\+\_\+base}, \hyperpage{117}
+  \item {duration}
+    \subitem {bond\+::\+Bond}, \hyperpage{38}
+
+  \indexspace
+
+  \item {E\+A\+\_\+base}
+    \subitem {ea\+::\+E\+A\+\_\+base}, \hyperpage{53}
+  \item {ea}, \hyperpage{12}
+    \subitem {generator}, \hyperpage{14}
+    \subitem {inv\+\_\+pi\+\_\+sq}, \hyperpage{16}
+    \subitem {inv\+\_\+pi\+\_\+sq\+\_\+2}, \hyperpage{17}
+    \subitem {none}, \hyperpage{14}
+    \subitem {rd}, \hyperpage{17}
+    \subitem {remove}, \hyperpage{14}
+    \subitem {solve}, \hyperpage{15}
+    \subitem {Strategy}, \hyperpage{14}
+  \item {ea\+::\+D\+E$<$ T $>$}, \hyperpage{48}
+  \item {ea\+::\+DE}
+    \subitem {cr}, \hyperpage{50}
+    \subitem {DE}, \hyperpage{49}
+    \subitem {f\+\_\+param}, \hyperpage{50}
+    \subitem {type}, \hyperpage{50}
+  \item {ea\+::\+E\+A\+\_\+base}
+    \subitem {constraints\+\_\+type}, \hyperpage{54}
+    \subitem {decision\+\_\+variables}, \hyperpage{54}
+    \subitem {E\+A\+\_\+base}, \hyperpage{53}
+    \subitem {fp\+\_\+type}, \hyperpage{52}
+    \subitem {iter\+\_\+max}, \hyperpage{54}
+    \subitem {ndv}, \hyperpage{54}
+    \subitem {npop}, \hyperpage{54}
+    \subitem {print\+\_\+to\+\_\+file}, \hyperpage{55}
+    \subitem {print\+\_\+to\+\_\+output}, \hyperpage{55}
+    \subitem {stdev}, \hyperpage{55}
+    \subitem {tol}, \hyperpage{55}
+    \subitem {use\+\_\+penalty\+\_\+method}, \hyperpage{55}
+  \item {ea\+::\+E\+A\+\_\+base$<$ T $>$}, \hyperpage{51}
+  \item {ea\+::\+G\+A$<$ T $>$}, \hyperpage{56}
+  \item {ea\+::\+GA}
+    \subitem {alpha}, \hyperpage{58}
+    \subitem {GA}, \hyperpage{57}
+    \subitem {pi}, \hyperpage{58}
+    \subitem {strategy}, \hyperpage{59}
+    \subitem {type}, \hyperpage{59}
+    \subitem {x\+\_\+rate}, \hyperpage{59}
+  \item {ea\+::\+P\+S\+Ol}
+    \subitem {c}, \hyperpage{67}
+    \subitem {P\+S\+Ol}, \hyperpage{66}
+    \subitem {type}, \hyperpage{67}
+    \subitem {vmax}, \hyperpage{68}
+    \subitem {w}, \hyperpage{68}
+  \item {ea\+::\+P\+S\+Ol$<$ T $>$}, \hyperpage{65}
+  \item {ea\+::\+P\+S\+Os}
+    \subitem {alpha}, \hyperpage{71}
+    \subitem {c1}, \hyperpage{71}
+    \subitem {c2}, \hyperpage{72}
+    \subitem {P\+S\+Os}, \hyperpage{70}
+    \subitem {sneigh}, \hyperpage{72}
+    \subitem {type}, \hyperpage{72}
+    \subitem {vmax}, \hyperpage{72}
+    \subitem {w}, \hyperpage{73}
+  \item {ea\+::\+P\+S\+Os$<$ T $>$}, \hyperpage{69}
+  \item {ea\+::\+Solver$<$ D\+E, T, F, C $>$}, \hyperpage{74}
+    \subitem {construct\+\_\+donor}, \hyperpage{76}
+    \subitem {construct\+\_\+trial}, \hyperpage{77}
+    \subitem {de}, \hyperpage{80}
+    \subitem {display\+\_\+parameters}, \hyperpage{78}
+    \subitem {ind\+\_\+distribution}, \hyperpage{80}
+    \subitem {indices}, \hyperpage{80}
+    \subitem {run\+\_\+algo}, \hyperpage{78}
+    \subitem {set\+\_\+indices}, \hyperpage{79}
+    \subitem {Solver}, \hyperpage{75}
+    \subitem {Solver\+\_\+base$<$ Solver$<$ D\+E, T, F, C $>$, D\+E, T, F, C $>$}, 
+		\hyperpage{79}
+  \item {ea\+::\+Solver$<$ G\+A, T, F, C $>$}, \hyperpage{81}
+    \subitem {bdistribution}, \hyperpage{88}
+    \subitem {crossover}, \hyperpage{83}
+    \subitem {display\+\_\+parameters}, \hyperpage{84}
+    \subitem {ga}, \hyperpage{88}
+    \subitem {mutation}, \hyperpage{84}
+    \subitem {nkeep}, \hyperpage{85}
+    \subitem {npop}, \hyperpage{88}
+    \subitem {run\+\_\+algo}, \hyperpage{85}
+    \subitem {selection}, \hyperpage{87}
+    \subitem {Solver}, \hyperpage{82}
+    \subitem {Solver\+\_\+base$<$ Solver$<$ G\+A, T, F, C $>$, G\+A, T, F, C $>$}, 
+		\hyperpage{88}
+    \subitem {stdev}, \hyperpage{88}
+  \item {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{89}
+    \subitem {best\+\_\+update}, \hyperpage{93}
+    \subitem {check\+\_\+pso\+\_\+criteria}, \hyperpage{93}
+    \subitem {display\+\_\+parameters}, \hyperpage{94}
+    \subitem {euclid\+\_\+distance}, \hyperpage{94}
+    \subitem {find\+\_\+min\+\_\+local\+\_\+best}, \hyperpage{95}
+    \subitem {local\+\_\+best}, \hyperpage{98}
+    \subitem {neighbours}, \hyperpage{98}
+    \subitem {nneigh}, \hyperpage{98}
+    \subitem {personal\+\_\+best}, \hyperpage{98}
+    \subitem {personal\+\_\+best\+\_\+cost}, \hyperpage{99}
+    \subitem {position\+\_\+update}, \hyperpage{95}
+    \subitem {pso}, \hyperpage{99}
+    \subitem {run\+\_\+algo}, \hyperpage{96}
+    \subitem {set\+\_\+neighbourhoods}, \hyperpage{97}
+    \subitem {Solver}, \hyperpage{92}
+    \subitem {Solver\+\_\+base$<$ Solver$<$ P\+S\+Ol, T, F, C $>$, P\+S\+Ol, T, F, C $>$}, 
+		\hyperpage{98}
+    \subitem {velocity}, \hyperpage{99}
+    \subitem {vmax}, \hyperpage{99}
+    \subitem {w}, \hyperpage{99}
+  \item {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{100}
+    \subitem {best\+\_\+update}, \hyperpage{104}
+    \subitem {check\+\_\+pso\+\_\+criteria}, \hyperpage{104}
+    \subitem {display\+\_\+parameters}, \hyperpage{105}
+    \subitem {euclid\+\_\+distance}, \hyperpage{105}
+    \subitem {find\+\_\+min\+\_\+local\+\_\+best}, \hyperpage{106}
+    \subitem {generate\+\_\+r}, \hyperpage{106}
+    \subitem {local\+\_\+best}, \hyperpage{109}
+    \subitem {neighbourhoods}, \hyperpage{109}
+    \subitem {nneigh}, \hyperpage{110}
+    \subitem {personal\+\_\+best}, \hyperpage{110}
+    \subitem {position\+\_\+update}, \hyperpage{107}
+    \subitem {pso}, \hyperpage{110}
+    \subitem {run\+\_\+algo}, \hyperpage{108}
+    \subitem {set\+\_\+neighbourhoods}, \hyperpage{108}
+    \subitem {Solver}, \hyperpage{103}
+    \subitem {Solver\+\_\+base$<$ Solver$<$ P\+S\+Os, T, F, C $>$, P\+S\+Os, T, F, C $>$}, 
+		\hyperpage{109}
+    \subitem {velocity}, \hyperpage{110}
+    \subitem {vmax}, \hyperpage{110}
+    \subitem {w}, \hyperpage{111}
+  \item {ea\+::\+Solver$<$ S, T, F, C $>$}, \hyperpage{73}
+  \item {ea\+::\+Solver\+\_\+base}
+    \subitem {c}, \hyperpage{117}
+    \subitem {display\+\_\+results}, \hyperpage{113}
+    \subitem {distribution}, \hyperpage{117}
+    \subitem {f}, \hyperpage{117}
+    \subitem {find\+\_\+min\+\_\+cost}, \hyperpage{114}
+    \subitem {individuals}, \hyperpage{117}
+    \subitem {init\+\_\+individuals}, \hyperpage{114}
+    \subitem {last\+\_\+iter}, \hyperpage{118}
+    \subitem {min\+\_\+cost}, \hyperpage{118}
+    \subitem {randomise\+\_\+individual}, \hyperpage{115}
+    \subitem {solved\+\_\+flag}, \hyperpage{118}
+    \subitem {Solver\+\_\+base}, \hyperpage{112}
+    \subitem {solver\+\_\+bench}, \hyperpage{115}
+    \subitem {solver\+\_\+struct}, \hyperpage{118}
+    \subitem {timer}, \hyperpage{118}
+    \subitem {write\+\_\+results\+\_\+to\+\_\+file}, \hyperpage{116}
+  \item {ea\+::\+Solver\+\_\+base$<$ Derived, S, T, F, C $>$}, 
+		\hyperpage{111}
+  \item {ealgorithm\+\_\+base.\+h}, \hyperpage{123}
+  \item {estimate\+\_\+bond\+\_\+pricing}
+    \subitem {bond\+::\+Bond\+Helper}, \hyperpage{42}
+  \item {euclid\+\_\+distance}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{94}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{105}
+  \item {exp}
+    \subitem {utilities}, \hyperpage{28}
+
+  \indexspace
+
+  \item {f}
+    \subitem {ea\+::\+Solver\+\_\+base}, \hyperpage{117}
+  \item {f\+\_\+param}
+    \subitem {ea\+::\+DE}, \hyperpage{50}
+  \item {find\+\_\+min\+\_\+cost}
+    \subitem {ea\+::\+Solver\+\_\+base}, \hyperpage{114}
+  \item {find\+\_\+min\+\_\+local\+\_\+best}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{95}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{106}
+  \item {fitness\+\_\+bond\+\_\+pricing\+\_\+prices}
+    \subitem {bond\+::\+Bond\+Helper}, \hyperpage{43}
+  \item {fitness\+\_\+bond\+\_\+pricing\+\_\+yields}
+    \subitem {bond\+::\+Bond\+Helper}, \hyperpage{44}
+  \item {fitness\+\_\+irr}
+    \subitem {irr}, \hyperpage{21}
+  \item {fitness\+\_\+yield\+\_\+curve\+\_\+fitting}
+    \subitem {yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}, 
+		\hyperpage{62}
+  \item {fp\+\_\+type}
+    \subitem {ea\+::\+E\+A\+\_\+base}, \hyperpage{52}
+  \item {frac}
+    \subitem {utilities}, \hyperpage{28}
+  \item {frequency}
+    \subitem {bond\+::\+Bond}, \hyperpage{38}
+
+  \indexspace
+
+  \item {GA}
+    \subitem {ea\+::\+GA}, \hyperpage{57}
+  \item {ga}
+    \subitem {ea\+::\+Solver$<$ G\+A, T, F, C $>$}, \hyperpage{88}
+  \item {generate\+\_\+r}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{106}
+  \item {generator}
+    \subitem {ea}, \hyperpage{14}
+  \item {geneticalgo.\+h}, \hyperpage{125}
+
+  \indexspace
+
+  \item {ind\+\_\+distribution}
+    \subitem {ea\+::\+Solver$<$ D\+E, T, F, C $>$}, \hyperpage{80}
+  \item {indices}
+    \subitem {ea\+::\+Solver$<$ D\+E, T, F, C $>$}, \hyperpage{80}
+  \item {individuals}
+    \subitem {ea\+::\+Solver\+\_\+base}, \hyperpage{117}
+  \item {init\+\_\+individuals}
+    \subitem {ea\+::\+Solver\+\_\+base}, \hyperpage{114}
+  \item {Interest\+\_\+\+Rate}
+    \subitem {yft\+::\+Interest\+\_\+\+Rate}, \hyperpage{60}
+  \item {Interest\+\_\+\+Rate\+\_\+\+Helper}
+    \subitem {yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}, 
+		\hyperpage{62}
+  \item {inv\+\_\+pi\+\_\+sq}
+    \subitem {ea}, \hyperpage{16}
+  \item {inv\+\_\+pi\+\_\+sq\+\_\+2}
+    \subitem {ea}, \hyperpage{17}
+  \item {ir\+\_\+vec}
+    \subitem {yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}, 
+		\hyperpage{64}
+  \item {irr}, \hyperpage{17}
+    \subitem {compute\+\_\+discount\+\_\+factor}, \hyperpage{18}
+    \subitem {compute\+\_\+pv}, \hyperpage{19}
+    \subitem {constraints\+\_\+irr}, \hyperpage{20}
+    \subitem {fitness\+\_\+irr}, \hyperpage{21}
+    \subitem {penalty\+\_\+irr}, \hyperpage{22}
+  \item {irr.\+h}, \hyperpage{126}
+  \item {iter\+\_\+max}
+    \subitem {ea\+::\+E\+A\+\_\+base}, \hyperpage{54}
+
+  \indexspace
+
+  \item {last\+\_\+iter}
+    \subitem {ea\+::\+Solver\+\_\+base}, \hyperpage{118}
+  \item {lbestpso.\+h}, \hyperpage{128}
+  \item {local\+\_\+best}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{98}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{109}
+
+  \indexspace
+
+  \item {main}
+    \subitem {main.\+cpp}, \hyperpage{130}
+  \item {main.\+cpp}, \hyperpage{129}
+    \subitem {main}, \hyperpage{130}
+  \item {maturity\+\_\+date}
+    \subitem {bond\+::\+Bond}, \hyperpage{38}
+  \item {min\+\_\+cost}
+    \subitem {ea\+::\+Solver\+\_\+base}, \hyperpage{118}
+  \item {mutation}
+    \subitem {ea\+::\+Solver$<$ G\+A, T, F, C $>$}, \hyperpage{84}
+
+  \indexspace
+
+  \item {ndv}
+    \subitem {ea\+::\+E\+A\+\_\+base}, \hyperpage{54}
+  \item {neighbourhoods}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{109}
+  \item {neighbours}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{98}
+  \item {nkeep}
+    \subitem {ea\+::\+Solver$<$ G\+A, T, F, C $>$}, \hyperpage{85}
+  \item {nneigh}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{98}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{110}
+  \item {nominal\+\_\+value}
+    \subitem {bond\+::\+Bond}, \hyperpage{38}
+  \item {none}
+    \subitem {ea}, \hyperpage{14}
+    \subitem {utilities}, \hyperpage{28}
+  \item {normal}
+    \subitem {utilities}, \hyperpage{28}
+  \item {npop}
+    \subitem {ea\+::\+E\+A\+\_\+base}, \hyperpage{54}
+    \subitem {ea\+::\+Solver$<$ G\+A, T, F, C $>$}, \hyperpage{88}
+  \item {nss}, \hyperpage{23}
+    \subitem {constraints\+\_\+svensson}, \hyperpage{23}
+    \subitem {penalty\+\_\+svensson}, \hyperpage{25}
+    \subitem {svensson}, \hyperpage{26}
+
+  \indexspace
+
+  \item {operator$<$$<$}
+    \subitem {utilities}, \hyperpage{29}
+
+  \indexspace
+
+  \item {P\+S\+Ol}
+    \subitem {ea\+::\+P\+S\+Ol}, \hyperpage{66}
+  \item {P\+S\+Os}
+    \subitem {ea\+::\+P\+S\+Os}, \hyperpage{70}
+  \item {penalty\+\_\+irr}
+    \subitem {irr}, \hyperpage{22}
+  \item {penalty\+\_\+svensson}
+    \subitem {nss}, \hyperpage{25}
+  \item {period}
+    \subitem {yft\+::\+Interest\+\_\+\+Rate}, \hyperpage{61}
+  \item {personal\+\_\+best}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{98}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{110}
+  \item {personal\+\_\+best\+\_\+cost}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{99}
+  \item {pi}
+    \subitem {ea\+::\+GA}, \hyperpage{58}
+  \item {position\+\_\+update}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{95}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{107}
+  \item {price}
+    \subitem {bond\+::\+Bond}, \hyperpage{39}
+  \item {print\+\_\+bond\+\_\+pricing\+\_\+results}
+    \subitem {bond\+::\+Bond\+Helper}, \hyperpage{45}
+  \item {print\+\_\+to\+\_\+file}
+    \subitem {ea\+::\+E\+A\+\_\+base}, \hyperpage{55}
+  \item {print\+\_\+to\+\_\+output}
+    \subitem {ea\+::\+E\+A\+\_\+base}, \hyperpage{55}
+  \item {pso}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{99}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{110}
+  \item {pso\+\_\+sub\+\_\+swarm.\+h}, \hyperpage{131}
+
+  \indexspace
+
+  \item {randomise\+\_\+individual}
+    \subitem {ea\+::\+Solver\+\_\+base}, \hyperpage{115}
+  \item {rate}
+    \subitem {yft\+::\+Interest\+\_\+\+Rate}, \hyperpage{61}
+  \item {rd}
+    \subitem {ea}, \hyperpage{17}
+  \item {read\+\_\+bonds\+\_\+from\+\_\+file}
+    \subitem {bond}, \hyperpage{12}
+  \item {read\+\_\+ir\+\_\+from\+\_\+file}
+    \subitem {yft}, \hyperpage{30}
+  \item {remove}
+    \subitem {ea}, \hyperpage{14}
+  \item {run\+\_\+algo}
+    \subitem {ea\+::\+Solver$<$ D\+E, T, F, C $>$}, \hyperpage{78}
+    \subitem {ea\+::\+Solver$<$ G\+A, T, F, C $>$}, \hyperpage{85}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{96}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{108}
+
+  \indexspace
+
+  \item {selection}
+    \subitem {ea\+::\+Solver$<$ G\+A, T, F, C $>$}, \hyperpage{87}
+  \item {set\+\_\+indices}
+    \subitem {ea\+::\+Solver$<$ D\+E, T, F, C $>$}, \hyperpage{79}
+  \item {set\+\_\+init\+\_\+nss\+\_\+params}
+    \subitem {bond\+::\+Bond\+Helper}, \hyperpage{46}
+  \item {set\+\_\+neighbourhoods}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{97}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{108}
+  \item {settlement\+\_\+date}
+    \subitem {bond\+::\+Bond}, \hyperpage{39}
+  \item {sneigh}
+    \subitem {ea\+::\+P\+S\+Os}, \hyperpage{72}
+  \item {solve}
+    \subitem {ea}, \hyperpage{15}
+  \item {solved\+\_\+flag}
+    \subitem {ea\+::\+Solver\+\_\+base}, \hyperpage{118}
+  \item {Solver}
+    \subitem {ea\+::\+Solver$<$ D\+E, T, F, C $>$}, \hyperpage{75}
+    \subitem {ea\+::\+Solver$<$ G\+A, T, F, C $>$}, \hyperpage{82}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{92}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{103}
+  \item {Solver\+\_\+base}
+    \subitem {ea\+::\+Solver\+\_\+base}, \hyperpage{112}
+  \item {Solver\+\_\+base$<$ Solver$<$ D\+E, T, F, C $>$, D\+E, T, F, C $>$}
+    \subitem {ea\+::\+Solver$<$ D\+E, T, F, C $>$}, \hyperpage{79}
+  \item {Solver\+\_\+base$<$ Solver$<$ G\+A, T, F, C $>$, G\+A, T, F, C $>$}
+    \subitem {ea\+::\+Solver$<$ G\+A, T, F, C $>$}, \hyperpage{88}
+  \item {Solver\+\_\+base$<$ Solver$<$ P\+S\+Ol, T, F, C $>$, P\+S\+Ol, T, F, C $>$}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{98}
+  \item {Solver\+\_\+base$<$ Solver$<$ P\+S\+Os, T, F, C $>$, P\+S\+Os, T, F, C $>$}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{109}
+  \item {solver\+\_\+bench}
+    \subitem {ea\+::\+Solver\+\_\+base}, \hyperpage{115}
+  \item {solver\+\_\+struct}
+    \subitem {ea\+::\+Solver\+\_\+base}, \hyperpage{118}
+  \item {stdev}
+    \subitem {ea\+::\+E\+A\+\_\+base}, \hyperpage{55}
+    \subitem {ea\+::\+Solver$<$ G\+A, T, F, C $>$}, \hyperpage{88}
+  \item {Strategy}
+    \subitem {ea}, \hyperpage{14}
+  \item {strategy}
+    \subitem {ea\+::\+GA}, \hyperpage{59}
+  \item {svensson}
+    \subitem {nss}, \hyperpage{26}
+  \item {svensson.\+h}, \hyperpage{132}
+
+  \indexspace
+
+  \item {tight}
+    \subitem {utilities}, \hyperpage{28}
+  \item {time\+\_\+periods}
+    \subitem {bond\+::\+Bond}, \hyperpage{39}
+  \item {timer}
+    \subitem {ea\+::\+Solver\+\_\+base}, \hyperpage{118}
+  \item {tol}
+    \subitem {ea\+::\+E\+A\+\_\+base}, \hyperpage{55}
+  \item {type}
+    \subitem {ea\+::\+DE}, \hyperpage{50}
+    \subitem {ea\+::\+GA}, \hyperpage{59}
+    \subitem {ea\+::\+P\+S\+Ol}, \hyperpage{67}
+    \subitem {ea\+::\+P\+S\+Os}, \hyperpage{72}
+
+  \indexspace
+
+  \item {use\+\_\+penalty\+\_\+method}
+    \subitem {ea\+::\+E\+A\+\_\+base}, \hyperpage{55}
+  \item {utilities}, \hyperpage{27}
+    \subitem {Constraints\+\_\+type}, \hyperpage{28}
+    \subitem {D\+F\+\_\+type}, \hyperpage{28}
+    \subitem {exp}, \hyperpage{28}
+    \subitem {frac}, \hyperpage{28}
+    \subitem {none}, \hyperpage{28}
+    \subitem {normal}, \hyperpage{28}
+    \subitem {operator$<$$<$}, \hyperpage{29}
+    \subitem {tight}, \hyperpage{28}
+  \item {utilities.\+h}, \hyperpage{133}
+
+  \indexspace
+
+  \item {velocity}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{99}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{110}
+  \item {vmax}
+    \subitem {ea\+::\+P\+S\+Ol}, \hyperpage{68}
+    \subitem {ea\+::\+P\+S\+Os}, \hyperpage{72}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{99}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{110}
+
+  \indexspace
+
+  \item {w}
+    \subitem {ea\+::\+P\+S\+Ol}, \hyperpage{68}
+    \subitem {ea\+::\+P\+S\+Os}, \hyperpage{73}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$}, \hyperpage{99}
+    \subitem {ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$}, \hyperpage{111}
+  \item {write\+\_\+results\+\_\+to\+\_\+file}
+    \subitem {ea\+::\+Solver\+\_\+base}, \hyperpage{116}
+
+  \indexspace
+
+  \item {x\+\_\+rate}
+    \subitem {ea\+::\+GA}, \hyperpage{59}
+
+  \indexspace
+
+  \item {yft}, \hyperpage{29}
+    \subitem {read\+\_\+ir\+\_\+from\+\_\+file}, \hyperpage{30}
+  \item {yft\+::\+Interest\+\_\+\+Rate}
+    \subitem {Interest\+\_\+\+Rate}, \hyperpage{60}
+    \subitem {period}, \hyperpage{61}
+    \subitem {rate}, \hyperpage{61}
+  \item {yft\+::\+Interest\+\_\+\+Rate$<$ T $>$}, \hyperpage{60}
+  \item {yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}
+    \subitem {fitness\+\_\+yield\+\_\+curve\+\_\+fitting}, 
+		\hyperpage{62}
+    \subitem {Interest\+\_\+\+Rate\+\_\+\+Helper}, \hyperpage{62}
+    \subitem {ir\+\_\+vec}, \hyperpage{64}
+    \subitem {yieldcurve\+\_\+fitting}, \hyperpage{63}
+  \item {yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper$<$ T $>$}, 
+		\hyperpage{61}
+  \item {yield}
+    \subitem {bond\+::\+Bond}, \hyperpage{39}
+  \item {yield\+\_\+curve\+\_\+fitting.\+h}, \hyperpage{135}
+  \item {yieldcurve\+\_\+fitting}
+    \subitem {yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper}, 
+		\hyperpage{63}
+
+\end{theindex}

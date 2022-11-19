@@ -1,0 +1,222 @@
+\hypertarget{namespaceea}{}\section{ea Namespace Reference}
+\label{namespaceea}\index{ea@{ea}}
+
+
+Evolutionary Algorithms.  
+
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structea_1_1_d_e}{DE}
+\begin{DoxyCompactList}\small\item\em Differential Evolution Structure, used in the actual algorithm and for type deduction. \end{DoxyCompactList}\item 
+struct \hyperlink{structea_1_1_e_a__base}{E\+A\+\_\+base}
+\begin{DoxyCompactList}\small\item\em Evolutionary algorithm stucture base. \end{DoxyCompactList}\item 
+struct \hyperlink{structea_1_1_g_a}{GA}
+\begin{DoxyCompactList}\small\item\em Genetic Algorithms Structure, used in the actual algorithm and for type deduction. \end{DoxyCompactList}\item 
+struct \hyperlink{structea_1_1_p_s_ol}{P\+S\+Ol}
+\begin{DoxyCompactList}\small\item\em Local Best Particle Swarm Optimisation Structure, used in the actual algorithm and for type deduction. \end{DoxyCompactList}\item 
+struct \hyperlink{structea_1_1_p_s_os}{P\+S\+Os}
+\begin{DoxyCompactList}\small\item\em Particle Swarm Optimisation Structure, used in the actual algorithm and for type deduction. \end{DoxyCompactList}\item 
+class \hyperlink{classea_1_1_solver}{Solver}
+\begin{DoxyCompactList}\small\item\em Template Class for Solvers. \end{DoxyCompactList}\item 
+class \hyperlink{classea_1_1_solver_3_01_d_e_00_01_t_00_01_f_00_01_c_01_4}{Solver$<$ D\+E, T, F, C $>$}
+\begin{DoxyCompactList}\small\item\em Differential Evolution Algorithm (\hyperlink{structea_1_1_d_e}{DE}) Class. \end{DoxyCompactList}\item 
+class \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4}{Solver$<$ G\+A, T, F, C $>$}
+\begin{DoxyCompactList}\small\item\em Genetic Algorithms (\hyperlink{structea_1_1_g_a}{GA}) Class. \end{DoxyCompactList}\item 
+class \hyperlink{classea_1_1_solver_3_01_p_s_ol_00_01_t_00_01_f_00_01_c_01_4}{Solver$<$ P\+S\+Ol, T, F, C $>$}
+\begin{DoxyCompactList}\small\item\em Local Best Particle Swarm Optimisation (P\+SO) Class. \end{DoxyCompactList}\item 
+class \hyperlink{classea_1_1_solver_3_01_p_s_os_00_01_t_00_01_f_00_01_c_01_4}{Solver$<$ P\+S\+Os, T, F, C $>$}
+\begin{DoxyCompactList}\small\item\em Sub-\/\+Swarm Particle Swarm Optimisation (P\+SO) Class. \end{DoxyCompactList}\item 
+class \hyperlink{classea_1_1_solver__base}{Solver\+\_\+base}
+\begin{DoxyCompactList}\small\item\em Base Class for Evolutionary Algorithms. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89}{Strategy} \{ \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89ac4a301043ce8554dfced7a0c0698bdad}{Strategy\+::keep\+\_\+same}, 
+\hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89a49a303c9c8d8a0c15a7fc97cd4b1db0d}{Strategy\+::re\+\_\+mutate}, 
+\hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89a0f6969d7052da9261e31ddb6e88c136e}{Strategy\+::remove}, 
+\hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89a334c4a4c42fdb79d7ebc3e73b517e6f8}{Strategy\+::none}
+ \}\begin{DoxyCompactList}\small\item\em Replacing or remove individuals strategies during mutation. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::mt19937\+\_\+64 \hyperlink{namespaceea_a385e8ca8ba4ae2f69dcfffa79f20c2ff}{generator} (\hyperlink{namespaceea_a0d4adcfbf42f88a74097673d4564f757}{rd}())
+\begin{DoxyCompactList}\small\item\em Pseudo-\/random number generator. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename F , typename C , template$<$ typename $>$ class S, typename T $>$ }\\std\+::vector$<$ T $>$ \hyperlink{namespaceea_a6450b5bf61e9fdca8b6c19267e14c560}{solve} (const F \&f, const C \&c, const S$<$ T $>$ \&solver\+\_\+struct, const std\+::string \&problem\+\_\+name)
+\begin{DoxyCompactList}\small\item\em \hyperlink{classea_1_1_solver}{Solver} wrapper function, interface to solvers \+: free function used for benchmarks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+std\+::random\+\_\+device \hyperlink{namespaceea_a0d4adcfbf42f88a74097673d4564f757}{rd}
+\begin{DoxyCompactList}\small\item\em Random device / Random number generator. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\const double \hyperlink{namespaceea_a0a68157259a48341f23eeffca8a1d748}{inv\+\_\+pi\+\_\+sq} = 1 / std\+::pow(boost\+::math\+::constants\+::pi$<$T$>$(), 2)
+\begin{DoxyCompactList}\small\item\em Inverse square of pi constant. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\const double \hyperlink{namespaceea_aceb1a704bbda5c44541cd98184c2c224}{inv\+\_\+pi\+\_\+sq\+\_\+2} = 1 / std\+::pow(boost\+::math\+::constants\+::pi$<$T$>$(), 2)
+\begin{DoxyCompactList}\small\item\em Inverse square of pi constant. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Evolutionary Algorithms. 
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{namespaceea_a8e369877773b4db67b8512efdb4f8f89}\label{namespaceea_a8e369877773b4db67b8512efdb4f8f89}} 
+\index{ea@{ea}!Strategy@{Strategy}}
+\index{Strategy@{Strategy}!ea@{ea}}
+\subsubsection{\texorpdfstring{Strategy}{Strategy}}
+{\footnotesize\ttfamily enum \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89}{ea\+::\+Strategy}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Replacing or remove individuals strategies during mutation. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{keep\+\_\+same@{keep\+\_\+same}!ea@{ea}}\index{ea@{ea}!keep\+\_\+same@{keep\+\_\+same}}}\mbox{\Hypertarget{namespaceea_a8e369877773b4db67b8512efdb4f8f89ac4a301043ce8554dfced7a0c0698bdad}\label{namespaceea_a8e369877773b4db67b8512efdb4f8f89ac4a301043ce8554dfced7a0c0698bdad}} 
+keep\+\_\+same&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{re\+\_\+mutate@{re\+\_\+mutate}!ea@{ea}}\index{ea@{ea}!re\+\_\+mutate@{re\+\_\+mutate}}}\mbox{\Hypertarget{namespaceea_a8e369877773b4db67b8512efdb4f8f89a49a303c9c8d8a0c15a7fc97cd4b1db0d}\label{namespaceea_a8e369877773b4db67b8512efdb4f8f89a49a303c9c8d8a0c15a7fc97cd4b1db0d}} 
+re\+\_\+mutate&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{remove@{remove}!ea@{ea}}\index{ea@{ea}!remove@{remove}}}\mbox{\Hypertarget{namespaceea_a8e369877773b4db67b8512efdb4f8f89a0f6969d7052da9261e31ddb6e88c136e}\label{namespaceea_a8e369877773b4db67b8512efdb4f8f89a0f6969d7052da9261e31ddb6e88c136e}} 
+remove&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{none@{none}!ea@{ea}}\index{ea@{ea}!none@{none}}}\mbox{\Hypertarget{namespaceea_a8e369877773b4db67b8512efdb4f8f89a334c4a4c42fdb79d7ebc3e73b517e6f8}\label{namespaceea_a8e369877773b4db67b8512efdb4f8f89a334c4a4c42fdb79d7ebc3e73b517e6f8}} 
+none&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 15 of file geneticalgo.\+h.
+
+
+\begin{DoxyCode}
+15 \{ \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89ac4a301043ce8554dfced7a0c0698bdad}{keep\_same}, \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89a49a303c9c8d8a0c15a7fc97cd4b1db0d}{re\_mutate}, \textcolor{keyword}{remove}, \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89a334c4a4c42fdb79d7ebc3e73b517e6f8}{none} \};
+\end{DoxyCode}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespaceea_a385e8ca8ba4ae2f69dcfffa79f20c2ff}\label{namespaceea_a385e8ca8ba4ae2f69dcfffa79f20c2ff}} 
+\index{ea@{ea}!generator@{generator}}
+\index{generator@{generator}!ea@{ea}}
+\subsubsection{\texorpdfstring{generator()}{generator()}}
+{\footnotesize\ttfamily ea\+::generator (\begin{DoxyParamCaption}\item[{\hyperlink{namespaceea_a0d4adcfbf42f88a74097673d4564f757}{rd}()}]{ }\end{DoxyParamCaption})}
+
+
+
+Pseudo-\/random number generator. 
+
+\begin{DoxyReturn}{Returns}
+A random number 
+\end{DoxyReturn}
+
+
+Referenced by ea\+::\+Solver$<$ D\+E, T, F, C $>$\+::construct\+\_\+donor(), ea\+::\+Solver$<$ D\+E, T, F, C $>$\+::construct\+\_\+trial(), ea\+::\+Solver$<$ G\+A, T, F, C $>$\+::crossover(), ea\+::\+Solver$<$ P\+S\+Os, T, F, C $>$\+::generate\+\_\+r(), ea\+::\+Solver$<$ G\+A, T, F, C $>$\+::mutation(), ea\+::\+Solver$<$ P\+S\+Ol, T, F, C $>$\+::position\+\_\+update(), ea\+::\+Solver\+\_\+base$<$ Solver$<$ P\+S\+Ol, T, F, C $>$, P\+S\+Ol, T, F, C $>$\+::randomise\+\_\+individual(), ea\+::\+Solver$<$ G\+A, T, F, C $>$\+::selection(), and ea\+::\+Solver\+\_\+base$<$ Solver$<$ P\+S\+Ol, T, F, C $>$, P\+S\+Ol, T, F, C $>$\+::\+Solver\+\_\+base().
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{namespaceea_a385e8ca8ba4ae2f69dcfffa79f20c2ff_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespaceea_a6450b5bf61e9fdca8b6c19267e14c560}\label{namespaceea_a6450b5bf61e9fdca8b6c19267e14c560}} 
+\index{ea@{ea}!solve@{solve}}
+\index{solve@{solve}!ea@{ea}}
+\subsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily template$<$typename F , typename C , template$<$ typename $>$ class S, typename T $>$ \\
+ea\+::solve (\begin{DoxyParamCaption}\item[{const F \&}]{f,  }\item[{const C \&}]{c,  }\item[{const S$<$ T $>$ \&}]{solver\+\_\+struct,  }\item[{const std\+::string \&}]{problem\+\_\+name }\end{DoxyParamCaption})}
+
+
+
+\hyperlink{classea_1_1_solver}{Solver} wrapper function, interface to solvers \+: free function used for benchmarks. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & The objective function \\
+\hline
+{\em c} & The constraints function \\
+\hline
+{\em solver\+\_\+struct} & The parameter structure of the solver \\
+\hline
+{\em problem\+\_\+name} & The name of the problem in std\+::string form. It is used to print results to file. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The solution vector 
+\end{DoxyReturn}
+
+
+Definition at line 309 of file ealgorithm\+\_\+base.\+h.
+
+
+
+Referenced by bond\+::\+Bond\+Helper$<$ T $>$\+::bond\+\_\+pricing(), bond\+::\+Bond$<$ T $>$\+::compute\+\_\+yield(), and yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper$<$ T $>$\+::yieldcurve\+\_\+fitting().
+
+
+\begin{DoxyCode}
+310     \{
+311         Solver<S, T, F, C> solver\{ solver\_struct, f, c \};
+312         \textcolor{keywordflow}{return} solver.solver\_bench(problem\_name);
+313     \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=292pt]{namespaceea_a6450b5bf61e9fdca8b6c19267e14c560_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{namespaceea_a0a68157259a48341f23eeffca8a1d748}\label{namespaceea_a0a68157259a48341f23eeffca8a1d748}} 
+\index{ea@{ea}!inv\+\_\+pi\+\_\+sq@{inv\+\_\+pi\+\_\+sq}}
+\index{inv\+\_\+pi\+\_\+sq@{inv\+\_\+pi\+\_\+sq}!ea@{ea}}
+\subsubsection{\texorpdfstring{inv\+\_\+pi\+\_\+sq}{inv\_pi\_sq}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const double ea\+::inv\+\_\+pi\+\_\+sq = 1 / std\+::pow(boost\+::math\+::constants\+::pi$<$T$>$(), 2)}
+
+
+
+Inverse square of pi constant. 
+
+
+
+Definition at line 307 of file lbestpso.\+h.
+
+\mbox{\Hypertarget{namespaceea_aceb1a704bbda5c44541cd98184c2c224}\label{namespaceea_aceb1a704bbda5c44541cd98184c2c224}} 
+\index{ea@{ea}!inv\+\_\+pi\+\_\+sq\+\_\+2@{inv\+\_\+pi\+\_\+sq\+\_\+2}}
+\index{inv\+\_\+pi\+\_\+sq\+\_\+2@{inv\+\_\+pi\+\_\+sq\+\_\+2}!ea@{ea}}
+\subsubsection{\texorpdfstring{inv\+\_\+pi\+\_\+sq\+\_\+2}{inv\_pi\_sq\_2}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const double ea\+::inv\+\_\+pi\+\_\+sq\+\_\+2 = 1 / std\+::pow(boost\+::math\+::constants\+::pi$<$T$>$(), 2)}
+
+
+
+Inverse square of pi constant. 
+
+
+
+Definition at line 331 of file pso\+\_\+sub\+\_\+swarm.\+h.
+
+\mbox{\Hypertarget{namespaceea_a0d4adcfbf42f88a74097673d4564f757}\label{namespaceea_a0d4adcfbf42f88a74097673d4564f757}} 
+\index{ea@{ea}!rd@{rd}}
+\index{rd@{rd}!ea@{ea}}
+\subsubsection{\texorpdfstring{rd}{rd}}
+{\footnotesize\ttfamily std\+::random\+\_\+device ea\+::rd}
+
+
+
+Random device / Random number generator. 
+
+
+
+Definition at line 85 of file ealgorithm\+\_\+base.\+h.
+

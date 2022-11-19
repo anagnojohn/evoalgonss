@@ -1,0 +1,105 @@
+\hypertarget{main_8cpp}{}\section{main.\+cpp File Reference}
+\label{main_8cpp}\index{main.\+cpp@{main.\+cpp}}
+
+
+A showcase of the application of the solvers on the Yield Curve Fitting, Internal Rate of Return Estimation and Bond Pricing Problems.  
+
+
+{\ttfamily \#include \char`\"{}../src/bondhelper.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../src/geneticalgo.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../src/pso\+\_\+sub\+\_\+swarm.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../src/differentialevo.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../src/lbestpso.\+h\char`\"{}}\newline
+Include dependency graph for main.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A showcase of the application of the solvers on the Yield Curve Fitting, Internal Rate of Return Estimation and Bond Pricing Problems. 
+
+\begin{DoxyAuthor}{Author}
+Ioannis Anagnostopoulos
+\end{DoxyAuthor}
+Usage is the following\+:
+
+Step 1\+:Create a solver structure object \{GA, DE, P\+S\+Ol\} with a specific floating-\/point number type, setting all of its parameters throught its constructor.
+
+Set print\+\_\+to\+\_\+output or print\+\_\+to\+\_\+display to false if there is no need for displaying the results to terminal or printing them to a file.
+
+Step 2\+: Either use the common interface solve solve(const F\& f, const C\& c, const S$<$\+T$>$\& solver\+\_\+struct, const std\+::string\& problem\+\_\+name) passing the objective and constraint functions as lambda functions (anonymous functions) capturing all the required variables, such as bonds or use the public interfaces from the Interest\+\_\+\+Rate\+\_\+\+Helper (Yield Curve Fitting), Bond\+Helper (Internal Rate of Return estimation and bond pricing for a number of bonds) and Bond (Internal Rate of Return Estimation and Macaulay Duration Estimation) classes after creating an object instance of those classes using their constructors. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+\index{main.\+cpp@{main.\+cpp}!main@{main}}
+\index{main@{main}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Call benchmark functions
+
+I\+RR solvers 
+
+Definition at line 75 of file main.\+cpp.
+
+
+\begin{DoxyCode}
+76 \{
+77     \textcolor{keyword}{using namespace }\hyperlink{namespaceyft}{yft};
+78     \textcolor{keyword}{using namespace }\hyperlink{namespacebond}{bond};
+79     \textcolor{keyword}{const} std::vector<double> stdev \{ 0.7, 0.7, 0.7, 0.7, 0.7, 0.7 \};
+80     \textcolor{keyword}{const} std::vector<double> stdev\_ga\{ 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 \};
+81     \textcolor{keywordtype}{double} irr\_tol = 0.00000001;
+82     \textcolor{keywordtype}{double} tol = 0.0001;
+83     \textcolor{keywordtype}{double} tol\_f = 0.001;
+85     \hyperlink{classyft_1_1_interest___rate___helper}{Interest\_Rate\_Helper<double>} ir\{ read\_ir\_from\_file<double>(\textcolor{stringliteral}{"
+      interest\_rate\_data\_periods.txt"}) \};
+86     \hyperlink{classbond_1_1_bond_helper}{BondHelper<double>} de\{ read\_bonds\_from\_file<double>(\textcolor{stringliteral}{"bond\_data.txt"}), DF\_type::exp \};
+88     \hyperlink{structea_1_1_d_e}{DE<double>} de\_irr\{ 1, 0.6,\{ 0.05 \},\{ 0.7 \}, 10, irr\_tol, 500, \textcolor{keyword}{false}, Constraints\_type::normal
+      , \textcolor{keyword}{true}, \textcolor{keyword}{true} \};
+89     \hyperlink{structea_1_1_d_e}{DE<double>} de\_irr\_check\{ 1, 0.6,\{ 0.05 \},\{ 0.7 \}, 10, irr\_tol, 500, \textcolor{keyword}{false}, 
+      Constraints\_type::normal, \textcolor{keyword}{false}, \textcolor{keyword}{false} \};
+90     GA<double> ga\_irr\{ 0.4, 0.35, 6.0, \{ 0.05 \},\{ 0.5 \}, 42, irr\_tol, 2000, \textcolor{keyword}{false}, Constraints\_type::normal
+      , Strategy::remove, \textcolor{keyword}{true}, \textcolor{keyword}{true}\};
+91     PSOl<double> pso\_irr\{ 1.49618, 0.9, \{ 1000000 \},\{ 0.05 \},\{ 0.7 \}, 22, irr\_tol, 3000, \textcolor{keyword}{false}, 
+      Constraints\_type::normal, \textcolor{keyword}{true}, \textcolor{keyword}{true}\};
+92     \textcolor{keyword}{auto} decision\_variables = de.set\_init\_nss\_params(de\_irr);
+93     \hyperlink{structea_1_1_d_e}{DE<double>} de\_pricing\{ 1, 0.6, decision\_variables, stdev, 60, tol, 500, \textcolor{keyword}{false}, 
+      Constraints\_type::tight, \textcolor{keyword}{true}, \textcolor{keyword}{true} \};
+94     \hyperlink{structea_1_1_d_e}{DE<double>} de\_fitting\{ 1, 0.6, decision\_variables, stdev, 60, tol\_f, 500, \textcolor{keyword}{false}, 
+      Constraints\_type::tight, \textcolor{keyword}{true}, \textcolor{keyword}{true} \};
+95     GA<double> ga\_pricing\{ 0.4, 0.35, 6.0, decision\_variables, stdev\_ga, 250, tol, 2000, \textcolor{keyword}{false}, 
+      Constraints\_type::tight, Strategy::remove, \textcolor{keyword}{true}, \textcolor{keyword}{true} \};
+96     GA<double> ga\_fitting\{ 0.4, 0.35, 6.0, decision\_variables, stdev\_ga, 250, tol\_f, 2000, \textcolor{keyword}{false}, 
+      Constraints\_type::tight, Strategy::remove, \textcolor{keyword}{true}, \textcolor{keyword}{true} \};
+97     PSOl<double> pso\_pricing\{ 1.49618, 0.9, \{ 100000, 100000, 100000, 100000, 100000, 100000 \}, 
+      decision\_variables, stdev, 130, tol, 3000, \textcolor{keyword}{false}, Constraints\_type::tight, \textcolor{keyword}{true}, \textcolor{keyword}{true} \};
+98     PSOl<double> pso\_fitting\{ 1.49618, 0.9, \{ 100000, 100000, 100000, 100000, 100000, 100000 \}, 
+      decision\_variables, stdev, 130, tol\_f, 3000, \textcolor{keyword}{false}, Constraints\_type::tight, \textcolor{keyword}{true}, \textcolor{keyword}{true} \};
+99     PSOs<double> pso\_pricing\{ 2.05, 2.05, 6, 0.9, 1.0,\{ 100000, 100000, 100000, 100000, 100000, 100000 \}, 
+      decision\_variables, stdev, 24, tol, 1000, \textcolor{keyword}{false}, Constraints\_type::none, \textcolor{keyword}{true}, \textcolor{keyword}{true} \};
+100     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < 100; ++i)
+101     \{
+102         de.bond\_pricing(ga\_pricing, de\_irr\_check, Bond\_pricing\_type::bpp);
+103         ir.yieldcurve\_fitting(ga\_fitting);
+104         de.bond\_pricing(de\_pricing, de\_irr\_check, Bond\_pricing\_type::bpp);
+105         ir.yieldcurve\_fitting(de\_fitting);
+106         de.bond\_pricing(pso\_pricing, de\_irr\_check, Bond\_pricing\_type::bpp);
+107         ir.yieldcurve\_fitting(pso\_fitting);
+108         de.set\_init\_nss\_params(de\_irr);
+109         de.set\_init\_nss\_params(pso\_irr);
+110         de.set\_init\_nss\_params(ga\_irr);
+111     \}
+112     \textcolor{keywordflow}{return} 0;
+113 \}
+\end{DoxyCode}

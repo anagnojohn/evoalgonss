@@ -1,0 +1,67 @@
+\hypertarget{ealgorithm__base_8h}{}\section{ealgorithm\+\_\+base.\+h File Reference}
+\label{ealgorithm__base_8h}\index{ealgorithm\+\_\+base.\+h@{ealgorithm\+\_\+base.\+h}}
+
+
+Classes and functions for the base of the solvers.  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include $<$ctime$>$}\newline
+{\ttfamily \#include $<$random$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include \char`\"{}utilities.\+h\char`\"{}}\newline
+Include dependency graph for ealgorithm\+\_\+base.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{ealgorithm__base_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{ealgorithm__base_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structea_1_1_e_a__base}{ea\+::\+E\+A\+\_\+base$<$ T $>$}
+\begin{DoxyCompactList}\small\item\em Evolutionary algorithm stucture base. \end{DoxyCompactList}\item 
+class \hyperlink{classea_1_1_solver}{ea\+::\+Solver$<$ S, T, F, C $>$}
+\begin{DoxyCompactList}\small\item\em Template Class for Solvers. \end{DoxyCompactList}\item 
+class \hyperlink{classea_1_1_solver__base}{ea\+::\+Solver\+\_\+base$<$ Derived, S, T, F, C $>$}
+\begin{DoxyCompactList}\small\item\em Base Class for Evolutionary Algorithms. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceea}{ea}
+\begin{DoxyCompactList}\small\item\em Evolutionary Algorithms. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::mt19937\+\_\+64 \hyperlink{namespaceea_a385e8ca8ba4ae2f69dcfffa79f20c2ff}{ea\+::generator} (rd())
+\begin{DoxyCompactList}\small\item\em Pseudo-\/random number generator. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename F , typename C , template$<$ typename $>$ class S, typename T $>$ }\\std\+::vector$<$ T $>$ \hyperlink{namespaceea_a6450b5bf61e9fdca8b6c19267e14c560}{ea\+::solve} (const F \&f, const C \&c, const S$<$ T $>$ \&solver\+\_\+struct, const std\+::string \&problem\+\_\+name)
+\begin{DoxyCompactList}\small\item\em \hyperlink{classea_1_1_solver}{Solver} wrapper function, interface to solvers \+: free function used for benchmarks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+std\+::random\+\_\+device \hyperlink{namespaceea_a0d4adcfbf42f88a74097673d4564f757}{ea\+::rd}
+\begin{DoxyCompactList}\small\item\em Random device / Random number generator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Classes and functions for the base of the solvers. 
+
+\begin{DoxyAuthor}{Author}
+Ioannis Anagnostopoulos 
+\end{DoxyAuthor}

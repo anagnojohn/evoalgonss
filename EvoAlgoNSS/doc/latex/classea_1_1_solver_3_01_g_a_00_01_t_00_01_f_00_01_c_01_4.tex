@@ -1,0 +1,503 @@
+\hypertarget{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4}{}\section{ea\+:\+:Solver$<$ GA, T, F, C $>$ Class Template Reference}
+\label{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4}\index{ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}}
+
+
+Genetic Algorithms (\hyperlink{structea_1_1_g_a}{GA}) Class.  
+
+
+
+
+{\ttfamily \#include $<$geneticalgo.\+h$>$}
+
+
+
+Inheritance diagram for ea\+:\+:Solver$<$ GA, T, F, C $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=201pt]{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5c9e7819aa3d3a3ee99f67bc4a3aae5a}{Solver} (const \hyperlink{structea_1_1_g_a}{GA}$<$ T $>$ \&i\+\_\+ga, F \hyperlink{classea_1_1_solver__base_ae0a893780c93dfe17c1d17301de6494f}{f}, C \hyperlink{classea_1_1_solver__base_a6914e89d30e7484f2b4af1783f0de8c3}{c})
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ T $>$ \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_ad197350b0ef8bc73293fe31978702f02}{crossover} (std\+::vector$<$ T $>$ r, std\+::vector$<$ T $>$ s)
+\begin{DoxyCompactList}\small\item\em Crossover step of \hyperlink{structea_1_1_g_a}{GA}. \end{DoxyCompactList}\item 
+std\+::vector$<$ T $>$ \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a1bc73c28211d7ba80665b286fbdea948}{selection} ()
+\begin{DoxyCompactList}\small\item\em Selection step of \hyperlink{structea_1_1_g_a}{GA}. \end{DoxyCompactList}\item 
+std\+::vector$<$ T $>$ \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_adde7de03b3c72d6b491a566699b6a4e4}{mutation} (const std\+::vector$<$ T $>$ \&individual)
+\begin{DoxyCompactList}\small\item\em Mutation step of \hyperlink{structea_1_1_g_a}{GA}. \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a42fe3561ccfab0dd666410e243d977e5}{nkeep} ()
+\begin{DoxyCompactList}\small\item\em Returns number of individuals to be kept in each generation. \end{DoxyCompactList}\item 
+void \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_aa03709c3636280a24879d01f9ad128ea}{run\+\_\+algo} ()
+\begin{DoxyCompactList}\small\item\em Runs the algorithm until stopping criteria return void. \end{DoxyCompactList}\item 
+std\+::stringstream \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a36b4364bdb9a079aa327d6664d538167}{display\+\_\+parameters} ()
+\begin{DoxyCompactList}\small\item\em Display the parameters of \hyperlink{structea_1_1_g_a}{GA}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{structea_1_1_g_a}{GA}$<$ T $>$ \& \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}{ga}
+\begin{DoxyCompactList}\small\item\em Genetic Algorithms structure used internally (reference to solver\+\_\+struct) \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a805f49211363542de6984c7fd2c97c9c}{npop}
+\begin{DoxyCompactList}\small\item\em Size of the population is mutable. \end{DoxyCompactList}\item 
+std\+::vector$<$ T $>$ \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a097a7ec4bbcf9e5bade6e498d55d4d11}{stdev}
+\begin{DoxyCompactList}\small\item\em Standard deviation is mutable, so a copy is created. \end{DoxyCompactList}\item 
+boost\+::math\+::beta\+\_\+distribution$<$ T $>$ \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a01dbd57c74c1ebd73e4ac976e29ecb33}{bdistribution}
+\begin{DoxyCompactList}\small\item\em Beta distribution. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a36e0662bcb575fd6a11cec4eedf85117}{Solver\+\_\+base$<$ Solver$<$ G\+A, T, F, C $>$, G\+A, T, F, C $>$}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T, typename F, typename C$>$\newline
+class ea\+::\+Solver$<$ G\+A, T, F, C $>$}
+
+Genetic Algorithms (\hyperlink{structea_1_1_g_a}{GA}) Class. 
+
+Definition at line 73 of file geneticalgo.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5c9e7819aa3d3a3ee99f67bc4a3aae5a}\label{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5c9e7819aa3d3a3ee99f67bc4a3aae5a}} 
+\index{ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}!Solver@{Solver}}
+\index{Solver@{Solver}!ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}}
+\subsubsection{\texorpdfstring{Solver()}{Solver()}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+\hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_g_a}{GA}, T, F, C $>$\+::\hyperlink{classea_1_1_solver}{Solver} (\begin{DoxyParamCaption}\item[{const \hyperlink{structea_1_1_g_a}{GA}$<$ T $>$ \&}]{i\+\_\+ga,  }\item[{F}]{f,  }\item[{C}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i\+\_\+ga} & The genetic algorithms parameter structure that is used to construct the solver \\
+\hline
+{\em f} & A reference to the objective function \\
+\hline
+{\em c} & A reference to the constraints function \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4}{Solver$<$\+G\+A, T, F, C$>$} object 
+\end{DoxyReturn}
+
+
+Definition at line 84 of file geneticalgo.\+h.
+
+
+\begin{DoxyCode}
+84                                             :
+85             Solver\_base<Solver<GA, T, F, C>, GA, T, F, C> ( i\_ga, \hyperlink{classea_1_1_solver__base_ae0a893780c93dfe17c1d17301de6494f}{f}, \hyperlink{classea_1_1_solver__base_a6914e89d30e7484f2b4af1783f0de8c3}{c} ), 
+86             \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}{ga} ( this->\hyperlink{classea_1_1_solver__base_a5e1d821809f2d26c6f882942ad728127}{solver\_struct} ),
+87             \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a805f49211363542de6984c7fd2c97c9c}{npop} ( i\_ga.npop ),
+88             \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a097a7ec4bbcf9e5bade6e498d55d4d11}{stdev} ( i\_ga.stdev ),
+89             \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a01dbd57c74c1ebd73e4ac976e29ecb33}{bdistribution} (boost::math::beta\_distribution<T>(1, \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}{ga}.alpha))
+90         \{
+91         \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_ad197350b0ef8bc73293fe31978702f02}\label{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_ad197350b0ef8bc73293fe31978702f02}} 
+\index{ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}!crossover@{crossover}}
+\index{crossover@{crossover}!ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}}
+\subsubsection{\texorpdfstring{crossover()}{crossover()}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+std\+::vector$<$ T $>$ \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_g_a}{GA}, T, F, C $>$\+::crossover (\begin{DoxyParamCaption}\item[{std\+::vector$<$ T $>$}]{r,  }\item[{std\+::vector$<$ T $>$}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Crossover step of \hyperlink{structea_1_1_g_a}{GA}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r,s} & Parent individuals \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An offspring from the two parents r and s 
+\end{DoxyReturn}
+
+
+Definition at line 152 of file geneticalgo.\+h.
+
+
+
+References ea\+::generator().
+
+
+\begin{DoxyCode}
+153     \{
+154         std::vector<T> offspring(\hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}{ga}.ndv);
+155         std::vector<T> psi(\hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}{ga}.ndv);
+156         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} j = 0; j < \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}{ga}.ndv; ++j)
+157         \{
+158             psi[j] = this->\hyperlink{classea_1_1_solver__base_ae88f44b13e264e092d3bbaeca6b3bd19}{distribution}(\hyperlink{namespaceea_a385e8ca8ba4ae2f69dcfffa79f20c2ff}{generator});
+159             offspring[j] = psi[j] * r[j] + (1 - psi[j]) * s[j];
+160         \}
+161         \textcolor{keywordflow}{return} offspring;
+162     \}
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=287pt]{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_ad197350b0ef8bc73293fe31978702f02_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a36b4364bdb9a079aa327d6664d538167}\label{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a36b4364bdb9a079aa327d6664d538167}} 
+\index{ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}!display\+\_\+parameters@{display\+\_\+parameters}}
+\index{display\+\_\+parameters@{display\+\_\+parameters}!ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}}
+\subsubsection{\texorpdfstring{display\+\_\+parameters()}{display\_parameters()}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+\hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_g_a}{GA}, T, F, C $>$\+::display\+\_\+parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+Display the parameters of \hyperlink{structea_1_1_g_a}{GA}. 
+
+\begin{DoxyReturn}{Returns}
+A std\+::stringstream of the parameters 
+\end{DoxyReturn}
+
+
+Definition at line 133 of file geneticalgo.\+h.
+
+
+
+References ea\+::\+G\+A$<$ T $>$\+::alpha, ea\+::keep\+\_\+same, ea\+::\+G\+A$<$ T $>$\+::pi, ea\+::re\+\_\+mutate, ea\+::remove, ea\+::\+G\+A$<$ T $>$\+::strategy, and ea\+::\+G\+A$<$ T $>$\+::x\+\_\+rate.
+
+
+\begin{DoxyCode}
+134         \{
+135             std::stringstream parameters;
+136             parameters << \textcolor{stringliteral}{"Natural Selection Rate:"} << \textcolor{stringliteral}{","} << \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}{ga}.x\_rate << \textcolor{stringliteral}{","};
+137             parameters << \textcolor{stringliteral}{"Probability of Mutation:"} << \textcolor{stringliteral}{","} << \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}{ga}.pi << \textcolor{stringliteral}{","};
+138             parameters << \textcolor{stringliteral}{"Beta Distribution alpha:"} << \textcolor{stringliteral}{","} << \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}{ga}.alpha << \textcolor{stringliteral}{","};
+139             parameters << \textcolor{stringliteral}{"Strategy:"} << \textcolor{stringliteral}{","};
+140             \textcolor{keywordflow}{switch} (\hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}{ga}.strategy)
+141             \{
+142             \textcolor{keywordflow}{case} \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89ac4a301043ce8554dfced7a0c0698bdad}{Strategy::keep\_same}: parameters << \textcolor{stringliteral}{"Keep same individual"}; \textcolor{keywordflow}{break};
+143             \textcolor{keywordflow}{case} \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89a49a303c9c8d8a0c15a7fc97cd4b1db0d}{Strategy::re\_mutate}: parameters << \textcolor{stringliteral}{"Re-mutate individual"}; \textcolor{keywordflow}{break};
+144             \textcolor{keywordflow}{case} \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89a0f6969d7052da9261e31ddb6e88c136e}{Strategy::remove}: parameters << \textcolor{stringliteral}{"Remove individual"}; \textcolor{keywordflow}{break};
+145             \textcolor{keywordflow}{default}: parameters << \textcolor{stringliteral}{"Do nothing"}; \textcolor{keywordflow}{break};
+146             \}
+147             \textcolor{keywordflow}{return} parameters;
+148         \}
+\end{DoxyCode}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_adde7de03b3c72d6b491a566699b6a4e4}\label{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_adde7de03b3c72d6b491a566699b6a4e4}} 
+\index{ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}!mutation@{mutation}}
+\index{mutation@{mutation}!ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}}
+\subsubsection{\texorpdfstring{mutation()}{mutation()}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+std\+::vector$<$ T $>$ \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_g_a}{GA}, T, F, C $>$\+::mutation (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{individual }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Mutation step of \hyperlink{structea_1_1_g_a}{GA}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em individual} & An individual of the population \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A mutated individual 
+\end{DoxyReturn}
+
+
+Definition at line 178 of file geneticalgo.\+h.
+
+
+
+References ea\+::generator().
+
+
+\begin{DoxyCode}
+179     \{
+180         std::vector<T> mutated = individual;
+181         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} j = 0; j < \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}{ga}.ndv; ++j)
+182         \{
+183             \textcolor{keyword}{const} T r = this->\hyperlink{classea_1_1_solver__base_ae88f44b13e264e092d3bbaeca6b3bd19}{distribution}(\hyperlink{namespaceea_a385e8ca8ba4ae2f69dcfffa79f20c2ff}{generator});
+184             \textcolor{keywordflow}{if} (\hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}{ga}.pi < r)
+185             \{
+186                 std::normal\_distribution<T> ndistribution(0, \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a097a7ec4bbcf9e5bade6e498d55d4d11}{stdev}[j]);
+187                 T epsilon = ndistribution(\hyperlink{namespaceea_a385e8ca8ba4ae2f69dcfffa79f20c2ff}{generator});
+188                 mutated[j] = mutated[j] + epsilon;
+189             \}
+190         \}
+191         \textcolor{keywordflow}{return} mutated;
+192     \}
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=287pt]{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_adde7de03b3c72d6b491a566699b6a4e4_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a42fe3561ccfab0dd666410e243d977e5}\label{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a42fe3561ccfab0dd666410e243d977e5}} 
+\index{ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}!nkeep@{nkeep}}
+\index{nkeep@{nkeep}!ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}}
+\subsubsection{\texorpdfstring{nkeep()}{nkeep()}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+size\+\_\+t \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_g_a}{GA}, T, F, C $>$\+::nkeep (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Returns number of individuals to be kept in each generation. 
+
+\begin{DoxyReturn}{Returns}
+The new nkeep 
+\end{DoxyReturn}
+
+
+Definition at line 195 of file geneticalgo.\+h.
+
+
+\begin{DoxyCode}
+196     \{
+197         \textcolor{keywordflow}{return} \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(std::ceil(static\_cast<T>(\hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a805f49211363542de6984c7fd2c97c9c}{npop}) * \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}{ga}.x\_rate));
+198     \}
+\end{DoxyCode}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_aa03709c3636280a24879d01f9ad128ea}\label{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_aa03709c3636280a24879d01f9ad128ea}} 
+\index{ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}!run\+\_\+algo@{run\+\_\+algo}}
+\index{run\+\_\+algo@{run\+\_\+algo}!ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}}
+\subsubsection{\texorpdfstring{run\+\_\+algo()}{run\_algo()}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+void \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_g_a}{GA}, T, F, C $>$\+::run\+\_\+algo (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Runs the algorithm until stopping criteria return void. 
+
+Set the new population size which is previous population size + natural selection rate $\ast$ population size
+
+Standard Deviation is not constant in \hyperlink{structea_1_1_g_a}{GA} 
+
+Definition at line 201 of file geneticalgo.\+h.
+
+
+
+References ea\+::keep\+\_\+same, ea\+::none, ea\+::re\+\_\+mutate, and ea\+::remove.
+
+
+\begin{DoxyCode}
+202     \{
+203         \textcolor{keyword}{auto} comparator = [&](\textcolor{keyword}{const} std::vector<T>& l, \textcolor{keyword}{const} std::vector<T>& r)
+204         \{
+205             \textcolor{keywordflow}{return} this->\hyperlink{classea_1_1_solver__base_ae0a893780c93dfe17c1d17301de6494f}{f}(l) < this->\hyperlink{classea_1_1_solver__base_ae0a893780c93dfe17c1d17301de6494f}{f}(r);
+206         \};
+207         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} iter = 0; iter < \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}{ga}.iter\_max; ++iter)
+208         \{
+210             \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a805f49211363542de6984c7fd2c97c9c}{npop} = this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}.size();
+211             std::sort(this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}.begin(), this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}.end(), comparator)
+      ;
+212             this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}.erase(this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}.begin() + 
+      \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a42fe3561ccfab0dd666410e243d977e5}{nkeep}(), this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}.begin() + this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}.size());
+213             this->\hyperlink{classea_1_1_solver__base_af745cded954be26280d842c1e7c7f989}{min\_cost} = this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[0];
+214             this->\hyperlink{classea_1_1_solver__base_a8f9a321eb87e57636cf0b0f3a57b6fc2}{last\_iter} = iter;
+215             \textcolor{keywordflow}{if} (\hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}{ga}.tol > std::abs(this->f(this->min\_cost)))
+216             \{
+217                 this->\hyperlink{classea_1_1_solver__base_a1cdb824e8df6d4a8f228820ea85c9b05}{solved\_flag} = \textcolor{keyword}{true};
+218                 \textcolor{keywordflow}{break};
+219             \}
+220             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a805f49211363542de6984c7fd2c97c9c}{npop}; ++i)
+221             \{
+222                 std::vector<T> offspring = \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a1bc73c28211d7ba80665b286fbdea948}{selection}();
+223                 this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}.push\_back(offspring);
+224             \}
+225             \textcolor{keywordflow}{if} (this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}.size() > 1000)
+226             \{
+227                 \textcolor{comment}{//this->individuals.erase(this->individuals.begin() + 1000, this->individuals.begin() +
+       this->individuals.size());}
+228             \}
+229             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 1; i < this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}.size(); ++i)
+230             \{
+231                 std::vector<T> mutated = \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_adde7de03b3c72d6b491a566699b6a4e4}{mutation}(this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[i]);
+232                 \textcolor{keywordflow}{if} (!this->\hyperlink{classea_1_1_solver__base_a6914e89d30e7484f2b4af1783f0de8c3}{c}(mutated))
+233                 \{
+234                     \textcolor{keywordflow}{switch} (\hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}{ga}.strategy)
+235                     \{
+236                     \textcolor{keywordflow}{case} \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89ac4a301043ce8554dfced7a0c0698bdad}{Strategy::keep\_same}: this->
+      \hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[i] = this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[i]; \textcolor{keywordflow}{break};
+237                     \textcolor{keywordflow}{case} \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89a49a303c9c8d8a0c15a7fc97cd4b1db0d}{Strategy::re\_mutate}: 
+238                     \{
+239                         \textcolor{keywordflow}{while} (!this->\hyperlink{classea_1_1_solver__base_a6914e89d30e7484f2b4af1783f0de8c3}{c}(mutated))
+240                         \{
+241                             mutated = \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_adde7de03b3c72d6b491a566699b6a4e4}{mutation}(this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[i]);
+242                         \}
+243                         \textcolor{keywordflow}{break};
+244                         this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[i] = mutated;
+245                     \}
+246                     \textcolor{keywordflow}{case} \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89a0f6969d7052da9261e31ddb6e88c136e}{Strategy::remove}:
+247                     \{
+248                         \textcolor{keywordflow}{if} (i == this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}.size() - 1)
+249                         \{
+250                             this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}.pop\_back();
+251                         \}
+252                         \textcolor{keywordflow}{else}
+253                         \{
+254                             this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}.erase(this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}.begin() + i, 
+      this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}.begin() + i + 1);
+255                         \}
+256                         \textcolor{keywordflow}{break};
+257                     \}
+258                     \textcolor{keywordflow}{case} \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89a334c4a4c42fdb79d7ebc3e73b517e6f8}{Strategy::none}: \textcolor{keywordflow}{break};
+259                     \textcolor{keywordflow}{default}: std::abort();
+260                     \}
+261                 \}
+262                 \textcolor{keywordflow}{else}
+263                 \{
+264                     this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[i] = mutated;
+265                 \}
+266             \}
+268             \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& p : \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a097a7ec4bbcf9e5bade6e498d55d4d11}{stdev})
+269             \{
+270                 p = p + 0.02 * p;
+271             \}
+272         \}
+273     \}
+\end{DoxyCode}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a1bc73c28211d7ba80665b286fbdea948}\label{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a1bc73c28211d7ba80665b286fbdea948}} 
+\index{ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}!selection@{selection}}
+\index{selection@{selection}!ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}}
+\subsubsection{\texorpdfstring{selection()}{selection()}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+std\+::vector$<$ T $>$ \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_g_a}{GA}, T, F, C $>$\+::selection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Selection step of \hyperlink{structea_1_1_g_a}{GA}. 
+
+Select two parents r and s using a Beta distribution and generates an offspring using the crossover method \begin{DoxyReturn}{Returns}
+An offspring from the two parents 
+\end{DoxyReturn}
+Generate r and s indices
+
+Produce offsrping using r and s indices by crossover 
+
+Definition at line 165 of file geneticalgo.\+h.
+
+
+
+References ea\+::generator().
+
+
+\begin{DoxyCode}
+166     \{
+168         T xi = quantile(\hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a01dbd57c74c1ebd73e4ac976e29ecb33}{bdistribution}, this->\hyperlink{classea_1_1_solver__base_ae88f44b13e264e092d3bbaeca6b3bd19}{distribution}(
+      \hyperlink{namespaceea_a385e8ca8ba4ae2f69dcfffa79f20c2ff}{generator}));
+169         \textcolor{keywordtype}{size\_t} r = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(std::floor(static\_cast<T>(\hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a42fe3561ccfab0dd666410e243d977e5}{nkeep}()) * xi));
+170         xi = quantile(\hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a01dbd57c74c1ebd73e4ac976e29ecb33}{bdistribution}, this->\hyperlink{classea_1_1_solver__base_ae88f44b13e264e092d3bbaeca6b3bd19}{distribution}(
+      \hyperlink{namespaceea_a385e8ca8ba4ae2f69dcfffa79f20c2ff}{generator}));
+171         \textcolor{keywordtype}{size\_t} s = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(std::floor(static\_cast<T>(\hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a42fe3561ccfab0dd666410e243d977e5}{nkeep}()) * xi));
+173         std::vector<T> offspring = \hyperlink{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_ad197350b0ef8bc73293fe31978702f02}{crossover}(this->\hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[r], this->
+      \hyperlink{classea_1_1_solver__base_ad75bc440d24a46e97694c7c889f2ecde}{individuals}[s]);
+174         \textcolor{keywordflow}{return} offspring;
+175     \}
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=287pt]{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a1bc73c28211d7ba80665b286fbdea948_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a36e0662bcb575fd6a11cec4eedf85117}\label{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a36e0662bcb575fd6a11cec4eedf85117}} 
+\index{ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}!Solver\+\_\+base$<$ Solver$<$ G\+A, T, F, C $>$, G\+A, T, F, C $>$@{Solver\+\_\+base$<$ Solver$<$ G\+A, T, F, C $>$, G\+A, T, F, C $>$}}
+\index{Solver\+\_\+base$<$ Solver$<$ G\+A, T, F, C $>$, G\+A, T, F, C $>$@{Solver\+\_\+base$<$ Solver$<$ G\+A, T, F, C $>$, G\+A, T, F, C $>$}!ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}}
+\subsubsection{\texorpdfstring{Solver\+\_\+base$<$ Solver$<$ G\+A, T, F, C $>$, G\+A, T, F, C $>$}{Solver\_base< Solver< GA, T, F, C >, GA, T, F, C >}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+friend class \hyperlink{classea_1_1_solver__base}{Solver\+\_\+base}$<$ \hyperlink{classea_1_1_solver}{Solver}$<$ \hyperlink{structea_1_1_g_a}{GA}, T, F, C $>$, \hyperlink{structea_1_1_g_a}{GA}, T, F, C $>$\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Definition at line 76 of file geneticalgo.\+h.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a01dbd57c74c1ebd73e4ac976e29ecb33}\label{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a01dbd57c74c1ebd73e4ac976e29ecb33}} 
+\index{ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}!bdistribution@{bdistribution}}
+\index{bdistribution@{bdistribution}!ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}}
+\subsubsection{\texorpdfstring{bdistribution}{bdistribution}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+boost\+::math\+::beta\+\_\+distribution$<$T$>$ \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_g_a}{GA}, T, F, C $>$\+::bdistribution\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Beta distribution. 
+
+
+
+Definition at line 100 of file geneticalgo.\+h.
+
+\mbox{\Hypertarget{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}\label{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a5e56c4d15894af96c2be5fcaec7d14fb}} 
+\index{ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}!ga@{ga}}
+\index{ga@{ga}!ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}}
+\subsubsection{\texorpdfstring{ga}{ga}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+const \hyperlink{structea_1_1_g_a}{GA}$<$T$>$\& \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_g_a}{GA}, T, F, C $>$\+::ga\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Genetic Algorithms structure used internally (reference to solver\+\_\+struct) 
+
+
+
+Definition at line 94 of file geneticalgo.\+h.
+
+\mbox{\Hypertarget{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a805f49211363542de6984c7fd2c97c9c}\label{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a805f49211363542de6984c7fd2c97c9c}} 
+\index{ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}!npop@{npop}}
+\index{npop@{npop}!ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}}
+\subsubsection{\texorpdfstring{npop}{npop}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+size\+\_\+t \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_g_a}{GA}, T, F, C $>$\+::npop\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Size of the population is mutable. 
+
+
+
+Definition at line 96 of file geneticalgo.\+h.
+
+\mbox{\Hypertarget{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a097a7ec4bbcf9e5bade6e498d55d4d11}\label{classea_1_1_solver_3_01_g_a_00_01_t_00_01_f_00_01_c_01_4_a097a7ec4bbcf9e5bade6e498d55d4d11}} 
+\index{ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}!stdev@{stdev}}
+\index{stdev@{stdev}!ea\+::\+Solver$<$ G\+A, T, F, C $>$@{ea\+::\+Solver$<$ G\+A, T, F, C $>$}}
+\subsubsection{\texorpdfstring{stdev}{stdev}}
+{\footnotesize\ttfamily template$<$typename T , typename F , typename C $>$ \\
+std\+::vector$<$T$>$ \hyperlink{classea_1_1_solver}{ea\+::\+Solver}$<$ \hyperlink{structea_1_1_g_a}{GA}, T, F, C $>$\+::stdev\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Standard deviation is mutable, so a copy is created. 
+
+
+
+Definition at line 98 of file geneticalgo.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{geneticalgo_8h}{geneticalgo.\+h}\end{DoxyCompactItemize}

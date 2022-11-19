@@ -1,0 +1,243 @@
+\hypertarget{namespacenss}{}\section{nss Namespace Reference}
+\label{namespacenss}\index{nss@{nss}}
+
+
+Nelson-\/\+Siegel-\/\+Svensson (N\+SS) model namespace.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\bool \hyperlink{namespacenss_a39de3569a71e773f9da82c713eb7e6eb}{constraints\+\_\+svensson} (const std\+::vector$<$ T $>$ \&solution, const Constraints\+\_\+type \&constraints\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Constraints function for the N\+SS model. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{namespacenss_a71aad246261afa16f8bb1a4057570d4b}{svensson} (const std\+::vector$<$ T $>$ \&solution, const T \&m)
+\begin{DoxyCompactList}\small\item\em Spot interest rate at term m using the N\+SS model. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{namespacenss_a009a0ebbca20f7969d0c2ed5a241aa82}{penalty\+\_\+svensson} (const std\+::vector$<$ T $>$ \&solution)
+\begin{DoxyCompactList}\small\item\em Penalty function for N\+SS. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Nelson-\/\+Siegel-\/\+Svensson (N\+SS) model namespace. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespacenss_a39de3569a71e773f9da82c713eb7e6eb}\label{namespacenss_a39de3569a71e773f9da82c713eb7e6eb}} 
+\index{nss@{nss}!constraints\+\_\+svensson@{constraints\+\_\+svensson}}
+\index{constraints\+\_\+svensson@{constraints\+\_\+svensson}!nss@{nss}}
+\subsubsection{\texorpdfstring{constraints\+\_\+svensson()}{constraints\_svensson()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+nss\+::constraints\+\_\+svensson (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{solution,  }\item[{const Constraints\+\_\+type \&}]{constraints\+\_\+type }\end{DoxyParamCaption})}
+
+
+
+Constraints function for the N\+SS model. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em solution} & N\+SS parameters candindate solution \\
+\hline
+{\em constraints\+\_\+type} & Type of constraints used \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if constraints are satisfied, false otherwise 
+\end{DoxyReturn}
+
+
+Definition at line 18 of file svensson.\+h.
+
+
+
+Referenced by bond\+::\+Bond\+Helper$<$ T $>$\+::bond\+\_\+pricing(), and yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper$<$ T $>$\+::yieldcurve\+\_\+fitting().
+
+
+\begin{DoxyCode}
+19     \{
+20         \textcolor{keywordflow}{switch} (constraints\_type)
+21         \{
+22         \textcolor{keywordflow}{case}(Constraints\_type::normal):
+23         \{
+24             \textcolor{keyword}{const} T& b0 = solution[0];
+25             \textcolor{keyword}{const} T& b1 = solution[1];
+26             \textcolor{keyword}{const} T& tau1 = solution[4];
+27             \textcolor{keyword}{const} T& tau2 = solution[5];
+28             \textcolor{keywordflow}{if} (b0 > 0 && b0 + b1 > 0 && tau1 > 0 && tau2 > 0)
+29             \{
+30                 \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+31             \}
+32             \textcolor{keywordflow}{else}
+33             \{
+34                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+35             \}
+36         \}
+37         \textcolor{keywordflow}{case}(Constraints\_type::tight):
+38         \{
+39             \textcolor{keyword}{const} T& b0 = solution[0];
+40             \textcolor{keyword}{const} T& b1 = solution[1];
+41             \textcolor{keyword}{const} T& b2 = solution[2];
+42             \textcolor{keyword}{const} T& b3 = solution[3];
+43             \textcolor{keyword}{const} T& tau1 = solution[4];
+44             \textcolor{keyword}{const} T& tau2 = solution[5];
+45             \textcolor{keywordflow}{if} ((b0 > 0 && b0 < 15)
+46                 && (b1 > -15 && b1 < 30)
+47                 && (b2 > -30 && b2 < 30)
+48                 && (b3 > -30 && b3 < 30)
+49                 && (tau1 > 0 && tau1 < 2.5)
+50                 && (tau2 > 2.5 && tau2 < 5.5))
+51             \{
+52                 \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+53             \}
+54             \textcolor{keywordflow}{else}
+55             \{
+56                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+57             \}
+58         \}
+59         \textcolor{keywordflow}{case}(Constraints\_type::none): \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+60         \textcolor{keywordflow}{default}: std::abort();
+61         \}
+62     \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacenss_a39de3569a71e773f9da82c713eb7e6eb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacenss_a009a0ebbca20f7969d0c2ed5a241aa82}\label{namespacenss_a009a0ebbca20f7969d0c2ed5a241aa82}} 
+\index{nss@{nss}!penalty\+\_\+svensson@{penalty\+\_\+svensson}}
+\index{penalty\+\_\+svensson@{penalty\+\_\+svensson}!nss@{nss}}
+\subsubsection{\texorpdfstring{penalty\+\_\+svensson()}{penalty\_svensson()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+nss\+::penalty\+\_\+svensson (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{solution }\end{DoxyParamCaption})}
+
+
+
+Penalty function for N\+SS. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em solution} & Candidate solution for the parameters of N\+SS \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A penalty value, if constraints are not satisfied 
+\end{DoxyReturn}
+
+
+Definition at line 99 of file svensson.\+h.
+
+
+
+Referenced by bond\+::\+Bond\+Helper$<$ T $>$\+::fitness\+\_\+bond\+\_\+pricing\+\_\+prices(), bond\+::\+Bond\+Helper$<$ T $>$\+::fitness\+\_\+bond\+\_\+pricing\+\_\+yields(), and yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper$<$ T $>$\+::fitness\+\_\+yield\+\_\+curve\+\_\+fitting().
+
+
+\begin{DoxyCode}
+100     \{
+101         T sum = 0;
+102         \textcolor{keyword}{const} T& b0 = solution[0];
+103         \textcolor{keyword}{const} T& b1 = solution[1];
+104         \textcolor{keyword}{const} T& b2 = solution[2];
+105         \textcolor{keyword}{const} T& b3 = solution[3];
+106         \textcolor{keyword}{const} T& tau1 = solution[4];
+107         \textcolor{keyword}{const} T& tau2 = solution[5];
+108         \textcolor{keyword}{const} T C = 100000;
+109         \textcolor{keywordflow}{if} (b0 < 0 || b0 > 15)
+110         \{
+111             sum = sum + C * std::pow(std::abs(b0), 2);
+112         \}
+113         \textcolor{keywordflow}{if} (b0 + b1 < 0)
+114         \{
+115             sum = sum + C * std::pow(std::abs(b0 + b1), 2);
+116         \}
+117         \textcolor{keywordflow}{if} (b1 < -15 || b1 > 30)
+118         \{
+119             sum = sum + C * std::pow(std::abs(b1), 2);
+120         \}
+121         \textcolor{keywordflow}{if} (b2 < -30 || b2 > 30)
+122         \{
+123             sum = sum + C * std::pow(std::abs(b1), 2);
+124         \}
+125         \textcolor{keywordflow}{if} (b3 < -30 || b3 > 30)
+126         \{
+127             sum = sum + C * std::pow(std::abs(b1), 2);
+128         \}
+129         \textcolor{keywordflow}{if} (tau1 < 0 || tau1 > 2.5)
+130         \{
+131             sum = sum + C * std::pow(std::abs(tau2), 2);
+132         \}
+133         \textcolor{keywordflow}{if} (tau2 < 2.5 || tau2 > 5.5)
+134         \{
+135             sum = sum + C * std::pow(std::abs(tau2), 2);
+136         \}
+137         \textcolor{keywordflow}{return} sum;
+138     \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacenss_a009a0ebbca20f7969d0c2ed5a241aa82_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacenss_a71aad246261afa16f8bb1a4057570d4b}\label{namespacenss_a71aad246261afa16f8bb1a4057570d4b}} 
+\index{nss@{nss}!svensson@{svensson}}
+\index{svensson@{svensson}!nss@{nss}}
+\subsubsection{\texorpdfstring{svensson()}{svensson()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+nss\+::svensson (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{solution,  }\item[{const T \&}]{m }\end{DoxyParamCaption})}
+
+
+
+Spot interest rate at term m using the N\+SS model. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em solution} & Candidate solution for the parameters of N\+SS \\
+\hline
+{\em m} & The term at which the spot interest rate is recorded \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The spot interest rate at term m 
+\end{DoxyReturn}
+
+
+Definition at line 71 of file svensson.\+h.
+
+
+
+Referenced by bond\+::\+Bond\+Helper$<$ T $>$\+::estimate\+\_\+bond\+\_\+pricing(), yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper$<$ T $>$\+::fitness\+\_\+yield\+\_\+curve\+\_\+fitting(), and yft\+::\+Interest\+\_\+\+Rate\+\_\+\+Helper$<$ T $>$\+::yieldcurve\+\_\+fitting().
+
+
+\begin{DoxyCode}
+72     \{
+73         \textcolor{keyword}{const} T& b0 = solution[0];
+74         \textcolor{keyword}{const} T& b1 = solution[1];
+75         \textcolor{keyword}{const} T& b2 = solution[2];
+76         \textcolor{keyword}{const} T& b3 = solution[3];
+77         \textcolor{keyword}{const} T& tau1 = solution[4];
+78         \textcolor{keyword}{const} T& tau2 = solution[5];
+79         \textcolor{keywordflow}{if} (m == 0)
+80         \{
+81             \textcolor{keywordflow}{return} b0 + b1;
+82         \}
+83         \textcolor{keywordflow}{else}
+84         \{
+85             T result = b0;
+86             result = result + b1 * ((1 - (std::exp(-m / tau1))) / (m / tau1));
+87             result = result + b2 * (((1 - (std::exp(-m / tau1))) / (m / tau1)) - std::exp(-m / tau1));
+88             result = result + b3 * (((1 - (std::exp(-m / tau2))) / (m / tau2)) - std::exp(-m / tau2));
+89             \textcolor{keywordflow}{return} result;
+90         \}
+91     \}
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=332pt]{namespacenss_a71aad246261afa16f8bb1a4057570d4b_icgraph}
+\end{center}
+\end{figure}

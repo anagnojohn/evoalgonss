@@ -1,0 +1,112 @@
+\hypertarget{namespacebond}{}\section{bond Namespace Reference}
+\label{namespacebond}\index{bond@{bond}}
+
+
+\hyperlink{classbond_1_1_bond}{Bond} Class and Utilities.  
+
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classbond_1_1_bond}{Bond}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classbond_1_1_bond}{Bond} Class definition. \end{DoxyCompactList}\item 
+class \hyperlink{classbond_1_1_bond_helper}{Bond\+Helper}
+\begin{DoxyCompactList}\small\item\em A class for the bond pricing problem as well as finding the yield-\/to-\/maturities of bonds. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespacebond_a7ff8132c72465682a65a634ca0958df9}{Bond\+\_\+pricing\+\_\+type} \{ \hyperlink{namespacebond_a7ff8132c72465682a65a634ca0958df9a0c68c2daa0334704116676287d54c2ae}{Bond\+\_\+pricing\+\_\+type\+::bpp}, 
+\hyperlink{namespacebond_a7ff8132c72465682a65a634ca0958df9afebbcc7d14e1ada7b0eee6411e82665b}{Bond\+\_\+pricing\+\_\+type\+::bpy}
+ \}\begin{DoxyCompactList}\small\item\em Enumeration for type of bondpricing, using yields or prices. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::vector$<$ \hyperlink{classbond_1_1_bond}{Bond}$<$ T $>$ $>$ \hyperlink{namespacebond_a20b23f0d31139a065334fd997507b1ae}{read\+\_\+bonds\+\_\+from\+\_\+file} (const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Reads bond data from a file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classbond_1_1_bond}{Bond} Class and Utilities. 
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{namespacebond_a7ff8132c72465682a65a634ca0958df9}\label{namespacebond_a7ff8132c72465682a65a634ca0958df9}} 
+\index{bond@{bond}!Bond\+\_\+pricing\+\_\+type@{Bond\+\_\+pricing\+\_\+type}}
+\index{Bond\+\_\+pricing\+\_\+type@{Bond\+\_\+pricing\+\_\+type}!bond@{bond}}
+\subsubsection{\texorpdfstring{Bond\+\_\+pricing\+\_\+type}{Bond\_pricing\_type}}
+{\footnotesize\ttfamily enum \hyperlink{namespacebond_a7ff8132c72465682a65a634ca0958df9}{bond\+::\+Bond\+\_\+pricing\+\_\+type}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Enumeration for type of bondpricing, using yields or prices. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{bpp@{bpp}!bond@{bond}}\index{bond@{bond}!bpp@{bpp}}}\mbox{\Hypertarget{namespacebond_a7ff8132c72465682a65a634ca0958df9a0c68c2daa0334704116676287d54c2ae}\label{namespacebond_a7ff8132c72465682a65a634ca0958df9a0c68c2daa0334704116676287d54c2ae}} 
+bpp&Use bond prices \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{bpy@{bpy}!bond@{bond}}\index{bond@{bond}!bpy@{bpy}}}\mbox{\Hypertarget{namespacebond_a7ff8132c72465682a65a634ca0958df9afebbcc7d14e1ada7b0eee6411e82665b}\label{namespacebond_a7ff8132c72465682a65a634ca0958df9afebbcc7d14e1ada7b0eee6411e82665b}} 
+bpy&Use bond yields-\/to-\/maturities \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 21 of file bondhelper.\+h.
+
+
+\begin{DoxyCode}
+22     \{ 
+23         \hyperlink{namespacebond_a7ff8132c72465682a65a634ca0958df9a0c68c2daa0334704116676287d54c2ae}{bpp}, 
+24         \hyperlink{namespacebond_a7ff8132c72465682a65a634ca0958df9afebbcc7d14e1ada7b0eee6411e82665b}{bpy} 
+25     \};
+\end{DoxyCode}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespacebond_a20b23f0d31139a065334fd997507b1ae}\label{namespacebond_a20b23f0d31139a065334fd997507b1ae}} 
+\index{bond@{bond}!read\+\_\+bonds\+\_\+from\+\_\+file@{read\+\_\+bonds\+\_\+from\+\_\+file}}
+\index{read\+\_\+bonds\+\_\+from\+\_\+file@{read\+\_\+bonds\+\_\+from\+\_\+file}!bond@{bond}}
+\subsubsection{\texorpdfstring{read\+\_\+bonds\+\_\+from\+\_\+file()}{read\_bonds\_from\_file()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bond\+::read\+\_\+bonds\+\_\+from\+\_\+file (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename }\end{DoxyParamCaption})}
+
+
+
+Reads bond data from a file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the input file as an std\+::string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A vector of Bond$<$\+T$>$ objects 
+\end{DoxyReturn}
+
+
+Definition at line 33 of file bondhelper.\+h.
+
+
+\begin{DoxyCode}
+34     \{
+35         std::vector<Bond<T>> bonds;
+36         std::ifstream input(filename);
+37         \textcolor{keywordflow}{for} (std::string line; getline(input, line); )
+38         \{
+39             T coupon\_percentage;
+40             T price;
+41             T nominal\_value;
+42             T frequency;
+43             std::string settlement\_date;
+44             std::string maturity\_date;
+45             std::istringstream stream(line);
+46             stream >> coupon\_percentage >> price >> nominal\_value >> frequency >> settlement\_date >> 
+      maturity\_date;
+47             \textcolor{keyword}{const} Bond<T> \hyperlink{namespacebond}{bond}\{ coupon\_percentage, price, nominal\_value, frequency, settlement\_date, 
+      maturity\_date \};
+48             bonds.push\_back(\hyperlink{namespacebond}{bond});
+49         \}
+50         \textcolor{keywordflow}{return} bonds;
+51     \}
+\end{DoxyCode}

@@ -1,0 +1,137 @@
+\hypertarget{namespaceutilities}{}\section{utilities Namespace Reference}
+\label{namespaceutilities}\index{utilities@{utilities}}
+
+
+Utilities namespace.  
+
+
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \{ \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7ca8a3baba97ec51277ed8ac64e456f6027}{D\+F\+\_\+type\+::frac}, 
+\hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7cab0ab0254bd58eb87eaee3172ba49fefb}{D\+F\+\_\+type\+::exp}
+ \}\begin{DoxyCompactList}\small\item\em Enumeration for discount factor types/methods. \end{DoxyCompactList}
+\item 
+enum \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}{Constraints\+\_\+type} \{ \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1afea087517c26fadd409bd4b9dc642555}{Constraints\+\_\+type\+::normal}, 
+\hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1a0423fa423baf1ea8139f6662869faf2f}{Constraints\+\_\+type\+::tight}, 
+\hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1a334c4a4c42fdb79d7ebc3e73b517e6f8}{Constraints\+\_\+type\+::none}
+ \}\begin{DoxyCompactList}\small\item\em Enumeration for types of constraints for the optimisation problems. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\std\+::ostream \& \hyperlink{namespaceutilities_a4b168c00efe29cabc5846b48225a6e52}{operator$<$$<$} (std\+::ostream \&stream, const std\+::vector$<$ T $>$ \&vector)
+\begin{DoxyCompactList}\small\item\em Overload the operator $<$$<$ for printing vectors. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Utilities namespace. 
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}\label{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}} 
+\index{utilities@{utilities}!Constraints\+\_\+type@{Constraints\+\_\+type}}
+\index{Constraints\+\_\+type@{Constraints\+\_\+type}!utilities@{utilities}}
+\subsubsection{\texorpdfstring{Constraints\+\_\+type}{Constraints\_type}}
+{\footnotesize\ttfamily enum \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}{utilities\+::\+Constraints\+\_\+type}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Enumeration for types of constraints for the optimisation problems. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{normal@{normal}!utilities@{utilities}}\index{utilities@{utilities}!normal@{normal}}}\mbox{\Hypertarget{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1afea087517c26fadd409bd4b9dc642555}\label{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1afea087517c26fadd409bd4b9dc642555}} 
+normal&Use the normal constraints \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{tight@{tight}!utilities@{utilities}}\index{utilities@{utilities}!tight@{tight}}}\mbox{\Hypertarget{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1a0423fa423baf1ea8139f6662869faf2f}\label{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1a0423fa423baf1ea8139f6662869faf2f}} 
+tight&Use tighter constraints \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{none@{none}!utilities@{utilities}}\index{utilities@{utilities}!none@{none}}}\mbox{\Hypertarget{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1a334c4a4c42fdb79d7ebc3e73b517e6f8}\label{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1a334c4a4c42fdb79d7ebc3e73b517e6f8}} 
+none&Ignore constraints \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 25 of file utilities.\+h.
+
+
+\begin{DoxyCode}
+26     \{ 
+27         \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1afea087517c26fadd409bd4b9dc642555}{normal}, 
+28         \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1a0423fa423baf1ea8139f6662869faf2f}{tight}, 
+29         \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89a334c4a4c42fdb79d7ebc3e73b517e6f8}{none} 
+30     \};
+\end{DoxyCode}
+\mbox{\Hypertarget{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}\label{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}} 
+\index{utilities@{utilities}!D\+F\+\_\+type@{D\+F\+\_\+type}}
+\index{D\+F\+\_\+type@{D\+F\+\_\+type}!utilities@{utilities}}
+\subsubsection{\texorpdfstring{D\+F\+\_\+type}{DF\_type}}
+{\footnotesize\ttfamily enum \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{utilities\+::\+D\+F\+\_\+type}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Enumeration for discount factor types/methods. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{frac@{frac}!utilities@{utilities}}\index{utilities@{utilities}!frac@{frac}}}\mbox{\Hypertarget{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7ca8a3baba97ec51277ed8ac64e456f6027}\label{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7ca8a3baba97ec51277ed8ac64e456f6027}} 
+frac&Use fractional form to calculate the discount factor \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{exp@{exp}!utilities@{utilities}}\index{utilities@{utilities}!exp@{exp}}}\mbox{\Hypertarget{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7cab0ab0254bd58eb87eaee3172ba49fefb}\label{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7cab0ab0254bd58eb87eaee3172ba49fefb}} 
+exp&Use the exponential form to calculate the discount factor \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 17 of file utilities.\+h.
+
+
+\begin{DoxyCode}
+18     \{
+19         \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7ca8a3baba97ec51277ed8ac64e456f6027}{frac}, 
+20         \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7cab0ab0254bd58eb87eaee3172ba49fefb}{exp} 
+21     \};
+\end{DoxyCode}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespaceutilities_a4b168c00efe29cabc5846b48225a6e52}\label{namespaceutilities_a4b168c00efe29cabc5846b48225a6e52}} 
+\index{utilities@{utilities}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!utilities@{utilities}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+utilities\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{stream,  }\item[{const std\+::vector$<$ T $>$ \&}]{vector }\end{DoxyParamCaption})}
+
+
+
+Overload the operator $<$$<$ for printing vectors. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em stream} & An out stream \\
+\hline
+{\em vector} & A vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An out stream of the vector in the form \mbox{[}...\mbox{]} 
+\end{DoxyReturn}
+
+
+Definition at line 38 of file utilities.\+h.
+
+
+\begin{DoxyCode}
+39     \{
+40         \textcolor{keywordflow}{if} (!vector.empty())
+41         \{
+42             stream << \textcolor{stringliteral}{"[ "};
+43             std::copy(vector.begin(), vector.end(), std::ostream\_iterator<T>(stream, \textcolor{stringliteral}{" "}));
+44             stream << \textcolor{stringliteral}{"]"};
+45         \}
+46         \textcolor{keywordflow}{return} stream;
+47     \}
+\end{DoxyCode}

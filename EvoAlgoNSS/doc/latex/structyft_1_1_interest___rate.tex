@@ -1,0 +1,105 @@
+\hypertarget{structyft_1_1_interest___rate}{}\section{yft\+:\+:Interest\+\_\+\+Rate$<$ T $>$ Struct Template Reference}
+\label{structyft_1_1_interest___rate}\index{yft\+::\+Interest\+\_\+\+Rate$<$ T $>$@{yft\+::\+Interest\+\_\+\+Rate$<$ T $>$}}
+
+
+Structure for interest rates.  
+
+
+
+
+{\ttfamily \#include $<$yield\+\_\+curve\+\_\+fitting.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structyft_1_1_interest___rate_a2ed60c2dd9b2823c2cfa3e1ae9066699}{Interest\+\_\+\+Rate} (const T \&i\+\_\+period, const T \&i\+\_\+rate)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const T \hyperlink{structyft_1_1_interest___rate_adeafaf459ce768f05ae0a74b0b4f8231}{period}
+\begin{DoxyCompactList}\small\item\em Period is the time when the rate was recorder. \end{DoxyCompactList}\item 
+const T \hyperlink{structyft_1_1_interest___rate_a3ec702c9390d7de88e939c5cfbef7c2c}{rate}
+\begin{DoxyCompactList}\small\item\em Interest rate. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+struct yft\+::\+Interest\+\_\+\+Rate$<$ T $>$}
+
+Structure for interest rates. 
+
+Definition at line 22 of file yield\+\_\+curve\+\_\+fitting.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structyft_1_1_interest___rate_a2ed60c2dd9b2823c2cfa3e1ae9066699}\label{structyft_1_1_interest___rate_a2ed60c2dd9b2823c2cfa3e1ae9066699}} 
+\index{yft\+::\+Interest\+\_\+\+Rate@{yft\+::\+Interest\+\_\+\+Rate}!Interest\+\_\+\+Rate@{Interest\+\_\+\+Rate}}
+\index{Interest\+\_\+\+Rate@{Interest\+\_\+\+Rate}!yft\+::\+Interest\+\_\+\+Rate@{yft\+::\+Interest\+\_\+\+Rate}}
+\subsubsection{\texorpdfstring{Interest\+\_\+\+Rate()}{Interest\_Rate()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\hyperlink{structyft_1_1_interest___rate}{yft\+::\+Interest\+\_\+\+Rate}$<$ T $>$\+::\hyperlink{structyft_1_1_interest___rate}{Interest\+\_\+\+Rate} (\begin{DoxyParamCaption}\item[{const T \&}]{i\+\_\+period,  }\item[{const T \&}]{i\+\_\+rate }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i\+\_\+period} & The period the zero rate was recorded \\
+\hline
+{\em i\+\_\+rate} & Zero rate (spot interest rate) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An \hyperlink{structyft_1_1_interest___rate}{Interest\+\_\+\+Rate} object 
+\end{DoxyReturn}
+
+
+Definition at line 30 of file yield\+\_\+curve\+\_\+fitting.\+h.
+
+
+\begin{DoxyCode}
+30                                                           :
+31             \hyperlink{structyft_1_1_interest___rate_adeafaf459ce768f05ae0a74b0b4f8231}{period}\{ i\_period \},
+32             \hyperlink{structyft_1_1_interest___rate_a3ec702c9390d7de88e939c5cfbef7c2c}{rate}\{ i\_rate \} \{\};
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structyft_1_1_interest___rate_adeafaf459ce768f05ae0a74b0b4f8231}\label{structyft_1_1_interest___rate_adeafaf459ce768f05ae0a74b0b4f8231}} 
+\index{yft\+::\+Interest\+\_\+\+Rate@{yft\+::\+Interest\+\_\+\+Rate}!period@{period}}
+\index{period@{period}!yft\+::\+Interest\+\_\+\+Rate@{yft\+::\+Interest\+\_\+\+Rate}}
+\subsubsection{\texorpdfstring{period}{period}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const T \hyperlink{structyft_1_1_interest___rate}{yft\+::\+Interest\+\_\+\+Rate}$<$ T $>$\+::period}
+
+
+
+Period is the time when the rate was recorder. 
+
+
+
+Definition at line 32 of file yield\+\_\+curve\+\_\+fitting.\+h.
+
+\mbox{\Hypertarget{structyft_1_1_interest___rate_a3ec702c9390d7de88e939c5cfbef7c2c}\label{structyft_1_1_interest___rate_a3ec702c9390d7de88e939c5cfbef7c2c}} 
+\index{yft\+::\+Interest\+\_\+\+Rate@{yft\+::\+Interest\+\_\+\+Rate}!rate@{rate}}
+\index{rate@{rate}!yft\+::\+Interest\+\_\+\+Rate@{yft\+::\+Interest\+\_\+\+Rate}}
+\subsubsection{\texorpdfstring{rate}{rate}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const T \hyperlink{structyft_1_1_interest___rate}{yft\+::\+Interest\+\_\+\+Rate}$<$ T $>$\+::rate}
+
+
+
+Interest rate. 
+
+
+
+Definition at line 36 of file yield\+\_\+curve\+\_\+fitting.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{yield__curve__fitting_8h}{yield\+\_\+curve\+\_\+fitting.\+h}\end{DoxyCompactItemize}

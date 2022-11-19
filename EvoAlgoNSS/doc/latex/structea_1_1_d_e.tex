@@ -1,0 +1,169 @@
+\hypertarget{structea_1_1_d_e}{}\section{ea\+:\+:DE$<$ T $>$ Struct Template Reference}
+\label{structea_1_1_d_e}\index{ea\+::\+D\+E$<$ T $>$@{ea\+::\+D\+E$<$ T $>$}}
+
+
+Differential Evolution Structure, used in the actual algorithm and for type deduction.  
+
+
+
+
+{\ttfamily \#include $<$differentialevo.\+h$>$}
+
+
+
+Inheritance diagram for ea\+:\+:DE$<$ T $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{structea_1_1_d_e__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structea_1_1_d_e_a407d0c61464c79e200906e95370f70c4}{DE} (const T \&i\+\_\+cr, const T \&i\+\_\+f\+\_\+param, const std\+::vector$<$ T $>$ \&i\+\_\+decision\+\_\+variables, const std\+::vector$<$ T $>$ \&i\+\_\+stdev, const size\+\_\+t \&i\+\_\+npop, const T \&i\+\_\+tol, const size\+\_\+t \&i\+\_\+iter\+\_\+max, const bool \&i\+\_\+use\+\_\+penalty\+\_\+method, const \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}{Constraints\+\_\+type} \&i\+\_\+constraints\+\_\+type, const bool \&i\+\_\+print\+\_\+to\+\_\+output, const bool \&i\+\_\+print\+\_\+to\+\_\+file)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const T \hyperlink{structea_1_1_d_e_adc00ae4bfe7fb6c2581e08ca47e753b2}{cr}
+\begin{DoxyCompactList}\small\item\em Crossover Rate. \end{DoxyCompactList}\item 
+const T \hyperlink{structea_1_1_d_e_a6b798f4a095796b766b2452aacea8a6b}{f\+\_\+param}
+\begin{DoxyCompactList}\small\item\em Mutation Scale Fuctor. \end{DoxyCompactList}\item 
+const std\+::string \hyperlink{structea_1_1_d_e_a0968311419d1919244af4415b294739a}{type} = \char`\"{}Differential Evolution\char`\"{}
+\begin{DoxyCompactList}\small\item\em Type of the algorithm. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+struct ea\+::\+D\+E$<$ T $>$}
+
+Differential Evolution Structure, used in the actual algorithm and for type deduction. 
+
+Definition at line 16 of file differentialevo.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structea_1_1_d_e_a407d0c61464c79e200906e95370f70c4}\label{structea_1_1_d_e_a407d0c61464c79e200906e95370f70c4}} 
+\index{ea\+::\+DE@{ea\+::\+DE}!DE@{DE}}
+\index{DE@{DE}!ea\+::\+DE@{ea\+::\+DE}}
+\subsubsection{\texorpdfstring{D\+E()}{DE()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{structea_1_1_d_e}{ea\+::\+DE}$<$ T $>$\+::\hyperlink{structea_1_1_d_e}{DE} (\begin{DoxyParamCaption}\item[{const T \&}]{i\+\_\+cr,  }\item[{const T \&}]{i\+\_\+f\+\_\+param,  }\item[{const std\+::vector$<$ T $>$ \&}]{i\+\_\+decision\+\_\+variables,  }\item[{const std\+::vector$<$ T $>$ \&}]{i\+\_\+stdev,  }\item[{const size\+\_\+t \&}]{i\+\_\+npop,  }\item[{const T \&}]{i\+\_\+tol,  }\item[{const size\+\_\+t \&}]{i\+\_\+iter\+\_\+max,  }\item[{const bool \&}]{i\+\_\+use\+\_\+penalty\+\_\+method = {\ttfamily false},  }\item[{const \hyperlink{namespaceutilities_ab1a1517bf6e62a1acfab5293ca8985c1}{Constraints\+\_\+type} \&}]{i\+\_\+constraints\+\_\+type = {\ttfamily \hyperlink{namespaceea_a8e369877773b4db67b8512efdb4f8f89a334c4a4c42fdb79d7ebc3e73b517e6f8}{Constraints\+\_\+type\+::none}},  }\item[{const bool \&}]{i\+\_\+print\+\_\+to\+\_\+output = {\ttfamily true},  }\item[{const bool \&}]{i\+\_\+print\+\_\+to\+\_\+file = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i\+\_\+cr} & Crossover Rate \\
+\hline
+{\em i\+\_\+f\+\_\+param} & Mutation Scale Factor \\
+\hline
+{\em i\+\_\+decision\+\_\+variables} & The starting values of the decision variables \\
+\hline
+{\em i\+\_\+stdev} & The standard deviation \\
+\hline
+{\em i\+\_\+npop} & The population size \\
+\hline
+{\em i\+\_\+tol} & The tolerance \\
+\hline
+{\em i\+\_\+iter\+\_\+max} & The maximum number of iterations \\
+\hline
+{\em i\+\_\+use\+\_\+penalty\+\_\+method} & Whether to used penalties or not \\
+\hline
+{\em i\+\_\+constraints\+\_\+type} & What kind of constraints to use \\
+\hline
+{\em i\+\_\+print\+\_\+to\+\_\+output} & Whether to print to terminal or not \\
+\hline
+{\em i\+\_\+print\+\_\+to\+\_\+file} & Whether to print to a file or not \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A D\+E$<$\+T$>$ object 
+\end{DoxyReturn}
+
+
+Definition at line 37 of file differentialevo.\+h.
+
+
+
+References ea\+::\+D\+E$<$ T $>$\+::cr, and ea\+::\+D\+E$<$ T $>$\+::f\+\_\+param.
+
+
+\begin{DoxyCode}
+40                                                                         :
+41             EA\_base<T>(i\_decision\_variables, i\_stdev, i\_npop, i\_tol, i\_iter\_max, i\_use\_penalty\_method, 
+      i\_constraints\_type, i\_print\_to\_output, i\_print\_to\_file),
+42             \hyperlink{structea_1_1_d_e_adc00ae4bfe7fb6c2581e08ca47e753b2}{cr}( i\_cr ),
+43             \hyperlink{structea_1_1_d_e_a6b798f4a095796b766b2452aacea8a6b}{f\_param}( i\_f\_param )
+44         \{
+45             assert(\hyperlink{structea_1_1_d_e_adc00ae4bfe7fb6c2581e08ca47e753b2}{cr} > 0 && \hyperlink{structea_1_1_d_e_adc00ae4bfe7fb6c2581e08ca47e753b2}{cr} <= 1);
+46             assert(\hyperlink{structea_1_1_d_e_a6b798f4a095796b766b2452aacea8a6b}{f\_param} > 0 && \hyperlink{structea_1_1_d_e_a6b798f4a095796b766b2452aacea8a6b}{f\_param} <= 1);
+47         \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structea_1_1_d_e_adc00ae4bfe7fb6c2581e08ca47e753b2}\label{structea_1_1_d_e_adc00ae4bfe7fb6c2581e08ca47e753b2}} 
+\index{ea\+::\+DE@{ea\+::\+DE}!cr@{cr}}
+\index{cr@{cr}!ea\+::\+DE@{ea\+::\+DE}}
+\subsubsection{\texorpdfstring{cr}{cr}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const T \hyperlink{structea_1_1_d_e}{ea\+::\+DE}$<$ T $>$\+::cr}
+
+
+
+Crossover Rate. 
+
+
+
+Definition at line 49 of file differentialevo.\+h.
+
+
+
+Referenced by ea\+::\+D\+E$<$ T $>$\+::\+D\+E(), and ea\+::\+Solver$<$ D\+E, T, F, C $>$\+::display\+\_\+parameters().
+
+\mbox{\Hypertarget{structea_1_1_d_e_a6b798f4a095796b766b2452aacea8a6b}\label{structea_1_1_d_e_a6b798f4a095796b766b2452aacea8a6b}} 
+\index{ea\+::\+DE@{ea\+::\+DE}!f\+\_\+param@{f\+\_\+param}}
+\index{f\+\_\+param@{f\+\_\+param}!ea\+::\+DE@{ea\+::\+DE}}
+\subsubsection{\texorpdfstring{f\+\_\+param}{f\_param}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const T \hyperlink{structea_1_1_d_e}{ea\+::\+DE}$<$ T $>$\+::f\+\_\+param}
+
+
+
+Mutation Scale Fuctor. 
+
+
+
+Definition at line 51 of file differentialevo.\+h.
+
+
+
+Referenced by ea\+::\+D\+E$<$ T $>$\+::\+D\+E(), and ea\+::\+Solver$<$ D\+E, T, F, C $>$\+::display\+\_\+parameters().
+
+\mbox{\Hypertarget{structea_1_1_d_e_a0968311419d1919244af4415b294739a}\label{structea_1_1_d_e_a0968311419d1919244af4415b294739a}} 
+\index{ea\+::\+DE@{ea\+::\+DE}!type@{type}}
+\index{type@{type}!ea\+::\+DE@{ea\+::\+DE}}
+\subsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const std\+::string \hyperlink{structea_1_1_d_e}{ea\+::\+DE}$<$ T $>$\+::type = \char`\"{}Differential Evolution\char`\"{}}
+
+
+
+Type of the algorithm. 
+
+
+
+Definition at line 53 of file differentialevo.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{differentialevo_8h}{differentialevo.\+h}\end{DoxyCompactItemize}

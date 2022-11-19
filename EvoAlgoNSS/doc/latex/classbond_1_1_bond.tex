@@ -1,0 +1,545 @@
+\hypertarget{classbond_1_1_bond}{}\section{bond\+:\+:Bond$<$ T $>$ Class Template Reference}
+\label{classbond_1_1_bond}\index{bond\+::\+Bond$<$ T $>$@{bond\+::\+Bond$<$ T $>$}}
+
+
+\hyperlink{classbond_1_1_bond}{Bond} Class definition.  
+
+
+
+
+{\ttfamily \#include $<$bond.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classbond_1_1_bond_ad61e169b5d3cad981941508bf2af6983}{Bond} (const T \&i\+\_\+coupon\+\_\+percentage, const T \&i\+\_\+price, const T \&i\+\_\+nominal\+\_\+value, const T \&i\+\_\+frequency, std\+::string \&i\+\_\+settlement\+\_\+date, const std\+::string \&i\+\_\+maturity\+\_\+date)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename S $>$ }\\T \hyperlink{classbond_1_1_bond_ab8a8cfc409d2842e8d9053e53d50468f}{compute\+\_\+yield} (const T \&i\+\_\+price, const S \&solver, const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&df\+\_\+type) const
+\begin{DoxyCompactList}\small\item\em Calculates the yield-\/to-\/maturity using the supplied solver. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename S $>$ }\\T \hyperlink{classbond_1_1_bond_ab4dba13e68b2685eef680fe7b8155a7a}{compute\+\_\+yield} (const T \&i\+\_\+price, const S \&solver, const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&df\+\_\+type, const std\+::string \&bonds\+\_\+identifier) const
+\begin{DoxyCompactList}\small\item\em Calculates the yield-\/to-\/maturity using the supplied solver and passes the bond identifier to the solver. \end{DoxyCompactList}\item 
+T \hyperlink{classbond_1_1_bond_a57f98f3e281876089945e08457ce6bc6}{compute\+\_\+macaulay\+\_\+duration} (const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&df\+\_\+type) const
+\begin{DoxyCompactList}\small\item\em Calculates the Macaulay duration of the bond. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ T $>$ \hyperlink{classbond_1_1_bond_ae15acd8a6acd9674b4fd62796baf6e3c}{compute\+\_\+cash\+\_\+flows} ()
+\begin{DoxyCompactList}\small\item\em Calculate the cash flows of the bond. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const T \hyperlink{classbond_1_1_bond_add6662fd4f8ee756b83a3f818f8c7ada}{coupon\+\_\+percentage}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classbond_1_1_bond}{Bond}\textquotesingle{}s annual coupon rate. \end{DoxyCompactList}\item 
+const T \hyperlink{classbond_1_1_bond_afcabe8593aba44ca9740d14f85a39f2a}{price}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classbond_1_1_bond}{Bond}\textquotesingle{}s price. \end{DoxyCompactList}\item 
+const T \hyperlink{classbond_1_1_bond_a7a79ca13c060697765f13140eb471b84}{nominal\+\_\+value}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classbond_1_1_bond}{Bond}\textquotesingle{}s face value. \end{DoxyCompactList}\item 
+const T \hyperlink{classbond_1_1_bond_ad1871f40122a63fb0b2ebbdcdd12c1cd}{frequency}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classbond_1_1_bond}{Bond}\textquotesingle{}s coupon payment frequency. \end{DoxyCompactList}\item 
+const T \hyperlink{classbond_1_1_bond_aae68bdfac23a0530b3723cca3100e92e}{coupon\+\_\+value}
+\begin{DoxyCompactList}\small\item\em This is the annual coupon divided by the frequency. \end{DoxyCompactList}\item 
+std\+::vector$<$ T $>$ \hyperlink{classbond_1_1_bond_ac3db034ebeff1f6cd2ed7061fda27fad}{time\+\_\+periods}
+\begin{DoxyCompactList}\small\item\em Coupon payment periods. \end{DoxyCompactList}\item 
+std\+::vector$<$ T $>$ \hyperlink{classbond_1_1_bond_ae98011d18cd97942b45f5868a42bf668}{cash\+\_\+flows}
+\begin{DoxyCompactList}\small\item\em A vector with all the coupon payments corresponding to time periods. \end{DoxyCompactList}\item 
+date\+::sys\+\_\+days \hyperlink{classbond_1_1_bond_a2ead15c4c0cbda2cdecf6500b02442e7}{settlement\+\_\+date}
+\begin{DoxyCompactList}\small\item\em Settlement date of the bond. \end{DoxyCompactList}\item 
+date\+::sys\+\_\+days \hyperlink{classbond_1_1_bond_aba0bd9e2e1de7b9f05bb9c61b1fb9f1e}{maturity\+\_\+date}
+\begin{DoxyCompactList}\small\item\em Maturity date of the bond. \end{DoxyCompactList}\item 
+T \hyperlink{classbond_1_1_bond_ac79ec630d68f58775849145ab305d5f8}{yield}
+\begin{DoxyCompactList}\small\item\em Yield-\/to-\/maturity of the bond. \end{DoxyCompactList}\item 
+T \hyperlink{classbond_1_1_bond_a76d054bdd6dcdefa0147495f8ecdc852}{duration}
+\begin{DoxyCompactList}\small\item\em Macaulay duration of the bond. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classbond_1_1_bond_aa0950c8d07f76b3cb69c5655951e1386}{Bond\+Helper$<$ T $>$}
+\begin{DoxyCompactList}\small\item\em Friend class \hyperlink{classbond_1_1_bond_helper}{Bond\+Helper}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class bond\+::\+Bond$<$ T $>$}
+
+\hyperlink{classbond_1_1_bond}{Bond} Class definition. 
+
+Definition at line 32 of file bond.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classbond_1_1_bond_ad61e169b5d3cad981941508bf2af6983}\label{classbond_1_1_bond_ad61e169b5d3cad981941508bf2af6983}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!Bond@{Bond}}
+\index{Bond@{Bond}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{Bond()}{Bond()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\hyperlink{classbond_1_1_bond}{bond\+::\+Bond}$<$ T $>$\+::\hyperlink{classbond_1_1_bond}{Bond} (\begin{DoxyParamCaption}\item[{const T \&}]{i\+\_\+coupon\+\_\+percentage,  }\item[{const T \&}]{i\+\_\+price,  }\item[{const T \&}]{i\+\_\+nominal\+\_\+value,  }\item[{const T \&}]{i\+\_\+frequency,  }\item[{std\+::string \&}]{i\+\_\+settlement\+\_\+date,  }\item[{const std\+::string \&}]{i\+\_\+maturity\+\_\+date }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i\+\_\+coupon\+\_\+percentage} & The coupon rate in \% \\
+\hline
+{\em i\+\_\+price} & The price of the bond \\
+\hline
+{\em i\+\_\+nominal\+\_\+value} & The nominal value of the bond \\
+\hline
+{\em i\+\_\+frequency} & The frequency of coupon payments per year \\
+\hline
+{\em i\+\_\+settlement\+\_\+date} & The date the bond was bought \\
+\hline
+{\em i\+\_\+maturity\+\_\+date} & The date the bond expires \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A Bond$<$\+T$>$ object 
+\end{DoxyReturn}
+
+
+Definition at line 48 of file bond.\+h.
+
+
+\begin{DoxyCode}
+49                                                                             :
+50             \hyperlink{classbond_1_1_bond_add6662fd4f8ee756b83a3f818f8c7ada}{coupon\_percentage}\{ i\_coupon\_percentage \},
+51             \hyperlink{classbond_1_1_bond_afcabe8593aba44ca9740d14f85a39f2a}{price}\{ i\_price \},
+52             \hyperlink{classbond_1_1_bond_a7a79ca13c060697765f13140eb471b84}{nominal\_value}\{ i\_nominal\_value \},
+53             \hyperlink{classbond_1_1_bond_ad1871f40122a63fb0b2ebbdcdd12c1cd}{frequency}\{ i\_frequency \},
+54             \hyperlink{classbond_1_1_bond_aae68bdfac23a0530b3723cca3100e92e}{coupon\_value}\{ \hyperlink{classbond_1_1_bond_add6662fd4f8ee756b83a3f818f8c7ada}{coupon\_percentage} * 
+      \hyperlink{classbond_1_1_bond_a7a79ca13c060697765f13140eb471b84}{nominal\_value} / \hyperlink{classbond_1_1_bond_ad1871f40122a63fb0b2ebbdcdd12c1cd}{frequency} \},
+55             \hyperlink{classbond_1_1_bond_ac79ec630d68f58775849145ab305d5f8}{yield}\{ 0 \},
+56             \hyperlink{classbond_1_1_bond_a76d054bdd6dcdefa0147495f8ecdc852}{duration}\{ 0 \}
+57         \{
+58             assert(\hyperlink{classbond_1_1_bond_afcabe8593aba44ca9740d14f85a39f2a}{price} > 0);
+59             assert(\hyperlink{classbond_1_1_bond_add6662fd4f8ee756b83a3f818f8c7ada}{coupon\_percentage} > 0 && \hyperlink{classbond_1_1_bond_add6662fd4f8ee756b83a3f818f8c7ada}{coupon\_percentage} < 1);
+60             assert(\hyperlink{classbond_1_1_bond_a7a79ca13c060697765f13140eb471b84}{nominal\_value} > 0);
+61             assert(\hyperlink{classbond_1_1_bond_ad1871f40122a63fb0b2ebbdcdd12c1cd}{frequency} > 0);
+62             std::tm t1 \{\};
+63             std::tm t2 \{\};
+64             std::stringstream s1;
+65             std::stringstream s2;
+66             s1 << i\_settlement\_date;
+67             s2 << i\_maturity\_date;
+68             s1 >> std::get\_time(&t1, \textcolor{stringliteral}{"%Y-%m-%d"});
+69             s2 >> std::get\_time(&t2, \textcolor{stringliteral}{"%Y-%m-%d"});
+70             \hyperlink{classbond_1_1_bond_a2ead15c4c0cbda2cdecf6500b02442e7}{settlement\_date} = date::year(t1.tm\_year) / (t1.tm\_mon+1) / t1.tm\_mday;
+71             \hyperlink{classbond_1_1_bond_aba0bd9e2e1de7b9f05bb9c61b1fb9f1e}{maturity\_date} = date::year(t2.tm\_year) / (t2.tm\_mon+1) / t2.tm\_mday;
+72             \hyperlink{classbond_1_1_bond_ae98011d18cd97942b45f5868a42bf668}{cash\_flows} = \hyperlink{classbond_1_1_bond_ae15acd8a6acd9674b4fd62796baf6e3c}{compute\_cash\_flows}();
+73             \hyperlink{classbond_1_1_bond_ac3db034ebeff1f6cd2ed7061fda27fad}{time\_periods}.resize(\hyperlink{classbond_1_1_bond_ae98011d18cd97942b45f5868a42bf668}{cash\_flows}.size());
+74             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < \hyperlink{classbond_1_1_bond_ac3db034ebeff1f6cd2ed7061fda27fad}{time\_periods}.size(); ++i)
+75             \{
+76                 \hyperlink{classbond_1_1_bond_ac3db034ebeff1f6cd2ed7061fda27fad}{time\_periods}[i] = \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(i + 1) / \hyperlink{classbond_1_1_bond_ad1871f40122a63fb0b2ebbdcdd12c1cd}{frequency};
+77             \}
+78         \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classbond_1_1_bond_ae15acd8a6acd9674b4fd62796baf6e3c}\label{classbond_1_1_bond_ae15acd8a6acd9674b4fd62796baf6e3c}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!compute\+\_\+cash\+\_\+flows@{compute\+\_\+cash\+\_\+flows}}
+\index{compute\+\_\+cash\+\_\+flows@{compute\+\_\+cash\+\_\+flows}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{compute\+\_\+cash\+\_\+flows()}{compute\_cash\_flows()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$ T $>$ \hyperlink{classbond_1_1_bond}{bond\+::\+Bond}$<$ T $>$\+::compute\+\_\+cash\+\_\+flows (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Calculate the cash flows of the bond. 
+
+\begin{DoxyReturn}{Returns}
+The cash flows of the bonds (coupon payments) 
+\end{DoxyReturn}
+
+
+Definition at line 133 of file bond.\+h.
+
+
+\begin{DoxyCode}
+134     \{
+135         assert(\hyperlink{classbond_1_1_bond_a2ead15c4c0cbda2cdecf6500b02442e7}{settlement\_date} < \hyperlink{classbond_1_1_bond_aba0bd9e2e1de7b9f05bb9c61b1fb9f1e}{maturity\_date});
+136         \textcolor{keyword}{const} T number\_of\_days\_coupon = 365 / \hyperlink{classbond_1_1_bond_ad1871f40122a63fb0b2ebbdcdd12c1cd}{frequency};
+137         \textcolor{keyword}{const} \textcolor{keyword}{auto} days\_difference = (\hyperlink{classbond_1_1_bond_aba0bd9e2e1de7b9f05bb9c61b1fb9f1e}{maturity\_date} - 
+      \hyperlink{classbond_1_1_bond_a2ead15c4c0cbda2cdecf6500b02442e7}{settlement\_date}).count();
+138         \textcolor{keyword}{const} \textcolor{keyword}{auto} \hyperlink{classbond_1_1_bond_ac3db034ebeff1f6cd2ed7061fda27fad}{time\_periods} = \textcolor{keyword}{static\_cast<}T\textcolor{keyword}{>}(days\_difference) / number\_of\_days\_coupon;
+139         \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} num\_time\_periods = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(std::ceil(
+      \hyperlink{classbond_1_1_bond_ac3db034ebeff1f6cd2ed7061fda27fad}{time\_periods}));
+140         std::vector<T> \hyperlink{classbond_1_1_bond_ae98011d18cd97942b45f5868a42bf668}{cash\_flows}(num\_time\_periods);
+141         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& p : \hyperlink{classbond_1_1_bond_ae98011d18cd97942b45f5868a42bf668}{cash\_flows})
+142         \{
+143             p = \hyperlink{classbond_1_1_bond_aae68bdfac23a0530b3723cca3100e92e}{coupon\_value};
+144         \}
+145         \textcolor{keywordflow}{return} \hyperlink{classbond_1_1_bond_ae98011d18cd97942b45f5868a42bf668}{cash\_flows};
+146     \}
+\end{DoxyCode}
+\mbox{\Hypertarget{classbond_1_1_bond_a57f98f3e281876089945e08457ce6bc6}\label{classbond_1_1_bond_a57f98f3e281876089945e08457ce6bc6}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!compute\+\_\+macaulay\+\_\+duration@{compute\+\_\+macaulay\+\_\+duration}}
+\index{compute\+\_\+macaulay\+\_\+duration@{compute\+\_\+macaulay\+\_\+duration}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{compute\+\_\+macaulay\+\_\+duration()}{compute\_macaulay\_duration()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T \hyperlink{classbond_1_1_bond}{bond\+::\+Bond}$<$ T $>$\+::compute\+\_\+macaulay\+\_\+duration (\begin{DoxyParamCaption}\item[{const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&}]{df\+\_\+type }\end{DoxyParamCaption}) const}
+
+
+
+Calculates the Macaulay duration of the bond. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em df\+\_\+type} & The type of discount factor method \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The Macaulay Duration of the bond 
+\end{DoxyReturn}
+Discount factor
+
+Prest cash flows
+
+Present value
+
+Macaulay duration 
+
+Definition at line 174 of file bond.\+h.
+
+
+
+References irr\+::compute\+\_\+discount\+\_\+factor().
+
+
+\begin{DoxyCode}
+175     \{
+176         assert(\hyperlink{classbond_1_1_bond_ac79ec630d68f58775849145ab305d5f8}{yield} > 0 && \hyperlink{classbond_1_1_bond_ac79ec630d68f58775849145ab305d5f8}{yield} < 1);
+177         assert(\hyperlink{classbond_1_1_bond_ae98011d18cd97942b45f5868a42bf668}{cash\_flows}.size() > 0);
+178         assert(\hyperlink{classbond_1_1_bond_a7a79ca13c060697765f13140eb471b84}{nominal\_value} > 0);
+179         assert(\hyperlink{classbond_1_1_bond_ad1871f40122a63fb0b2ebbdcdd12c1cd}{frequency} > 0);
+181         T discount\_factor = 0.0;
+183         T denominator = 0.0;
+185         T pv = 0.0;
+187         T numerator = 0.0;
+188         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < \hyperlink{classbond_1_1_bond_ac3db034ebeff1f6cd2ed7061fda27fad}{time\_periods}.size(); ++i)
+189         \{
+190             discount\_factor = \hyperlink{namespaceirr_ae00c3409ca39fa2dc47ce61da4169a66}{compute\_discount\_factor}(
+      \hyperlink{classbond_1_1_bond_ac79ec630d68f58775849145ab305d5f8}{yield}, \hyperlink{classbond_1_1_bond_ac3db034ebeff1f6cd2ed7061fda27fad}{time\_periods}[i], df\_type);
+191             pv = \hyperlink{classbond_1_1_bond_aae68bdfac23a0530b3723cca3100e92e}{coupon\_value} * discount\_factor;
+192             numerator = numerator + pv * \hyperlink{classbond_1_1_bond_ac3db034ebeff1f6cd2ed7061fda27fad}{time\_periods}[i];
+193             denominator = denominator + pv;
+194         \}
+195         pv = \hyperlink{classbond_1_1_bond_a7a79ca13c060697765f13140eb471b84}{nominal\_value} * discount\_factor;
+196         numerator = numerator + pv * \hyperlink{classbond_1_1_bond_ac3db034ebeff1f6cd2ed7061fda27fad}{time\_periods}.back();
+197         denominator = denominator + pv;
+198         T \hyperlink{classbond_1_1_bond_a76d054bdd6dcdefa0147495f8ecdc852}{duration} = numerator / denominator;
+199         \textcolor{keywordflow}{return} \hyperlink{classbond_1_1_bond_a76d054bdd6dcdefa0147495f8ecdc852}{duration};
+200     \}
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=336pt]{classbond_1_1_bond_a57f98f3e281876089945e08457ce6bc6_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbond_1_1_bond_ab8a8cfc409d2842e8d9053e53d50468f}\label{classbond_1_1_bond_ab8a8cfc409d2842e8d9053e53d50468f}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!compute\+\_\+yield@{compute\+\_\+yield}}
+\index{compute\+\_\+yield@{compute\+\_\+yield}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{compute\+\_\+yield()}{compute\_yield()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+template$<$typename S $>$ \\
+T \hyperlink{classbond_1_1_bond}{bond\+::\+Bond}$<$ T $>$\+::compute\+\_\+yield (\begin{DoxyParamCaption}\item[{const T \&}]{i\+\_\+price,  }\item[{const S \&}]{solver,  }\item[{const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&}]{df\+\_\+type }\end{DoxyParamCaption}) const}
+
+
+
+Calculates the yield-\/to-\/maturity using the supplied solver. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i\+\_\+price} & The price of the bond \\
+\hline
+{\em solver} & The parameter structure of the solver that is going to be used to estimate the yield of maturity \\
+\hline
+{\em df\+\_\+type} & The type of discount factor method \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The yield-\/to-\/maturity of the bond 
+\end{DoxyReturn}
+
+
+Definition at line 150 of file bond.\+h.
+
+
+
+References irr\+::constraints\+\_\+irr(), irr\+::fitness\+\_\+irr(), and ea\+::solve().
+
+
+\begin{DoxyCode}
+151     \{
+152         assert(solver.ndv == 1);
+153         \textcolor{keyword}{auto} f = [&,use\_penalty\_method = solver.use\_penalty\_method](\textcolor{keyword}{const} \textcolor{keyword}{auto}& solution) \{ \textcolor{keywordflow}{return} 
+      \hyperlink{namespaceirr_aced01c5e5ef9e171a3b892275d442f8d}{fitness\_irr}(solution, i\_price, \hyperlink{classbond_1_1_bond_a7a79ca13c060697765f13140eb471b84}{nominal\_value}, \hyperlink{classbond_1_1_bond_ae98011d18cd97942b45f5868a42bf668}{cash\_flows}, 
+      \hyperlink{classbond_1_1_bond_ac3db034ebeff1f6cd2ed7061fda27fad}{time\_periods}, df\_type, use\_penalty\_method); \};
+154         \textcolor{keyword}{auto} c = [&,constraints\_type = solver.constraints\_type](\textcolor{keyword}{const} \textcolor{keyword}{auto}& solution) \{ \textcolor{keywordflow}{return} 
+      \hyperlink{namespaceirr_a6801aa96a307b3f52817dd1a3bcd065e}{constraints\_irr}(solution, constraints\_type); \};
+155         \textcolor{keyword}{auto} res = \hyperlink{namespaceea_a6450b5bf61e9fdca8b6c19267e14c560}{solve}(f, c, solver, \textcolor{stringliteral}{"YTM"});
+156         T \hyperlink{classbond_1_1_bond_ac79ec630d68f58775849145ab305d5f8}{yield} = res[0];
+157         \textcolor{keywordflow}{return} \hyperlink{classbond_1_1_bond_ac79ec630d68f58775849145ab305d5f8}{yield};
+158     \}
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbond_1_1_bond_ab8a8cfc409d2842e8d9053e53d50468f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbond_1_1_bond_ab4dba13e68b2685eef680fe7b8155a7a}\label{classbond_1_1_bond_ab4dba13e68b2685eef680fe7b8155a7a}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!compute\+\_\+yield@{compute\+\_\+yield}}
+\index{compute\+\_\+yield@{compute\+\_\+yield}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{compute\+\_\+yield()}{compute\_yield()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+template$<$typename S $>$ \\
+T \hyperlink{classbond_1_1_bond}{bond\+::\+Bond}$<$ T $>$\+::compute\+\_\+yield (\begin{DoxyParamCaption}\item[{const T \&}]{i\+\_\+price,  }\item[{const S \&}]{solver,  }\item[{const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&}]{df\+\_\+type,  }\item[{const std\+::string \&}]{bonds\+\_\+identifier }\end{DoxyParamCaption}) const}
+
+
+
+Calculates the yield-\/to-\/maturity using the supplied solver and passes the bond identifier to the solver. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i\+\_\+price} & The price of the bond \\
+\hline
+{\em solver} & The parameter structure of the solver that is going to be used to estimate the yield of maturity \\
+\hline
+{\em df\+\_\+type} & The type of discount factor method \\
+\hline
+{\em bonds\+\_\+identifier} & An identifier for the bond in std\+::string form \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The yield-\/to-\/maturity of the bond 
+\end{DoxyReturn}
+
+
+Definition at line 162 of file bond.\+h.
+
+
+
+References irr\+::constraints\+\_\+irr(), irr\+::fitness\+\_\+irr(), and ea\+::solve().
+
+
+\begin{DoxyCode}
+163     \{
+164         assert(solver.ndv == 1);
+165         \textcolor{keyword}{auto} f = [&, use\_penalty\_method = solver.use\_penalty\_method](\textcolor{keyword}{const} \textcolor{keyword}{auto}& solution) \{ \textcolor{keywordflow}{return} 
+      \hyperlink{namespaceirr_aced01c5e5ef9e171a3b892275d442f8d}{fitness\_irr}(solution, i\_price, \hyperlink{classbond_1_1_bond_a7a79ca13c060697765f13140eb471b84}{nominal\_value}, \hyperlink{classbond_1_1_bond_ae98011d18cd97942b45f5868a42bf668}{cash\_flows}, 
+      \hyperlink{classbond_1_1_bond_ac3db034ebeff1f6cd2ed7061fda27fad}{time\_periods}, df\_type, use\_penalty\_method); \};
+166         \textcolor{keyword}{auto} c = [&, constraints\_type = solver.constraints\_type](\textcolor{keyword}{const} \textcolor{keyword}{auto}& solution) \{ \textcolor{keywordflow}{return} 
+      \hyperlink{namespaceirr_a6801aa96a307b3f52817dd1a3bcd065e}{constraints\_irr}(solution, constraints\_type); \};
+167         std::string problem = \textcolor{stringliteral}{"YTM"};
+168         \textcolor{keyword}{auto} res = \hyperlink{namespaceea_a6450b5bf61e9fdca8b6c19267e14c560}{solve}(f, c, solver, problem.append(bonds\_identifier));
+169         T \hyperlink{classbond_1_1_bond_ac79ec630d68f58775849145ab305d5f8}{yield} = res[0];
+170         \textcolor{keywordflow}{return} \hyperlink{classbond_1_1_bond_ac79ec630d68f58775849145ab305d5f8}{yield};
+171     \}
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbond_1_1_bond_ab4dba13e68b2685eef680fe7b8155a7a_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classbond_1_1_bond_aa0950c8d07f76b3cb69c5655951e1386}\label{classbond_1_1_bond_aa0950c8d07f76b3cb69c5655951e1386}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!Bond\+Helper$<$ T $>$@{Bond\+Helper$<$ T $>$}}
+\index{Bond\+Helper$<$ T $>$@{Bond\+Helper$<$ T $>$}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{Bond\+Helper$<$ T $>$}{BondHelper< T >}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+friend class \hyperlink{classbond_1_1_bond_helper}{Bond\+Helper}$<$ T $>$\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Friend class \hyperlink{classbond_1_1_bond_helper}{Bond\+Helper}. 
+
+
+
+Definition at line 35 of file bond.\+h.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classbond_1_1_bond_ae98011d18cd97942b45f5868a42bf668}\label{classbond_1_1_bond_ae98011d18cd97942b45f5868a42bf668}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!cash\+\_\+flows@{cash\+\_\+flows}}
+\index{cash\+\_\+flows@{cash\+\_\+flows}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{cash\+\_\+flows}{cash\_flows}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$T$>$ \hyperlink{classbond_1_1_bond}{bond\+::\+Bond}$<$ T $>$\+::cash\+\_\+flows\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+A vector with all the coupon payments corresponding to time periods. 
+
+
+
+Definition at line 116 of file bond.\+h.
+
+\mbox{\Hypertarget{classbond_1_1_bond_add6662fd4f8ee756b83a3f818f8c7ada}\label{classbond_1_1_bond_add6662fd4f8ee756b83a3f818f8c7ada}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!coupon\+\_\+percentage@{coupon\+\_\+percentage}}
+\index{coupon\+\_\+percentage@{coupon\+\_\+percentage}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{coupon\+\_\+percentage}{coupon\_percentage}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const T \hyperlink{classbond_1_1_bond}{bond\+::\+Bond}$<$ T $>$\+::coupon\+\_\+percentage\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\hyperlink{classbond_1_1_bond}{Bond}\textquotesingle{}s annual coupon rate. 
+
+
+
+Definition at line 104 of file bond.\+h.
+
+\mbox{\Hypertarget{classbond_1_1_bond_aae68bdfac23a0530b3723cca3100e92e}\label{classbond_1_1_bond_aae68bdfac23a0530b3723cca3100e92e}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!coupon\+\_\+value@{coupon\+\_\+value}}
+\index{coupon\+\_\+value@{coupon\+\_\+value}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{coupon\+\_\+value}{coupon\_value}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const T \hyperlink{classbond_1_1_bond}{bond\+::\+Bond}$<$ T $>$\+::coupon\+\_\+value\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+This is the annual coupon divided by the frequency. 
+
+
+
+Definition at line 112 of file bond.\+h.
+
+\mbox{\Hypertarget{classbond_1_1_bond_a76d054bdd6dcdefa0147495f8ecdc852}\label{classbond_1_1_bond_a76d054bdd6dcdefa0147495f8ecdc852}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!duration@{duration}}
+\index{duration@{duration}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{duration}{duration}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T \hyperlink{classbond_1_1_bond}{bond\+::\+Bond}$<$ T $>$\+::duration\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Macaulay duration of the bond. 
+
+
+
+Definition at line 124 of file bond.\+h.
+
+\mbox{\Hypertarget{classbond_1_1_bond_ad1871f40122a63fb0b2ebbdcdd12c1cd}\label{classbond_1_1_bond_ad1871f40122a63fb0b2ebbdcdd12c1cd}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!frequency@{frequency}}
+\index{frequency@{frequency}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{frequency}{frequency}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const T \hyperlink{classbond_1_1_bond}{bond\+::\+Bond}$<$ T $>$\+::frequency\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\hyperlink{classbond_1_1_bond}{Bond}\textquotesingle{}s coupon payment frequency. 
+
+
+
+Definition at line 110 of file bond.\+h.
+
+\mbox{\Hypertarget{classbond_1_1_bond_aba0bd9e2e1de7b9f05bb9c61b1fb9f1e}\label{classbond_1_1_bond_aba0bd9e2e1de7b9f05bb9c61b1fb9f1e}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!maturity\+\_\+date@{maturity\+\_\+date}}
+\index{maturity\+\_\+date@{maturity\+\_\+date}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{maturity\+\_\+date}{maturity\_date}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+date\+::sys\+\_\+days \hyperlink{classbond_1_1_bond}{bond\+::\+Bond}$<$ T $>$\+::maturity\+\_\+date\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Maturity date of the bond. 
+
+
+
+Definition at line 120 of file bond.\+h.
+
+\mbox{\Hypertarget{classbond_1_1_bond_a7a79ca13c060697765f13140eb471b84}\label{classbond_1_1_bond_a7a79ca13c060697765f13140eb471b84}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!nominal\+\_\+value@{nominal\+\_\+value}}
+\index{nominal\+\_\+value@{nominal\+\_\+value}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{nominal\+\_\+value}{nominal\_value}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const T \hyperlink{classbond_1_1_bond}{bond\+::\+Bond}$<$ T $>$\+::nominal\+\_\+value\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\hyperlink{classbond_1_1_bond}{Bond}\textquotesingle{}s face value. 
+
+
+
+Definition at line 108 of file bond.\+h.
+
+\mbox{\Hypertarget{classbond_1_1_bond_afcabe8593aba44ca9740d14f85a39f2a}\label{classbond_1_1_bond_afcabe8593aba44ca9740d14f85a39f2a}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!price@{price}}
+\index{price@{price}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{price}{price}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const T \hyperlink{classbond_1_1_bond}{bond\+::\+Bond}$<$ T $>$\+::price\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\hyperlink{classbond_1_1_bond}{Bond}\textquotesingle{}s price. 
+
+
+
+Definition at line 106 of file bond.\+h.
+
+\mbox{\Hypertarget{classbond_1_1_bond_a2ead15c4c0cbda2cdecf6500b02442e7}\label{classbond_1_1_bond_a2ead15c4c0cbda2cdecf6500b02442e7}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!settlement\+\_\+date@{settlement\+\_\+date}}
+\index{settlement\+\_\+date@{settlement\+\_\+date}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{settlement\+\_\+date}{settlement\_date}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+date\+::sys\+\_\+days \hyperlink{classbond_1_1_bond}{bond\+::\+Bond}$<$ T $>$\+::settlement\+\_\+date\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Settlement date of the bond. 
+
+
+
+Definition at line 118 of file bond.\+h.
+
+\mbox{\Hypertarget{classbond_1_1_bond_ac3db034ebeff1f6cd2ed7061fda27fad}\label{classbond_1_1_bond_ac3db034ebeff1f6cd2ed7061fda27fad}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!time\+\_\+periods@{time\+\_\+periods}}
+\index{time\+\_\+periods@{time\+\_\+periods}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{time\+\_\+periods}{time\_periods}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$T$>$ \hyperlink{classbond_1_1_bond}{bond\+::\+Bond}$<$ T $>$\+::time\+\_\+periods\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Coupon payment periods. 
+
+
+
+Definition at line 114 of file bond.\+h.
+
+\mbox{\Hypertarget{classbond_1_1_bond_ac79ec630d68f58775849145ab305d5f8}\label{classbond_1_1_bond_ac79ec630d68f58775849145ab305d5f8}} 
+\index{bond\+::\+Bond@{bond\+::\+Bond}!yield@{yield}}
+\index{yield@{yield}!bond\+::\+Bond@{bond\+::\+Bond}}
+\subsubsection{\texorpdfstring{yield}{yield}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T \hyperlink{classbond_1_1_bond}{bond\+::\+Bond}$<$ T $>$\+::yield\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Yield-\/to-\/maturity of the bond. 
+
+
+
+Definition at line 122 of file bond.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{bond_8h}{bond.\+h}\end{DoxyCompactItemize}

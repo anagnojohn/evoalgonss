@@ -1,0 +1,473 @@
+\hypertarget{classbond_1_1_bond_helper}{}\section{bond\+:\+:Bond\+Helper$<$ T $>$ Class Template Reference}
+\label{classbond_1_1_bond_helper}\index{bond\+::\+Bond\+Helper$<$ T $>$@{bond\+::\+Bond\+Helper$<$ T $>$}}
+
+
+A class for the bond pricing problem as well as finding the yield-\/to-\/maturities of bonds.  
+
+
+
+
+{\ttfamily \#include $<$bond.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classbond_1_1_bond_helper_aa86a95eaffb5a36c0ec52376b28d5d96}{Bond\+Helper} (const std\+::vector$<$ \hyperlink{classbond_1_1_bond}{Bond}$<$ T $>$$>$ \&i\+\_\+bonds, const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&i\+\_\+df\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename S $>$ }\\std\+::vector$<$ T $>$ \hyperlink{classbond_1_1_bond_helper_aaf31152498dbbf3704839a0c57e4555c}{set\+\_\+init\+\_\+nss\+\_\+params} (const S \&solver)
+\begin{DoxyCompactList}\small\item\em This method sets the nss initial svensson parameters by computing the bond yields-\/to-\/maturity and Macaulay durations. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename S1 , typename S2 $>$ }\\void \hyperlink{classbond_1_1_bond_helper_a160a6bba890e45968d11d887ff34e294}{bond\+\_\+pricing} (const S1 \&solver, const S2 \&solver\+\_\+irr, const \hyperlink{namespacebond_a7ff8132c72465682a65a634ca0958df9}{Bond\+\_\+pricing\+\_\+type} \&bond\+\_\+pricing\+\_\+type)
+\begin{DoxyCompactList}\small\item\em This methods solves the bond pricing problem using prices or yields and the supplied solver. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename S $>$ }\\void \hyperlink{classbond_1_1_bond_helper_a28159ce3ba6b11611d6368fd5a601f45}{print\+\_\+bond\+\_\+pricing\+\_\+results} (const std\+::vector$<$ T $>$ \&res, const S \&solver\+\_\+irr)
+\begin{DoxyCompactList}\small\item\em This method prints to screen the bond pricing results. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+T \hyperlink{classbond_1_1_bond_helper_a1288528021e7c60e3a1435d39ad8611d}{estimate\+\_\+bond\+\_\+pricing} (const std\+::vector$<$ T $>$ \&solution, const T \&coupon\+\_\+value, const T \&nominal\+\_\+value, const std\+::vector$<$ T $>$ \&time\+\_\+periods)
+\begin{DoxyCompactList}\small\item\em Returns the bond prices using the estimated spot interest rates computed with svensson. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename S $>$ }\\T \hyperlink{classbond_1_1_bond_helper_aa1a47c41374aee7914e9c0ac374b39e4}{fitness\+\_\+bond\+\_\+pricing\+\_\+yields} (const std\+::vector$<$ T $>$ \&solution, const S \&solver\+\_\+irr, const bool \&use\+\_\+penalty\+\_\+method)
+\begin{DoxyCompactList}\small\item\em This is the fitness function for bond pricing using the bonds\textquotesingle{} yields-\/to-\/maturity. \end{DoxyCompactList}\item 
+T \hyperlink{classbond_1_1_bond_helper_a507eddab3d55ad3e640dfa930dcf43d0}{fitness\+\_\+bond\+\_\+pricing\+\_\+prices} (const std\+::vector$<$ T $>$ \&solution, const bool \&use\+\_\+penalty\+\_\+method)
+\begin{DoxyCompactList}\small\item\em This is the fitness function for bond pricing using the bonds\textquotesingle{} prices. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \hyperlink{classbond_1_1_bond}{Bond}$<$ T $>$ $>$ \hyperlink{classbond_1_1_bond_helper_a61db751f82d46ce2f7f5032ff2a3b03e}{bonds}
+\begin{DoxyCompactList}\small\item\em Vector of bonds. \end{DoxyCompactList}\item 
+const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \hyperlink{classbond_1_1_bond_helper_a843e3c12a561aaac047ba70310375a2f}{df\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Discount Factor type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class bond\+::\+Bond\+Helper$<$ T $>$}
+
+A class for the bond pricing problem as well as finding the yield-\/to-\/maturities of bonds. 
+
+Definition at line 26 of file bond.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classbond_1_1_bond_helper_aa86a95eaffb5a36c0ec52376b28d5d96}\label{classbond_1_1_bond_helper_aa86a95eaffb5a36c0ec52376b28d5d96}} 
+\index{bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}!Bond\+Helper@{Bond\+Helper}}
+\index{Bond\+Helper@{Bond\+Helper}!bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}}
+\subsubsection{\texorpdfstring{Bond\+Helper()}{BondHelper()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\hyperlink{classbond_1_1_bond_helper}{bond\+::\+Bond\+Helper}$<$ T $>$\+::\hyperlink{classbond_1_1_bond_helper}{Bond\+Helper} (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \hyperlink{classbond_1_1_bond}{Bond}$<$ T $>$$>$ \&}]{i\+\_\+bonds,  }\item[{const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \&}]{i\+\_\+df\+\_\+type = {\ttfamily DF\+\_\+type\+:\+:exp} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i\+\_\+bonds} & A vector of Bond$<$\+T$>$ objects \\
+\hline
+{\em i\+\_\+df\+\_\+type} & The type of discount factor method \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A Bond\+Helper$<$\+T$>$ object 
+\end{DoxyReturn}
+
+
+Definition at line 66 of file bondhelper.\+h.
+
+
+\begin{DoxyCode}
+66                                                                                 : 
+67             \hyperlink{classbond_1_1_bond_helper_a61db751f82d46ce2f7f5032ff2a3b03e}{bonds}( i\_bonds ), 
+68             \hyperlink{classbond_1_1_bond_helper_a843e3c12a561aaac047ba70310375a2f}{df\_type}( i\_df\_type )
+69         \{\};
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classbond_1_1_bond_helper_a160a6bba890e45968d11d887ff34e294}\label{classbond_1_1_bond_helper_a160a6bba890e45968d11d887ff34e294}} 
+\index{bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}!bond\+\_\+pricing@{bond\+\_\+pricing}}
+\index{bond\+\_\+pricing@{bond\+\_\+pricing}!bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}}
+\subsubsection{\texorpdfstring{bond\+\_\+pricing()}{bond\_pricing()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+template$<$typename S1 , typename S2 $>$ \\
+void \hyperlink{classbond_1_1_bond_helper}{bond\+::\+Bond\+Helper}$<$ T $>$\+::bond\+\_\+pricing (\begin{DoxyParamCaption}\item[{const S1 \&}]{solver,  }\item[{const S2 \&}]{solver\+\_\+irr,  }\item[{const \hyperlink{namespacebond_a7ff8132c72465682a65a634ca0958df9}{Bond\+\_\+pricing\+\_\+type} \&}]{bond\+\_\+pricing\+\_\+type }\end{DoxyParamCaption})}
+
+
+
+This methods solves the bond pricing problem using prices or yields and the supplied solver. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em solver} & The parameter structure of the solver that is going to be used for bond pricing \\
+\hline
+{\em solver\+\_\+irr} & The parameter structure of the solver that is going to be used to estimate the yield of maturity \\
+\hline
+{\em bond\+\_\+pricing\+\_\+type} & Whether to use bond yields-\/to-\/maturities or bond prices to find the N\+SS parameters \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line 235 of file bondhelper.\+h.
+
+
+
+References bond\+::bpp, bond\+::bpy, nss\+::constraints\+\_\+svensson(), and ea\+::solve().
+
+
+\begin{DoxyCode}
+236     \{
+237         assert(solver.ndv == 6);
+238         \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}& p : \hyperlink{classbond_1_1_bond_helper_a61db751f82d46ce2f7f5032ff2a3b03e}{bonds})
+239         \{
+240             assert(p.yield > 0 && p.yield < 1);
+241             assert(p.duration > 0);
+242         \}
+243         \textcolor{keywordflow}{switch} (bond\_pricing\_type)
+244         \{
+245         \textcolor{keywordflow}{case}(\hyperlink{namespacebond_a7ff8132c72465682a65a634ca0958df9a0c68c2daa0334704116676287d54c2ae}{Bond\_pricing\_type::bpp}):
+246         \{
+247             \textcolor{keyword}{auto} f = [&, use\_penalty\_method = solver.use\_penalty\_method](\textcolor{keyword}{const} \textcolor{keyword}{auto}& solution) \{ \textcolor{keywordflow}{return} 
+      \hyperlink{classbond_1_1_bond_helper_a507eddab3d55ad3e640dfa930dcf43d0}{fitness\_bond\_pricing\_prices}(solution, use\_penalty\_method); \};
+248             \textcolor{keyword}{auto} c = [&, constraints\_type = solver.constraints\_type](\textcolor{keyword}{const} \textcolor{keyword}{auto}& solution) \{ \textcolor{keywordflow}{return} 
+      \hyperlink{namespacenss_a39de3569a71e773f9da82c713eb7e6eb}{constraints\_svensson}(solution, constraints\_type); \};
+249             std::cout << \textcolor{stringliteral}{"Solving bond pricing using bond prices..."} << \textcolor{stringliteral}{"\(\backslash\)n"};
+250             \textcolor{keyword}{auto} res = \hyperlink{namespaceea_a6450b5bf61e9fdca8b6c19267e14c560}{solve}(f, c, solver, \textcolor{stringliteral}{"BPP"});
+251             \hyperlink{classbond_1_1_bond_helper_a28159ce3ba6b11611d6368fd5a601f45}{print\_bond\_pricing\_results}(res, solver\_irr);
+252             \textcolor{keywordflow}{break};
+253         \}
+254         \textcolor{keywordflow}{case}(\hyperlink{namespacebond_a7ff8132c72465682a65a634ca0958df9afebbcc7d14e1ada7b0eee6411e82665b}{Bond\_pricing\_type::bpy}):
+255         \{
+256             \textcolor{keyword}{auto} f = [&, use\_penalty\_method = solver.use\_penalty\_method](\textcolor{keyword}{const} \textcolor{keyword}{auto}& solution) \{ \textcolor{keywordflow}{return} 
+      \hyperlink{classbond_1_1_bond_helper_aa1a47c41374aee7914e9c0ac374b39e4}{fitness\_bond\_pricing\_yields}(solution, solver\_irr, use\_penalty\_method); \};
+257             \textcolor{keyword}{auto} c = [&, constraints\_type = solver.constraints\_type](\textcolor{keyword}{const} \textcolor{keyword}{auto}& solution) \{ \textcolor{keywordflow}{return} 
+      \hyperlink{namespacenss_a39de3569a71e773f9da82c713eb7e6eb}{constraints\_svensson}(solution, constraints\_type); \};
+258             std::cout << \textcolor{stringliteral}{"Solving bond pricing using bond yields..."} << \textcolor{stringliteral}{"\(\backslash\)n"};
+259             \textcolor{keyword}{auto} res = \hyperlink{namespaceea_a6450b5bf61e9fdca8b6c19267e14c560}{solve}(f, c, solver, \textcolor{stringliteral}{"BPY"});
+260             \hyperlink{classbond_1_1_bond_helper_a28159ce3ba6b11611d6368fd5a601f45}{print\_bond\_pricing\_results}(res, solver\_irr);
+261         \}
+262         \}
+263     \}
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbond_1_1_bond_helper_a160a6bba890e45968d11d887ff34e294_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbond_1_1_bond_helper_a1288528021e7c60e3a1435d39ad8611d}\label{classbond_1_1_bond_helper_a1288528021e7c60e3a1435d39ad8611d}} 
+\index{bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}!estimate\+\_\+bond\+\_\+pricing@{estimate\+\_\+bond\+\_\+pricing}}
+\index{estimate\+\_\+bond\+\_\+pricing@{estimate\+\_\+bond\+\_\+pricing}!bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}}
+\subsubsection{\texorpdfstring{estimate\+\_\+bond\+\_\+pricing()}{estimate\_bond\_pricing()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T \hyperlink{classbond_1_1_bond_helper}{bond\+::\+Bond\+Helper}$<$ T $>$\+::estimate\+\_\+bond\+\_\+pricing (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{solution,  }\item[{const T \&}]{coupon\+\_\+value,  }\item[{const T \&}]{nominal\+\_\+value,  }\item[{const std\+::vector$<$ T $>$ \&}]{time\+\_\+periods }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Returns the bond prices using the estimated spot interest rates computed with svensson. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em solution} & N\+SS parameters candindate solution \\
+\hline
+{\em coupon\+\_\+value} & The value of the coupon payment \\
+\hline
+{\em nominal\+\_\+value} & The nominal value of the investment \\
+\hline
+{\em time\+\_\+periods} & The time periods that correspond to the coupon payments \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The price of the bond 
+\end{DoxyReturn}
+Call svensson for period 
+
+Definition at line 178 of file bondhelper.\+h.
+
+
+
+References irr\+::compute\+\_\+discount\+\_\+factor(), and nss\+::svensson().
+
+
+\begin{DoxyCode}
+179     \{
+180         T sum = 0.0;
+182         \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}& t : time\_periods)
+183         \{
+184             sum = sum + coupon\_value * \hyperlink{namespaceirr_ae00c3409ca39fa2dc47ce61da4169a66}{compute\_discount\_factor}(
+      \hyperlink{namespacenss_a71aad246261afa16f8bb1a4057570d4b}{svensson}(solution, t), t, \hyperlink{classbond_1_1_bond_helper_a843e3c12a561aaac047ba70310375a2f}{df\_type});
+185         \}       
+186         T m = time\_periods.back();
+187         sum = sum + nominal\_value * \hyperlink{namespaceirr_ae00c3409ca39fa2dc47ce61da4169a66}{compute\_discount\_factor}(
+      \hyperlink{namespacenss_a71aad246261afa16f8bb1a4057570d4b}{svensson}(solution, m), m, \hyperlink{classbond_1_1_bond_helper_a843e3c12a561aaac047ba70310375a2f}{df\_type});
+188         \textcolor{keywordflow}{return} sum;
+189     \}
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbond_1_1_bond_helper_a1288528021e7c60e3a1435d39ad8611d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbond_1_1_bond_helper_a507eddab3d55ad3e640dfa930dcf43d0}\label{classbond_1_1_bond_helper_a507eddab3d55ad3e640dfa930dcf43d0}} 
+\index{bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}!fitness\+\_\+bond\+\_\+pricing\+\_\+prices@{fitness\+\_\+bond\+\_\+pricing\+\_\+prices}}
+\index{fitness\+\_\+bond\+\_\+pricing\+\_\+prices@{fitness\+\_\+bond\+\_\+pricing\+\_\+prices}!bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}}
+\subsubsection{\texorpdfstring{fitness\+\_\+bond\+\_\+pricing\+\_\+prices()}{fitness\_bond\_pricing\_prices()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T \hyperlink{classbond_1_1_bond_helper}{bond\+::\+Bond\+Helper}$<$ T $>$\+::fitness\+\_\+bond\+\_\+pricing\+\_\+prices (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{solution,  }\item[{const bool \&}]{use\+\_\+penalty\+\_\+method }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+This is the fitness function for bond pricing using the bonds\textquotesingle{} prices. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em solution} & N\+SS parameters candindate solution \\
+\hline
+{\em use\+\_\+penalty\+\_\+method} & Whether to use the penalty method defined for N\+SS or not \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The fitness cost of N\+SS for bond pricing 
+\end{DoxyReturn}
+The sum of squares of errors between the actual bond price and the estimated price from estimate\+\_\+bond\+\_\+pricing 
+
+Definition at line 192 of file bondhelper.\+h.
+
+
+
+References nss\+::penalty\+\_\+svensson().
+
+
+\begin{DoxyCode}
+193     \{
+195         T sum\_of\_squares = 0.0;
+196         \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}& k : \hyperlink{classbond_1_1_bond_helper_a61db751f82d46ce2f7f5032ff2a3b03e}{bonds})
+197         \{
+198             T estimate = \hyperlink{classbond_1_1_bond_helper_a1288528021e7c60e3a1435d39ad8611d}{estimate\_bond\_pricing}(solution, k.coupon\_value, k.
+      nominal\_value, k.time\_periods);
+199             sum\_of\_squares = sum\_of\_squares + std::pow((k.price/100 - estimate/100), 2) / std::sqrt(k.
+      duration);
+200         \}
+201         \textcolor{keywordflow}{if} (use\_penalty\_method)
+202         \{
+203             \textcolor{keywordflow}{return} sum\_of\_squares + \hyperlink{namespacenss_a009a0ebbca20f7969d0c2ed5a241aa82}{penalty\_svensson}(solution);
+204         \}
+205         \textcolor{keywordflow}{else}
+206         \{
+207             \textcolor{keywordflow}{return} sum\_of\_squares;
+208         \}
+209     \}
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbond_1_1_bond_helper_a507eddab3d55ad3e640dfa930dcf43d0_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbond_1_1_bond_helper_aa1a47c41374aee7914e9c0ac374b39e4}\label{classbond_1_1_bond_helper_aa1a47c41374aee7914e9c0ac374b39e4}} 
+\index{bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}!fitness\+\_\+bond\+\_\+pricing\+\_\+yields@{fitness\+\_\+bond\+\_\+pricing\+\_\+yields}}
+\index{fitness\+\_\+bond\+\_\+pricing\+\_\+yields@{fitness\+\_\+bond\+\_\+pricing\+\_\+yields}!bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}}
+\subsubsection{\texorpdfstring{fitness\+\_\+bond\+\_\+pricing\+\_\+yields()}{fitness\_bond\_pricing\_yields()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+template$<$typename S $>$ \\
+T \hyperlink{classbond_1_1_bond_helper}{bond\+::\+Bond\+Helper}$<$ T $>$\+::fitness\+\_\+bond\+\_\+pricing\+\_\+yields (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{solution,  }\item[{const S \&}]{solver\+\_\+irr,  }\item[{const bool \&}]{use\+\_\+penalty\+\_\+method }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+This is the fitness function for bond pricing using the bonds\textquotesingle{} yields-\/to-\/maturity. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em solution} & N\+SS parameters candindate solution \\
+\hline
+{\em solver\+\_\+irr} & The parameter structure of the solver that is going to be used to estimate the yield of maturity \\
+\hline
+{\em use\+\_\+penalty\+\_\+method} & Whether to use the penalty method defined for N\+SS or not \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The fitness cost of N\+SS for bond pricing 
+\end{DoxyReturn}
+The sum of squares of errors between the actual bond yield to maturity and the estimated yield to maturity by svensson is used 
+
+Definition at line 213 of file bondhelper.\+h.
+
+
+
+References nss\+::penalty\+\_\+svensson().
+
+
+\begin{DoxyCode}
+214     \{
+216         T sum\_of\_squares = 0;
+217         \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}& k : \hyperlink{classbond_1_1_bond_helper_a61db751f82d46ce2f7f5032ff2a3b03e}{bonds})
+218         \{
+219             T estimate\_price = \hyperlink{classbond_1_1_bond_helper_a1288528021e7c60e3a1435d39ad8611d}{estimate\_bond\_pricing}(solution, k.coupon\_value, k.
+      nominal\_value, k.time\_periods);
+220             T estimate = k.compute\_yield(estimate\_price, solver\_irr, \hyperlink{classbond_1_1_bond_helper_a843e3c12a561aaac047ba70310375a2f}{df\_type});
+221             sum\_of\_squares = sum\_of\_squares + std::pow(k.yield - estimate, 2);
+222         \}
+223         \textcolor{keywordflow}{if} (use\_penalty\_method)
+224         \{
+225             \textcolor{keywordflow}{return} sum\_of\_squares + \hyperlink{namespacenss_a009a0ebbca20f7969d0c2ed5a241aa82}{penalty\_svensson}(solution);
+226         \}
+227         \textcolor{keywordflow}{else}
+228         \{
+229             \textcolor{keywordflow}{return} sum\_of\_squares;
+230         \}
+231     \}
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbond_1_1_bond_helper_aa1a47c41374aee7914e9c0ac374b39e4_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbond_1_1_bond_helper_a28159ce3ba6b11611d6368fd5a601f45}\label{classbond_1_1_bond_helper_a28159ce3ba6b11611d6368fd5a601f45}} 
+\index{bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}!print\+\_\+bond\+\_\+pricing\+\_\+results@{print\+\_\+bond\+\_\+pricing\+\_\+results}}
+\index{print\+\_\+bond\+\_\+pricing\+\_\+results@{print\+\_\+bond\+\_\+pricing\+\_\+results}!bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}}
+\subsubsection{\texorpdfstring{print\+\_\+bond\+\_\+pricing\+\_\+results()}{print\_bond\_pricing\_results()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+template$<$typename S $>$ \\
+void \hyperlink{classbond_1_1_bond_helper}{bond\+::\+Bond\+Helper}$<$ T $>$\+::print\+\_\+bond\+\_\+pricing\+\_\+results (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{res,  }\item[{const S \&}]{solver\+\_\+irr }\end{DoxyParamCaption})}
+
+
+
+This method prints to screen the bond pricing results. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em res} & The solution vector of N\+SS parameters \\
+\hline
+{\em solver\+\_\+irr} & The parameter structure of the solver that is going to be used to estimate the yield of maturity \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line 267 of file bondhelper.\+h.
+
+
+\begin{DoxyCode}
+268     \{
+269         T error = 0;
+270         \textcolor{comment}{//for (const auto& p : bonds)}
+271         \textcolor{comment}{//\{}
+272             \textcolor{comment}{//T estimate\_price = estimate\_bond\_pricing(res, p.coupon\_value, p.nominal\_value,
+       p.time\_periods);}
+273             \textcolor{comment}{//T estimate = p.compute\_yield(estimate\_price, solver\_irr, df\_type);}
+274             \textcolor{comment}{//error = error + std::pow(estimate - p.yield, 2);}
+275             \textcolor{comment}{//std::cout << "Estimated yield: " << estimate << " Actual Yield: " << p.yield << "\(\backslash\)n";}
+276         \textcolor{comment}{//\}}
+277         \textcolor{comment}{//std::cout << "Yield Mean Squared Error: " << error << "\(\backslash\)n";}
+278         error = 0;
+279         \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}& p : \hyperlink{classbond_1_1_bond_helper_a61db751f82d46ce2f7f5032ff2a3b03e}{bonds})
+280         \{
+281             error = error + std::pow(\hyperlink{classbond_1_1_bond_helper_a1288528021e7c60e3a1435d39ad8611d}{estimate\_bond\_pricing}(res, p.coupon\_value, p.
+      nominal\_value, p.time\_periods)/100 - p.price/100, 2);
+282             std::cout << \textcolor{stringliteral}{"Estimated price: "} << \hyperlink{classbond_1_1_bond_helper_a1288528021e7c60e3a1435d39ad8611d}{estimate\_bond\_pricing}(res, p.
+      coupon\_value, p.nominal\_value, p.time\_periods) << \textcolor{stringliteral}{" Actual Price: "} << p.price << \textcolor{stringliteral}{"\(\backslash\)n"};
+283         \}
+284         std::cout << \textcolor{stringliteral}{"Price Mean Squared Error: "} << error << \textcolor{stringliteral}{"\(\backslash\)n"};
+285     \}
+\end{DoxyCode}
+\mbox{\Hypertarget{classbond_1_1_bond_helper_aaf31152498dbbf3704839a0c57e4555c}\label{classbond_1_1_bond_helper_aaf31152498dbbf3704839a0c57e4555c}} 
+\index{bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}!set\+\_\+init\+\_\+nss\+\_\+params@{set\+\_\+init\+\_\+nss\+\_\+params}}
+\index{set\+\_\+init\+\_\+nss\+\_\+params@{set\+\_\+init\+\_\+nss\+\_\+params}!bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}}
+\subsubsection{\texorpdfstring{set\+\_\+init\+\_\+nss\+\_\+params()}{set\_init\_nss\_params()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+template$<$typename S $>$ \\
+std\+::vector$<$ T $>$ \hyperlink{classbond_1_1_bond_helper}{bond\+::\+Bond\+Helper}$<$ T $>$\+::set\+\_\+init\+\_\+nss\+\_\+params (\begin{DoxyParamCaption}\item[{const S \&}]{solver }\end{DoxyParamCaption})}
+
+
+
+This method sets the nss initial svensson parameters by computing the bond yields-\/to-\/maturity and Macaulay durations. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em solver} & The parameter structure of the solver that is going to be used \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A vector of decision variables for N\+SS 
+\end{DoxyReturn}
+
+
+Definition at line 69 of file bondhelper.\+h.
+
+
+
+References bond\+::\+Bond\+Helper$<$ T $>$\+::set\+\_\+init\+\_\+nss\+\_\+params().
+
+
+
+Referenced by bond\+::\+Bond\+Helper$<$ T $>$\+::set\+\_\+init\+\_\+nss\+\_\+params().
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=193pt]{classbond_1_1_bond_helper_aaf31152498dbbf3704839a0c57e4555c_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=193pt]{classbond_1_1_bond_helper_aaf31152498dbbf3704839a0c57e4555c_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classbond_1_1_bond_helper_a61db751f82d46ce2f7f5032ff2a3b03e}\label{classbond_1_1_bond_helper_a61db751f82d46ce2f7f5032ff2a3b03e}} 
+\index{bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}!bonds@{bonds}}
+\index{bonds@{bonds}!bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}}
+\subsubsection{\texorpdfstring{bonds}{bonds}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$\hyperlink{classbond_1_1_bond}{Bond}$<$T$>$ $>$ \hyperlink{classbond_1_1_bond_helper}{bond\+::\+Bond\+Helper}$<$ T $>$\+::bonds\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Vector of bonds. 
+
+
+
+Definition at line 93 of file bondhelper.\+h.
+
+\mbox{\Hypertarget{classbond_1_1_bond_helper_a843e3c12a561aaac047ba70310375a2f}\label{classbond_1_1_bond_helper_a843e3c12a561aaac047ba70310375a2f}} 
+\index{bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}!df\+\_\+type@{df\+\_\+type}}
+\index{df\+\_\+type@{df\+\_\+type}!bond\+::\+Bond\+Helper@{bond\+::\+Bond\+Helper}}
+\subsubsection{\texorpdfstring{df\+\_\+type}{df\_type}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const \hyperlink{namespaceutilities_ad4290e607d0651ce53db6e5c776aca7c}{D\+F\+\_\+type} \hyperlink{classbond_1_1_bond_helper}{bond\+::\+Bond\+Helper}$<$ T $>$\+::df\+\_\+type\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discount Factor type. 
+
+
+
+Definition at line 95 of file bondhelper.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{bond_8h}{bond.\+h}\item 
+\hyperlink{bondhelper_8h}{bondhelper.\+h}\end{DoxyCompactItemize}

@@ -1,0 +1,36 @@
+\hypertarget{index_intro_sec}{}\section{Introduction}\label{index_intro_sec}
+This project implements solvers for three financial optimisation problems\+: {\bfseries Yield Curve Fitting}, {\bfseries Internal Rate of Return Estimation} and {\bfseries Bond Pricing} problems.
+
+Some general guidelines and remarks are mentioned below.\hypertarget{index_template_guide}{}\section{Template Parameters}\label{index_template_guide}
+A template parameter named {\bfseries T} denotes a floating-\/point number type.
+
+A template parameter named {\bfseries F} denotes a lambda function (or function object/functor) type of the objective function
+
+A template parameter named {\bfseries C} denotes a lambda function (or function object/functor) type of the constraints function
+
+A template parameter named {\bfseries S} denotes a solver structure.\hypertarget{index_compile_guide}{}\section{Compilation}\label{index_compile_guide}
+Compilation is possible with the three major compilers, gcc, clang and msvc.
+
+Since some of the features used in the project are from the C++11/\+C++14 standards, the source has to be compiled with at least {\bfseries -\/std=c++14}.
+
+For gcc and clang, {\bfseries -\/std=c++17} can be used as well, as the source is compatible with the newest C++ I\+SO standard.\hypertarget{index_external_libraries}{}\subsection{External Libraries}\label{index_external_libraries}
+The external libraries used by the project are\+: {\bfseries Boost} (\href{http://www.boost.org/}{\tt http\+://www.\+boost.\+org/}) and {\bfseries date} (\href{https://github.com/HowardHinnant/date}{\tt https\+://github.\+com/\+Howard\+Hinnant/date}).
+
+Boost is used for the Beta Distribution implementation and the pi constant.
+
+date is used for date handling of the settlement and maturity dates.
+
+Both can be included only as their header versions.\hypertarget{index_test_guide}{}\section{Showcase}\label{index_test_guide}
+A showcase of the project is provided under {\bfseries \hyperlink{main_8cpp}{tests/main.\+cpp}}.
+
+Be sure that the resulting executable will be run in the same working directory as the data files, otherwise the executable will crash abruptly, since exceptions are not implemented yet.
+
+If other data files are used, be sure that their content has the correct format.
+
+For bond data files, the input data have to be of the form\+: {\bfseries coupon rate (in percentage) price nominal value frequency settlement date (in yyyy-\/mm-\/dd form) and maturity date (in yyyy-\/mm-\/dd form)}.
+
+For example\+: {\bfseries 0.\+06 101.\+657 100 2 2016-\/03-\/30 2019-\/06-\/24} has the correct format.
+
+For interest rate data files, the input data have to be of the form\+: {\bfseries period (as a decimal) zero rate (in percentage)}.
+
+For example\+: {\bfseries 0.\+25 0.\+079573813} has the correct format. 

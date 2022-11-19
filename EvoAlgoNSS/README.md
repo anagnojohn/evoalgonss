@@ -1,5 +1,6 @@
-========================================================================
 Author:Ioannis Anagnostopoulos
+
+Evolutionary Algorithms for financial optimisation
 
 Open doc/html/index.html or doc/latex/refman.pdf for more information.
 

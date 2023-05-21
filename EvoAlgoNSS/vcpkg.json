@@ -1,0 +1,9 @@
+{
+  "name": "evoalgonss",
+  "version": "1.0.0",
+  "dependencies": [
+    "boost-math",
+    "boost-random",
+    "date"
+  ]
+}

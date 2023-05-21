@@ -7,6 +7,7 @@ EvoAlgoNSS/tests/*.csv
 EvoAlgoNSS/tests/*.xlsx
 EvoAlgoNSS/cmake_build_debug
 EvoAlgoNSS/cmake_build_release
+EvoAlgoNSS/vcpkg_installed
 EvoAlgoNSS/build
 
 
